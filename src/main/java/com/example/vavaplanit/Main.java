@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class VavaplanitApplication {
+public class Main {
 
     public static void main(String[] args) {
-        SpringApplication.run(VavaplanitApplication.class, args);
+        SpringApplication.run(Main.class, args);
     }
 
     // po spusteni napisat do prehliadaca: http://localhost:8080/hello
