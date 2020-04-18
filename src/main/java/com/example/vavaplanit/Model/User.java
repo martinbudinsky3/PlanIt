@@ -1,21 +1,24 @@
 package com.example.vavaplanit.Model;
 
-public class User {
-    private long idUser;
+import javax.persistence.Column;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private int idUser;
     private String firstName;
     private String lastName;
 
-    public User(long idUser, String firstName, String lastName) {
+    public User(int idUser, String firstName, String lastName) {
         this.idUser = idUser;
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public long getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(long idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 

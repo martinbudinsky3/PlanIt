@@ -1,14 +1,15 @@
-package com.example.vavaplanit.Dao;
+package com.example.vavaplanit.Repository;
 
 import com.example.vavaplanit.Model.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class UserDao {
+public class UserRepository {
 
     private static Map<Integer, User> users;
 
@@ -24,4 +25,10 @@ public class UserDao {
     public Collection<User> getAllUsers(){
         return this.users.values();
     }
+
+    public User getUserById(int idUser){
+        return this.users.get(idUser);
+    }
+
+
 }
