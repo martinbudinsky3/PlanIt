@@ -1,4 +1,4 @@
-package com.example.vavaplanit.Service;
+package com.example.vavaplanit.Database.Service;
 
 import com.example.vavaplanit.Database.Repository.UserRepository;
 import com.example.vavaplanit.Model.User;

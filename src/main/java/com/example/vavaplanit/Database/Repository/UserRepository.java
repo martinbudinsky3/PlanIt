@@ -29,21 +29,6 @@ public class UserRepository {
         return jdbcTemplate.query(sql, userMappers.mapUserFomDb());
     }
 
-//    private RowMapper<User> mapUserFomDb() {
-//        return (resultSet, i) -> {
-//            String idStr = resultSet.getString("idUser");
-//            int idUser = Integer.parseInt(idStr);
-//
-//            String firstName = resultSet.getString("firstName");
-//            String lastName = resultSet.getString("lastName");
-//            return new User(
-//                    idUser,
-//                    firstName,
-//                    lastName
-//            );
-//        };
-//    }
-
 //    public User getUserById(int idUser){
 //        return this.users.get(idUser);
 //    }
