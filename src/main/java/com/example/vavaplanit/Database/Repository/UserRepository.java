@@ -12,7 +12,7 @@ import java.util.List;
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    UserMappers userMappers = new UserMappers();
+    private final UserMappers userMappers = new UserMappers();
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

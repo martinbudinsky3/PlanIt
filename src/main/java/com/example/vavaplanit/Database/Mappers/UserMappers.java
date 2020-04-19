@@ -8,9 +8,7 @@ public class UserMappers {
 
     public RowMapper<User> mapUserFomDb() {
         return (resultSet, i) -> {
-            String idStr = resultSet.getString("idUser");
-            int idUser = Integer.parseInt(idStr);
-
+            int idUser = resultSet.getInt("idUser");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
             return new User(
