@@ -1,7 +1,6 @@
 package com.example.vavaplanit.Database.Repository;
 
 import com.example.vavaplanit.Database.Mappers.EventMappers;
-import com.example.vavaplanit.Database.Mappers.UserMappers;
 import com.example.vavaplanit.Model.Event;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -18,8 +17,8 @@ public class EventRepository {
     }
 
     public List<Event> getAllByUserId(int userId){
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser" +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + userId;
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
+                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + userId + ";";
         return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
     }
 }

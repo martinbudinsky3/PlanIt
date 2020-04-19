@@ -13,6 +13,6 @@ public class EventService {
     private EventRepository eventRepository;
 
     public List<Event> getAllByUserId(int userId){
-        return eventRepository.getAllByUserId(userId);
+        return this.eventRepository.getAllByUserId(userId);
     }
 }
