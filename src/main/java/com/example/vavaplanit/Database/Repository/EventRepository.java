@@ -4,9 +4,11 @@ import com.example.vavaplanit.Database.Mappers.EventMappers;
 import com.example.vavaplanit.Database.Mappers.UserMappers;
 import com.example.vavaplanit.Model.Event;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class EventRepository {
     private final JdbcTemplate jdbcTemplate;
     private final EventMappers eventMappers = new EventMappers();
