@@ -21,10 +21,7 @@ import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.TextStyle;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PlanItMainWindowController implements Initializable {
     @FXML
@@ -67,9 +64,11 @@ public class PlanItMainWindowController implements Initializable {
         // TO DO - multilanguage
         String months[] = new DateFormatSymbols().getMonths();
         for (int i = 0; i < 12; i++){
-            monthsList.getItems().add(months[i]);
+            monthsList.getItems().add(months[i].toUpperCase());
         }
 
+        yearLabel.setText(Integer.toString(selectedYear));
+        monthLabel.setText(months[selectedMonth - 1]);
         monthsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
         {
             public void changed(ObservableValue<? extends String> observable, final String oldvalue, final String newvalue) {
