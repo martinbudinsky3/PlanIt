@@ -17,7 +17,6 @@ public class EventsClient {
     public static void main(String[] args) throws Exception{
         EventsClient eventsClient = new EventsClient();
         eventsClient.getUserEvents(1);
-
     }
 
     public List<Event> getUserEvents(int userId) throws Exception{
