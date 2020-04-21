@@ -2,6 +2,7 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -47,6 +48,7 @@ public class PlanItMainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createGridPaneNodes();
+        addHandlers();
         initializeMonthsAndYear();
         initializeCalendar();
         showEventsInCalendar();
@@ -67,6 +69,12 @@ public class PlanItMainWindowController implements Initializable {
         }
     }
 
+    public void addHandlers() {
+        yearBack.setOnAction(e -> yearBackHandler());
+        yearForward.setOnAction(e -> yearForwardHandler());
+        addEventButton.setOnAction(e -> addEventButtonHandler(e));
+    }
+
     public void initializeMonthsAndYear() {
         // find out current year and month that will be displayed
         LocalDate today = LocalDate.now();
@@ -83,8 +91,9 @@ public class PlanItMainWindowController implements Initializable {
         yearLabel.setText(Integer.toString(selectedYear));
         monthLabel.setText(months[selectedMonth - 1]);
         monthsList.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
-            selectedMonth = monthsList.getSelectionModel().getSelectedIndex();
+            selectedMonth = monthsList.getSelectionModel().getSelectedIndex() + 1;
             monthLabel.setText(newvalue);
+            initializeCalendar();
             showEventsInCalendar();
         });
     }
@@ -94,6 +103,8 @@ public class PlanItMainWindowController implements Initializable {
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        clearCalendar();
 
         // add day number labels to calendar fields
         int fieldCounter = 1;
@@ -125,7 +136,7 @@ public class PlanItMainWindowController implements Initializable {
     public void showEventsInCalendar() {
 
         try {
-            List<Event> events = eventsClient.getUserEventsByMonth(1, 2020, 5); // hardcoded userId
+            List<Event> events = eventsClient.getUserEventsByMonth(1, selectedYear, selectedMonth); // hardcoded userId
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 6; i++) {
                     for (int j = 0; j < 7; j++) {
@@ -133,6 +144,7 @@ public class PlanItMainWindowController implements Initializable {
                         if(dayVBox.getChildren().isEmpty()){
                             continue;
                         }
+
                         Label dayLabel = (Label) dayVBox.getChildren().get(0);
                         int dayNumber = Integer.parseInt(dayLabel.getText());
                         Event event = events.get(e);
@@ -147,6 +159,7 @@ public class PlanItMainWindowController implements Initializable {
                             });
 
                             dayVBox.getChildren().add(eventLabel);
+                            VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
                         }
                     }
                 }
@@ -154,5 +167,36 @@ public class PlanItMainWindowController implements Initializable {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
+    }
+
+    public void clearCalendar(){
+        for(int i = 1; i < 6; i++) {
+            for(int j = 0; j < 7; j++) {
+                VBox vBox = (VBox) gridPaneNodes[j][i];
+                if(vBox.getChildren().isEmpty()){
+                    continue;
+                }
+                vBox.getChildren().clear();
+                System.out.println();
+            }
+        }
+    }
+
+    public void yearBackHandler() {
+        selectedYear -= 1;
+        yearLabel.setText(Integer.toString(selectedYear));
+        initializeCalendar();
+        showEventsInCalendar();
+    }
+
+    public void yearForwardHandler() {
+        selectedYear += 1;
+        yearLabel.setText(Integer.toString(selectedYear));
+        initializeCalendar();
+        showEventsInCalendar();
+    }
+
+    public void addEventButtonHandler(ActionEvent event){
+
     }
 }
