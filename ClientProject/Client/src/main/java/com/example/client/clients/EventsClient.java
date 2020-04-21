@@ -40,7 +40,6 @@ public class EventsClient {
 
         RestTemplate restTemplate = new RestTemplate();
         String eventListJSon = restTemplate.getForObject(uri, String.class, params);
-        System.out.println(eventListJSon);
         objectMapper.registerModule(new JavaTimeModule());
         List<Event> events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>(){});
 

@@ -1,6 +1,7 @@
 package com.example.client.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;

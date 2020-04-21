@@ -2,8 +2,6 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -13,14 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.TextStyle;
 import java.util.*;
 
 public class PlanItMainWindowController implements Initializable {
@@ -41,6 +36,7 @@ public class PlanItMainWindowController implements Initializable {
 
     int selectedYear;
     int selectedMonth;
+    Node[][] gridPaneNodes;
     private final EventsClient eventsClient;
 
     public PlanItMainWindowController(EventsClient eventsClient) {
@@ -50,8 +46,25 @@ public class PlanItMainWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        createGridPaneNodes();
         initializeMonthsAndYear();
         initializeCalendar();
+        showEventsInCalendar();
+    }
+
+    // create grid pane nodes array
+    public void createGridPaneNodes(){
+        gridPaneNodes = new Node[7][6];
+        for (Node child : calendar.getChildren()) {
+            Integer column = calendar.getColumnIndex(child);
+            Integer row = calendar.getRowIndex(child);
+            if(row != null) {
+                if(column == null){
+                    column = 0;
+                }
+                gridPaneNodes[column][row] = child;
+            }
+        }
     }
 
     public void initializeMonthsAndYear() {
@@ -76,31 +89,13 @@ public class PlanItMainWindowController implements Initializable {
         });
     }
 
-    // create grid pane nodes array
-    public Node[][] getGridPaneNodes(){
-        Node[][] gridPaneNodes = new Node[7][6];
-        for (Node child : calendar.getChildren()) {
-            Integer column = calendar.getColumnIndex(child);
-            Integer row = calendar.getRowIndex(child);
-            if(row != null) {
-                if(column == null){
-                    column = 0;
-                }
-                gridPaneNodes[column][row] = child;
-            }
-        }
-
-        return gridPaneNodes;
-    }
-
     public void initializeCalendar() {
-        Node[][] gridPaneNodes = getGridPaneNodes();
-
+        // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        // add day labels to calendar fields
+        // add day number labels to calendar fields
         int fieldCounter = 1;
         int dayCounter = 1;
         for (int i = 1; i < 6; i++) {
@@ -118,7 +113,7 @@ public class PlanItMainWindowController implements Initializable {
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     dayVBox.getChildren().add(dayLabel);
-                    VBox.setMargin(dayLabel, new Insets(5, 0, 0, 5));
+                    VBox.setMargin(dayLabel, new Insets(5, 0, 5, 5));
                     dayCounter++;
                 }
 
@@ -128,12 +123,36 @@ public class PlanItMainWindowController implements Initializable {
     }
 
     public void showEventsInCalendar() {
+
         try {
-            List<Event> events = eventsClient.getUserEvents(1); // hardcoded userId
+            List<Event> events = eventsClient.getUserEventsByMonth(1, 2020, 5); // hardcoded userId
+            for(int e = 0; e < events.size(); e++) {
+                for (int i = 1; i < 6; i++) {
+                    for (int j = 0; j < 7; j++) {
+                        VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                        if(dayVBox.getChildren().isEmpty()){
+                            continue;
+                        }
+                        Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                        int dayNumber = Integer.parseInt(dayLabel.getText());
+                        Event event = events.get(e);
+
+                        if(event.getDate().getDayOfMonth() == dayNumber) {
+                            Label eventLabel = new Label();
+                            String eventLabelText = event.getStarts() + " " + event.getTitle();
+                            eventLabel.setText(eventLabelText);
+                            eventLabel.setId(Integer.toString(event.getIdEvent()));
+                            eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
+                                // TO DO - open event detail window and pass it event id from event label id
+                            });
+
+                            dayVBox.getChildren().add(eventLabel);
+                        }
+                    }
+                }
+            }
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-        // TO DO
     }
 }
