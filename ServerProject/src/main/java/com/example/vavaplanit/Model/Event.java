@@ -1,10 +1,12 @@
 package com.example.vavaplanit.Model;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
-public class Event {
+public class Event implements Serializable {
     private int idEvent;
     private String title;
     private String location;
@@ -77,5 +79,24 @@ public class Event {
 
     public void setAlert(LocalTime alert) {
         this.alert = alert;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return idEvent == event.idEvent &&
+                Objects.equals(title, event.title) &&
+                Objects.equals(location, event.location) &&
+                Objects.equals(date, event.date) &&
+                Objects.equals(starts, event.starts) &&
+                Objects.equals(ends, event.ends) &&
+                Objects.equals(alert, event.alert);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idEvent, title, location, date, starts, ends, alert);
     }
 }

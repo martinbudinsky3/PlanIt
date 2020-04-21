@@ -22,4 +22,11 @@ public class EventController {
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "{userId}/{year}/{month}", method = RequestMethod.GET)
+    public ResponseEntity getEventsByMonthAndUserId(@PathVariable("userId") int userId, @PathVariable("year") int year,
+                                                    @PathVariable("month") int month) {
+        List<Event> eventList = eventService.getEventsByMonthAndUserId(userId, year, month);
+        return new ResponseEntity<>(eventList, HttpStatus.OK);
+    }
+
 }

@@ -69,15 +69,14 @@ public class PlanItMainWindowController implements Initializable {
 
         yearLabel.setText(Integer.toString(selectedYear));
         monthLabel.setText(months[selectedMonth - 1]);
-        monthsList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>()
-        {
-            public void changed(ObservableValue<? extends String> observable, final String oldvalue, final String newvalue) {
-                selectedMonth = monthsList.getSelectionModel().getSelectedIndex();
-                monthLabel.setText(newvalue);
-                showEventsInCalendar();
-            }});
+        monthsList.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
+            selectedMonth = monthsList.getSelectionModel().getSelectedIndex();
+            monthLabel.setText(newvalue);
+            showEventsInCalendar();
+        });
     }
 
+    // create grid pane nodes array
     public Node[][] getGridPaneNodes(){
         Node[][] gridPaneNodes = new Node[7][6];
         for (Node child : calendar.getChildren()) {
@@ -101,7 +100,7 @@ public class PlanItMainWindowController implements Initializable {
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-
+        // add day labels to calendar fields
         int fieldCounter = 1;
         int dayCounter = 1;
         for (int i = 1; i < 6; i++) {
@@ -112,6 +111,7 @@ public class PlanItMainWindowController implements Initializable {
 
                 if (fieldCounter >= firstDayOfMonth) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
+//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                         // TO DO - open add event modal window
                     });
@@ -129,7 +129,7 @@ public class PlanItMainWindowController implements Initializable {
 
     public void showEventsInCalendar() {
         try {
-            List<Event> events = eventsClient.getUserEvents(1);
+            List<Event> events = eventsClient.getUserEvents(1); // hardcoded userId
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
