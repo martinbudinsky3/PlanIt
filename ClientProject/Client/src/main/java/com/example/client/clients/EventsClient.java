@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
 import java.util.*;
 
 public class EventsClient {
