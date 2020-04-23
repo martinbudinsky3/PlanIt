@@ -17,16 +17,22 @@ public class EventRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Event> getAllByUserId(int userId){
+    public List<Event> getAllByUserId(int idUser){
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + userId + ";";
+                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + ";";
         return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
     }
 
-    public List<Event> getEventsByMonthAndUserId(int userId, LocalDate minDate, LocalDate maxDate){
+    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate){
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + userId + " " +
+                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
                 "AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate + "';";
+        return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
+    }
+
+    public List<Event> getEventByIdUserAndIdEvent(int idUser, int idEvent){
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent\n" +
+                "where e.idevent = '" + idEvent + "' and iduser = '" + idUser +"';";
         return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
     }
 }

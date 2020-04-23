@@ -16,17 +16,21 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
-    public List<Event> getAllByUserId(int userId){
-        return this.eventRepository.getAllByUserId(userId);
+    public List<Event> getAllByUserId(int idUser){
+        return this.eventRepository.getAllByUserId(idUser);
     }
 
-    public List<Event> getEventsByMonthAndUserId(int userId, int year, int month){
+    public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
         GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month - 1, 1);
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
         LocalDate maxDate = LocalDate.of(year, month, daysInMonth);
 
-        return this.eventRepository.getEventsByMonthAndUserId(userId, minDate, maxDate);
+        return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
+    }
+
+    public List<Event> getEventByIdUserAndIdEvent(int idUser, int idEvent){
+        return this.eventRepository.getEventByIdUserAndIdEvent(idUser,idEvent);
     }
 }

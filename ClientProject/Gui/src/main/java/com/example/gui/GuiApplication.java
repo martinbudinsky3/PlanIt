@@ -1,12 +1,15 @@
 package com.example.gui;
 
 import com.example.client.clients.EventsClient;
+import com.example.gui.controllers.PlanItEventDetailController;
 import com.example.gui.controllers.PlanItMainWindowController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class GuiApplication extends Application {
 
