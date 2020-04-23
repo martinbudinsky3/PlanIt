@@ -44,7 +44,6 @@ public class PlanItMainWindowController implements Initializable {
         this.eventsClient = eventsClient;
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createGridPaneNodes();
