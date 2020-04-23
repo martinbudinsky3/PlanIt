@@ -16,16 +16,23 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @RequestMapping(value = "{userId}", method = RequestMethod.GET)
-    public ResponseEntity getAllByUserId(@PathVariable("userId") int userId){
-        List<Event> eventList = eventService.getAllByUserId(userId);
+    @RequestMapping(value = "{idUser}", method = RequestMethod.GET)
+    public ResponseEntity getAllByUserId(@PathVariable("idUser") int idUser){
+        List<Event> eventList = eventService.getAllByUserId(idUser);
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "{userId}/{year}/{month}", method = RequestMethod.GET)
-    public ResponseEntity getEventsByMonthAndUserId(@PathVariable("userId") int userId, @PathVariable("year") int year,
+    @RequestMapping(value = "{idUser}/{year}/{month}", method = RequestMethod.GET)
+    public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") int idUser, @PathVariable("year") int year,
                                                     @PathVariable("month") int month) {
-        List<Event> eventList = eventService.getEventsByMonthAndUserId(userId, year, month);
+        List<Event> eventList = eventService.getEventsByMonthAndUserId(idUser, year, month);
+        return new ResponseEntity<>(eventList, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
+    public ResponseEntity getEventByIdUserAndIdEvent(@PathVariable("idUser") int idUser,
+                                                     @PathVariable("idEvent") int idEvent){
+        List<Event> eventList = eventService.getEventByIdUserAndIdEvent(idUser,idEvent);
         return new ResponseEntity<>(eventList, HttpStatus.OK);
     }
 

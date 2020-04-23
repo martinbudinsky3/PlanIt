@@ -2,18 +2,25 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
+import com.example.gui.GuiApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
@@ -154,7 +161,24 @@ public class PlanItMainWindowController implements Initializable {
                             eventLabel.setText(eventLabelText);
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                                // TO DO - open event detail window and pass it event id from event label id
+                                // TO DO - open event detail window and pass its event id from event label id
+
+                                FXMLLoader loader = new FXMLLoader();
+                                loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItEventDetail.fxml"));
+                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), 1);
+                                loader.setController(planItEventDetailController);
+
+                                AnchorPane anchorPane = null;
+                                try {
+                                    anchorPane = (AnchorPane) loader.load();
+                                } catch (IOException ex) {
+                                    ex.printStackTrace();
+                                }
+                                Scene scene = new Scene(anchorPane);
+                                Stage window = new Stage();
+                                window.setScene(scene);
+                                window.show();
+
                             });
 
                             dayVBox.getChildren().add(eventLabel);
