@@ -29,9 +29,11 @@ public class UserRepository {
         return jdbcTemplate.query(sql, userMappers.mapUserFomDb());
     }
 
-//    public User getUserById(int idUser){
-//        return this.users.get(idUser);
-//    }
+    public List<User> getUserById(int idUser){
+        String sql = "SELECT * FROM planitschema.user\n" +
+                "where iduser = '" + idUser + "';";
+        return jdbcTemplate.query(sql, userMappers.mapUserFomDb());
+    }
 
 
 }

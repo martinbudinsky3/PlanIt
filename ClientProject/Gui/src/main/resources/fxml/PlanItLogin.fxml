@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="419.0" prefWidth="730.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="283.0" layoutY="69.0" text="Prihlásenie">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label layoutX="210.0" layoutY="192.0" text="Zadajte svoje ID:" />
+      <TextField fx:id="textfieldId" layoutX="343.0" layoutY="187.0" />
+      <Button fx:id="buttonLogin" layoutX="307.0" layoutY="243.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="21.0" prefWidth="124.0" text="Prihlásiť" />
+      <Button fx:id="buttonRegister" layoutX="307.0" layoutY="284.0" mnemonicParsing="false" onAction="#handleRegister" prefHeight="31.0" prefWidth="124.0" text="Registrovať" />
+   </children>
+</AnchorPane>

@@ -1,7 +1,9 @@
 package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
+import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
+import com.example.client.model.User;
 import com.example.gui.GuiApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +48,13 @@ public class PlanItMainWindowController implements Initializable {
     int selectedMonth;
     Node[][] gridPaneNodes;
     private final EventsClient eventsClient;
+    private final UsersClient usersClient;
+    private final User user;
 
-    public PlanItMainWindowController(EventsClient eventsClient) {
+    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user) {
         this.eventsClient = eventsClient;
+        this.usersClient = usersClient;
+        this.user = user;
     }
 
 
@@ -143,7 +149,7 @@ public class PlanItMainWindowController implements Initializable {
     public void showEventsInCalendar() {
 
         try {
-            List<Event> events = eventsClient.getUserEventsByMonth(1, selectedYear, selectedMonth); // hardcoded userId
+            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth); // hardcoded userId
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 6; i++) {
                     for (int j = 0; j < 7; j++) {
@@ -166,7 +172,7 @@ public class PlanItMainWindowController implements Initializable {
 
                                 FXMLLoader loader = new FXMLLoader();
                                 loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItEventDetail.fxml"));
-                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), 1);
+                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), user.getIdUser());
                                 loader.setController(planItEventDetailController);
 
                                 AnchorPane anchorPane = null;

@@ -17,7 +17,7 @@ public class UserService {
         return this.userRepository.getAllUsers();
     }
 
-//    public User getUserById(int idUser){
-//        return this.userRepository.getUserById(idUser);
-//    }
+    public List<User> getUserById(int idUser){
+        return this.userRepository.getUserById(idUser);
+    }
 }
