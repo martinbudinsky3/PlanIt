@@ -95,7 +95,7 @@ public class PlanItMainWindowController implements Initializable {
         selectedMonth = today.getMonth().getValue();
 
         // initialize monthsList
-        // TO DO - multilanguage
+        // TODO - multilanguage
         String months[] = new DateFormatSymbols().getMonths();
         for (int i = 0; i < 12; i++){
             monthsList.getItems().add(months[i].toUpperCase());
@@ -132,7 +132,7 @@ public class PlanItMainWindowController implements Initializable {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
 //                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        // TO DO - open add event modal window
+                        // TODO - open add event modal window
                     });
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
@@ -168,7 +168,6 @@ public class PlanItMainWindowController implements Initializable {
                             eventLabel.setText(eventLabelText);
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                                // TO DO - open event detail window and pass its event id from event label id
 
                                 FXMLLoader loader = new FXMLLoader();
                                 loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItEventDetail.fxml"));
@@ -183,6 +182,7 @@ public class PlanItMainWindowController implements Initializable {
                                 }
                                 Scene scene = new Scene(anchorPane);
                                 Stage window = new Stage();
+                                window.setTitle(eventLabel.getText());
                                 window.setScene(scene);
                                 window.show();
 

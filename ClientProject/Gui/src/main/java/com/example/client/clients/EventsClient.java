@@ -45,18 +45,18 @@ public class EventsClient {
         return events;
     }
 
-    public List<Event> getEventByIdUserAndIdEvent(int idUser, int idEvent) throws Exception{
+    public Event getEventByIdUserAndIdEvent(int idUser, int idEvent) throws Exception{
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
 
         RestTemplate restTemplate = new RestTemplate();
-        String eventListJSon = restTemplate.getForObject(uri, String.class, params);
+        String eventJSon = restTemplate.getForObject(uri, String.class, params);
         objectMapper.registerModule(new JavaTimeModule());
-        List<Event> events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>(){});
+        Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>(){});
 
-        return events;
+        return event;
     }
 
 }

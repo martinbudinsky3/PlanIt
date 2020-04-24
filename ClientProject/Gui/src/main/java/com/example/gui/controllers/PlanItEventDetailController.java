@@ -52,7 +52,7 @@ public class PlanItEventDetailController implements Initializable {
     }
 
     public void initializeLabels() throws Exception {
-        event = eventsClient.getEventByIdUserAndIdEvent(idUser,idEvent).get(0);
+        event = eventsClient.getEventByIdUserAndIdEvent(idUser,idEvent);
         labelTitle.setText(event.getTitle());
         labelLocation.setText(event.getLocation());
         labelDate.setText(String.valueOf(event.getDate()));

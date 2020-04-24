@@ -6,6 +6,7 @@ import com.example.client.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -13,8 +14,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class PlanItLoginController {
+public class PlanItLoginController implements Initializable {
 
     private User user;
     private final UsersClient usersClient;
@@ -32,8 +35,24 @@ public class PlanItLoginController {
         this.usersClient = usersClient;
     }
 
-    @FXML
-    void handleLogin(ActionEvent event) throws Exception {
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        addHandlers();
+    }
+
+    public void addHandlers() {
+        buttonLogin.setOnAction(e -> {
+            try {
+                buttonLoginHandler(e);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+        buttonRegister.setOnAction(e -> buttonRegisterHandler(e));
+    }
+
+    void buttonLoginHandler(ActionEvent event) throws Exception {
         if (textfieldId.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Nevyplnili ste všetky polia.");
@@ -42,26 +61,27 @@ public class PlanItLoginController {
             alert.showAndWait();
         } else {
             try {
-                if (usersClient.getUserById(Integer.parseInt(textfieldId.getText())).isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Zadali ste nesprávne ID");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Používateľ s takým ID neexistuje.");
-                    alert.showAndWait();
-                } else {
-                    user = usersClient.getUserById(Integer.parseInt(textfieldId.getText())).get(0);
+// Checking if id exists not working
+//                if (usersClient.getUserById(Integer.parseInt(textfieldId.getText())) == null) {
+//                    Alert alert = new Alert(Alert.AlertType.ERROR);
+//                    alert.setTitle("Zadali ste nesprávne ID");
+//                    alert.setHeaderText(null);
+//                    alert.setContentText("Používateľ s takým ID neexistuje.");
+//                    alert.showAndWait();
+//                } else {
+                    user = usersClient.getUserById(Integer.parseInt(textfieldId.getText()));
                     FXMLLoader fxmlLoader = new FXMLLoader();
                     fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
                     PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
                     fxmlLoader.setController(planItMainWindowController);
                     AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
                     Scene newScene = new Scene(rootPane, 1213, 630);
-                    //newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working
+                    newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
                     Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
                     window.setScene(newScene);
                     window.centerOnScreen();
                     window.show();
-                }
+//                }
 
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -71,12 +91,10 @@ public class PlanItLoginController {
                 alert.showAndWait();
             }
         }
-
-
     }
 
-    @FXML
-    void handleRegister(ActionEvent event) {
-
+    void buttonRegisterHandler(ActionEvent event) {
+        //TODO new users registration
     }
+
 }

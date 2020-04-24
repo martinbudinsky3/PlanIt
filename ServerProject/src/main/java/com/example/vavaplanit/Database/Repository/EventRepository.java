@@ -30,9 +30,9 @@ public class EventRepository {
         return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
     }
 
-    public List<Event> getEventByIdUserAndIdEvent(int idUser, int idEvent){
+    public Event getEventByIdUserAndIdEvent(int idUser, int idEvent){
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent\n" +
                 "where e.idevent = '" + idEvent + "' and iduser = '" + idUser +"';";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
+        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFomDb());
     }
 }
