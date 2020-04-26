@@ -32,8 +32,8 @@ public class EventController {
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
     public ResponseEntity getEventByIdUserAndIdEvent(@PathVariable("idUser") int idUser,
                                                      @PathVariable("idEvent") int idEvent){
-        List<Event> eventList = eventService.getEventByIdUserAndIdEvent(idUser,idEvent);
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
+        Event event = eventService.getEventByIdUserAndIdEvent(idUser,idEvent);
+        return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
 }

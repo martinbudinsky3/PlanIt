@@ -1,7 +1,9 @@
 package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
+import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
+import com.example.client.model.User;
 import com.example.gui.GuiApplication;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,9 +48,13 @@ public class PlanItMainWindowController implements Initializable {
     int selectedMonth;
     Node[][] gridPaneNodes;
     private final EventsClient eventsClient;
+    private final UsersClient usersClient;
+    private final User user;
 
-    public PlanItMainWindowController(EventsClient eventsClient) {
+    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user) {
         this.eventsClient = eventsClient;
+        this.usersClient = usersClient;
+        this.user = user;
     }
 
     @Override
@@ -88,7 +94,7 @@ public class PlanItMainWindowController implements Initializable {
         selectedMonth = today.getMonth().getValue();
 
         // initialize monthsList
-        // TO DO - multilanguage
+        // TODO - multilanguage
         String months[] = new DateFormatSymbols().getMonths();
         for (int i = 0; i < 12; i++){
             monthsList.getItems().add(months[i].toUpperCase());
@@ -125,7 +131,7 @@ public class PlanItMainWindowController implements Initializable {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
 //                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        // TO DO - open add event modal window
+                        // TODO - open add event modal window
                     });
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
@@ -142,7 +148,7 @@ public class PlanItMainWindowController implements Initializable {
     public void showEventsInCalendar() {
 
         try {
-            List<Event> events = eventsClient.getUserEventsByMonth(1, selectedYear, selectedMonth); // hardcoded userId
+            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth); // hardcoded userId
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 6; i++) {
                     for (int j = 0; j < 7; j++) {
@@ -161,11 +167,10 @@ public class PlanItMainWindowController implements Initializable {
                             eventLabel.setText(eventLabelText);
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-                                // TO DO - open event detail window and pass its event id from event label id
 
                                 FXMLLoader loader = new FXMLLoader();
                                 loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItEventDetail.fxml"));
-                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), 1);
+                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), user.getIdUser());
                                 loader.setController(planItEventDetailController);
 
                                 AnchorPane anchorPane = null;
@@ -176,6 +181,7 @@ public class PlanItMainWindowController implements Initializable {
                                 }
                                 Scene scene = new Scene(anchorPane);
                                 Stage window = new Stage();
+                                window.setTitle(eventLabel.getText());
                                 window.setScene(scene);
                                 window.show();
 

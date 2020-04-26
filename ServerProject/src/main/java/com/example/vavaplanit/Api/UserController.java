@@ -1,8 +1,12 @@
 package com.example.vavaplanit.Api;
 
+import com.example.vavaplanit.Model.Event;
 import com.example.vavaplanit.Model.User;
 import com.example.vavaplanit.Database.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,8 +25,9 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @RequestMapping(value = "/{idUser}", method = RequestMethod.GET)
-//    public User getUserById(@PathVariable("idUser") int idUser){
-//        return userService.getUserById(idUser);
-//    }
+    @RequestMapping(value = "/{idUser}", method = RequestMethod.GET)
+    public ResponseEntity getUserById(@PathVariable("idUser") int idUser){
+        User user = userService.getUserById(idUser);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
 }

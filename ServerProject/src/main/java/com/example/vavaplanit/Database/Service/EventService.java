@@ -30,7 +30,7 @@ public class EventService {
         return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
     }
 
-    public List<Event> getEventByIdUserAndIdEvent(int idUser, int idEvent){
+    public Event getEventByIdUserAndIdEvent(int idUser, int idEvent){
         return this.eventRepository.getEventByIdUserAndIdEvent(idUser,idEvent);
     }
 }

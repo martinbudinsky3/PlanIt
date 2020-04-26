@@ -13,6 +13,8 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
+    public User(){}
+
     public int getIdUser() {
         return idUser;
     }
