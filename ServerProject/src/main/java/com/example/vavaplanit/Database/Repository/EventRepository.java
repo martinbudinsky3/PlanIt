@@ -3,8 +3,12 @@ package com.example.vavaplanit.Database.Repository;
 import com.example.vavaplanit.Database.Mappers.EventMappers;
 import com.example.vavaplanit.Model.Event;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,6 +19,61 @@ public class EventRepository {
 
     public EventRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public Integer add(Event event) {
+        final String sql = "insert into planitschema.event (title, location, date, starts, ends, alert) values (?,?,?,?,?,?)";
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                if(event.getTitle() != null) {
+                    ps.setString(1, event.getTitle());
+                } else {
+                    ps.setNull(1, Types.VARCHAR);
+                }
+                if(event.getLocation() != null) {
+                    ps.setString(2, event.getLocation());
+                } else {
+                    ps.setNull(2, Types.VARCHAR);
+                }
+                ps.setDate(3, Date.valueOf(event.getDate()));
+                ps.setTime(4, Time.valueOf(event.getStarts()));
+                ps.setTime(5, Time.valueOf(event.getEnds()));
+                ps.setTime(6, Time.valueOf(event.getAlert()));
+                return ps;
+            }
+        }, keyHolder);
+
+        if(keyHolder.getKeys() != null) {
+            return (Integer) keyHolder.getKeys().get("idevent");
+        }
+        else {
+            return null;
+        }
+    }
+
+    public Integer addEventUser(int idUser, int idEvent) {
+        final String sql = "insert into planitschema.userevent values (?,?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setInt(1, idUser);
+                ps.setInt(2, idEvent);
+
+                return ps;
+            }
+        }, keyHolder);
+
+        if(keyHolder.getKeys() != null) {
+            return (Integer) keyHolder.getKeys().get("idevent");
+        } else {
+            return null;
+        }
     }
 
     public List<Event> getAllByUserId(int idUser){

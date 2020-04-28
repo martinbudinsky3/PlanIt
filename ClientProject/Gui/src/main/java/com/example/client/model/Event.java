@@ -15,8 +15,15 @@ public class Event implements Serializable {
     private LocalTime ends;
     private LocalTime alert;
 
-    public Event() {
+    public Event() {}
 
+    public Event(String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert) {
+        this.title = title;
+        this.location = location;
+        this.date = date;
+        this.starts = starts;
+        this.ends = ends;
+        this.alert = alert;
     }
 
     public Event(int idEvent, String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert) {

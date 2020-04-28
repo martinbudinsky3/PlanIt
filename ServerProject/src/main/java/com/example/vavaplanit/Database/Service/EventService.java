@@ -16,6 +16,15 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    public Integer add(Event event, int idUser) {
+        Integer id = eventRepository.add(event);
+        if(id != null) {
+            id = eventRepository.addEventUser(idUser, id);
+        }
+
+        return id;
+    }
+
     public List<Event> getAllByUserId(int idUser){
         return this.eventRepository.getAllByUserId(idUser);
     }

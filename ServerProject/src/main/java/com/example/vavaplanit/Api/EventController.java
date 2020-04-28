@@ -16,6 +16,16 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @PostMapping
+    public ResponseEntity addEvent(@RequestBody Event event) {
+        Integer id = eventService.add(event, 1);
+        if(id != null) {
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @RequestMapping(value = "{idUser}", method = RequestMethod.GET)
     public ResponseEntity getAllByUserId(@PathVariable("idUser") int idUser){
         List<Event> eventList = eventService.getAllByUserId(idUser);

@@ -59,4 +59,13 @@ public class EventsClient {
         return event;
     }
 
+    public int addEvent(int idUser, Event event) throws Exception{
+        final String uri = "http://localhost:8080/events";
+        RestTemplate restTemplate = new RestTemplate();
+        String id = restTemplate.postForObject(uri, event, String.class);
+        Integer idEvent = objectMapper.readValue(id, Integer.class);
+
+        return idEvent;
+    }
+
 }

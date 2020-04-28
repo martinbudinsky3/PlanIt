@@ -1,12 +1,19 @@
 package com.example.gui.controllers;
 
+import com.example.client.clients.EventsClient;
+import com.example.client.model.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -32,7 +39,22 @@ public class PlanItAddEventController implements Initializable {
     private Button alertsIncrement;
 
     @FXML
-    private Button save;
+    private Button saveButton;
+
+    @FXML
+    private Label titleError;
+
+    @FXML
+    private Label dateError;
+
+    @FXML
+    private Label startsError;
+
+    @FXML
+    private Label endsError;
+
+    @FXML
+    private Label alertsError;
 
     @FXML
     private TextField titleField;
@@ -50,12 +72,19 @@ public class PlanItAddEventController implements Initializable {
     private TextField alertsField;
 
     @FXML
-    private DatePicker date;
+    private TextField descriptionField;
+
+    @FXML
+    private DatePicker dateField;
 
     private int idUser;
+    private EventsClient eventsClient;
+    private PlanItMainWindowController planItMainWindowController;
 
-    public PlanItAddEventController(int idUser){
+    public PlanItAddEventController(int idUser, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController){
         this.idUser = idUser;
+        this.eventsClient = eventsClient;
+        this.planItMainWindowController = planItMainWindowController;
     }
 
 
@@ -81,6 +110,8 @@ public class PlanItAddEventController implements Initializable {
             incrementButtons[i].setOnAction(e -> incrementTimeTextField(textField, 30));
             decrementButtons[i].setOnAction(e -> decrementTimeTextField(textField, 30));
         }
+
+        saveButton.setOnAction(e -> save(e));
     }
 
     public LocalTime countNextHourUnit(LocalTime actualTime, int unit){
@@ -121,5 +152,75 @@ public class PlanItAddEventController implements Initializable {
             time = time.minusMinutes(minutes);
             textField.setText(time.format(dtf));
         }
+    }
+
+    public void save(ActionEvent ev) {
+        String title = titleField.getText();
+        String location = locationField.getText();
+        LocalDate dateValue = dateField.getValue();
+        LocalTime starts = null;
+        LocalTime ends = null;
+        LocalTime alert = null;
+        String description = descriptionField.getText();
+
+        boolean checkFlag = true;
+        if(title == null){
+            titleError.setVisible(true);
+            checkFlag = false;
+        }
+
+        if(dateValue == null){
+            dateError.setVisible(true);
+            checkFlag = false;
+        }
+
+        if(startsField.getText() == null){
+            startsError.setVisible(true);
+            checkFlag = false;
+        } else {
+            starts = LocalTime.parse(startsField.getText());
+        }
+
+        if(endsField.getText() == null){
+            endsError.setVisible(true);
+            checkFlag = false;
+        } else {
+            ends = LocalTime.parse(endsField.getText());
+        }
+
+        if(alertsField.getText() == null){
+            alertsError.setVisible(true);
+            checkFlag = false;
+        } else {
+            alert = LocalTime.parse(alertsField.getText());
+        }
+
+        if(checkFlag){
+            Event event = new Event(title, location, dateValue, starts, ends, alert);
+            try {
+                Integer id = eventsClient.addEvent(idUser, event);
+                if(id != null) {
+                    // update calendar display
+                    planItMainWindowController.setSelectedYear(dateValue.getYear());
+                    planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
+                    planItMainWindowController.initializeCalendar();
+                    planItMainWindowController.showEventsInCalendar();
+                    Stage stage = (Stage)((Node) ev.getSource()).getScene().getWindow();
+                    stage.close();
+                } else {
+                    // TO DO - some error message
+                }
+            } catch(Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+
+    public void hideErrorLabels(){
+        titleError.setVisible(false);
+        dateError.setVisible(false);
+        startsError.setVisible(false);
+        endsError.setVisible(false);
+        alertsError.setVisible(false);
     }
 }

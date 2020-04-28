@@ -48,6 +48,7 @@ public class PlanItMainWindowController implements Initializable {
     int selectedYear;
     int selectedMonth;
     Node[][] gridPaneNodes;
+    String months[];
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
     private final User user;
@@ -56,6 +57,16 @@ public class PlanItMainWindowController implements Initializable {
         this.eventsClient = eventsClient;
         this.usersClient = usersClient;
         this.user = user;
+    }
+
+    public void setSelectedYear(int selectedYear) {
+        this.selectedYear = selectedYear;
+        yearLabel.setText(Integer.toString(selectedYear));
+    }
+
+    public void setSelectedMonth(int selectedMonth) {
+        this.selectedMonth = selectedMonth;
+        monthLabel.setText(months[selectedMonth - 1]);
     }
 
     @Override
@@ -96,7 +107,7 @@ public class PlanItMainWindowController implements Initializable {
 
         // initialize monthsList
         // TODO - multilanguage
-        String months[] = new DateFormatSymbols().getMonths();
+        months = new DateFormatSymbols().getMonths();
         for (int i = 0; i < 12; i++){
             monthsList.getItems().add(months[i].toUpperCase());
         }
@@ -229,7 +240,7 @@ public class PlanItMainWindowController implements Initializable {
     public void addEventButtonHandler(ActionEvent event){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser());
+        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), eventsClient, this);
         loader.setController(planItAddEventController);
 
         AnchorPane anchorPane = null;
