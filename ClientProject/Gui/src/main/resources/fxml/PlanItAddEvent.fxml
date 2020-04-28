@@ -36,7 +36,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button layoutX="309.0" layoutY="496.0" mnemonicParsing="false" text="Uložiť">
+        <Button fx:id="saveButton" layoutX="309.0" layoutY="496.0" mnemonicParsing="false" text="Uložiť">
             <font>
                 <Font size="14.0" />
             </font>
@@ -53,11 +53,11 @@
       <DatePicker fx:id="dateField" layoutX="218.0" layoutY="170.0" prefHeight="26.0" prefWidth="178.0" />
       <TextField fx:id="locationField" layoutX="219.0" layoutY="136.0" prefHeight="26.0" prefWidth="443.0" />
       <TextField fx:id="titleField" layoutX="218.0" layoutY="50.0" prefHeight="70.0" prefWidth="443.0" />
-      <Button layoutX="218.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
-      <Button layoutX="370.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
-      <Button layoutX="218.0" layoutY="238.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
-      <Button layoutX="370.0" layoutY="239.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
-      <Button layoutX="218.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
-      <Button layoutX="370.0" layoutY="274.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" />
+      <Button fx:id="startsDecrement" layoutX="218.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button fx:id="startsIncrement" layoutX="370.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
+      <Button fx:id="endsDecrement" layoutX="218.0" layoutY="238.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button fx:id="endsIncrement" layoutX="370.0" layoutY="239.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
+      <Button fx:id="alertsDecrement" layoutX="218.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button fx:id="alertsIncrement" layoutX="370.0" layoutY="274.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" />
     </children>
 </AnchorPane>

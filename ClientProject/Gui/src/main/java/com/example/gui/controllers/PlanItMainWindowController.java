@@ -20,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -226,6 +227,23 @@ public class PlanItMainWindowController implements Initializable {
     }
 
     public void addEventButtonHandler(ActionEvent event){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
+        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser());
+        loader.setController(planItAddEventController);
 
+        AnchorPane anchorPane = null;
+        try {
+            anchorPane = (AnchorPane) loader.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Scene scene = new Scene(anchorPane);
+        Stage window = new Stage();
+        window.setScene(scene);
+        window.initModality(Modality.WINDOW_MODAL);
+        window.initOwner(
+                ((Node) event.getSource()).getScene().getWindow());
+        window.show();
     }
 }
