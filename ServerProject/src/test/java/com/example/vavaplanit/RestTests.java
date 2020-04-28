@@ -24,21 +24,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 @AutoConfigureMockMvc
 public class RestTests {
-    @Autowired
-    private MockMvc mockMvc;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Test
-    void eventTest() throws Exception{
-        // get all
-        String listJSon = mockMvc.perform(get("/events/" + 1 + "/" + "/" + 2020 + "/" + 5)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        System.out.println(listJSon);
-        objectMapper.registerModule(new JavaTimeModule());
-        List<Event> events = objectMapper.readValue(listJSon, new TypeReference<List<Event>>(){});
-        assert events.size() == 3;
-    }
+//    @Autowired
+//    private MockMvc mockMvc;
+//
+//    private final ObjectMapper objectMapper = new ObjectMapper();
+//
+//    @Test
+//    void eventTest() throws Exception{
+//        // get all
+//        String listJSon = mockMvc.perform(get("/events/" + 1 + "/" + "/" + 2020 + "/" + 5)
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk())
+//                .andReturn().getResponse().getContentAsString();
+//        System.out.println(listJSon);
+//        objectMapper.registerModule(new JavaTimeModule());
+//        List<Event> events = objectMapper.readValue(listJSon, new TypeReference<List<Event>>(){});
+//        assert events.size() == 3;
+//    }
 }
