@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="547.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Label layoutX="72.0" layoutY="50.0" text="Názov:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="70.0" layoutY="136.0" text="Miesto:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="70.0" layoutY="170.0" text="Dátum:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="72.0" layoutY="204.0" text="Začiatok:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="70.0" layoutY="239.0" text="Koniec:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Label layoutX="69.0" layoutY="274.0" text="Upozornenie:">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
+        <Button layoutX="309.0" layoutY="496.0" mnemonicParsing="false" text="Uložiť">
+            <font>
+                <Font size="14.0" />
+            </font>
+        </Button>
+      <Label layoutX="69.0" layoutY="309.0" text="Popis:">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField layoutX="219.0" layoutY="309.0" prefHeight="167.0" prefWidth="443.0" />
+      <TextField fx:id="alertsField" layoutX="250.0" layoutY="274.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="335.8" />
+      <TextField fx:id="endsField" layoutX="249.0" layoutY="239.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="335.8" />
+      <TextField fx:id="startsField" layoutX="249.0" layoutY="203.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="249.0" AnchorPane.rightAnchor="335.8" />
+      <DatePicker fx:id="dateField" layoutX="218.0" layoutY="170.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField fx:id="locationField" layoutX="219.0" layoutY="136.0" prefHeight="26.0" prefWidth="443.0" />
+      <TextField fx:id="titleField" layoutX="218.0" layoutY="50.0" prefHeight="70.0" prefWidth="443.0" />
+      <Button layoutX="218.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button layoutX="370.0" layoutY="203.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
+      <Button layoutX="218.0" layoutY="238.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button layoutX="370.0" layoutY="239.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
+      <Button layoutX="218.0" layoutY="273.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
+      <Button layoutX="370.0" layoutY="274.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" />
+    </children>
+</AnchorPane>
