@@ -6,10 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -57,7 +55,7 @@ public class PlanItAddEventController implements Initializable {
     private Label alertsError;
 
     @FXML
-    private TextField titleField;
+    private TextArea titleField;
 
     @FXML
     private TextField locationField;
@@ -72,17 +70,19 @@ public class PlanItAddEventController implements Initializable {
     private TextField alertsField;
 
     @FXML
-    private TextField descriptionField;
+    private TextArea descriptionField;
 
     @FXML
     private DatePicker dateField;
 
     private int idUser;
+    private LocalDate initDate;
     private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
 
-    public PlanItAddEventController(int idUser, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController){
+    public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController){
         this.idUser = idUser;
+        this.initDate = initDate;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
@@ -95,6 +95,7 @@ public class PlanItAddEventController implements Initializable {
         LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
         LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
         LocalTime alertsInitTime = nextHalfHour.minusMinutes(15);
+        dateField.setValue(initDate);
         startsField.setText(nextHalfHour.format(dtf));
         endsField.setText(endsInitTime.format(dtf));
         alertsField.setText(alertsInitTime.format(dtf));

@@ -11,7 +11,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,6 +29,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class PlanItMainWindowController implements Initializable {
+    @FXML
+    private AnchorPane ap;
     @FXML
     private GridPane calendar;
     @FXML
@@ -96,7 +97,7 @@ public class PlanItMainWindowController implements Initializable {
     public void addHandlers() {
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
-        addEventButton.setOnAction(e -> addEventButtonHandler(e));
+        addEventButton.setOnAction(e -> addEventButtonHandler(LocalDate.now()));
     }
 
     public void initializeMonthsAndYear() {
@@ -143,7 +144,12 @@ public class PlanItMainWindowController implements Initializable {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
 //                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        // TODO - open add event modal window
+                        if(!dayVBox.getChildren().isEmpty()){
+                            Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                            int day = Integer.parseInt(dayLabel.getText());
+                            LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
+                            addEventButtonHandler(initDate);
+                        }
                     });
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
@@ -237,10 +243,11 @@ public class PlanItMainWindowController implements Initializable {
         showEventsInCalendar();
     }
 
-    public void addEventButtonHandler(ActionEvent event){
+    public void addEventButtonHandler(LocalDate initDate){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), eventsClient, this);
+        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), initDate,
+                eventsClient, this);
         loader.setController(planItAddEventController);
 
         AnchorPane anchorPane = null;
@@ -254,7 +261,7 @@ public class PlanItMainWindowController implements Initializable {
         window.setScene(scene);
         window.initModality(Modality.WINDOW_MODAL);
         window.initOwner(
-                ((Node) event.getSource()).getScene().getWindow());
+                ap.getScene().getWindow());
         window.show();
     }
 }
