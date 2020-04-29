@@ -196,9 +196,9 @@ public class PlanItAddEventController implements Initializable {
         }
 
         if(checkFlag){
-            Event event = new Event(title, location, dateValue, starts, ends, alert);
+            Event event = new Event(title, location, dateValue, starts, ends, alert, idUser);
             try {
-                Integer id = eventsClient.addEvent(idUser, event);
+                Integer id = eventsClient.addEvent(event);
                 if(id != null) {
                     // update calendar display
                     planItMainWindowController.setSelectedYear(dateValue.getYear());

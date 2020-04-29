@@ -49,14 +49,13 @@ public class EventRepository {
 
         if(keyHolder.getKeys() != null) {
             return (Integer) keyHolder.getKeys().get("idevent");
-        }
-        else {
+        } else {
             return null;
         }
     }
 
     public Integer addEventUser(int idUser, int idEvent) {
-        final String sql = "insert into planitschema.userevent values (?,?)";
+        final String sql = "insert into planitschema.userevent (iduser, idevent) values (?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override

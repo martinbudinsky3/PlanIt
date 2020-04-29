@@ -18,7 +18,7 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity addEvent(@RequestBody Event event) {
-        Integer id = eventService.add(event, 1);
+        Integer id = eventService.add(event, event.getIdUser());
         if(id != null) {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }

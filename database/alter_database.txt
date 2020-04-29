@@ -1,0 +1,2 @@
+alter table planitschema.userevent alter column iduser type integer;
+alter table planitschema.userevent alter column idevent type integer;

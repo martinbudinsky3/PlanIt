@@ -8,12 +8,25 @@ import java.util.Objects;
 
 public class Event implements Serializable {
     private int idEvent;
+    private int idUser;
     private String title;
     private String location;
     private LocalDate date;
     private LocalTime starts;
     private LocalTime ends;
     private LocalTime alert;
+
+    public Event() {};
+
+    public Event(String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert, int idUser) {
+        this.title = title;
+        this.location = location;
+        this.date = date;
+        this.starts = starts;
+        this.ends = ends;
+        this.alert = alert;
+        this.idUser = idUser;
+    }
 
     public Event(int idEvent, String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert) {
         this.idEvent = idEvent;
@@ -31,6 +44,14 @@ public class Event implements Serializable {
 
     public void setIdEvent(int idEvent) {
         this.idEvent = idEvent;
+    }
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
     }
 
     public String getTitle() {

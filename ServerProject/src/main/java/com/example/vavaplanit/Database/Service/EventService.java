@@ -17,12 +17,12 @@ public class EventService {
     private EventRepository eventRepository;
 
     public Integer add(Event event, int idUser) {
-        Integer id = eventRepository.add(event);
-        if(id != null) {
-            id = eventRepository.addEventUser(idUser, id);
+        Integer idEvent = eventRepository.add(event);
+        if(idEvent != null) {
+            idEvent = eventRepository.addEventUser(idUser, idEvent);eventRepository.add(event);
         }
 
-        return id;
+        return idEvent;
     }
 
     public List<Event> getAllByUserId(int idUser){
