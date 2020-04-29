@@ -35,8 +35,8 @@ public class RestTests {
 //
 //    private final ObjectMapper objectMapper = new ObjectMapper();
 //
-    @Test
-    void eventTest() throws Exception{
+//    @Test
+//    void eventTest() throws Exception{
 //        // add
 //        RestTemplate restTemplate = new RestTemplate();
 //
@@ -62,5 +62,5 @@ public class RestTests {
 //        objectMapper.registerModule(new JavaTimeModule());
 //        Event returnedEvent = objectMapper.readValue(eventJSon, new TypeReference<Event>(){});
 //        Assert.assertEquals(event, returnedEvent);
-    }
+//    }
 }

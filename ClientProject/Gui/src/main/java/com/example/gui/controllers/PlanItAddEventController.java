@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -197,7 +195,7 @@ public class PlanItAddEventController implements Initializable {
         }
 
         if(checkFlag){
-            Event event = new Event(title, location, dateValue, starts, ends, alert, idUser);
+            Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
             try {
                 Integer id = eventsClient.addEvent(event);
                 if(id != null) {

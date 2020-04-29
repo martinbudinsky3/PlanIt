@@ -11,6 +11,7 @@ public class Event implements Serializable {
     private int idUser;
     private String title;
     private String location;
+    private String description;
     private LocalDate date;
     private LocalTime starts;
     private LocalTime ends;
@@ -18,9 +19,11 @@ public class Event implements Serializable {
 
     public Event() {};
 
-    public Event(String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert, int idUser) {
+    public Event(String title, String location, String description, LocalDate date, LocalTime starts, LocalTime ends,
+                 LocalTime alert, int idUser) {
         this.title = title;
         this.location = location;
+        this.description = description;
         this.date = date;
         this.starts = starts;
         this.ends = ends;
@@ -28,10 +31,12 @@ public class Event implements Serializable {
         this.idUser = idUser;
     }
 
-    public Event(int idEvent, String title, String location, LocalDate date, LocalTime starts, LocalTime ends, LocalTime alert) {
+    public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
+                 LocalTime ends, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
         this.location = location;
+        this.description = description;
         this.date = date;
         this.starts = starts;
         this.ends = ends;
@@ -68,6 +73,14 @@ public class Event implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDate getDate() {
@@ -108,8 +121,10 @@ public class Event implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
         return idEvent == event.idEvent &&
+                idUser == event.idUser &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
+                Objects.equals(description, event.description) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(starts, event.starts) &&
                 Objects.equals(ends, event.ends) &&
@@ -118,6 +133,6 @@ public class Event implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, title, location, date, starts, ends, alert);
+        return Objects.hash(idEvent, idUser, title, location, description, date, starts, ends, alert);
     }
 }

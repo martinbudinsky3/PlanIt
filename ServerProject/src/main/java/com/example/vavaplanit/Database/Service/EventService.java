@@ -19,7 +19,7 @@ public class EventService {
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
         if(idEvent != null) {
-            idEvent = eventRepository.addEventUser(idUser, idEvent);eventRepository.add(event);
+            idEvent = eventRepository.addEventUser(idUser, idEvent);
         }
 
         return idEvent;

@@ -22,27 +22,29 @@ public class EventRepository {
     }
 
     public Integer add(Event event) {
-        final String sql = "insert into planitschema.event (title, location, date, starts, ends, alert) values (?,?,?,?,?,?)";
+        final String sql = "insert into planitschema.event (title, location, description, date, starts, ends, alert) " +
+                "values (?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                if(event.getTitle() != null) {
-                    ps.setString(1, event.getTitle());
-                } else {
-                    ps.setNull(1, Types.VARCHAR);
-                }
+                ps.setString(1, event.getTitle());
                 if(event.getLocation() != null) {
                     ps.setString(2, event.getLocation());
                 } else {
                     ps.setNull(2, Types.VARCHAR);
                 }
-                ps.setDate(3, Date.valueOf(event.getDate()));
-                ps.setTime(4, Time.valueOf(event.getStarts()));
-                ps.setTime(5, Time.valueOf(event.getEnds()));
-                ps.setTime(6, Time.valueOf(event.getAlert()));
+                if(event.getDescription() != null) {
+                    ps.setString(3, event.getDescription());
+                } else {
+                    ps.setNull(3, Types.VARCHAR);
+                }
+                ps.setDate(4, Date.valueOf(event.getDate()));
+                ps.setTime(5, Time.valueOf(event.getStarts()));
+                ps.setTime(6, Time.valueOf(event.getEnds()));
+                ps.setTime(7, Time.valueOf(event.getAlert()));
                 return ps;
             }
         }, keyHolder);
