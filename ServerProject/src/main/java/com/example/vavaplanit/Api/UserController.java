@@ -6,10 +6,7 @@ import com.example.vavaplanit.Database.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,14 +17,24 @@ public class UserController {
     @Autowired //so it is not needed to use "new UserService"
     private UserService userService;
 
+    @PostMapping
+    public ResponseEntity addUser(@RequestBody User user) {
+        Integer id = userService.add(user);
+        if(id != null) {
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public List<User> getAllUsers(){
         return userService.getAllUsers();
     }
 
-    @RequestMapping(value = "/{idUser}", method = RequestMethod.GET)
-    public ResponseEntity getUserById(@PathVariable("idUser") int idUser){
-        User user = userService.getUserById(idUser);
+    @RequestMapping(value = "/{userName}/{userPassword}", method = RequestMethod.GET)
+    public ResponseEntity getUserById(@PathVariable("userName") String userName, @PathVariable("userPassword") String userPassword){
+        User user =  userService.getUserByUserNameAndUserPassword(userName, userPassword);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

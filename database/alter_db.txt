@@ -1,1 +1,0 @@
-alter table planitschema.event add column description varchar;

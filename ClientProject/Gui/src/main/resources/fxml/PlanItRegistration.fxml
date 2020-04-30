@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="243.0" layoutY="48.0" text="Registrácia">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="163.0" layoutY="185.0" text="Meno:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="163.0" layoutY="212.0" text="Priezvisko:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="163.0" layoutY="243.0" text="Používateľské meno:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="164.0" layoutY="274.0" text="Heslo:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textfieldFirstName" layoutX="301.0" layoutY="183.0" />
+      <TextField fx:id="textfieldLastName" layoutX="301.0" layoutY="210.0" />
+      <TextField fx:id="textfieldUserName" layoutX="301.0" layoutY="241.0" />
+      <PasswordField fx:id="textfieldUserpassword" layoutX="301.0" layoutY="272.0" />
+      <Label layoutX="121.0" layoutY="117.0" text="Zadajte svoje údaje:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRegister" layoutX="213.0" layoutY="325.0" mnemonicParsing="false" text="Registrovať" />
+      <Button fx:id="buttonCancel" layoutX="301.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Zrušiť" />
+   </children>
+</AnchorPane>
