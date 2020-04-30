@@ -202,7 +202,7 @@ public class PlanItMainWindowController implements Initializable {
                                 window.setTitle(eventLabel.getText());
                                 window.setScene(scene);
                                 window.show();
-
+                                mouseEvent.consume();
                             });
 
                             dayVBox.getChildren().add(eventLabel);
@@ -260,8 +260,7 @@ public class PlanItMainWindowController implements Initializable {
         Stage window = new Stage();
         window.setScene(scene);
         window.initModality(Modality.WINDOW_MODAL);
-        window.initOwner(
-                ap.getScene().getWindow());
+        window.initOwner(ap.getScene().getWindow());
         window.show();
     }
 }
