@@ -78,4 +78,13 @@ public class EventsClient {
         restTemplate.put(uri, event, params);
     }
 
+    public void deleteEvent(int idUser, int idEvent) throws Exception{
+        final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idUser", idUser);
+        params.put("idEvent", idEvent);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(uri, params);
+    }
+
 }

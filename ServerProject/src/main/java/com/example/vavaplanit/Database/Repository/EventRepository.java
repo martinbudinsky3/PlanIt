@@ -95,10 +95,26 @@ public class EventRepository {
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
+    public Event getUserEvent(int idUser, int idEvent) {
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
+                " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
+        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+    }
+
     public void update(int id, Event event){
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends = ?, alert = ?, " +
                 "description = ? WHERE idevent = ?";
         jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEnds(),
                 event.getAlert(), event.getDescription(), id);
+    }
+
+    public void deleteFromUserEvent(int idUser, int idEvent) {
+        String sql = "DELETE FROM planitschema.userevent WHERE iduser = ? AND idevent = ?";
+        jdbcTemplate.update(sql, idUser, idEvent);
+    }
+
+    public void deleteFromEvent(int id) {
+        String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
+        jdbcTemplate.update(sql, id);
     }
 }

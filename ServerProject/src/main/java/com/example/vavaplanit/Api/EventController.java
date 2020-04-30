@@ -56,4 +56,16 @@ public class EventController {
                     body("Event with id: " + id + " does not exist");
         }
     }
+
+    @DeleteMapping("{idUser}/{idEvent}")
+    public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
+        if(eventService.getUserEvent(idUser, idEvent) != null){
+            eventService.delete(idUser, idEvent);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.
+                    PRECONDITION_FAILED).
+                    body("Event with id: " + idEvent + " does not exist");
+        }
+    }
 }

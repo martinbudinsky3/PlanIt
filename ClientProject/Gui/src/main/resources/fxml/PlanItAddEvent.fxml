@@ -36,7 +36,7 @@
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="saveButton" layoutX="308.0" layoutY="543.0" mnemonicParsing="false" text="Uložiť">
+        <Button fx:id="saveButton" layoutX="283.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Uložiť" AnchorPane.bottomAnchor="17.6" AnchorPane.leftAnchor="273.4" AnchorPane.rightAnchor="350.6" AnchorPane.topAnchor="542.0">
             <font>
                 <Font size="14.0" />
             </font>
@@ -64,5 +64,9 @@
       <Label fx:id="titleError" layoutX="218.0" layoutY="101.0" text="Zadajte názov" textFill="RED" visible="false" />
       <TextArea fx:id="titleField" layoutX="219.0" layoutY="31.0" prefHeight="70.0" prefWidth="443.0" />
       <TextArea fx:id="descriptionField" layoutX="219.0" layoutY="355.0" prefHeight="167.0" prefWidth="443.0" />
+      <Button fx:id="deleteButton" layoutX="370.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Vymazať" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="542.0">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
     </children>
 </AnchorPane>

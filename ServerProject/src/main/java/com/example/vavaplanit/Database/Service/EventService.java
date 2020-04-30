@@ -42,7 +42,16 @@ public class EventService {
         return this.eventRepository.getEvent(idEvent);
     }
 
+    public Event getUserEvent(int idUser, int idEvent){
+        return this.eventRepository.getUserEvent(idUser, idEvent);
+    }
+
     public void update(int id, Event event){
         this.eventRepository.update(id, event);
+    }
+
+    public void delete(int idUser, int idEvent) {
+        this.eventRepository.deleteFromUserEvent(idUser, idEvent);
+        this.eventRepository.deleteFromEvent(idEvent);
     }
 }

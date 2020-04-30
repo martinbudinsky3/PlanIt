@@ -38,6 +38,9 @@ public class PlanItAddEventController implements Initializable {
     private Button saveButton;
 
     @FXML
+    private Button deleteButton;
+
+    @FXML
     private Label titleError;
 
     @FXML
@@ -78,6 +81,7 @@ public class PlanItAddEventController implements Initializable {
     private LocalDate initDate;
     private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
+    private Event event;
 
     public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController){
         this.idUser = idUser;
@@ -102,6 +106,7 @@ public class PlanItAddEventController implements Initializable {
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
             LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
             LocalTime alertsInitTime = nextHalfHour.minusMinutes(15);
+
             dateField.setValue(initDate);
             startsField.setText(nextHalfHour.format(dtf));
             endsField.setText(endsInitTime.format(dtf));
@@ -123,13 +128,13 @@ public class PlanItAddEventController implements Initializable {
         }
 
         saveButton.setOnAction(e -> save(e));
+        deleteButton.setOnAction(e -> delete(e));
     }
 
     public void showDetail(){
         try {
-            Event event = eventsClient.getEvent(idUser, idEvent);
-            System.out.println(event.getAlert());
-            System.out.println(event.getDescription());
+            event = eventsClient.getEvent(idUser, idEvent);
+
             titleField.setText(event.getTitle());
             locationField.setText(event.getLocation());
             dateField.setValue(event.getDate());
@@ -278,5 +283,24 @@ public class PlanItAddEventController implements Initializable {
         startsError.setVisible(false);
         endsError.setVisible(false);
         alertsError.setVisible(false);
+    }
+
+    private void delete(ActionEvent ev) {
+        if(idEvent != null && event != null) {
+            try {
+                System.out.println(idEvent);
+                eventsClient.deleteEvent(idUser, idEvent);
+            } catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
+
+        LocalDate date = event.getDate();
+        planItMainWindowController.setSelectedYear(date.getYear());
+        planItMainWindowController.setSelectedMonth(date.getMonth().getValue());
+        planItMainWindowController.initializeCalendar();
+        planItMainWindowController.showEventsInCalendar();
+        Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+        stage.close();
     }
 }
