@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -39,7 +38,11 @@ public class EventService {
         return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
     }
 
-    public Event getEventByIdUserAndIdEvent(int idUser, int idEvent){
-        return this.eventRepository.getEventByIdUserAndIdEvent(idUser,idEvent);
+    public Event getEvent(int idEvent){
+        return this.eventRepository.getEvent(idEvent);
+    }
+
+    public void update(int id, Event event){
+        this.eventRepository.update(id, event);
     }
 }

@@ -68,4 +68,8 @@ public class EventsClient {
         return idEvent;
     }
 
+    public void updateEvent(Event event, int id) throws Exception{
+        // TO-DO
+    }
+
 }

@@ -65,7 +65,7 @@ public class PlanItAddEventController implements Initializable {
     private TextField endsField;
 
     @FXML
-    private TextField alertsField;
+    private TextField alertField;
 
     @FXML
     private TextArea descriptionField;
@@ -73,7 +73,8 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private DatePicker dateField;
 
-    private int idUser;
+    private Integer idUser;
+    private Integer idEvent;
     private LocalDate initDate;
     private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
@@ -85,24 +86,35 @@ public class PlanItAddEventController implements Initializable {
         this.planItMainWindowController = planItMainWindowController;
     }
 
+    public PlanItAddEventController(int idUser, int idEvent, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController){
+        this.idUser = idUser;
+        this.idEvent = idEvent;
+        this.eventsClient = eventsClient;
+        this.planItMainWindowController = planItMainWindowController;
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // set text to time fields
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
-        LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
-        LocalTime alertsInitTime = nextHalfHour.minusMinutes(15);
-        dateField.setValue(initDate);
-        startsField.setText(nextHalfHour.format(dtf));
-        endsField.setText(endsInitTime.format(dtf));
-        alertsField.setText(alertsInitTime.format(dtf));
+        if(idEvent != null) { // add event
+            // set text to time fields
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+            LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
+            LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
+            LocalTime alertsInitTime = nextHalfHour.minusMinutes(15);
+            dateField.setValue(initDate);
+            startsField.setText(nextHalfHour.format(dtf));
+            endsField.setText(endsInitTime.format(dtf));
+            alertField.setText(alertsInitTime.format(dtf));
+        } else { // show detail of already created event
+           showDetail();
+        }
 
         // add handlers to increment decrement buttons of time text fields
         final int size = 3;  // constant size of arrays
         Button [] incrementButtons = {startsIncrement, endsIncrement, alertsIncrement};
         Button [] decrementButtons = {startsDecrement, endsDecrement, alertsDecrement};
-        TextField [] textFields = {startsField, endsField, alertsField};
+        TextField [] textFields = {startsField, endsField, alertField};
 
         for(int i = 0; i < size; i++){
             TextField textField = textFields[i];
@@ -111,6 +123,21 @@ public class PlanItAddEventController implements Initializable {
         }
 
         saveButton.setOnAction(e -> save(e));
+    }
+
+    public void showDetail(){
+        try {
+            Event event = eventsClient.getEventByIdUserAndIdEvent(idUser, idEvent);
+            titleField.setText(event.getTitle());
+            locationField.setText(event.getLocation());
+            dateField.setValue(event.getDate());
+            startsField.setText(String.valueOf(event.getStarts()));
+            endsField.setText(String.valueOf(event.getEnds()));
+            alertField.setText(String.valueOf(event.getAlert()));
+            descriptionField.setText(event.getDescription());
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public LocalTime countNextHourUnit(LocalTime actualTime, int unit){
@@ -187,31 +214,59 @@ public class PlanItAddEventController implements Initializable {
             ends = LocalTime.parse(endsField.getText());
         }
 
-        if(alertsField.getText() == null){
+        if(alertField.getText() == null){
             alertsError.setVisible(true);
             checkFlag = false;
         } else {
-            alert = LocalTime.parse(alertsField.getText());
+            alert = LocalTime.parse(alertField.getText());
         }
 
         if(checkFlag){
-            Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
-            try {
-                Integer id = eventsClient.addEvent(event);
-                if(id != null) {
-                    // update calendar display
-                    planItMainWindowController.setSelectedYear(dateValue.getYear());
-                    planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
-                    planItMainWindowController.initializeCalendar();
-                    planItMainWindowController.showEventsInCalendar();
-                    Stage stage = (Stage)((Node) ev.getSource()).getScene().getWindow();
-                    stage.close();
-                } else {
-                    // TO DO - some error message
-                }
-            } catch(Exception e) {
-                System.out.println(e.getMessage());
+            if(idEvent != null) {
+                addEvent(ev, title, location, description, dateValue, starts, ends, alert);
+            } else {
+
             }
+        }
+    }
+
+    public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate dateValue,
+                         LocalTime starts, LocalTime ends, LocalTime alert){
+
+        Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
+        try {
+            Integer id = eventsClient.addEvent(event);
+            if (id != null) {
+                // update calendar display
+                planItMainWindowController.setSelectedYear(dateValue.getYear());
+                planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
+                planItMainWindowController.initializeCalendar();
+                planItMainWindowController.showEventsInCalendar();
+                Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+                stage.close();
+            } else {
+                // TO DO - some error message
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate dateValue,
+                            LocalTime starts, LocalTime ends, LocalTime alert){
+
+        Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
+        try {
+            eventsClient.updateEvent(event, idEvent);
+            // update calendar display
+            planItMainWindowController.setSelectedYear(dateValue.getYear());
+            planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
+            planItMainWindowController.initializeCalendar();
+            planItMainWindowController.showEventsInCalendar();
+            Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

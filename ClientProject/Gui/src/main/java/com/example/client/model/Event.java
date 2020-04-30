@@ -32,7 +32,7 @@ public class Event implements Serializable {
     }
 
     public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
-                 LocalTime ends, LocalTime alert) {
+                 LocalTime ends, LocalTime alert, int idUser) {
         this.idEvent = idEvent;
         this.title = title;
         this.location = location;
@@ -41,6 +41,7 @@ public class Event implements Serializable {
         this.starts = starts;
         this.ends = ends;
         this.alert = alert;
+        this.idUser = idUser;
     }
 
     public int getIdEvent() {

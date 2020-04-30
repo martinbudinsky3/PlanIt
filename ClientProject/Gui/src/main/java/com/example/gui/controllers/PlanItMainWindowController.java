@@ -187,9 +187,10 @@ public class PlanItMainWindowController implements Initializable {
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
 
                                 FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItEventDetail.fxml"));
-                                PlanItEventDetailController planItEventDetailController = new PlanItEventDetailController(eventsClient, Integer.parseInt(eventLabel.getId()), user.getIdUser());
-                                loader.setController(planItEventDetailController);
+                                loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
+                                PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
+                                        Integer.parseInt(eventLabel.getId()), eventsClient, this);
+                                loader.setController(planItAddEventController);
 
                                 AnchorPane anchorPane = null;
                                 try {
@@ -201,6 +202,8 @@ public class PlanItMainWindowController implements Initializable {
                                 Stage window = new Stage();
                                 window.setTitle(eventLabel.getText());
                                 window.setScene(scene);
+                                window.initModality(Modality.WINDOW_MODAL);
+                                window.initOwner(ap.getScene().getWindow());
                                 window.show();
                                 mouseEvent.consume();
                             });

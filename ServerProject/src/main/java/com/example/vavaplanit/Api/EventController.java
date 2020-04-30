@@ -40,10 +40,20 @@ public class EventController {
     }
 
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
-    public ResponseEntity getEventByIdUserAndIdEvent(@PathVariable("idUser") int idUser,
-                                                     @PathVariable("idEvent") int idEvent){
-        Event event = eventService.getEventByIdUserAndIdEvent(idUser,idEvent);
+    public ResponseEntity getEvent(@PathVariable("idEvent") int idEvent){
+        Event event = eventService.getEvent(idEvent);
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
+        if(eventService.getEvent(id) != null){
+            eventService.update(id, event);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.
+                    PRECONDITION_FAILED).
+                    body("Event with id: " + id + " does not exist");
+        }
+    }
 }
