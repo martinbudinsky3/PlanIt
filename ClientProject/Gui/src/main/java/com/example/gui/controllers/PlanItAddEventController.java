@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.net.URL;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -163,7 +164,12 @@ public class PlanItAddEventController implements Initializable {
 
     public void incrementTimeTextField(TextField textField, int minutes){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime actualTime = LocalTime.parse(textField.getText());
+        LocalTime actualTime = null;
+        try {
+            actualTime = LocalTime.parse(textField.getText());
+        } catch(DateTimeException dte) {
+            actualTime = LocalTime.of(0,0);
+        }
         if(actualTime.getMinute() % 30 != 0) {
             LocalTime nextHalfHour = countNextHourUnit(actualTime, 30);
             textField.setText(nextHalfHour.format(dtf));
@@ -176,7 +182,12 @@ public class PlanItAddEventController implements Initializable {
 
     public void decrementTimeTextField(TextField textField, int minutes){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalTime actualTime = LocalTime.parse(textField.getText());
+        LocalTime actualTime = null;
+        try {
+            actualTime = LocalTime.parse(textField.getText());
+        } catch(DateTimeException dte) {
+            actualTime = LocalTime.of(0,0);
+        }
         if(actualTime.getMinute() % 30 != 0){
             LocalTime previousHalfHour = countPreviousHourUnit(actualTime, 30);
             textField.setText(previousHalfHour.format(dtf));
@@ -189,7 +200,7 @@ public class PlanItAddEventController implements Initializable {
 
     public void save(ActionEvent ev) {
         hideErrorLabels();
-        
+
         String title = titleField.getText();
         String location = locationField.getText();
         LocalDate dateValue = dateField.getValue();
@@ -204,30 +215,25 @@ public class PlanItAddEventController implements Initializable {
             checkFlag = false;
         }
 
-        if(dateValue == null){
-            dateError.setVisible(true);
-            checkFlag = false;
-        }
-
-        if(startsField.getText().equals("")){
+        try {
+            starts = LocalTime.parse(startsField.getText());
+        } catch(DateTimeException dte){
             startsError.setVisible(true);
             checkFlag = false;
-        } else {
-            starts = LocalTime.parse(startsField.getText());
         }
 
-        if(endsField.getText().equals("")){
+        try{
+            ends = LocalTime.parse(endsField.getText());
+        } catch(DateTimeException dte){
             endsError.setVisible(true);
             checkFlag = false;
-        } else {
-            ends = LocalTime.parse(endsField.getText());
         }
 
-        if(alertField.getText().equals("")){
+        try{
+            alert = LocalTime.parse(alertField.getText());
+        } catch(DateTimeException dte) {
             alertsError.setVisible(true);
             checkFlag = false;
-        } else {
-            alert = LocalTime.parse(alertField.getText());
         }
 
         if(checkFlag){
