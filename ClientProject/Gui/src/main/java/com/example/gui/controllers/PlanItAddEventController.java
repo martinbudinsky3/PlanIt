@@ -96,7 +96,7 @@ public class PlanItAddEventController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        if(idEvent != null) { // add event
+        if(idEvent == null) { // add event
             // set text to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
@@ -127,7 +127,9 @@ public class PlanItAddEventController implements Initializable {
 
     public void showDetail(){
         try {
-            Event event = eventsClient.getEventByIdUserAndIdEvent(idUser, idEvent);
+            Event event = eventsClient.getEvent(idUser, idEvent);
+            System.out.println(event.getAlert());
+            System.out.println(event.getDescription());
             titleField.setText(event.getTitle());
             locationField.setText(event.getLocation());
             dateField.setValue(event.getDate());
@@ -222,10 +224,10 @@ public class PlanItAddEventController implements Initializable {
         }
 
         if(checkFlag){
-            if(idEvent != null) {
+            if(idEvent == null) {
                 addEvent(ev, title, location, description, dateValue, starts, ends, alert);
             } else {
-
+                updateEvent(ev, title, location, description, dateValue, starts, ends, alert);
             }
         }
     }

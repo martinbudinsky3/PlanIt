@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class EventMappers {
-    public RowMapper<Event> mapEventFomDb() {
+    public RowMapper<Event> mapEventFromDb() {
         return (resultSet, i) -> {
             int idEvent = resultSet.getInt("idevent");
             String title = resultSet.getString("title");

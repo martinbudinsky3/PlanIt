@@ -46,7 +46,7 @@
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="alertsField" layoutX="248.0" layoutY="308.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="248.0" AnchorPane.rightAnchor="336.8" />
+      <TextField fx:id="alertField" layoutX="248.0" layoutY="308.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="248.0" AnchorPane.rightAnchor="336.8" />
       <TextField fx:id="endsField" layoutX="248.0" layoutY="260.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="248.0" AnchorPane.rightAnchor="336.8" />
       <TextField fx:id="startsField" layoutX="248.0" layoutY="215.0" prefHeight="26.0" prefWidth="119.0" AnchorPane.leftAnchor="248.0" AnchorPane.rightAnchor="336.8" />
       <DatePicker fx:id="dateField" layoutX="219.0" layoutY="169.0" prefHeight="26.0" prefWidth="178.0" />

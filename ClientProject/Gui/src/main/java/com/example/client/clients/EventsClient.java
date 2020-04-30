@@ -4,11 +4,14 @@ import com.example.client.model.Event;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 public class EventsClient {
+    @Autowired
+    RestTemplate restTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     // main only for testing
@@ -45,7 +48,7 @@ public class EventsClient {
         return events;
     }
 
-    public Event getEventByIdUserAndIdEvent(int idUser, int idEvent) throws Exception{
+    public Event getEvent(int idUser, int idEvent) throws Exception{
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
@@ -55,7 +58,6 @@ public class EventsClient {
         String eventJSon = restTemplate.getForObject(uri, String.class, params);
         objectMapper.registerModule(new JavaTimeModule());
         Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>(){});
-
         return event;
     }
 
@@ -69,7 +71,11 @@ public class EventsClient {
     }
 
     public void updateEvent(Event event, int id) throws Exception{
-        // TO-DO
+        final String uri = "http://localhost:8080/events/{idEvent}";
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idEvent", id);
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.put(uri, event, params);
     }
 
 }

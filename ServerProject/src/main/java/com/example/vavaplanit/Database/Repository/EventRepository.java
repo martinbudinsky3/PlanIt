@@ -80,23 +80,23 @@ public class EventRepository {
     public List<Event> getAllByUserId(int idUser){
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + ";";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
+        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
     }
 
     public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate){
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
                 "AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate + "';";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFomDb());
+        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
     }
 
     public Event getEvent(int idEvent){
-        String sql = "SELECT * FROM planitschema.userevent WHERE e.idevent = '" + idEvent + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFomDb());
+        String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
+        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
     public void update(int id, Event event){
-        String sql = "UPDATE planitschema.userevent SET title = ?, location = ?, date = ?, starts = ?, ends = ?, alert = ?, " +
+        String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends = ?, alert = ?, " +
                 "description = ? WHERE idevent = ?";
         jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEnds(),
                 event.getAlert(), event.getDescription(), id);

@@ -45,7 +45,7 @@ public class EventController {
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
-    @PatchMapping("{id}")
+    @PutMapping("{id}")
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
         if(eventService.getEvent(id) != null){
             eventService.update(id, event);

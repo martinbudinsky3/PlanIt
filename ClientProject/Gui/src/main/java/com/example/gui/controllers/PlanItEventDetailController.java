@@ -2,13 +2,11 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
-import com.example.client.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class PlanItEventDetailController implements Initializable {
@@ -52,7 +50,7 @@ public class PlanItEventDetailController implements Initializable {
     }
 
     public void initializeLabels() throws Exception {
-        event = eventsClient.getEventByIdUserAndIdEvent(idUser,idEvent);
+        event = eventsClient.getEvent(idUser, idEvent);
         labelTitle.setText(event.getTitle());
         labelLocation.setText(event.getLocation());
         labelDate.setText(String.valueOf(event.getDate()));
