@@ -188,6 +188,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     public void save(ActionEvent ev) {
+        hideErrorLabels();
+        
         String title = titleField.getText();
         String location = locationField.getText();
         LocalDate dateValue = dateField.getValue();
@@ -197,7 +199,7 @@ public class PlanItAddEventController implements Initializable {
         String description = descriptionField.getText();
 
         boolean checkFlag = true;
-        if(title == null){
+        if(title.equals("")){
             titleError.setVisible(true);
             checkFlag = false;
         }
@@ -207,21 +209,21 @@ public class PlanItAddEventController implements Initializable {
             checkFlag = false;
         }
 
-        if(startsField.getText() == null){
+        if(startsField.getText().equals("")){
             startsError.setVisible(true);
             checkFlag = false;
         } else {
             starts = LocalTime.parse(startsField.getText());
         }
 
-        if(endsField.getText() == null){
+        if(endsField.getText().equals("")){
             endsError.setVisible(true);
             checkFlag = false;
         } else {
             ends = LocalTime.parse(endsField.getText());
         }
 
-        if(alertField.getText() == null){
+        if(alertField.getText().equals("")){
             alertsError.setVisible(true);
             checkFlag = false;
         } else {

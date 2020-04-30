@@ -16,9 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -85,12 +83,13 @@ public class PlanItMainWindowController implements Initializable {
         for (Node child : calendar.getChildren()) {
             Integer column = calendar.getColumnIndex(child);
             Integer row = calendar.getRowIndex(child);
-            if(row != null) {
-                if(column == null){
-                    column = 0;
-                }
-                gridPaneNodes[column][row] = child;
+            if(row == null) {
+                row = 0;
             }
+            if(column == null){
+                column = 0;
+            }
+            gridPaneNodes[column][row] = child;
         }
     }
 
@@ -98,6 +97,7 @@ public class PlanItMainWindowController implements Initializable {
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
         addEventButton.setOnAction(e -> addEventButtonHandler(LocalDate.now()));
+        addHandlerToDayVBoxes();
     }
 
     public void initializeMonthsAndYear() {
@@ -123,6 +123,23 @@ public class PlanItMainWindowController implements Initializable {
         });
     }
 
+    public void addHandlerToDayVBoxes(){
+        for (int i = 1; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                    if (!dayVBox.getChildren().isEmpty()) {
+                        Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                        int day = Integer.parseInt(dayLabel.getText());
+                        LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
+                        addEventButtonHandler(initDate);
+                        e.consume();
+                    }
+                });
+            }
+        }
+    }
+
     public void initializeCalendar() {
         // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
@@ -142,15 +159,7 @@ public class PlanItMainWindowController implements Initializable {
 
                 if (fieldCounter >= firstDayOfMonth) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
-//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
-                    dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        if(!dayVBox.getChildren().isEmpty()){
-                            Label dayLabel = (Label) dayVBox.getChildren().get(0);
-                            int day = Integer.parseInt(dayLabel.getText());
-                            LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
-                            addEventButtonHandler(initDate);
-                        }
-                    });
+                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     dayVBox.getChildren().add(dayLabel);
@@ -160,6 +169,11 @@ public class PlanItMainWindowController implements Initializable {
 
                 fieldCounter++;
             }
+        }
+
+        for(int j = 0; j < 7; j++){
+            Pane dayNamePane = (Pane) gridPaneNodes[j][0];
+            GridPane.setVgrow(dayNamePane, Priority.ALWAYS);
         }
     }
 

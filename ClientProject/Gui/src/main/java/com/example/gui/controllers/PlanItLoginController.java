@@ -79,7 +79,7 @@ public class PlanItLoginController implements Initializable {
             PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
             fxmlLoader.setController(planItMainWindowController);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            Scene newScene = new Scene(rootPane, 1213, 630);
+            Scene newScene = new Scene(rootPane);
             newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
             Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
             window.setScene(newScene);
