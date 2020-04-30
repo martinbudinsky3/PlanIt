@@ -23,6 +23,8 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+
+    // TODO - what if name or password already exists
     public Integer add(User user) {
         final String sql = "insert into planitschema.user (firstname, lastname, username, userpassword) " +
                 "values (?,?,?,?)";
