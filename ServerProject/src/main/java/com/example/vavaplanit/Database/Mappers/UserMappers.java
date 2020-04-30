@@ -11,10 +11,15 @@ public class UserMappers {
             int idUser = resultSet.getInt("idUser");
             String firstName = resultSet.getString("firstName");
             String lastName = resultSet.getString("lastName");
+            String userName = resultSet.getString("userName");
+            String userPassword = resultSet.getString("userPassword");
+
             return new User(
                     idUser,
                     firstName,
-                    lastName
+                    lastName,
+                    userName,
+                    userPassword
             );
         };
     }

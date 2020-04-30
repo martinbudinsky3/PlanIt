@@ -11,9 +11,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,8 +28,12 @@ public class PlanItLoginController implements Initializable {
     @FXML
     private Button buttonLogin;
 
+
     @FXML
-    private TextField textfieldId;
+    private TextField textfieldName;
+
+    @FXML
+    private PasswordField passwordfieldPassword;
 
     @FXML
     private Button buttonRegister;
@@ -49,52 +56,48 @@ public class PlanItLoginController implements Initializable {
                 ex.printStackTrace();
             }
         });
-        buttonRegister.setOnAction(e -> buttonRegisterHandler(e));
+        buttonRegister.setOnAction(e -> {
+            try {
+                buttonRegisterHandler(e);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     void buttonLoginHandler(ActionEvent event) throws Exception {
-        if (textfieldId.getText().isEmpty()) {
+        if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Nevyplnili ste všetky polia.");
             alert.setHeaderText(null);
-            alert.setContentText("Pred prihlásením zadajte svoje ID!");
+            alert.setContentText("Pred prihlásením zadajte svoje meno a heslo!");
             alert.showAndWait();
         } else {
-            try {
-// Checking if id exists not working
-//                if (usersClient.getUserById(Integer.parseInt(textfieldId.getText())) == null) {
-//                    Alert alert = new Alert(Alert.AlertType.ERROR);
-//                    alert.setTitle("Zadali ste nesprávne ID");
-//                    alert.setHeaderText(null);
-//                    alert.setContentText("Používateľ s takým ID neexistuje.");
-//                    alert.showAndWait();
-//                } else {
-                    user = usersClient.getUserById(Integer.parseInt(textfieldId.getText()));
-                    FXMLLoader fxmlLoader = new FXMLLoader();
-                    fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-                    PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
-                    fxmlLoader.setController(planItMainWindowController);
-                    AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-                    Scene newScene = new Scene(rootPane, 1213, 630);
-                    newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
-                    Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-                    window.setScene(newScene);
-                    window.centerOnScreen();
-                    window.show();
-//                }
-
-            } catch (NumberFormatException e) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Zadali ste zlé ID");
-                alert.setHeaderText(null);
-                alert.setContentText("Neznáme znaky v ID čísle!");
-                alert.showAndWait();
-            }
+            user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
+            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
+            fxmlLoader.setController(planItMainWindowController);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane, 1213, 630);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
+            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.show();
         }
     }
 
-    void buttonRegisterHandler(ActionEvent event) {
-        //TODO new users registration
-    }
+    void buttonRegisterHandler(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
+        PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(), usersClient);
+        fxmlLoader.setController(planItRegistrationController);
+        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+        Scene newScene = new Scene(rootPane);
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(newScene);
+        window.centerOnScreen();
+        window.show();    }
 
 }

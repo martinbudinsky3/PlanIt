@@ -14,10 +14,11 @@ import java.util.Map;
 public class UsersClient {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public User getUserById(int idUser) throws Exception{
-        final String uri = "http://localhost:8080/users/{idUser}";
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("idUser", idUser);
+    public User getUserByUserNameAndUserPassword(String userName, String userPassword) throws Exception{
+        final String uri = "http://localhost:8080/users/{userName}/{userPassword}";
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("userName", userName);
+        params.put("userPassword", userPassword);
 
         RestTemplate restTemplate = new RestTemplate();
         String userJSon = restTemplate.getForObject(uri, String.class, params);
@@ -26,4 +27,13 @@ public class UsersClient {
 
         return user;
     }
+    public int addUser(User user) throws Exception{
+        final String uri = "http://localhost:8080/users";
+        RestTemplate restTemplate = new RestTemplate();
+        String id = restTemplate.postForObject(uri, user, String.class);
+        Integer idUser = objectMapper.readValue(id, Integer.class);
+
+        return idUser;
+    }
+
 }

@@ -1,2 +1,11 @@
+alter table planitschema.event add column description varchar;
+
 alter table planitschema.userevent alter column iduser type integer;
 alter table planitschema.userevent alter column idevent type integer;
+
+
+
+------------------------30.4.2020 20:50--------------------------------
+
+alter table planitschema.user add column userName varchar;
+alter table planitschema.user add column userPassword varchar;
