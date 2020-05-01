@@ -238,6 +238,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                                 PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
                                         Integer.parseInt(eventLabel.getId()), eventsClient, this);
                                 loader.setController(planItAddEventController);
+                                loader.setResources(resourceBundle);
 
                                 AnchorPane anchorPane = null;
                                 try {

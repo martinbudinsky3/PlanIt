@@ -31,7 +31,7 @@
                      <children>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;">
                            <children>
-                              <Label fx:id="mondayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="29.0" layoutY="24.0" text="%mondayLabel" textFill="WHITE">
+                              <Label fx:id="mondayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="112.0" text="%mondayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -40,7 +40,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2#2ed2d2;" GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="tuesdayLabel" layoutX="41.0" layoutY="24.0" text="%tuesdayLabel" textFill="WHITE">
+                              <Label fx:id="tuesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%tuesdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -49,7 +49,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;" GridPane.columnIndex="2">
                            <children>
-                              <Label fx:id="wednesdayLabel" layoutX="36.0" layoutY="24.0" text="%wednesdayLabel" textFill="WHITE">
+                              <Label fx:id="wednesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="24.0" prefHeight="40.0" prefWidth="114.0" text="%wednesdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -58,7 +58,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;" GridPane.columnIndex="3">
                            <children>
-                              <Label fx:id="thursdayLabel" layoutX="34.0" layoutY="24.0" text="%thursdayLabel" textFill="WHITE">
+                              <Label fx:id="thursdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%thursdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -67,7 +67,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;" GridPane.columnIndex="4">
                            <children>
-                              <Label fx:id="fridayLabel" layoutX="35.0" layoutY="24.0" text="%fridayLabel" textFill="WHITE">
+                              <Label fx:id="fridayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="112.0" text="%fridayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -76,7 +76,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;" GridPane.columnIndex="5">
                            <children>
-                              <Label fx:id="saturdayLabel" layoutX="40.0" layoutY="25.0" text="%saturdayLabel" textFill="WHITE">
+                              <Label fx:id="saturdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="38.0" prefWidth="111.0" text="%saturdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -85,7 +85,7 @@
                         </Pane>
                         <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #2ed2d2;" GridPane.columnIndex="6">
                            <children>
-                              <Label fx:id="sundayLabel" layoutX="36.0" layoutY="24.0" text="%sundayLabel" textFill="WHITE">
+                              <Label fx:id="sundayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%sundayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="28.0" />
                                  </font>
@@ -132,7 +132,7 @@
                </children></AnchorPane>
         </content>
       </ScrollPane>
-      <Button fx:id="addEventButton" layoutX="9.0" layoutY="20.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" style="-fx-background-color: transparent;" text="%addEventButton" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="1005.0">
+      <Button fx:id="addEventButton" layoutX="-1.0" layoutY="20.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: transparent;" text="%addEventButton" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="997.0">
          <font>
             <Font size="18.0" />
          </font>
@@ -157,7 +157,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="changeLanguageButton" layoutX="9.0" layoutY="606.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" style="-fx-background-color: transparent;" text="%changeLanguageButton" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="9.0" AnchorPane.rightAnchor="1005.0">
+      <Button fx:id="changeLanguageButton" layoutY="606.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="217.0" style="-fx-background-color: transparent;" text="%changeLanguageButton" AnchorPane.bottomAnchor="32.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="996.0">
          <font>
             <Font size="18.0" />
          </font>
