@@ -4,6 +4,7 @@ import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -31,6 +32,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @FXML
     private Button addEventButton;
     @FXML
+    private Button changeLanguageButton;
+    @FXML
     private Label yearLabel;
     @FXML
     private Label monthLabel;
@@ -45,6 +48,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private Integer selectedMonth;
     private Node[][] gridPaneNodes;
     private String months[];
+    private ResourceBundle resourceBundle;
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
     private final User user;
@@ -55,14 +59,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         this.user = user;
     }
 
-    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user, int selectedYear,
-                                      int selectedMonth) {
-        this.eventsClient = eventsClient;
-        this.usersClient = usersClient;
-        this.user = user;
-        this.selectedYear = selectedYear;
-        this.selectedMonth = selectedMonth;
-    }
+//    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user, int selectedYear,
+//                                      int selectedMonth) {
+//        this.eventsClient = eventsClient;
+//        this.usersClient = usersClient;
+//        this.user = user;
+//        this.selectedYear = selectedYear;
+//        this.selectedMonth = selectedMonth;
+//    }
 
     public void setSelectedYear(int selectedYear) {
         this.selectedYear = selectedYear;
@@ -76,6 +80,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
         createGridPaneNodes();
         addHandlers();
         initializeMonthsAndYear();
@@ -86,19 +91,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @Override
     public void reload(ResourceBundle bundle) {
         try {
+            Scene scene = ap.getScene();
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
-                    usersClient, user, selectedYear, selectedMonth);
-            fxmlLoader.setController(planItMainWindowController);
+            fxmlLoader.setController(this);
             fxmlLoader.setResources(bundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            Scene newScene = new Scene(rootPane);
-            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-            Stage window = (Stage) ap.getScene().getWindow();
-            window.setScene(newScene);
-            window.centerOnScreen();
-            window.show();
+            scene.setRoot(rootPane);
         } catch(IOException e){
             e.printStackTrace();
         }
@@ -125,19 +124,24 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         yearForward.setOnAction(e -> yearForwardHandler());
         addEventButton.setOnAction(e -> addEventButtonHandler(LocalDate.now()));
         addHandlerToDayVBoxes();
+        changeLanguageButton.setOnAction(e -> buttonLanguageSelectHandler(e));
     }
 
     public void initializeMonthsAndYear() {
         // find out current year and month that will be displayed
-        if(selectedYear != null && selectedMonth != null) {
+        if(selectedMonth == null && selectedYear == null) {
             LocalDate today = LocalDate.now();
             selectedYear = today.getYear();
             selectedMonth = today.getMonth().getValue();
         }
 
         // initialize monthsList
-        // TODO - multilanguage
-        months = new DateFormatSymbols().getMonths();
+        months = new String[]{resourceBundle.getString("january"), resourceBundle.getString("february"),
+                resourceBundle.getString("march"), resourceBundle.getString("april"),
+                resourceBundle.getString("may"), resourceBundle.getString("june"),
+                resourceBundle.getString("july"), resourceBundle.getString("august"),
+                resourceBundle.getString("september"), resourceBundle.getString("october"),
+                resourceBundle.getString("november"), resourceBundle.getString("december")};
         for (int i = 0; i < 12; i++){
             monthsList.getItems().add(months[i].toUpperCase());
         }
@@ -307,6 +311,24 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.setScene(scene);
         window.initModality(Modality.WINDOW_MODAL);
         window.initOwner(ap.getScene().getWindow());
+        window.show();
+    }
+
+    void buttonLanguageSelectHandler(ActionEvent event){
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
+        LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
+        fxmlLoader.setController(languageSelectorController);
+        AnchorPane anchorPane = null;
+        try {
+            anchorPane = (AnchorPane) fxmlLoader.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Scene newScene = new Scene(anchorPane);
+        Stage window = new Stage();
+        window.setScene(newScene);
+        window.centerOnScreen();
         window.show();
     }
 }

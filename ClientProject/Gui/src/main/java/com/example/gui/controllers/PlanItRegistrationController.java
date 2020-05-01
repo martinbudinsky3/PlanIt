@@ -41,10 +41,10 @@ public class PlanItRegistrationController implements Initializable {
     @FXML
     private Button buttonCancel;
 
-
+    private User user;
+    private ResourceBundle resourceBundle;
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
-    private User user;
 
     public PlanItRegistrationController(EventsClient eventsClient, UsersClient usersClient) {
         this.eventsClient = eventsClient;
@@ -106,6 +106,7 @@ public class PlanItRegistrationController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        resourceBundle = resources;
         addHandlers();
     }
 }

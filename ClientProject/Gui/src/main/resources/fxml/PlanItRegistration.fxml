@@ -7,27 +7,27 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="243.0" layoutY="48.0" text="Registrácia">
+      <Label layoutX="243.0" layoutY="48.0" text="%registrationLabel">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="185.0" text="Meno:">
+      <Label layoutX="163.0" layoutY="185.0" text="%firstnameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="212.0" text="Priezvisko:">
+      <Label layoutX="163.0" layoutY="212.0" text="%lastnameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="243.0" text="Používateľské meno:">
+      <Label layoutX="163.0" layoutY="243.0" text="%usernameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="164.0" layoutY="274.0" text="Heslo:">
+      <Label layoutX="164.0" layoutY="274.0" text="%passwordLabel">
          <font>
             <Font size="14.0" />
          </font>
@@ -36,12 +36,12 @@
       <TextField fx:id="textfieldLastName" layoutX="301.0" layoutY="210.0" />
       <TextField fx:id="textfieldUserName" layoutX="301.0" layoutY="241.0" />
       <PasswordField fx:id="textfieldUserpassword" layoutX="301.0" layoutY="272.0" />
-      <Label layoutX="121.0" layoutY="117.0" text="Zadajte svoje údaje:">
+      <Label layoutX="121.0" layoutY="117.0" text="%detailsLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="buttonRegister" layoutX="213.0" layoutY="325.0" mnemonicParsing="false" text="Registrovať" />
-      <Button fx:id="buttonCancel" layoutX="301.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Zrušiť" />
+      <Button fx:id="buttonRegister" layoutX="213.0" layoutY="325.0" mnemonicParsing="false" text="%registerButton" />
+      <Button fx:id="buttonCancel" layoutX="301.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="%cancelButton" />
    </children>
 </AnchorPane>

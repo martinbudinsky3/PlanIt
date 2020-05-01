@@ -40,6 +40,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     @FXML
     private Button changeLanguageButton;
 
+    private ResourceBundle resourceBundle;
 
     public PlanItLoginController(UsersClient usersClient)  {
         this.usersClient = usersClient;
@@ -48,11 +49,13 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        resourceBundle = resources;
         addHandlers();
     }
 
     @Override
     public void reload(ResourceBundle bundle){
+        resourceBundle = bundle;
         try {
             Scene scene = ap.getScene();
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -104,6 +107,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
             PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
             fxmlLoader.setController(planItMainWindowController);
+            fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
             Scene newScene = new Scene(rootPane);
             newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
@@ -119,6 +123,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
         PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(), usersClient);
         fxmlLoader.setController(planItRegistrationController);
+        fxmlLoader.setResources(resourceBundle);
         AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
         Scene newScene = new Scene(rootPane);
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
