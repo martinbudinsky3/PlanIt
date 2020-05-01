@@ -97,18 +97,18 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     void buttonLoginHandler(ActionEvent event) throws Exception {
         if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Nevyplnili ste všetky polia.");
+            alert.setTitle(resourceBundle.getString("loginEmptyAlertTitle"));
             alert.setHeaderText(null);
-            alert.setContentText("Pred prihlásením zadajte svoje meno a heslo!");
+            alert.setContentText(resourceBundle.getString("loginAlertContent"));
             alert.showAndWait();
         } else {
             user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
 
             if (user == null){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Zadali ste nesprávne meno alebo heslo.");
+                alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
                 alert.setHeaderText(null);
-                alert.setContentText("Pred prihlásením zadajte prosím svoje používateľské meno a heslo!");
+                alert.setContentText(resourceBundle.getString("loginAlertContent"));
                 alert.showAndWait();
             }
             else {

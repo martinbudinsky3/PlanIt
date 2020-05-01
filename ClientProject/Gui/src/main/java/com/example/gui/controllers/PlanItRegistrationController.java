@@ -71,9 +71,9 @@ public class PlanItRegistrationController implements Initializable {
 
         if (textfieldFirstName.getText().isEmpty() || textfieldLastName.getText().isEmpty() || textfieldUserName.getText().isEmpty() || textfieldUserpassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Nevyplnili ste všetky polia.");
+            alert.setTitle(resourceBundle.getString("loginEmptyAlertTitle"));
             alert.setHeaderText(null);
-            alert.setContentText("Pred registráciou vyplňte všetky údaje!");
+            alert.setContentText(resourceBundle.getString("registrationEmptyContentTitle"));
             alert.showAndWait();
         } else {
 
@@ -88,18 +88,19 @@ public class PlanItRegistrationController implements Initializable {
 
             if (id == -1){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Také používateľské meno už existuje");
+                alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
                 alert.setHeaderText(null);
-                alert.setContentText("Zadajte prosím iné používateľské meno alebo heslo");
+                alert.setContentText(resourceBundle.getString("registrationExistsAlertContent"));
                 alert.showAndWait();
             }
-            else if (id != null) {
+            else {
                 user.setIdUser(id);
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
                 PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(eventsClient, usersClient, user);
                 fxmlLoader.setController(planItMainWindowController);
+                fxmlLoader.setResources(resourceBundle);
                 AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
                 Scene newScene = new Scene(rootPane, 1213, 630);
                 newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList

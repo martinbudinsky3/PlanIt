@@ -140,9 +140,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         pdfFile.pdf();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("PDF bolo vytvorené!");
+        alert.setTitle(resourceBundle.getString("pdfAlertTitle"));
         alert.setHeaderText(null);
-        alert.setContentText("PDF verzia vášho kalendára bola uložená.");
+        alert.setContentText(resourceBundle.getString("pdfAlertContent"));
         alert.showAndWait();
     }
 
