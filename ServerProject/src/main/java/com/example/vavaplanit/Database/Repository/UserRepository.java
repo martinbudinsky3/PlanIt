@@ -24,20 +24,25 @@ public class UserRepository {
     }
 
 
-    // TODO - what if name or password already exists
+    // TODO - what if name and password already exists
     public Integer add(User user) {
-        final String sql = "insert into planitschema.user (firstname, lastname, username, userpassword) " +
-                "values (?,?,?,?)";
+//        final String sql = "insert into planitschema.user (firstname, lastname, username, userpassword) " +
+//                "values (?,?,?,?)";
+
+        final String sql = "INSERT INTO planitschema.user (firstName, lastName, userName, userPassword) " +
+                    " SELECT '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getUserName() + "', '" + user.getUserPassword() + "' " +
+                    " WHERE NOT EXISTS (SELECT * FROM planitschema.user WHERE username='" + user.getUserName() + "' " +
+                    " and userpassword = '" + user.getUserPassword() + "');";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, user.getFirstName());
-                ps.setString(2, user.getLastName());
-                ps.setString(3, user.getUserName());
-                ps.setString(4, user.getUserPassword());
+//                ps.setString(1, user.getFirstName());
+//                ps.setString(2, user.getLastName());
+//                ps.setString(3, user.getUserName());
+//                ps.setString(4, user.getUserPassword());
 
                 return ps;
             }
