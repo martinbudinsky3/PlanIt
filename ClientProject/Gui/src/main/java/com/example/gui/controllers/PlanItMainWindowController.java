@@ -23,11 +23,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DateFormatSymbols;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -68,14 +66,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         this.user = user;
     }
 
-//    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user, int selectedYear,
-//                                      int selectedMonth) {
-//        this.eventsClient = eventsClient;
-//        this.usersClient = usersClient;
-//        this.user = user;
-//        this.selectedYear = selectedYear;
-//        this.selectedMonth = selectedMonth;
-//    }
 
     public void setSelectedYear(int selectedYear) {
         this.selectedYear = selectedYear;
@@ -146,7 +136,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     private void savePdfButtonHandler() throws Exception {
-        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient);
+        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle);
         pdfFile.pdf();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

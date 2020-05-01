@@ -14,6 +14,7 @@ import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 public class PdfFile {
@@ -21,12 +22,14 @@ public class PdfFile {
     private User user;
     private int selectedYear;
     private int selectedMonth;
+    private ResourceBundle resourceBundle;
 
-    public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient) {
+    public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle) {
         this.user = user;
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
         this.eventsClient = eventsClient;
+        this.resourceBundle = resourceBundle;
     }
 
     public void pdf() throws Exception {
@@ -44,15 +47,20 @@ public class PdfFile {
     public void setText(Document document) throws DocumentException {
 
         /*make string months names from numbers of months*/
-        String months[];
-        months = new DateFormatSymbols().getMonths();
+        String months[] = new String[]{resourceBundle.getString("january"), resourceBundle.getString("february"),
+                resourceBundle.getString("march"), resourceBundle.getString("april"),
+                resourceBundle.getString("may"), resourceBundle.getString("june"),
+                resourceBundle.getString("july"), resourceBundle.getString("august"),
+                resourceBundle.getString("september"), resourceBundle.getString("october"),
+                resourceBundle.getString("november"), resourceBundle.getString("december")
+        };
         String month = months[selectedMonth - 1];
 
         Paragraph paragraph = new Paragraph();
         paragraph.setAlignment(Element.ALIGN_CENTER);
 
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, BaseColor.BLACK);
-        Chunk chunk = new Chunk(month + " of " + selectedYear, font);
+        Chunk chunk = new Chunk(month + " " + selectedYear, font);
 
         paragraph.add(chunk);
         document.add(paragraph);
@@ -63,7 +71,12 @@ public class PdfFile {
         PdfPTable table = new PdfPTable(7);
 
         /*set table headers*/
-        Stream.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+        Stream.of(
+                resourceBundle.getString("mondayLabel"), resourceBundle.getString("tuesdayLabel"),
+                resourceBundle.getString("wednesdayLabel"), resourceBundle.getString("thursdayLabel"),
+                resourceBundle.getString("fridayLabel"), resourceBundle.getString("saturdayLabel"),
+                resourceBundle.getString("sundayLabel")
+        )
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(new BaseColor(204, 255, 255));
