@@ -157,6 +157,5 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="languageSelector" layoutX="32.0" layoutY="615.0" prefHeight="35.0" prefWidth="150.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="1031.0" AnchorPane.topAnchor="615.0" />
    </children>
 </AnchorPane>

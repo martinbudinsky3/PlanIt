@@ -252,11 +252,7 @@ public class PlanItAddEventController implements Initializable {
         try {
             Integer id = eventsClient.addEvent(event);
             if (id != null) {
-                // update calendar display
-                planItMainWindowController.setSelectedYear(dateValue.getYear());
-                planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
-                planItMainWindowController.initializeCalendar();
-                planItMainWindowController.showEventsInCalendar();
+                updateCalendarDisplay(dateValue);
                 Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                 stage.close();
             } else {
@@ -273,16 +269,20 @@ public class PlanItAddEventController implements Initializable {
         Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
         try {
             eventsClient.updateEvent(event, idEvent);
-            // update calendar display
-            planItMainWindowController.setSelectedYear(dateValue.getYear());
-            planItMainWindowController.setSelectedMonth(dateValue.getMonth().getValue());
-            planItMainWindowController.initializeCalendar();
-            planItMainWindowController.showEventsInCalendar();
+            updateCalendarDisplay(dateValue);
             Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
             stage.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void updateCalendarDisplay(LocalDate date){
+        // update calendar display
+        planItMainWindowController.setSelectedYear(date.getYear());
+        planItMainWindowController.setSelectedMonth(date.getMonth().getValue());
+        planItMainWindowController.initializeCalendar();
+        planItMainWindowController.showEventsInCalendar();
     }
 
     public void hideErrorLabels(){
@@ -304,10 +304,7 @@ public class PlanItAddEventController implements Initializable {
         }
 
         LocalDate date = event.getDate();
-        planItMainWindowController.setSelectedYear(date.getYear());
-        planItMainWindowController.setSelectedMonth(date.getMonth().getValue());
-        planItMainWindowController.initializeCalendar();
-        planItMainWindowController.showEventsInCalendar();
+        updateCalendarDisplay(date);
         Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
         stage.close();
     }

@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -20,14 +17,16 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PlanItLoginController implements Initializable {
+public class PlanItLoginController implements Initializable, LanguageChangeWindow {
 
     private User user;
     private final UsersClient usersClient;
 
     @FXML
-    private Button buttonLogin;
+    private AnchorPane ap;
 
+    @FXML
+    private Button buttonLogin;
 
     @FXML
     private TextField textfieldName;
@@ -38,6 +37,10 @@ public class PlanItLoginController implements Initializable {
     @FXML
     private Button buttonRegister;
 
+    @FXML
+    private Button changeLanguageButton;
+
+
     public PlanItLoginController(UsersClient usersClient)  {
         this.usersClient = usersClient;
     }
@@ -46,6 +49,22 @@ public class PlanItLoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         addHandlers();
+    }
+
+    @Override
+    public void reload(ResourceBundle bundle){
+        try {
+            Scene scene = ap.getScene();
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+            fxmlLoader.setController(this);
+            fxmlLoader.setResources(bundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            scene.setRoot(rootPane);
+
+        } catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void addHandlers() {
@@ -61,6 +80,13 @@ public class PlanItLoginController implements Initializable {
                 buttonRegisterHandler(e);
             } catch (IOException ex) {
                 ex.printStackTrace();
+            }
+        });
+        changeLanguageButton.setOnAction(e -> {
+            try {
+                buttonLanguageSelectHandler(e);
+            } catch(IOException ex) {
+                ex.printStackTrace();;
             }
         });
     }
@@ -98,6 +124,20 @@ public class PlanItLoginController implements Initializable {
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(newScene);
         window.centerOnScreen();
-        window.show();    }
+        window.show();
+    }
+
+    void buttonLanguageSelectHandler(ActionEvent event) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
+        LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
+        fxmlLoader.setController(languageSelectorController);
+        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+        Scene newScene = new Scene(rootPane);
+        Stage window = new Stage();
+        window.setScene(newScene);
+        window.centerOnScreen();
+        window.show();
+    }
 
 }

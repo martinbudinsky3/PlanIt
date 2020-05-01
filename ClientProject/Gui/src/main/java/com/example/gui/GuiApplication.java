@@ -12,6 +12,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class GuiApplication extends Application {
 
@@ -19,12 +21,14 @@ public class GuiApplication extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		Locale locale = Locale.getDefault();
+		ResourceBundle bundle = ResourceBundle.getBundle("captions", locale);
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
 			PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
 			fxmlLoader.setController(planItLoginController);
+			fxmlLoader.setResources(bundle);
 			AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
 			Scene newScene = new Scene(rootPane);
 			primaryStage.setScene(newScene);
