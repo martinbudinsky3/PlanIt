@@ -6,42 +6,42 @@
 
 <AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="704.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label layoutX="65.0" layoutY="31.0" text="Názov:">
+        <Label layoutX="65.0" layoutY="31.0" text="%titleLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="64.0" layoutY="122.0" text="Miesto:">
+        <Label layoutX="64.0" layoutY="122.0" text="%locationLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="63.0" layoutY="169.0" text="Dátum:">
+        <Label layoutX="63.0" layoutY="169.0" text="%dateLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="64.0" layoutY="215.0" text="Začiatok:">
+        <Label layoutX="64.0" layoutY="215.0" text="%startsLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="64.0" layoutY="260.0" text="Koniec:">
+        <Label layoutX="64.0" layoutY="260.0" text="%endsLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Label layoutX="64.0" layoutY="309.0" text="Upozornenie:">
+        <Label layoutX="64.0" layoutY="309.0" text="%alertLabel">
             <font>
                 <Font size="16.0" />
             </font>
         </Label>
-        <Button fx:id="saveButton" layoutX="283.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Uložiť" AnchorPane.bottomAnchor="17.6" AnchorPane.leftAnchor="273.4" AnchorPane.rightAnchor="350.6" AnchorPane.topAnchor="542.0">
+        <Button fx:id="saveButton" layoutX="283.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="%saveButton" AnchorPane.bottomAnchor="17.6" AnchorPane.leftAnchor="273.4" AnchorPane.rightAnchor="350.6" AnchorPane.topAnchor="542.0">
             <font>
                 <Font size="14.0" />
             </font>
         </Button>
-      <Label layoutX="63.0" layoutY="355.0" text="Popis:">
+      <Label layoutX="63.0" layoutY="355.0" text="%descriptionLabel">
          <font>
             <Font size="16.0" />
          </font>
@@ -57,14 +57,14 @@
       <Button fx:id="endsIncrement" layoutX="370.0" layoutY="260.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" AnchorPane.rightAnchor="306.0" />
       <Button fx:id="alertsDecrement" layoutX="218.0" layoutY="309.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="-" AnchorPane.leftAnchor="218.0" />
       <Button fx:id="alertsIncrement" layoutX="370.0" layoutY="308.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="28.0" text="+" />
-      <Label fx:id="dateError" layoutX="218.0" layoutY="195.0" text="Zadajte dátum" textFill="RED" visible="false" />
-      <Label fx:id="startsError" layoutX="218.0" layoutY="241.0" text="Zadajte začiatok" textFill="RED" visible="false" />
-      <Label fx:id="endsError" layoutX="218.0" layoutY="289.0" text="Zadajte koniec" textFill="RED" visible="false" />
-      <Label fx:id="alertsError" layoutX="218.0" layoutY="334.0" text="Zadajte čas upozornenia" textFill="RED" visible="false" />
-      <Label fx:id="titleError" layoutX="218.0" layoutY="101.0" text="Zadajte názov" textFill="RED" visible="false" />
+      <Label fx:id="dateError" layoutX="218.0" layoutY="195.0" text="%dateErrorLabel" textFill="RED" visible="false" />
+      <Label fx:id="startsError" layoutX="218.0" layoutY="241.0" text="%timeErrorLabel" textFill="RED" visible="false" />
+      <Label fx:id="endsError" layoutX="218.0" layoutY="289.0" text="%timeErrorLabel" textFill="RED" visible="false" />
+      <Label fx:id="alertsError" layoutX="218.0" layoutY="334.0" text="%timeErrorLabel" textFill="RED" visible="false" />
+      <Label fx:id="titleError" layoutX="218.0" layoutY="101.0" text="%titleErrorLabel" textFill="RED" visible="false" />
       <TextArea fx:id="titleField" layoutX="219.0" layoutY="31.0" prefHeight="70.0" prefWidth="443.0" />
       <TextArea fx:id="descriptionField" layoutX="219.0" layoutY="355.0" prefHeight="167.0" prefWidth="443.0" />
-      <Button fx:id="deleteButton" layoutX="370.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Vymazať" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="256.0" AnchorPane.topAnchor="542.0">
+      <Button fx:id="deleteButton" layoutX="370.0" layoutY="542.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="%deleteButton" AnchorPane.bottomAnchor="18.0" AnchorPane.rightAnchor="238.8" AnchorPane.topAnchor="542.0">
          <font>
             <Font size="14.0" />
          </font></Button>

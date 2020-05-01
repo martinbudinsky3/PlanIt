@@ -300,11 +300,12 @@ public class PlanItAddEventController implements Initializable {
                 eventsClient.deleteEvent(idUser, idEvent);
             } catch (Exception e){
                 System.out.println(e.getMessage());
+            } finally {
+                LocalDate date = event.getDate();
+                updateCalendarDisplay(date);
             }
         }
 
-        LocalDate date = event.getDate();
-        updateCalendarDisplay(date);
         Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
         stage.close();
     }
