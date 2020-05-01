@@ -5,6 +5,8 @@ import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.gui.GuiApplication;
+import com.example.gui.PdfFile;
+import com.itextpdf.text.DocumentException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -22,6 +25,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DateFormatSymbols;
@@ -43,6 +48,8 @@ public class PlanItMainWindowController implements Initializable {
     private Button yearBack;
     @FXML
     private Button yearForward;
+    @FXML
+    private Button savePdfButton;
     @FXML
     private ListView<String> monthsList;
 
@@ -98,6 +105,26 @@ public class PlanItMainWindowController implements Initializable {
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
         addEventButton.setOnAction(e -> addEventButtonHandler(LocalDate.now()));
+        savePdfButton.setOnAction(e -> {
+            try {
+                savePdfButtonHandler();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (DocumentException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    private void savePdfButtonHandler() throws FileNotFoundException, DocumentException {
+        PdfFile pdfFile = new PdfFile();
+        pdfFile.pdf(user, selectedYear, selectedMonth);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("PDF bolo vytvorené!");
+        alert.setHeaderText(null);
+        alert.setContentText("PDF verzia vášho kalendára bola uložená.");
+        alert.showAndWait();
     }
 
     public void initializeMonthsAndYear() {
@@ -166,7 +193,7 @@ public class PlanItMainWindowController implements Initializable {
     public void showEventsInCalendar() {
 
         try {
-            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth); // hardcoded userId
+            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 6; i++) {
                     for (int j = 0; j < 7; j++) {
