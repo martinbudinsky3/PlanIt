@@ -110,15 +110,15 @@ public class PlanItMainWindowController implements Initializable {
                 savePdfButtonHandler();
             } catch (FileNotFoundException ex) {
                 ex.printStackTrace();
-            } catch (DocumentException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
     }
 
-    private void savePdfButtonHandler() throws FileNotFoundException, DocumentException {
-        PdfFile pdfFile = new PdfFile();
-        pdfFile.pdf(user, selectedYear, selectedMonth);
+    private void savePdfButtonHandler() throws Exception {
+        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient);
+        pdfFile.pdf();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("PDF bolo vytvorené!");
