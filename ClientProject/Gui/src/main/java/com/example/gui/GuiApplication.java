@@ -24,6 +24,7 @@ public class GuiApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		Locale locale = Locale.getDefault();
 		ResourceBundle bundle = ResourceBundle.getBundle("captions", locale, new UTF8Control());
+
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));

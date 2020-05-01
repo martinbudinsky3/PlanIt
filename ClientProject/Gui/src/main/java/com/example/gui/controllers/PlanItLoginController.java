@@ -103,18 +103,28 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             alert.showAndWait();
         } else {
             user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
-            fxmlLoader.setController(planItMainWindowController);
-            fxmlLoader.setResources(resourceBundle);
-            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            Scene newScene = new Scene(rootPane);
-            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
-            Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.setScene(newScene);
-            window.centerOnScreen();
-            window.show();
+
+            if (user == null){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Zadali ste nesprávne meno alebo heslo.");
+                alert.setHeaderText(null);
+                alert.setContentText("Pred prihlásením zadajte prosím svoje používateľské meno a heslo!");
+                alert.showAndWait();
+            }
+            else {
+                FXMLLoader fxmlLoader = new FXMLLoader();
+                fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
+                PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
+                fxmlLoader.setController(planItMainWindowController);
+                fxmlLoader.setResources(resourceBundle);
+                AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+                Scene newScene = new Scene(rootPane);
+                newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
+                Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                window.setScene(newScene);
+                window.centerOnScreen();
+                window.show();
+            }
         }
     }
 

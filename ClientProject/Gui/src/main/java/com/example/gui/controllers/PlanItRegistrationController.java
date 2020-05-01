@@ -86,7 +86,14 @@ public class PlanItRegistrationController implements Initializable {
 
             Integer id = usersClient.addUser(user);
 
-            if (id != null) {
+            if (id == -1){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Také používateľské meno už existuje");
+                alert.setHeaderText(null);
+                alert.setContentText("Zadajte prosím iné používateľské meno alebo heslo");
+                alert.showAndWait();
+            }
+            else if (id != null) {
                 user.setIdUser(id);
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
