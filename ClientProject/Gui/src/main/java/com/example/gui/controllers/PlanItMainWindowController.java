@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -20,12 +21,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -104,8 +107,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    public void startTask()
-    {
+    public void startTask() {
         // Create a Runnable
         Runnable task = () -> runTask();
 
@@ -117,15 +119,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         backgroundThread.start();
     }
 
-    public void runTask()
-    {
+    public void runTask() {
         while(true) {
             try {
-               Event event = eventsClient.getEventToAlert(user.getIdUser());
-                if(event != null) {
+                Event event = eventsClient.getEventToAlert(user.getIdUser());
+                if (event != null) {
                     Platform.runLater(() -> {
                         System.out.println(event.getTitle());
-                        // TODO - show alert window
+                        showAlertWindow(event);
                     });
                 }
 
@@ -290,27 +291,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                             eventLabel.setText(eventLabelText);
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
-
-                                FXMLLoader loader = new FXMLLoader();
-                                loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-                                PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
-                                        Integer.parseInt(eventLabel.getId()), eventsClient, this);
-                                loader.setController(planItAddEventController);
-                                loader.setResources(resourceBundle);
-
-                                AnchorPane anchorPane = null;
-                                try {
-                                    anchorPane = (AnchorPane) loader.load();
-                                } catch (IOException ex) {
-                                    ex.printStackTrace();
-                                }
-                                Scene scene = new Scene(anchorPane);
-                                Stage window = new Stage();
-                                window.setTitle(eventLabel.getText());
-                                window.setScene(scene);
-                                window.initModality(Modality.WINDOW_MODAL);
-                                window.initOwner(ap.getScene().getWindow());
-                                window.show();
+                                eventLabelHandler(eventLabel);
                                 mouseEvent.consume();
                             });
 
@@ -352,6 +333,29 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
+    public void eventLabelHandler(Label eventLabel){
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
+        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
+                Integer.parseInt(eventLabel.getId()), eventsClient, this);
+        loader.setController(planItAddEventController);
+        loader.setResources(resourceBundle);
+
+        AnchorPane anchorPane = null;
+        try {
+            anchorPane = (AnchorPane) loader.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Scene scene = new Scene(anchorPane);
+        Stage window = new Stage();
+        window.setTitle(eventLabel.getText());
+        window.setScene(scene);
+        window.initModality(Modality.WINDOW_MODAL);
+        window.initOwner(ap.getScene().getWindow());
+        window.show();
+    }
+
     public void addEventButtonHandler(LocalDate initDate){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
@@ -374,7 +378,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.show();
     }
 
-    void buttonLanguageSelectHandler(ActionEvent event){
+    public void buttonLanguageSelectHandler(ActionEvent event){
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
         LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
@@ -389,6 +393,30 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Stage window = new Stage();
         window.setScene(newScene);
         window.centerOnScreen();
+        window.show();
+    }
+
+    public void showAlertWindow(Event event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
+        AlertWindowController alertWindowController = new AlertWindowController(user, event, eventsClient, this);
+        loader.setController(alertWindowController);
+        loader.setResources(resourceBundle);
+
+        AnchorPane anchorPane = null;
+        try {
+            anchorPane = (AnchorPane) loader.load();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        Scene scene = new Scene(anchorPane);
+        Stage window = new Stage();
+
+        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+        window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 380);
+        window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 270);
+
+        window.setScene(scene);
         window.show();
     }
 }

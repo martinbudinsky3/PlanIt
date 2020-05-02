@@ -2,6 +2,7 @@ package com.example.vavaplanit.Database.Repository;
 
 import com.example.vavaplanit.Database.Mappers.EventMappers;
 import com.example.vavaplanit.Model.Event;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -104,9 +105,13 @@ public class EventRepository {
     }
 
     public Event getEventToAlert(int idUser, String date, String time){
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        try {
+            String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
+                    " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "';";
+            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        } catch(EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public void update(int id, Event event){
