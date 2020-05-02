@@ -103,6 +103,12 @@ public class EventRepository {
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
+    public Event getEventToAlert(int idUser, String date, String time){
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
+                " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "';";
+        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+    }
+
     public void update(int id, Event event){
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends = ?, alert = ?, " +
                 "description = ? WHERE idevent = ?";

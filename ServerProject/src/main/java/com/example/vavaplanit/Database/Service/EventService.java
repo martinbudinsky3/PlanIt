@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -44,6 +46,16 @@ public class EventService {
 
     public Event getUserEvent(int idUser, int idEvent){
         return this.eventRepository.getUserEvent(idUser, idEvent);
+    }
+
+    public Event getEventToAlert(int idUser){
+        DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        String time = LocalTime.now().withSecond(0).format(dtfTime);
+        String date = LocalDate.now().format(dtfDate);
+
+        return this.eventRepository.getEventToAlert(idUser, date, time);
     }
 
     public void update(int id, Event event){

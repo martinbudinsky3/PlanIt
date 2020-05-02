@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -59,6 +60,23 @@ public class EventsClient {
         objectMapper.registerModule(new JavaTimeModule());
         Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>(){});
         return event;
+    }
+
+    public Event getEventToAlert(int idUser) throws Exception{
+        final String uri = "http://localhost:8080/events/alert/{idUser}";
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idUser", idUser);
+
+        RestTemplate restTemplate = new RestTemplate();
+        try {
+            String eventJSon = restTemplate.getForObject(uri, String.class, params);
+            objectMapper.registerModule(new JavaTimeModule());
+            Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
+            });
+            return event;
+        } catch(final HttpServerErrorException.InternalServerError e){
+            return null;
+        }
     }
 
     public int addEvent(Event event) throws Exception{

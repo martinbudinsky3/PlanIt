@@ -5,6 +5,7 @@ import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.gui.PdfFile;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
@@ -78,6 +80,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+        System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        startTask();
         createGridPaneNodes();
         addHandlers();
         initializeMonthsAndYear();
@@ -97,6 +101,39 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             scene.setRoot(rootPane);
         } catch(IOException e){
             e.printStackTrace();
+        }
+    }
+
+    public void startTask()
+    {
+        // Create a Runnable
+        Runnable task = () -> runTask();
+
+        // Run the task in a background thread
+        Thread backgroundThread = new Thread(task);
+        // Terminate the running thread if the application exits
+        backgroundThread.setDaemon(true);
+        // Start the thread
+        backgroundThread.start();
+    }
+
+    public void runTask()
+    {
+        while(true) {
+            try {
+               Event event = eventsClient.getEventToAlert(user.getIdUser());
+                if(event != null) {
+                    Platform.runLater(() -> {
+                        System.out.println(event.getTitle());
+                        // TODO - show alert window
+                    });
+                }
+
+                Thread.sleep(60*1000);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

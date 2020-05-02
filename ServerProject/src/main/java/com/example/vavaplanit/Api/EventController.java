@@ -45,6 +45,16 @@ public class EventController {
         return new ResponseEntity<>(event, HttpStatus.OK);
     }
 
+    @RequestMapping(value="alert/{idUser}", method = RequestMethod.GET)
+    public ResponseEntity getEventToAlert(@PathVariable("idUser") int idUser){
+        Event event = eventService.getEventToAlert(idUser);
+        if(event != null) {
+            return new ResponseEntity<>(event, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @PutMapping("{id}")
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
         if(eventService.getEvent(id) != null){
