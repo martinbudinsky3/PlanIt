@@ -14,32 +14,38 @@ public class Event implements Serializable {
     private String description;
     private LocalDate date;
     private LocalTime starts;
+    private LocalDate endsDate;
     private LocalTime ends;
+    private LocalDate alertDate;
     private LocalTime alert;
 
     public Event() {};
 
-    public Event(String title, String location, String description, LocalDate date, LocalTime starts, LocalTime ends,
-                 LocalTime alert, int idUser) {
+    public Event(String title, String location, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
+                 LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
         this.title = title;
         this.location = location;
         this.description = description;
         this.date = date;
         this.starts = starts;
+        this.endsDate = endsDate;
         this.ends = ends;
+        this.alertDate = alertDate;
         this.alert = alert;
         this.idUser = idUser;
     }
 
     public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
-                 LocalTime ends, LocalTime alert) {
+                 LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
         this.location = location;
         this.description = description;
         this.date = date;
         this.starts = starts;
+        this.endsDate = endsDate;
         this.ends = ends;
+        this.alertDate = alertDate;
         this.alert = alert;
     }
 
@@ -99,12 +105,28 @@ public class Event implements Serializable {
         this.starts = starts;
     }
 
+    public LocalDate getEndsDate() {
+        return endsDate;
+    }
+
+    public void setEndsDate(LocalDate endsDate) {
+        this.endsDate = endsDate;
+    }
+
     public LocalTime getEnds() {
         return ends;
     }
 
     public void setEnds(LocalTime ends) {
         this.ends = ends;
+    }
+
+    public LocalDate getAlertDate() {
+        return alertDate;
+    }
+
+    public void setAlertDate(LocalDate alertDate) {
+        this.alertDate = alertDate;
     }
 
     public LocalTime getAlert() {
@@ -127,12 +149,14 @@ public class Event implements Serializable {
                 Objects.equals(description, event.description) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(starts, event.starts) &&
+                Objects.equals(endsDate, event.endsDate) &&
                 Objects.equals(ends, event.ends) &&
+                Objects.equals(alertDate, event.alertDate) &&
                 Objects.equals(alert, event.alert);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, description, date, starts, ends, alert);
+        return Objects.hash(idEvent, idUser, title, location, description, date, starts, endsDate, ends, alertDate, alert);
     }
 }

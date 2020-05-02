@@ -15,8 +15,10 @@ public class EventMappers {
             String description = resultSet.getString("description");
             LocalDate date = resultSet.getObject("date", LocalDate.class);
             LocalTime starts = resultSet.getObject("starts", LocalTime.class);
+            LocalDate endsDate = resultSet.getObject("ends_date", LocalDate.class);
             LocalTime ends = resultSet.getObject("ends", LocalTime.class);
-            LocalTime alerts = resultSet.getObject("alert", LocalTime.class);
+            LocalDate alertDate = resultSet.getObject("alert_date", LocalDate.class);
+            LocalTime alert = resultSet.getObject("alert", LocalTime.class);
             return new Event(
                     idEvent,
                     title,
@@ -24,8 +26,10 @@ public class EventMappers {
                     description,
                     date,
                     starts,
+                    endsDate,
                     ends,
-                    alerts
+                    alertDate,
+                    alert
             );
         };
     }

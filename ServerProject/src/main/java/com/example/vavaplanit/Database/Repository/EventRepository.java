@@ -22,8 +22,8 @@ public class EventRepository {
     }
 
     public Integer add(Event event) {
-        final String sql = "insert into planitschema.event (title, location, description, date, starts, ends, alert) " +
-                "values (?,?,?,?,?,?,?)";
+        final String sql = "insert into planitschema.event (title, location, description, date, starts, ends_date, ends," +
+                " alert_date, alert) values (?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -43,8 +43,10 @@ public class EventRepository {
                 }
                 ps.setDate(4, Date.valueOf(event.getDate()));
                 ps.setTime(5, Time.valueOf(event.getStarts()));
-                ps.setTime(6, Time.valueOf(event.getEnds()));
-                ps.setTime(7, Time.valueOf(event.getAlert()));
+                ps.setDate(6, Date.valueOf(event.getEndsDate()));
+                ps.setTime(7, Time.valueOf(event.getEnds()));
+                ps.setDate(8, Date.valueOf(event.getAlertDate()));
+                ps.setTime(9, Time.valueOf(event.getAlert()));
                 return ps;
             }
         }, keyHolder);

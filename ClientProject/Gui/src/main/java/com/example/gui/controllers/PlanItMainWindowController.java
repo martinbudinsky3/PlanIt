@@ -230,7 +230,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void showEventsInCalendar() {
-
         try {
             List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
             for(int e = 0; e < events.size(); e++) {

@@ -75,7 +75,13 @@ public class PlanItAddEventController implements Initializable {
     private TextArea descriptionField;
 
     @FXML
-    private DatePicker dateField;
+    private DatePicker startsDateField;
+
+    @FXML
+    private DatePicker endsDateField;
+
+    @FXML
+    private DatePicker alertDateField;
 
     private Integer idUser;
     private Integer idEvent;
@@ -106,12 +112,26 @@ public class PlanItAddEventController implements Initializable {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
             LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
-            LocalTime alertsInitTime = nextHalfHour.minusMinutes(15);
+            LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
+            LocalDate endsDate = null;
+            if(endsInitTime.isBefore(nextHalfHour)){
+                endsDate = initDate.plusDays(1);
+            } else {
+                endsDate = initDate;
+            }
+            LocalDate alertDate = null;
+            if(nextHalfHour.isBefore(alertInitTime)){
+                alertDate = initDate.minusDays(1);
+            } else {
+                alertDate = initDate;
+            }
 
-            dateField.setValue(initDate);
             startsField.setText(nextHalfHour.format(dtf));
             endsField.setText(endsInitTime.format(dtf));
-            alertField.setText(alertsInitTime.format(dtf));
+            alertField.setText(alertInitTime.format(dtf));
+            startsDateField.setValue(initDate);
+            endsDateField.setValue(endsDate);
+            alertDateField.setValue(alertDate);
         } else { // show detail of already created event
            showDetail();
         }
@@ -138,9 +158,11 @@ public class PlanItAddEventController implements Initializable {
 
             titleField.setText(event.getTitle());
             locationField.setText(event.getLocation());
-            dateField.setValue(event.getDate());
+            startsDateField.setValue(event.getDate());
             startsField.setText(String.valueOf(event.getStarts()));
+            endsDateField.setValue(event.getEndsDate());
             endsField.setText(String.valueOf(event.getEnds()));
+            alertDateField.setValue(event.getAlertDate());
             alertField.setText(String.valueOf(event.getAlert()));
             descriptionField.setText(event.getDescription());
         } catch(Exception e) {
@@ -203,9 +225,11 @@ public class PlanItAddEventController implements Initializable {
 
         String title = titleField.getText();
         String location = locationField.getText();
-        LocalDate dateValue = dateField.getValue();
+        LocalDate date = startsDateField.getValue();
         LocalTime starts = null;
+        LocalDate endsDate = endsDateField.getValue();
         LocalTime ends = null;
+        LocalDate alertDate = alertDateField.getValue();
         LocalTime alert = null;
         String description = descriptionField.getText();
 
@@ -238,21 +262,21 @@ public class PlanItAddEventController implements Initializable {
 
         if(checkFlag){
             if(idEvent == null) {
-                addEvent(ev, title, location, description, dateValue, starts, ends, alert);
+                addEvent(ev, title, location, description, date, starts, endsDate, ends, alertDate, alert);
             } else {
-                updateEvent(ev, title, location, description, dateValue, starts, ends, alert);
+                updateEvent(ev, title, location, description, date, starts, endsDate, ends, alertDate, alert);
             }
         }
     }
 
-    public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate dateValue,
-                         LocalTime starts, LocalTime ends, LocalTime alert){
+    public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
+                         LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert){
 
-        Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
+        Event event = new Event(title, location, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         try {
             Integer id = eventsClient.addEvent(event);
             if (id != null) {
-                updateCalendarDisplay(dateValue);
+                updateCalendarDisplay(date);
                 Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                 stage.close();
             } else {
@@ -263,13 +287,13 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate dateValue,
-                            LocalTime starts, LocalTime ends, LocalTime alert){
+    public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
+                            LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(title, location, description, dateValue, starts, ends, alert, idUser);
+        Event event = new Event(title, location, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         try {
             eventsClient.updateEvent(event, idEvent);
-            updateCalendarDisplay(dateValue);
+            updateCalendarDisplay(date);
             Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
             stage.close();
         } catch (Exception e) {
@@ -287,7 +311,6 @@ public class PlanItAddEventController implements Initializable {
 
     public void hideErrorLabels(){
         titleError.setVisible(false);
-        dateError.setVisible(false);
         startsError.setVisible(false);
         endsError.setVisible(false);
         alertsError.setVisible(false);

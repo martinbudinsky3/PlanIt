@@ -9,3 +9,10 @@ alter table planitschema.userevent alter column idevent type integer;
 
 alter table planitschema.user add column userName varchar;
 alter table planitschema.user add column userPassword varchar;
+
+------------------------2.5.2020--------------------------------
+
+alter table planitschema.event add column ends_date date;
+alter table planitschema.event add column alert_date date;
+
+update planitschema.event set ends_date=date, alert_date = date;
