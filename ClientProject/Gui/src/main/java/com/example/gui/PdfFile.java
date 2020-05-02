@@ -91,7 +91,7 @@ public class PdfFile {
 
         /*set empty table cells*/
         for (int i = 0; i < 7; i++){
-            for (int j = 0; j < 5; j++){
+            for (int j = 0; j < 6; j++){
                 PdfPCell cell = new PdfPCell();
                 cell.setMinimumHeight(70);
                 table.addCell(cell);
@@ -101,12 +101,15 @@ public class PdfFile {
         /*find out when does month start and end*/
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if(firstDayOfMonth == 0){
+            firstDayOfMonth = 7;
+        }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         /*set numbers of days to table cells*/
         int fieldCounter = 1;
         int dayCounter = 1;
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if (dayCounter > daysInMonth) {
                     break;
@@ -130,7 +133,7 @@ public class PdfFile {
             fieldCounter = 1;
             dayCounter = 1;
             int dayNumber = 0;
-            for (int i = 1; i < 6; i++) {
+            for (int i = 1; i < 7; i++) {
                 for (int j = 0; j < 7; j++) {
 
                     if (dayCounter > daysInMonth) {
@@ -151,9 +154,7 @@ public class PdfFile {
                 }
             }
         }
-
-
-
+        
         table.setWidthPercentage(100);
         document.add(table);
     }

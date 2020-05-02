@@ -104,7 +104,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     // create grid pane nodes array
     public void createGridPaneNodes(){
-        gridPaneNodes = new Node[7][6];
+        gridPaneNodes = new Node[7][7];
         for (Node child : calendar.getChildren()) {
             Integer column = calendar.getColumnIndex(child);
             Integer row = calendar.getRowIndex(child);
@@ -176,7 +176,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void addHandlerToDayVBoxes(){
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 VBox dayVBox = (VBox) gridPaneNodes[j][i];
                 dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
@@ -196,14 +196,19 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if(firstDayOfMonth == 0){
+            firstDayOfMonth = 7;
+        }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        GregorianCalendar gregorianCalendar2 = new GregorianCalendar(selectedYear, Calendar.NOVEMBER, 1);
 
         clearCalendar();
 
         // add day number labels to calendar fields
         int fieldCounter = 1;
         int dayCounter = 1;
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if (dayCounter > daysInMonth) {
                     break;
@@ -211,7 +216,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                 if (fieldCounter >= firstDayOfMonth) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
+//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     dayVBox.getChildren().add(dayLabel);
@@ -223,17 +228,17 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             }
         }
 
-        for(int j = 0; j < 7; j++){
-            Pane dayNamePane = (Pane) gridPaneNodes[j][0];
-            GridPane.setVgrow(dayNamePane, Priority.ALWAYS);
-        }
+//        for(int j = 0; j < 7; j++){
+//            Pane dayNamePane = (Pane) gridPaneNodes[j][0];
+//            GridPane.setVgrow(dayNamePane, Priority.ALWAYS);
+//        }
     }
 
     public void showEventsInCalendar() {
         try {
             List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
             for(int e = 0; e < events.size(); e++) {
-                for (int i = 1; i < 6; i++) {
+                for (int i = 1; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
                         VBox dayVBox = (VBox) gridPaneNodes[j][i];
                         if(dayVBox.getChildren().isEmpty()){
@@ -286,7 +291,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void clearCalendar(){
-        for(int i = 1; i < 6; i++) {
+        for(int i = 1; i < 7; i++) {
             for(int j = 0; j < 7; j++) {
                 VBox vBox = (VBox) gridPaneNodes[j][i];
                 if(vBox.getChildren().isEmpty()){
