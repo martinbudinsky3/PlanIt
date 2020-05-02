@@ -53,10 +53,10 @@ public class AlertWindowController implements Initializable {
         addHandlers();
         showDetail();
 
-        postponeTimeChoice.getItems().add("5 min");
-        postponeTimeChoice.getItems().add("30 min");
-        postponeTimeChoice.getItems().add("1 h");
-        postponeTimeChoice.getItems().add("6 h");
+        postponeTimeChoice.getItems().add(resourceBundle.getString("5minutes"));
+        postponeTimeChoice.getItems().add(resourceBundle.getString("30minutes"));
+        postponeTimeChoice.getItems().add(resourceBundle.getString("1hour"));
+        postponeTimeChoice.getItems().add(resourceBundle.getString("6hours"));
         postponeTimeChoice.setValue("5 min");
     }
 
@@ -119,16 +119,16 @@ public class AlertWindowController implements Initializable {
         String postponeTime = postponeTimeChoice.getValue();
         LocalTime previousAlertTime = event.getAlert();
         LocalTime newAlertTime = null;
-        if (postponeTime.equals("5 min")) {
+        if (postponeTime.equals(resourceBundle.getString("5minutes"))) {
             newAlertTime = event.getAlert().plusMinutes(5);
             event.setAlert(newAlertTime);
-        } else if (postponeTime.equals("30 min")) {
+        } else if (postponeTime.equals(resourceBundle.getString("30minutes"))) {
             newAlertTime = event.getAlert().plusMinutes(30);
             event.setAlert(newAlertTime);
-        } else if (postponeTime.equals("1 h")) {
+        } else if (postponeTime.equals(resourceBundle.getString("1hour"))) {
             newAlertTime = event.getAlert().plusHours(1);
             event.setAlert(newAlertTime);
-        } else if (postponeTime.equals("6 h")) {
+        } else if (postponeTime.equals(resourceBundle.getString("6hours"))) {
             newAlertTime = event.getAlert().plusHours(6);
             event.setAlert(newAlertTime);
         }

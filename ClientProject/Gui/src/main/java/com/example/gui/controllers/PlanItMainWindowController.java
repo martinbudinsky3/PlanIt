@@ -54,6 +54,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @FXML
     private ListView<String> monthsList;
 
+    private boolean threadFlag;
     private Integer selectedYear;
     private Integer selectedMonth;
     private Node[][] gridPaneNodes;
@@ -67,6 +68,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         this.eventsClient = eventsClient;
         this.usersClient = usersClient;
         this.user = user;
+        threadFlag = false;
     }
 
 
@@ -83,8 +85,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
-        System.out.println(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        startTask();
+        if(!threadFlag) {
+            startTask();
+            threadFlag = true;
+        }
         createGridPaneNodes();
         addHandlers();
         initializeMonthsAndYear();
@@ -125,7 +129,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 Event event = eventsClient.getEventToAlert(user.getIdUser());
                 if (event != null) {
                     Platform.runLater(() -> {
-                        System.out.println(event.getTitle());
                         showAlertWindow(event);
                     });
                 }
