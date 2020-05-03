@@ -83,7 +83,7 @@ public class AlertWindowController implements Initializable {
             DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm");
             timeText = event.getStarts().format(dtfTime) + "-" + event.getEnds().format(dtfTime);
         } else {
-            DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("dd.MM");
             timeText = event.getDate().format(dtfDate) + "-" + event.getEndsDate().format(dtfDate);
         }
 
