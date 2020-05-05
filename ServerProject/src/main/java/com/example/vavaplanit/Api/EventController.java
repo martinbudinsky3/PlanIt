@@ -35,12 +35,6 @@ public class EventController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /*pouzivame to?*/
-    @RequestMapping(value = "{idUser}", method = RequestMethod.GET)
-    public ResponseEntity getAllByUserId(@PathVariable("idUser") int idUser){
-        List<Event> eventList = eventService.getAllByUserId(idUser);
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
-    }
 
     @RequestMapping(value = "{idUser}/{year}/{month}", method = RequestMethod.GET)
     public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") int idUser, @PathVariable("year") int year,

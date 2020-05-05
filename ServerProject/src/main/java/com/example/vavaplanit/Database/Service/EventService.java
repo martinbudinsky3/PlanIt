@@ -26,10 +26,6 @@ public class EventService {
         return idEvent;
     }
 
-    public List<Event> getAllByUserId(int idUser){
-        return this.eventRepository.getAllByUserId(idUser);
-    }
-
     public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
         GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month - 1, 1);
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);

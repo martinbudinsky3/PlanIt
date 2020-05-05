@@ -32,12 +32,12 @@ public class EventRepository {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, event.getTitle());
-                if(event.getLocation() != null) {
+                if (event.getLocation() != null) {
                     ps.setString(2, event.getLocation());
                 } else {
                     ps.setNull(2, Types.VARCHAR);
                 }
-                if(event.getDescription() != null) {
+                if (event.getDescription() != null) {
                     ps.setString(3, event.getDescription());
                 } else {
                     ps.setNull(3, Types.VARCHAR);
@@ -52,7 +52,7 @@ public class EventRepository {
             }
         }, keyHolder);
 
-        if(keyHolder.getKeys() != null) {
+        if (keyHolder.getKeys() != null) {
             return (Integer) keyHolder.getKeys().get("idevent");
         } else {
             return null;
@@ -73,48 +73,46 @@ public class EventRepository {
             }
         }, keyHolder);
 
-        if(keyHolder.getKeys() != null) {
+        if (keyHolder.getKeys() != null) {
             return (Integer) keyHolder.getKeys().get("idevent");
         } else {
             return null;
         }
     }
 
-    public List<Event> getAllByUserId(int idUser){
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + ";";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
-    }
-
-    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate){
+    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
                 "AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate + "' ORDER BY e.starts;";
         return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
     }
 
-    public Event getEvent(int idEvent){
-        String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+    public Event getEvent(int idEvent) {
+        try {
+            String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
+            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        } catch(EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public Event getUserEvent(int idUser, int idEvent) {
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
-    }
-
-    public List<Event> getEventsToAlert(int idUser, String date, String time){
-//        try {
+        try {
             String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                    " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
-            return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
-//        } catch(EmptyResultDataAccessException e) {
-//            return null;
-//        }
+                    " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
+            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
-    public void update(int id, Event event){
+    public List<Event> getEventsToAlert(int idUser, String date, String time) {
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
+                " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
+        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
+    }
+
+    public void update(int id, Event event) {
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
                 " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
         jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEndsDate(),

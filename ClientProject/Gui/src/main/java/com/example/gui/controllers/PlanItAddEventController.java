@@ -13,6 +13,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -87,6 +88,7 @@ public class PlanItAddEventController implements Initializable {
     private Integer idEvent;
     private LocalDate initDate;
     private EventsClient eventsClient;
+    private ResourceBundle resourceBundle;
     private PlanItMainWindowController planItMainWindowController;
     private Event event;
 
@@ -107,6 +109,7 @@ public class PlanItAddEventController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
         if(idEvent == null) { // add event
             // set text to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
@@ -320,7 +323,20 @@ public class PlanItAddEventController implements Initializable {
         if(idEvent != null && event != null) {
             try {
                 System.out.println(idEvent);
-                eventsClient.deleteEvent(idUser, idEvent);
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(resourceBundle.getString("deleteConfirmationTitle"));
+                alert.setHeaderText(resourceBundle.getString("deleteConfirmationHeaderText") + event.getTitle());
+                alert.setContentText(resourceBundle.getString("deleteConfirmationQuestion"));
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    eventsClient.deleteEvent(idUser, idEvent);
+                    Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+                    stage.close();
+                } else {
+                    alert.close();
+                }
+
             } catch (Exception e){
                 System.out.println(e.getMessage());
             } finally {
@@ -328,8 +344,5 @@ public class PlanItAddEventController implements Initializable {
                 updateCalendarDisplay(date);
             }
         }
-
-        Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
-        stage.close();
     }
 }

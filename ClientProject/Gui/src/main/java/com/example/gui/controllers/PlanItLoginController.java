@@ -125,7 +125,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                 Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 window.setScene(newScene);
                 window.centerOnScreen();
-                window.resizableProperty().setValue(true);
+                window.resizableProperty().setValue(false);
                 window.show();
             }
         }

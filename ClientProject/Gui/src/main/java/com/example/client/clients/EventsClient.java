@@ -7,38 +7,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
 public class EventsClient {
-    @Autowired
-    RestTemplate restTemplate;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
 
-
-    // main only for testing
-    public static void main(String[] args) throws Exception{
-        EventsClient eventsClient = new EventsClient();
-        eventsClient.getUserEventsByMonth(1, 2020, 5);
-    }
-
-    /*pouzivame to?*/
-    public List<Event> getUserEvents(int userId) throws Exception{
-        final String uri = "http://localhost:8080/events/{userId}";
-        Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("userId", userId);
-
-        RestTemplate restTemplate = new RestTemplate();
-        String eventListJSon = restTemplate.getForObject(uri, String.class, params);
-        objectMapper.registerModule(new JavaTimeModule());
-        List<Event> events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>(){});
-
-        return events;
-    }
 
     public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception{
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");

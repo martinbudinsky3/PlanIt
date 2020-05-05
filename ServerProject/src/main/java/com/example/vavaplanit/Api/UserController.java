@@ -36,12 +36,6 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    /*pouzivame to?*/
-    @RequestMapping(method = RequestMethod.GET)
-    public List<User> getAllUsers(){
-        logger.info("Getting list of all users");
-        return userService.getAllUsers();
-    }
 
     @RequestMapping(value = "/{userName}/{userPassword}", method = RequestMethod.GET)
     public ResponseEntity getUserById(@PathVariable("userName") String userName, @PathVariable("userPassword") String userPassword){

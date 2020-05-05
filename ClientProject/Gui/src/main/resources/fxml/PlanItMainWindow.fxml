@@ -4,13 +4,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="ap" prefHeight="682.0" prefWidth="1213.0" styleClass="ap" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="ap" prefHeight="683.0" prefWidth="1213.0" styleClass="ap" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="231.0" layoutY="-2.0" prefHeight="682.0" prefWidth="785.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="214.0" AnchorPane.rightAnchor="214.0" AnchorPane.topAnchor="0.0">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="630.0" prefWidth="770.0">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="683.0" prefWidth="770.0">
                <children>
-                  <GridPane fx:id="calendar" layoutX="-2.0" layoutY="80.0" prefHeight="682.0" prefWidth="785.0" style="-fx-grid-lines-visible: true;" AnchorPane.bottomAnchor="-52.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
+                  <GridPane fx:id="calendar" layoutX="-2.0" layoutY="80.0" prefHeight="682.0" prefWidth="770.0" style="-fx-grid-lines-visible: true;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" VBox.vgrow="ALWAYS">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -30,7 +30,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
                      </rowConstraints>
                      <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header">
                            <children>
                               <Label fx:id="mondayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="112.0" text="%mondayLabel" textFill="WHITE">
                                  <font>
@@ -39,7 +39,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385#008385;" GridPane.columnIndex="1">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="1">
                            <children>
                               <Label fx:id="tuesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%tuesdayLabel" textFill="WHITE">
                                  <font>
@@ -48,7 +48,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;" GridPane.columnIndex="2">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="2">
                            <children>
                               <Label fx:id="wednesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="24.0" prefHeight="40.0" prefWidth="114.0" text="%wednesdayLabel" textFill="WHITE">
                                  <font>
@@ -57,7 +57,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;" GridPane.columnIndex="3">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="3">
                            <children>
                               <Label fx:id="thursdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%thursdayLabel" textFill="WHITE">
                                  <font>
@@ -66,7 +66,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;" GridPane.columnIndex="4">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="4">
                            <children>
                               <Label fx:id="fridayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="112.0" text="%fridayLabel" textFill="WHITE">
                                  <font>
@@ -75,7 +75,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;" GridPane.columnIndex="5">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="5">
                            <children>
                               <Label fx:id="saturdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="38.0" prefWidth="111.0" text="%saturdayLabel" textFill="WHITE">
                                  <font>
@@ -84,7 +84,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #008385;" GridPane.columnIndex="6">
+                        <Pane prefHeight="200.0" prefWidth="200.0" styleClass="weekday-header" GridPane.columnIndex="6">
                            <children>
                               <Label fx:id="sundayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="113.0" text="%sundayLabel" textFill="WHITE">
                                  <font>
@@ -160,7 +160,7 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="addEventButton" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="86.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%addEventButton" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1007.0">
+      <Button fx:id="addEventButton" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="86.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%addEventButton" AnchorPane.bottomAnchor="557.8" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1007.0" AnchorPane.topAnchor="86.00000000000004">
          <font>
             <Font size="18.0" />
          </font>
@@ -170,7 +170,7 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="savePdfButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="140.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%exportPdfButton">
+      <Button fx:id="savePdfButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="140.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%exportPdfButton" AnchorPane.leftAnchor="7.0" AnchorPane.rightAnchor="1007.0">
          <font>
             <Font size="18.0" />
          </font></Button>

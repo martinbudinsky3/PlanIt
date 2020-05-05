@@ -127,6 +127,7 @@ public class PlanItRegistrationController implements Initializable {
                 Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(newScene);
                 window.centerOnScreen();
+                window.resizableProperty().setValue(false);
                 window.show();
             }
         }

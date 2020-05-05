@@ -23,9 +23,13 @@
 }
 
 .extra-day {
-    -fx-background-color:#D3D3D3
+    -fx-background-color: #D3D3D3
 }
 
 .day {
-    -fx-background-color:#FFFFFF
+    -fx-background-color: #FFFFFF
+}
+
+.weekday-header {
+    -fx-background-color:  #008385
 }
