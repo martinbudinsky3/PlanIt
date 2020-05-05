@@ -1,10 +1,7 @@
 package com.example.gui;
 
-import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
-import com.example.gui.controllers.PlanItEventDetailController;
 import com.example.gui.controllers.PlanItLoginController;
-import com.example.gui.controllers.PlanItMainWindowController;
 import com.example.gui.utf8.UTF8Control;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -33,8 +29,10 @@ public class GuiApplication extends Application {
 			fxmlLoader.setResources(bundle);
 			AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
 			Scene newScene = new Scene(rootPane);
+			newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
 			primaryStage.setScene(newScene);
 			primaryStage.setTitle("PlanIt");
+			primaryStage.resizableProperty().setValue(false);
 			primaryStage.show();
 		} catch (Exception exception) {
 			exception.printStackTrace();

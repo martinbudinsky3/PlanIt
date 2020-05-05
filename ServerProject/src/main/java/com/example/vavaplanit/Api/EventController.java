@@ -58,8 +58,6 @@ public class EventController {
 
     }
 
-
-
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
     public ResponseEntity getEvent(@PathVariable("idEvent") int idEvent){
         logger.info("Getting event by user's: and event's id");

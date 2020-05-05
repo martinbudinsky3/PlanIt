@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="391.0" prefWidth="496.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="243.0" layoutY="48.0" text="%registrationLabel">
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="111.0" layoutY="41.0" text="%registrationLabel">
          <font>
-            <Font size="24.0" />
+            <Font size="36.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="185.0" text="%firstnameLabel">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="163.0" layoutY="212.0" text="%lastnameLabel">
+      <Label layoutX="111.0" layoutY="161.0" text="%firstnameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="163.0" layoutY="243.0" text="%usernameLabel">
+      <Label layoutX="112.0" layoutY="198.0" text="%lastnameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Label layoutX="164.0" layoutY="274.0" text="%passwordLabel">
+      <Label layoutX="112.0" layoutY="239.0" text="%usernameLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="textfieldFirstName" layoutX="301.0" layoutY="183.0" />
-      <TextField fx:id="textfieldLastName" layoutX="301.0" layoutY="210.0" />
-      <TextField fx:id="textfieldUserName" layoutX="301.0" layoutY="241.0" />
-      <PasswordField fx:id="textfieldUserpassword" layoutX="301.0" layoutY="272.0" />
-      <Label layoutX="121.0" layoutY="117.0" text="%detailsLabel">
+      <Label layoutX="112.0" layoutY="274.0" text="%passwordLabel">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="buttonRegister" layoutX="213.0" layoutY="325.0" mnemonicParsing="false" text="%registerButton" />
-      <Button fx:id="buttonCancel" layoutX="301.0" layoutY="325.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="%cancelButton" />
+      <TextField fx:id="textfieldFirstName" layoutX="235.0" layoutY="158.0" />
+      <TextField fx:id="textfieldLastName" layoutX="235.0" layoutY="195.0" />
+      <TextField fx:id="textfieldUserName" layoutX="235.0" layoutY="236.0" />
+      <PasswordField fx:id="textfieldUserpassword" layoutX="235.0" layoutY="271.0" />
+      <Label layoutX="58.0" layoutY="117.0" text="%detailsLabel">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="buttonRegister" layoutX="150.0" layoutY="330.0" mnemonicParsing="false" prefWidth="100.0" styleClass="control-button" text="%registerButton" />
+      <Button fx:id="buttonCancel" layoutX="259.0" layoutY="330.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" styleClass="control-button" text="%cancelButton" />
    </children>
 </AnchorPane>

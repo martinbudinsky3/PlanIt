@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -119,10 +121,11 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                 fxmlLoader.setResources(resourceBundle);
                 AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
                 Scene newScene = new Scene(rootPane);
-                newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
+                newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
                 Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
                 window.setScene(newScene);
                 window.centerOnScreen();
+                window.resizableProperty().setValue(true);
                 window.show();
             }
         }
@@ -136,9 +139,11 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         fxmlLoader.setResources(resourceBundle);
         AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
         Scene newScene = new Scene(rootPane);
+        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
         Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
         window.setScene(newScene);
         window.centerOnScreen();
+        window.resizableProperty().setValue(false);
         window.show();
     }
 
@@ -152,6 +157,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         Stage window = new Stage();
         window.setScene(newScene);
         window.centerOnScreen();
+        window.resizableProperty().setValue(false);
         window.show();
     }
 

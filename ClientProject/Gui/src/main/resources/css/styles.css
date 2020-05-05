@@ -1,3 +1,27 @@
 #monthsList .list-cell {
     -fx-alignment: center;
 }
+
+.event-label {
+    -fx-text-fill: #3F87D5;
+    -fx-font-weight: bold;
+}
+
+.control-button {
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #00b5b9;
+    -fx-border-radius: 8 8 8 8;
+}
+
+.control-button:hover {
+    -fx-background-color:  #008385;
+}
+
+.ap {
+    -fx-background-color: #F0F8FF;
+}
+
+.extra-day {
+    -fx-background-color:#D3D3D3
+}

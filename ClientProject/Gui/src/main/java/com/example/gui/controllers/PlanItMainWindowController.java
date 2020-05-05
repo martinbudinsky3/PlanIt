@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
@@ -244,8 +243,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        GregorianCalendar gregorianCalendar2 = new GregorianCalendar(selectedYear, Calendar.NOVEMBER, 1);
-
         clearCalendar();
 
         // add day number labels to calendar fields
@@ -254,26 +251,32 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 if (dayCounter > daysInMonth) {
-                    break;
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    dayVBox.getStyleClass().add("extra-day");
+                    continue;
                 }
 
                 if (fieldCounter >= firstDayOfMonth) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
-//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     dayVBox.getChildren().add(dayLabel);
-                    VBox.setMargin(dayLabel, new Insets(5, 0, 5, 5));
+                    VBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
+//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayCounter++;
+                } else {
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    dayVBox.getStyleClass().add("extra-day");
                 }
 
                 fieldCounter++;
             }
         }
 
+
 //        for(int j = 0; j < 7; j++){
-//            Pane dayNamePane = (Pane) gridPaneNodes[j][0];
-//            GridPane.setVgrow(dayNamePane, Priority.ALWAYS);
+//            Pane pane = (Pane) gridPaneNodes[j][0];
+//            GridPane.setVgrow(pane, Priority.ALWAYS);  // TO DO - not working yet
 //        }
     }
 
@@ -297,6 +300,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                             String eventLabelText = event.getStarts() + " " + event.getTitle();
                             eventLabel.setText(eventLabelText);
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
+                            eventLabel.setPrefWidth(dayVBox.getPrefWidth());
+                            eventLabel.getStyleClass().add("event-label");
+//                            VBox.setVgrow(eventLabel, Priority.ALWAYS);
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                                 eventLabelHandler(eventLabel);
                                 mouseEvent.consume();
@@ -321,7 +327,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     continue;
                 }
                 vBox.getChildren().clear();
-                System.out.println();
             }
         }
     }
@@ -360,6 +365,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.setScene(scene);
         window.initModality(Modality.WINDOW_MODAL);
         window.initOwner(ap.getScene().getWindow());
+        window.resizableProperty().setValue(false);
         window.show();
     }
 
@@ -378,10 +384,12 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             ex.printStackTrace();
         }
         Scene scene = new Scene(anchorPane);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
         Stage window = new Stage();
         window.setScene(scene);
         window.initModality(Modality.WINDOW_MODAL);
         window.initOwner(ap.getScene().getWindow());
+        window.resizableProperty().setValue(false);
         window.show();
     }
 
@@ -400,6 +408,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Stage window = new Stage();
         window.setScene(newScene);
         window.centerOnScreen();
+        window.resizableProperty().setValue(false);
         window.show();
     }
 
@@ -420,10 +429,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Stage window = new Stage();
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+//        System.out.println("Size of screen:");
+//        System.out.println(primaryScreenBounds.getWidth());
+//        System.out.println(primaryScreenBounds.getHeight());
         window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 380);
         window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 270);
 
         window.setScene(scene);
+        window.resizableProperty().setValue(false);
         window.show();
     }
 }

@@ -55,11 +55,11 @@
       <TextArea fx:id="descriptionField" layoutX="216.0" layoutY="325.0" prefHeight="167.0" prefWidth="443.0" />
       <DatePicker fx:id="endsDateField" layoutX="415.0" layoutY="230.0" prefHeight="26.0" prefWidth="178.0" AnchorPane.leftAnchor="415.0" AnchorPane.rightAnchor="110.60000000000002" />
       <DatePicker fx:id="alertDateField" layoutX="415.0" layoutY="278.0" prefHeight="26.0" prefWidth="178.0" AnchorPane.rightAnchor="111.0" />
-      <Button fx:id="saveButton" layoutX="282.0" layoutY="509.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="%saveButton">
+      <Button fx:id="saveButton" layoutX="282.0" layoutY="509.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" styleClass="control-button" text="%saveButton">
          <font>
             <Font size="14.0" />
          </font></Button>
-      <Button fx:id="deleteButton" layoutX="389.0" layoutY="509.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="%deleteButton">
+      <Button fx:id="deleteButton" layoutX="389.0" layoutY="509.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="89.0" styleClass="control-button" text="%deleteButton">
          <font>
             <Font size="14.0" />
          </font></Button>
