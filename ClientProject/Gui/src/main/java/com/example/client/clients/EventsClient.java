@@ -62,18 +62,18 @@ public class EventsClient {
         return event;
     }
 
-    public Event getEventToAlert(int idUser) throws Exception{
+    public List<Event> getEventToAlert(int idUser) throws Exception{
         final String uri = "http://localhost:8080/events/alert/{idUser}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
 
         RestTemplate restTemplate = new RestTemplate();
         try {
-            String eventJSon = restTemplate.getForObject(uri, String.class, params);
+            String eventsJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
-            Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
+            List<Event> events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {
             });
-            return event;
+            return events;
         } catch(final HttpServerErrorException.InternalServerError e){
             return null;
         }

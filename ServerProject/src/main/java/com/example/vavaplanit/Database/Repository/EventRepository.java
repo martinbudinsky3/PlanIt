@@ -104,14 +104,14 @@ public class EventRepository {
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
-    public Event getEventToAlert(int idUser, String date, String time){
-        try {
+    public List<Event> getEventsToAlert(int idUser, String date, String time){
+//        try {
             String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
                     " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
-            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
-        } catch(EmptyResultDataAccessException e) {
-            return null;
-        }
+            return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
+//        } catch(EmptyResultDataAccessException e) {
+//            return null;
+//        }
     }
 
     public void update(int id, Event event){

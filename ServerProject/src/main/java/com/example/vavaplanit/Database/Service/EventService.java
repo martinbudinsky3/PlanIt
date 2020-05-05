@@ -48,14 +48,14 @@ public class EventService {
         return this.eventRepository.getUserEvent(idUser, idEvent);
     }
 
-    public Event getEventToAlert(int idUser){
+    public List<Event> getEventsToAlert(int idUser){
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String time = LocalTime.now().withSecond(0).format(dtfTime);
         String date = LocalDate.now().format(dtfDate);
 
-        return this.eventRepository.getEventToAlert(idUser, date, time);
+        return this.eventRepository.getEventsToAlert(idUser, date, time);
     }
 
     public void update(int id, Event event){
