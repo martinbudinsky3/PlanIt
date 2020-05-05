@@ -115,10 +115,10 @@ public class EventRepository {
     }
 
     public void update(int id, Event event){
-        String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends = ?, alert = ?, " +
-                "description = ? WHERE idevent = ?";
-        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEnds(),
-                event.getAlert(), event.getDescription(), id);
+        String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
+                " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
+        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEndsDate(),
+                event.getEnds(), event.getAlertDate(), event.getAlert(), event.getDescription(), id);
     }
 
     public void deleteFromUserEvent(int idUser, int idEvent) {
