@@ -124,6 +124,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void runTask() {
+        int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
         while(true) {
             try {
                 Event event = eventsClient.getEventToAlert(user.getIdUser());
@@ -133,7 +134,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     });
                 }
 
-                Thread.sleep(60*1000);
+                Thread.sleep(seconds*1000);
+                seconds = 60;
             }
             catch (Exception e) {
                 e.printStackTrace();
