@@ -41,6 +41,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @FXML
     private Button changeLanguageButton;
     @FXML
+    private Button logoutButton;
+    @FXML
     private Label yearLabel;
     @FXML
     private Label monthLabel;
@@ -161,10 +163,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void addHandlers() {
+        addHandlerToDayVBoxes();
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
         addEventButton.setOnAction(e -> addEventButtonHandler(LocalDate.now()));
-        addHandlerToDayVBoxes();
+        logoutButton.setOnAction(e -> logoutButtonHandler());
         changeLanguageButton.setOnAction(e -> buttonLanguageSelectHandler(e));
         savePdfButton.setOnAction(e -> {
             try {
@@ -250,9 +253,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         int dayCounter = 1;
         for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
-                if (dayCounter > daysInMonth) {
+                if (dayCounter > daysInMonth || fieldCounter < firstDayOfMonth) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("extra-day");
+                    fieldCounter++;
                     continue;
                 }
 
@@ -261,15 +266,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     dayVBox.getChildren().add(dayLabel);
+                    dayVBox.getStyleClass().clear();
+                    dayVBox.getStyleClass().add("day");
                     VBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
 //                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayCounter++;
-                } else {
-                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    dayVBox.getStyleClass().add("extra-day");
+                    fieldCounter++;
                 }
-
-                fieldCounter++;
             }
         }
 
@@ -391,6 +394,27 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.initOwner(ap.getScene().getWindow());
         window.resizableProperty().setValue(false);
         window.show();
+    }
+
+    public void logoutButtonHandler() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+            PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
+            fxmlLoader.setController(planItLoginController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = (Stage) ap.getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.setTitle("PlanIt");
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public void buttonLanguageSelectHandler(ActionEvent event){

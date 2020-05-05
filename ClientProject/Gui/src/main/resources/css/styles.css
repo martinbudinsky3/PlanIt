@@ -25,3 +25,7 @@
 .extra-day {
     -fx-background-color:#D3D3D3
 }
+
+.day {
+    -fx-background-color:#FFFFFF
+}

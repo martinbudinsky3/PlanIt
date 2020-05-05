@@ -170,9 +170,14 @@
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="savePdfButton" alignment="CENTER" contentDisplay="CENTER" layoutX="7.0" layoutY="535.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%exportPdfButton">
+      <Button fx:id="savePdfButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="140.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%exportPdfButton">
          <font>
             <Font size="18.0" />
          </font></Button>
+      <Button fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" layoutX="6.0" layoutY="556.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="199.0" styleClass="control-button" text="%logoutButton">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

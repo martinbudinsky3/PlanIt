@@ -22,6 +22,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PlanItRegistrationController implements Initializable {
+    @FXML
+    private AnchorPane ap;
 
     @FXML
     private TextField textfieldLastName;
@@ -65,6 +67,24 @@ public class PlanItRegistrationController implements Initializable {
     }
 
     private void buttonCancelHandler(ActionEvent e) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+            PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
+            fxmlLoader.setController(planItLoginController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = (Stage) ap.getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.setTitle("PlanIt");
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     private void buttonRegisterHandler(ActionEvent event) throws Exception {
