@@ -24,6 +24,12 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
@@ -134,6 +140,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     Event event = events.get(i);
                     Platform.runLater(() -> {
                         showAlertWindow(event);
+                        playAlertSound();
                     });
                 }
 
@@ -143,6 +150,18 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void playAlertSound(){
+        URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/chimes.wav");
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch(Exception e){
+            e.printStackTrace();
         }
     }
 
