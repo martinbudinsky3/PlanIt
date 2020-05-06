@@ -9,9 +9,14 @@
 
 .control-button {
     -fx-font-weight: bold;
+    -fx-font-size: 14px;
     -fx-text-fill: #FFFFFF;
     -fx-background-color: #00b5b9;
     -fx-border-radius: 8 8 8 8;
+}
+
+.menu-button{
+    -fx-font-size: 18px;
 }
 
 .control-button:hover {
