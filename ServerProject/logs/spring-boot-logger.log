@@ -1,323 +1,55 @@
-2020-05-05 20:33:02,437 WARN org.springframework.boot.StartupInfoLogger [main] InetAddress.getLocalHost().getHostName() took 20004 milliseconds to respond. Please verify your network configuration.
-2020-05-05 20:33:22,447 INFO org.springframework.boot.StartupInfoLogger [main] Starting Main on DESKTOP-6TQNAQQ with PID 16696 (D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject\target\classes started by HP in D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject)
-2020-05-05 20:33:22,449 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-05-05 20:33:23,352 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2020-05-05 20:33:23,391 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 25ms. Found 0 JPA repository interfaces.
-2020-05-05 20:33:24,562 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2020-05-05 20:33:24,576 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2020-05-05 20:33:24,577 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
-2020-05-05 20:33:24,707 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2020-05-05 20:33:24,707 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2155 ms
-2020-05-05 20:33:24,969 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2020-05-05 20:33:46,191 ERROR com.zaxxer.hikari.pool.HikariPool [main] HikariPool-1 - Exception during pool initialization.
-org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:525)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:146)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:197)
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:211)
-	at org.postgresql.Driver.makeConnection(Driver.java:459)
-	at org.postgresql.Driver.connect(Driver.java:261)
-	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
-	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:354)
-	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
-	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:473)
-	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:554)
-	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
-	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
-	at org.springframework.jdbc.datasource.DataSourceUtils.fetchConnection(DataSourceUtils.java:158)
-	at org.springframework.jdbc.datasource.DataSourceUtils.doGetConnection(DataSourceUtils.java:116)
-	at org.springframework.jdbc.datasource.DataSourceUtils.getConnection(DataSourceUtils.java:79)
-	at org.springframework.jdbc.core.JdbcTemplate.execute(JdbcTemplate.java:324)
-	at org.springframework.boot.jdbc.EmbeddedDatabaseConnection.isEmbedded(EmbeddedDatabaseConnection.java:120)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateDefaultDdlAutoProvider.getDefaultDdlAuto(HibernateDefaultDdlAutoProvider.java:42)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration.lambda$getVendorProperties$1(HibernateJpaConfiguration.java:130)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings.getDdlAuto(HibernateSettings.java:41)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties.determineDdlAuto(HibernateProperties.java:136)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties.getAdditionalProperties(HibernateProperties.java:102)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties.determineHibernateProperties(HibernateProperties.java:94)
-	at org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaConfiguration.getVendorProperties(HibernateJpaConfiguration.java:132)
-	at org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration.entityManagerFactory(JpaBaseConfiguration.java:133)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154)
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:651)
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:636)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1338)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:557)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
-	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1108)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
-	at com.example.vavaplanit.Main.main(Main.java:17)
-2020-05-05 20:33:46,309 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2020-05-05 20:33:46,392 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
-2020-05-05 20:33:46,582 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2020-05-05 20:33:46,703 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2020-05-05 20:33:47,757 ERROR com.zaxxer.hikari.pool.HikariPool [main] HikariPool-1 - Exception during pool initialization.
-org.postgresql.util.PSQLException: FATAL: password authentication failed for user "postgres"
-	at org.postgresql.core.v3.ConnectionFactoryImpl.doAuthentication(ConnectionFactoryImpl.java:525)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:146)
-	at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:197)
-	at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
-	at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:211)
-	at org.postgresql.Driver.makeConnection(Driver.java:459)
-	at org.postgresql.Driver.connect(Driver.java:261)
-	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
-	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:354)
-	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:202)
-	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:473)
-	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:554)
-	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
-	at com.zaxxer.hikari.HikariDataSource.getConnection(HikariDataSource.java:112)
-	at org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl.getConnection(DatasourceConnectionProviderImpl.java:122)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator$ConnectionProviderJdbcConnectionAccess.obtainConnection(JdbcEnvironmentInitiator.java:180)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:68)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:237)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
-	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:152)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:286)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:243)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:176)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:118)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1202)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1233)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:391)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:378)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1855)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1792)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:595)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
-	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1108)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
-	at com.example.vavaplanit.Main.main(Main.java:17)
-2020-05-05 20:33:47,758 WARN org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator [main] HHH000342: Could not obtain connection to query metadata : FATAL: password authentication failed for user "postgres"
-2020-05-05 20:33:47,765 WARN org.springframework.context.support.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
-2020-05-05 20:33:47,770 INFO org.apache.juli.logging.DirectJDKLog [main] Stopping service [Tomcat]
-2020-05-05 20:33:47,787 INFO org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener [main] 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-2020-05-05 20:33:47,790 ERROR org.springframework.boot.SpringApplication [main] Application run failed
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1796)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:595)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:517)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:323)
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:222)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:321)
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
-	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1108)
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:868)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:747)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:315)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
-	at com.example.vavaplanit.Main.main(Main.java:17)
-Caused by: org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment]
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:275)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:237)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
-	at org.hibernate.id.factory.internal.DefaultIdentifierGeneratorFactory.injectServices(DefaultIdentifierGeneratorFactory.java:152)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.injectDependencies(AbstractServiceRegistryImpl.java:286)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.initializeService(AbstractServiceRegistryImpl.java:243)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.getService(AbstractServiceRegistryImpl.java:214)
-	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.<init>(InFlightMetadataCollectorImpl.java:176)
-	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:118)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1202)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1233)
-	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:391)
-	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:378)
-	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1855)
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1792)
-	... 16 common frames omitted
-Caused by: org.hibernate.HibernateException: Access to DialectResolutionInfo cannot be null when 'hibernate.dialect' not set
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.determineDialect(DialectFactoryImpl.java:100)
-	at org.hibernate.engine.jdbc.dialect.internal.DialectFactoryImpl.buildDialect(DialectFactoryImpl.java:54)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:137)
-	at org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator.initiateService(JdbcEnvironmentInitiator.java:35)
-	at org.hibernate.boot.registry.internal.StandardServiceRegistryImpl.initiateService(StandardServiceRegistryImpl.java:101)
-	at org.hibernate.service.internal.AbstractServiceRegistryImpl.createService(AbstractServiceRegistryImpl.java:263)
-	... 33 common frames omitted
-2020-05-05 20:37:04,796 WARN org.springframework.boot.StartupInfoLogger [main] InetAddress.getLocalHost().getHostName() took 20002 milliseconds to respond. Please verify your network configuration.
-2020-05-05 20:37:24,807 INFO org.springframework.boot.StartupInfoLogger [main] Starting Main on DESKTOP-6TQNAQQ with PID 12636 (D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject\target\classes started by HP in D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject)
-2020-05-05 20:37:24,811 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-05-05 20:37:25,591 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2020-05-05 20:37:25,628 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 22ms. Found 0 JPA repository interfaces.
-2020-05-05 20:37:26,734 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2020-05-05 20:37:26,747 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2020-05-05 20:37:26,747 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
-2020-05-05 20:37:26,853 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2020-05-05 20:37:26,854 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1915 ms
-2020-05-05 20:37:27,068 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2020-05-05 20:37:47,288 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2020-05-05 20:37:47,347 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2020-05-05 20:37:47,434 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
-2020-05-05 20:37:47,612 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2020-05-05 20:37:47,746 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
-2020-05-05 20:37:48,267 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2020-05-05 20:37:48,276 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2020-05-05 20:37:48,395 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2020-05-05 20:37:48,565 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2020-05-05 20:37:48,863 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2020-05-05 20:37:48,865 INFO org.springframework.boot.StartupInfoLogger [main] Started Main in 104.528 seconds (JVM running for 104.995)
-2020-05-05 20:38:12,298 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-05-05 20:38:12,299 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
-2020-05-05 20:38:12,307 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 8 ms
-2020-05-05 20:38:12,398 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user by his user name and user password
-2020-05-05 20:38:12,413 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User successfully logged in
-2020-05-05 20:38:12,715 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events to alert by user's id: 1
-2020-05-05 20:38:12,729 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:38:12,741 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
-2020-05-05 20:38:12,750 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning events.
-2020-05-05 20:38:34,121 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:38:34,125 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Events successfully found. Returning events.
-2020-05-05 20:38:38,174 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:38:38,182 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Events successfully found. Returning events.
-2020-05-05 20:38:44,855 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:38:44,860 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning events.
-2020-05-05 20:38:48,175 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:38:48,181 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Events successfully found. Returning events.
-2020-05-05 20:38:50,530 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events by user's id: 1, year: 2020 and month: 1
-2020-05-05 20:38:50,532 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:38:51,511 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events by user's id: 1, year: 2020 and month: 2
-2020-05-05 20:38:51,513 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:39:12,248 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 3
-2020-05-05 20:39:12,248 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events to alert by user's id: 1
-2020-05-05 20:39:12,251 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:39:12,252 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Returning events to alert.
-2020-05-05 20:39:15,925 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events by user's id: 1, year: 2020 and month: 4
-2020-05-05 20:39:15,927 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:39:18,693 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 20:39:18,699 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning events.
-2020-05-05 20:39:36,569 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-4] Inserting new User. First name: martin, last name: martin
-2020-05-05 20:39:36,625 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-4] User successfully inserted
-2020-05-05 20:39:36,669 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events to alert by user's id: 18
-2020-05-05 20:39:36,670 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Returning events to alert.
-2020-05-05 20:39:36,670 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 18, year: 2020 and month: 5
-2020-05-05 20:39:36,672 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:39:47,208 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 18, year: 2020 and month: 3
-2020-05-05 20:39:47,210 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 20:40:46,415 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-8] Inserting new User. First name: mato, last name: mato
-2020-05-05 20:40:46,418 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-8] User successfully inserted
-2020-05-05 20:40:46,556 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events to alert by user's id: 19
-2020-05-05 20:40:46,558 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Returning events to alert.
-2020-05-05 20:40:46,570 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 19, year: 2020 and month: 5
-2020-05-05 20:40:46,573 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:28:45,738 WARN org.springframework.boot.StartupInfoLogger [main] InetAddress.getLocalHost().getHostName() took 20004 milliseconds to respond. Please verify your network configuration.
-2020-05-05 21:29:05,745 INFO org.springframework.boot.StartupInfoLogger [main] Starting Main on DESKTOP-6TQNAQQ with PID 18288 (D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject\target\classes started by HP in D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject)
-2020-05-05 21:29:05,746 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-05-05 21:29:06,830 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2020-05-05 21:29:06,865 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 20ms. Found 0 JPA repository interfaces.
-2020-05-05 21:29:07,855 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
-2020-05-05 21:29:07,876 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
-2020-05-05 21:29:07,876 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
-2020-05-05 21:29:07,983 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
-2020-05-05 21:29:07,983 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 2072 ms
-2020-05-05 21:29:08,180 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
-2020-05-05 21:29:28,393 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
-2020-05-05 21:29:28,444 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
-2020-05-05 21:29:28,517 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
-2020-05-05 21:29:28,654 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
-2020-05-05 21:29:28,779 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
-2020-05-05 21:29:29,318 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
-2020-05-05 21:29:29,326 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
-2020-05-05 21:29:29,485 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2020-05-05 21:29:29,684 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
-2020-05-05 21:29:29,965 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
-2020-05-05 21:29:29,968 INFO org.springframework.boot.StartupInfoLogger [main] Started Main in 104.799 seconds (JVM running for 105.233)
-2020-05-05 21:31:43,914 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
-2020-05-05 21:31:43,915 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
-2020-05-05 21:31:43,923 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 7 ms
-2020-05-05 21:31:44,014 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user by his user name and user password
-2020-05-05 21:31:44,034 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User successfully logged in
-2020-05-05 21:31:44,326 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events to alert by user's id: 1
-2020-05-05 21:31:44,340 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 21:31:44,351 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
-2020-05-05 21:31:44,359 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning events.
-2020-05-05 21:32:00,384 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
-2020-05-05 21:32:00,387 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning events to alert.
-2020-05-05 21:32:22,837 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2021 and month: 5
-2020-05-05 21:32:22,839 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:32:23,716 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2022 and month: 5
-2020-05-05 21:32:23,720 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:32:44,718 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2023 and month: 5
-2020-05-05 21:32:44,721 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:32:49,085 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events by user's id: 1, year: 2022 and month: 5
-2020-05-05 21:32:49,088 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:32:50,661 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events by user's id: 1, year: 2021 and month: 5
-2020-05-05 21:32:50,664 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Error. Events not found, 500 INTERNAL_SERVER_ERROR
-2020-05-05 21:32:52,231 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 5
-2020-05-05 21:32:52,237 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Events successfully found. Returning events.
-2020-05-05 21:33:00,399 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events to alert by user's id: 1
-2020-05-05 21:33:00,401 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Returning events to alert.
-2020-05-05 21:34:20,416 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
-2020-05-05 21:34:20,419 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning events to alert.
-2020-05-05 21:35:00,427 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
-2020-05-05 21:35:00,428 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning events to alert.
-2020-05-05 21:36:20,437 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events to alert by user's id: 1
-2020-05-05 21:36:20,439 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Returning events to alert.
-2020-05-05 21:37:00,448 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events to alert by user's id: 1
-2020-05-05 21:37:00,450 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Returning events to alert.
-2020-05-05 21:38:20,461 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events to alert by user's id: 1
-2020-05-05 21:38:20,466 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Returning events to alert.
-2020-05-05 21:39:00,475 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events to alert by user's id: 1
-2020-05-05 21:39:00,477 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Returning events to alert.
-2020-05-05 21:40:20,493 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events to alert by user's id: 1
-2020-05-05 21:40:20,495 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
-2020-05-05 21:41:00,504 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
-2020-05-05 21:41:00,508 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning events to alert.
-2020-05-05 21:42:20,522 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events to alert by user's id: 1
-2020-05-05 21:42:20,524 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Returning events to alert.
-2020-05-05 21:43:00,538 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events to alert by user's id: 1
-2020-05-05 21:43:00,542 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Returning events to alert.
-2020-05-05 21:44:20,560 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events to alert by user's id: 1
-2020-05-05 21:44:20,561 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Returning events to alert.
-2020-05-05 21:45:00,571 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events to alert by user's id: 1
-2020-05-05 21:45:00,573 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Returning events to alert.
-2020-05-05 21:46:20,594 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events to alert by user's id: 1
-2020-05-05 21:46:20,596 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Returning events to alert.
-2020-05-05 21:47:00,603 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events to alert by user's id: 1
-2020-05-05 21:47:00,609 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
-2020-05-05 21:48:20,628 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
-2020-05-05 21:48:20,630 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning events to alert.
-2020-05-05 21:49:00,639 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events to alert by user's id: 1
-2020-05-05 21:49:00,641 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Returning events to alert.
-2020-05-05 21:50:20,657 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events to alert by user's id: 1
-2020-05-05 21:50:20,660 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Returning events to alert.
+2020-05-06 01:02:18,278 WARN org.springframework.boot.StartupInfoLogger [main] InetAddress.getLocalHost().getHostName() took 20003 milliseconds to respond. Please verify your network configuration.
+2020-05-06 01:02:38,309 INFO org.springframework.boot.StartupInfoLogger [main] Starting Main on DESKTOP-6TQNAQQ with PID 14716 (D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject\target\classes started by HP in D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject)
+2020-05-06 01:02:38,313 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-06 01:02:39,810 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-06 01:02:39,867 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 36ms. Found 0 JPA repository interfaces.
+2020-05-06 01:02:41,529 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-06 01:02:41,557 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-06 01:02:41,557 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-06 01:02:41,803 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-06 01:02:41,804 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3333 ms
+2020-05-06 01:02:42,171 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-06 01:03:02,746 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-06 01:03:02,845 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-06 01:03:03,137 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-06 01:03:03,910 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-06 01:03:04,927 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2020-05-06 01:03:06,716 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-06 01:03:06,744 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-06 01:03:07,054 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-06 01:03:07,502 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-06 01:03:07,974 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-06 01:03:07,980 INFO org.springframework.boot.StartupInfoLogger [main] Started Main in 111.358 seconds (JVM running for 113.89)
+2020-05-06 01:03:56,921 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-06 01:03:56,923 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-05-06 01:03:56,946 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 22 ms
+2020-05-06 01:03:57,172 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user by his user name and user password
+2020-05-06 01:03:57,202 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User successfully logged in
+2020-05-06 01:03:57,727 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events to alert by user's id: 1
+2020-05-06 01:03:57,749 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-06 01:03:57,764 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
+2020-05-06 01:03:57,772 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning events.
+2020-05-06 01:04:00,833 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
+2020-05-06 01:04:00,840 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning events to alert.
+2020-05-06 01:04:10,916 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 3
+2020-05-06 01:04:10,919 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:12,227 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 4
+2020-05-06 01:04:12,229 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:13,494 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-06 01:04:13,499 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Events successfully found. Returning events.
+2020-05-06 01:04:15,837 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events by user's id: 1, year: 2020 and month: 6
+2020-05-06 01:04:15,840 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:17,109 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events by user's id: 1, year: 2020 and month: 7
+2020-05-06 01:04:17,116 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:18,528 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 8
+2020-05-06 01:04:18,533 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:19,570 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 9
+2020-05-06 01:04:19,576 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:21,992 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-06 01:04:22,000 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Events successfully found. Returning events.
+2020-05-06 01:04:24,004 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2021 and month: 5
+2020-05-06 01:04:24,006 ERROR com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Error. Events not found, 500 INTERNAL_SERVER_ERROR
+2020-05-06 01:04:25,191 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-06 01:04:25,198 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Events successfully found. Returning events.
+2020-05-06 01:04:30,994 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-06 01:04:31,000 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Events successfully found. Returning events.

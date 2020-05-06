@@ -269,18 +269,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("day");
                     VBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
-//                    GridPane.setVgrow(dayVBox, Priority.ALWAYS);  // TO DO - not working yet
                     dayCounter++;
                     fieldCounter++;
                 }
             }
         }
-
-
-//        for(int j = 0; j < 7; j++){
-//            Pane pane = (Pane) gridPaneNodes[j][0];
-//            GridPane.setVgrow(pane, Priority.ALWAYS);  // TO DO - not working yet
-//        }
     }
 
     public void showEventsInCalendar() {
@@ -305,7 +298,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                             eventLabel.setId(Integer.toString(event.getIdEvent()));
                             eventLabel.setPrefWidth(dayVBox.getPrefWidth());
                             eventLabel.getStyleClass().add("event-label");
-//                            VBox.setVgrow(eventLabel, Priority.ALWAYS);
                             eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> {
                                 eventLabelHandler(eventLabel);
                                 mouseEvent.consume();

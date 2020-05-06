@@ -331,17 +331,17 @@ public class PlanItAddEventController implements Initializable {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
                     eventsClient.deleteEvent(idUser, idEvent);
+                    LocalDate date = event.getDate();
+                    updateCalendarDisplay(date);
                     Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                     stage.close();
                 } else {
                     alert.close();
+                    return;
                 }
 
             } catch (Exception e){
                 System.out.println(e.getMessage());
-            } finally {
-                LocalDate date = event.getDate();
-                updateCalendarDisplay(date);
             }
         }
     }
