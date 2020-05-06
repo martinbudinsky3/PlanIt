@@ -4,9 +4,7 @@ import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -39,8 +37,8 @@ public class PdfFile {
         document.open();
         setText(document);
         document.add( Chunk.NEWLINE );
-        document.add( Chunk.NEWLINE );
         setTable(document);
+        document.add( Chunk.NEWLINE );
         document.close();
     }
 
@@ -56,19 +54,35 @@ public class PdfFile {
         };
         String month = months[selectedMonth - 1];
 
-        Paragraph paragraph = new Paragraph();
-        paragraph.setAlignment(Element.ALIGN_CENTER);
+        Paragraph paragraph_date = new Paragraph();
+        paragraph_date.setAlignment(Element.ALIGN_CENTER);
 
-        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 18, BaseColor.BLACK);
-        Chunk chunk = new Chunk(month + " " + selectedYear, font);
+        Font font_date = FontFactory.getFont(FontFactory.TIMES_ROMAN, 30, BaseColor.BLACK);
+        Chunk date = new Chunk(month + " " + selectedYear, font_date);
 
-        paragraph.add(chunk);
-        document.add(paragraph);
+
+        Paragraph paragraph_name = new Paragraph();
+
+        Font font_name = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, BaseColor.BLACK);
+        String belong = new String(resourceBundle.getString("belong"));
+        Chunk name = new Chunk(belong + " " + user.getFirstName() + " " + user.getLastName(), font_name);
+
+        paragraph_date.add(date);
+        paragraph_name.add(name);
+        document.add(paragraph_date);
+        document.add( Chunk.NEWLINE );
+        document.add( Chunk.NEWLINE );
+        document.add(paragraph_name);
     }
 
     public void setTable(Document document) throws Exception {
 
         PdfPTable table = new PdfPTable(7);
+
+        Font font_numbers = new Font(Font.FontFamily.TIMES_ROMAN, 8, Font.BOLD);
+        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8, BaseColor.BLACK);
+        Font font_days = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD);
+
 
         /*set table headers*/
         Stream.of(
@@ -80,13 +94,12 @@ public class PdfFile {
                 .forEach(columnTitle -> {
                     PdfPCell header = new PdfPCell();
                     header.setBackgroundColor(new BaseColor(204, 255, 255));
-                    header.setPhrase(new Phrase(columnTitle));
+                    header.setPhrase(new Phrase(columnTitle, font_days));
                     header.setHorizontalAlignment(Element.ALIGN_CENTER);
                     header.setVerticalAlignment(Element.ALIGN_CENTER);
                     table.addCell(header);
                 });
 
-        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 8, BaseColor.BLACK);
 
 
         /*set empty table cells*/
@@ -94,6 +107,7 @@ public class PdfFile {
             for (int j = 0; j < 6; j++){
                 PdfPCell cell = new PdfPCell();
                 cell.setMinimumHeight(70);
+                cell.setBackgroundColor(new BaseColor(230, 230, 230));
                 table.addCell(cell);
             }
         }
@@ -118,7 +132,9 @@ public class PdfFile {
 
                     PdfPCell cell = table.getRow(i).getCells()[j];
 
-                    cell.addElement(new Paragraph(Integer.toString(dayCounter) + "\n", font));
+                    cell.addElement(new Paragraph(Integer.toString(dayCounter) + "\n", font_numbers));
+                    cell.setBackgroundColor(BaseColor.WHITE);
+
 
                     dayCounter++;
                 }
@@ -145,7 +161,7 @@ public class PdfFile {
                         Event event = events.get(e);
                         if (event.getDate().getDayOfMonth() == dayNumber) {
                             PdfPCell cell = table.getRow(i).getCells()[j];
-                            cell.addElement(new Paragraph(event.getTitle(), font));
+                            cell.addElement(new Paragraph(event.getStarts() + " " + event.getTitle(), font));
                         }
 
                         dayCounter++;
