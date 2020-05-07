@@ -38,8 +38,7 @@ public class UsersClient {
         User user = null;
 
 //        try {
-//            String userJSon = restTemplate.getForObject(uri, String.class, params);
-            String userJSon = restTemplate.exchange()
+            String userJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
             user = objectMapper.readValue(userJSon, new TypeReference<User>(){});
             logger.info("User successfully logged in");

@@ -1,8 +1,0 @@
-2020-05-07 17:00:52,551 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-05-07 17:00:53,248 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-07 17:00:53,397 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-05-07 17:00:53,425 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
-2020-05-07 17:00:53,601 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-07 17:00:53,612 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-07 17:01:00,602 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-05-07 17:01:00,620 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
