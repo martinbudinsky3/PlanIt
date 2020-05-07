@@ -1,6 +1,6 @@
 package com.example.gui.controllers;
 
-import com.example.gui.utf8.UTF8Control;
+import com.example.gui.utils.UTF8Control;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,7 +10,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import java.net.URL;
 import java.util.Locale;
-import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 public class LanguageSelectorController implements Initializable {

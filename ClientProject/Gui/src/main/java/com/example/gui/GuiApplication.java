@@ -2,7 +2,7 @@ package com.example.gui;
 
 import com.example.client.clients.UsersClient;
 import com.example.gui.controllers.PlanItLoginController;
-import com.example.gui.utf8.UTF8Control;
+import com.example.gui.utils.UTF8Control;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

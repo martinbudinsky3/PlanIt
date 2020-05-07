@@ -106,7 +106,7 @@ public class PlanItRegistrationController implements Initializable {
 
             Integer id = usersClient.addUser(user);
 
-            if (id == -1){
+            if (id == null){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
                 alert.setHeaderText(null);

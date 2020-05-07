@@ -212,3 +212,13 @@
 2020-05-06 21:03:55,282 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
 2020-05-06 21:04:00,317 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
 2020-05-06 21:04:00,323 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
+2020-05-07 18:34:55,465 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: aFirst name: a, last name: a
+2020-05-07 18:34:55,828 ERROR com.example.client.clients.UsersClient [JavaFX Application Thread] Error inserting new user.Username: aFirst name: a, last name: a. HTTP Status: 500
+2020-05-07 18:58:42,965 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-07 18:58:43,175 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
+2020-05-07 18:58:43,266 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 18:58:43,284 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:43,319 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 18:58:43,325 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:46,723 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:46,741 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]

@@ -1,4 +1,4 @@
-package com.example.gui.utf8;
+package com.example.gui.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

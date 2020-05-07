@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -26,11 +27,19 @@ public class EventsClient {
         params.put("year", year);
         params.put("month", month);
 
+        List<Event> events = null;
+
         RestTemplate restTemplate = new RestTemplate();
-        String eventListJSon = restTemplate.getForObject(uri, String.class, params);
-        objectMapper.registerModule(new JavaTimeModule());
-        List<Event> events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>(){});
-        logger.info("Returning events by year and month.");
+        try {
+            String eventListJSon = restTemplate.getForObject(uri, String.class, params);
+            objectMapper.registerModule(new JavaTimeModule());
+            events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
+            });
+            logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
+        }
+        catch (HttpStatusCodeException e){
+            logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode());
+        }
 
         return events;
     }
@@ -42,11 +51,19 @@ public class EventsClient {
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
 
+        Event event = null;
         RestTemplate restTemplate = new RestTemplate();
-        String eventJSon = restTemplate.getForObject(uri, String.class, params);
-        objectMapper.registerModule(new JavaTimeModule());
-        Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>(){});
-        logger.info("Returning event.");
+
+        try {
+            String eventJSon = restTemplate.getForObject(uri, String.class, params);
+            objectMapper.registerModule(new JavaTimeModule());
+            event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {});
+            logger.info("Returning event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
+        }
+        catch (HttpStatusCodeException e) {
+            logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID. HTTP status: " + e.getRawStatusCode());
+        }
+
         return event;
     }
 
@@ -56,35 +73,35 @@ public class EventsClient {
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
 
+        List<Event> events = null;
+
         RestTemplate restTemplate = new RestTemplate();
         try {
             String eventsJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
-            List<Event> events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {
-            });
-            logger.info("Returning events to alert.");
-            return events;
-        } catch(final HttpServerErrorException.InternalServerError e){
-            logger.error("Server error in returning events.");
-            return null;
+            events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {});
+            logger.info("Returning all user's [" + idUser +"] events to alert.");
+        } catch(final HttpStatusCodeException e){
+            logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode());
         }
+        return events;
     }
 
-    public int addEvent(Event event) throws Exception{
-        logger.info("Inserting event");
+    public Integer addEvent(Event event) throws Exception{
+        logger.info("Inserting event " + event.getTitle());
         final String uri = "http://localhost:8080/events";
         RestTemplate restTemplate = new RestTemplate();
+        Integer idEvent = null;
 
         try {
             String id = restTemplate.postForObject(uri, event, String.class);
-            Integer idEvent = objectMapper.readValue(id, Integer.class);
-            logger.info("Event successfully inserted");
-            return idEvent;
+            idEvent = objectMapper.readValue(id, Integer.class);
+            logger.info("Event " + event.getTitle() + " successfully inserted");
 
-        } catch(final HttpServerErrorException.InternalServerError e){
-            logger.error("Server error in inserting event.");
-            return 0;
+        } catch(final HttpStatusCodeException e){
+            logger.error("Error while inserting event." + event.getTitle() + " HTTP status: " + e.getRawStatusCode());
         }
+        return idEvent;
 
     }
 
@@ -94,8 +111,14 @@ public class EventsClient {
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idEvent", id);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.put(uri, event, params);
-        logger.info("Event [" + id + "] successffully updated");
+
+        try {
+            restTemplate.put(uri, event, params);
+            logger.info("Event [" + id + "] successffully updated.");
+        }
+        catch (HttpStatusCodeException e){
+            logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: " + e.getRawStatusCode());
+        }
     }
 
     public void deleteEvent(int idUser, int idEvent) throws Exception{
@@ -105,8 +128,13 @@ public class EventsClient {
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(uri, params);
-        logger.info("Event [" + idEvent + "] successsffully deleted");
-    }
 
+        try {
+            restTemplate.delete(uri, params);
+            logger.info("Event [" + idEvent + "] successsffully deleted");
+        }
+        catch (HttpStatusCodeException e) {
+            logger.error("Error while deleting event." + idEvent + " HTTP status: " + e.getRawStatusCode());
+        }
+    }
 }
