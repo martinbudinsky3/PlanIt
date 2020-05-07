@@ -31,7 +31,7 @@ public class EventController {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
-        logger.error("Error inserting new event, " + HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.error("Error inserting new event. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -42,28 +42,24 @@ public class EventController {
     {
         logger.info("Getting events by user's id: " + idUser + ", year: " + year + " and month: " + month);
         List<Event> eventList = eventService.getEventsByMonthAndUserId(idUser, year, month);
-        if (eventList.size() > 0){
-            logger.info("Events successfully found. Returning events.");
-            return new ResponseEntity<>(eventList, HttpStatus.OK);
-        }
+        logger.info("Events successfully found. Returning " + eventList.size() + " events.");
+        return new ResponseEntity<>(eventList, HttpStatus.OK);
 
-        logger.error("Error. Events not found, " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(eventList, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
-    public ResponseEntity getEvent(@PathVariable("idEvent") int idEvent){
-        logger.info("Getting event by user's: and event's id");
+    public ResponseEntity getEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
+        logger.info("Getting user's [" + idUser + "] event [" + idEvent + "]");
         Event event = eventService.getEvent(idEvent);
 
         if (event != null){
-            logger.info("Event successfully found. Returning event.");
+            logger.info("Event successfully found. Returning event[" + event.getIdEvent() + "].");
             return new ResponseEntity<>(event, HttpStatus.OK);
         }
 
-        logger.error("Error. Event not found, " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        logger.error("Error. Event not found. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 
@@ -72,7 +68,7 @@ public class EventController {
         logger.info("Getting events to alert by user's id: " + idUser);
         List<Event> events = eventService.getEventsToAlert(idUser);
 
-        logger.info("Returning events to alert.");
+        logger.info("Returning " + events.size() + " events to alert to user ["+ idUser + "].");
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
@@ -80,11 +76,11 @@ public class EventController {
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
         logger.info("Updating event. Event's ID: " + id);
         if(eventService.getEvent(id) != null){
-            logger.info("Event successfully updated.");
             eventService.update(id, event);
+            logger.info("Event [" + id + "] successfully updated.");
             return ResponseEntity.ok().build();
         } else {
-            logger.error("Error. Event not found. ");
+            logger.error("Error. Event with id: " + id + " does not exist.");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
                     body("Event with id: " + id + " does not exist");
@@ -95,11 +91,11 @@ public class EventController {
     public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
         logger.info("Deleting event. Event's ID: " + idEvent);
         if(eventService.getUserEvent(idUser, idEvent) != null){
-            logger.info("Event successfully deleted.");
+            logger.info("Event [" + idEvent + "] successfully deleted.");
             eventService.delete(idUser, idEvent);
             return ResponseEntity.ok().build();
         } else {
-            logger.error("Error. Event not found. ");
+            logger.error("Error. Event with id: " + idEvent + " does not exist ");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
                     body("Event with id: " + idEvent + " does not exist");
