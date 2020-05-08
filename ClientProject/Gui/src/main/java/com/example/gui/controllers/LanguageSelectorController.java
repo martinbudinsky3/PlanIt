@@ -12,7 +12,9 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** Controller for "LanguageSelector.fxml" */
 public class LanguageSelectorController implements Initializable {
+
     @FXML
     private AnchorPane ap;
 
@@ -25,6 +27,8 @@ public class LanguageSelectorController implements Initializable {
     }
 
 
+    /** Selecting language (slovak/ german/ english).
+     * Working with "UTF8Control class" where are all the items needed for translation*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         final ObservableList names = FXCollections.observableArrayList();

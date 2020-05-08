@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
+/** Controller for "PlanItLogin.fxml" */
 public class PlanItLoginController implements Initializable, LanguageChangeWindow {
 
     private User user;
@@ -48,13 +50,13 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         this.usersClient = usersClient;
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         resourceBundle = resources;
         addHandlers();
     }
 
+    /** Reloading window to change to language. */
     @Override
     public void reload(ResourceBundle bundle){
         resourceBundle = bundle;
@@ -72,6 +74,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         }
     }
 
+    /** Adding functionality to the buttons. */
     public void addHandlers() {
         buttonLogin.setOnAction(e -> {
             try {
@@ -96,6 +99,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         });
     }
 
+    /** Login button.
+     * Getting username and password from the TextFields. If the entered data is valid, user is logged in and the "PlanItMainWindow" opens.*/
     void buttonLoginHandler(ActionEvent event) throws Exception {
         if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -131,6 +136,9 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         }
     }
 
+    /** Registration button.
+     * Opens the "PlanItRegistration window."
+     */
     void buttonRegisterHandler(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
@@ -147,6 +155,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         window.show();
     }
 
+    /** Button for selecting language
+     * Opens the "languageSelector" window.*/
     void buttonLanguageSelectHandler(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
+/** Class in which PDF file is created. */
 public class PdfFile {
     private EventsClient eventsClient;
     private User user;
@@ -30,6 +31,7 @@ public class PdfFile {
         this.resourceBundle = resourceBundle;
     }
 
+    /** Setting name of creating document. */
     public void pdf() throws Exception {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("PlanIt.pdf"));
@@ -42,9 +44,10 @@ public class PdfFile {
         document.close();
     }
 
+    /** Setting tittle and line with name of the user.
+     * @param document created document*/
     public void setText(Document document) throws DocumentException {
 
-        /*make string months names from numbers of months*/
         String months[] = new String[]{resourceBundle.getString("january"), resourceBundle.getString("february"),
                 resourceBundle.getString("march"), resourceBundle.getString("april"),
                 resourceBundle.getString("may"), resourceBundle.getString("june"),
@@ -67,14 +70,19 @@ public class PdfFile {
         String belong = new String(resourceBundle.getString("belong"));
         Chunk name = new Chunk(belong + " " + user.getFirstName() + " " + user.getLastName(), font_name);
 
+        //adding chunks to paragaphs
         paragraph_date.add(date);
         paragraph_name.add(name);
+
+        //adding paragraphs to document
         document.add(paragraph_date);
         document.add( Chunk.NEWLINE );
         document.add( Chunk.NEWLINE );
         document.add(paragraph_name);
     }
 
+    /** Setting table - calendar od events. Setting numbers of days and events into table cells
+     * @param document created document*/
     public void setTable(Document document) throws Exception {
 
         PdfPTable table = new PdfPTable(7);
@@ -102,7 +110,7 @@ public class PdfFile {
 
 
 
-        /*set empty table cells*/
+        /*set empty table cells - cells are light grey*/
         for (int i = 0; i < 7; i++){
             for (int j = 0; j < 6; j++){
                 PdfPCell cell = new PdfPCell();
@@ -120,7 +128,7 @@ public class PdfFile {
         }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        /*set numbers of days to table cells*/
+        /*set numbers of days to table cells - cells which represents days in the month (have day numbers) are white */
         int fieldCounter = 1;
         int dayCounter = 1;
         for (int i = 1; i < 7; i++) {
@@ -141,7 +149,6 @@ public class PdfFile {
                 fieldCounter++;
             }
         }
-
 
         /*set events to cells*/
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);

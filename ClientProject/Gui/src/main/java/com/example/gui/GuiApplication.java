@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/** Main class. "PlanItLogin" window is displayed when the application is opened*/
 public class GuiApplication extends Application {
 
 	public static void main(String[] args) {launch(args);}

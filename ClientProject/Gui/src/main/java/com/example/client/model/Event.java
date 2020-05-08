@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
 
-
+/** Class Event with attributes, constructors, getters and setters. */
 public class Event implements Serializable {
     private int idEvent;
     private int idUser;

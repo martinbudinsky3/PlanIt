@@ -13,14 +13,21 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
+/** Class communicating with server. This class is focused on posting and getting requests related to the Event object. */
 public class EventsClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
 
 
+    /** Needed to fill the calendar by events.
+     * @param userId logged in user,
+     * @param month chosen month.
+     * @param year cosen year
+     * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user) */
     public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception{
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
+
         final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("userId", userId);
@@ -44,6 +51,10 @@ public class EventsClient {
         return events;
     }
 
+    /** Needed when user wants to see a detail of one of his event.
+    * @param idUser user's ID,
+     * @param idEvent event's ID.
+     * @return chosen Event object. */
     public Event getEvent(int idUser, int idEvent) throws Exception{
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
@@ -87,6 +98,9 @@ public class EventsClient {
         return events;
     }
 
+    /** Method used to mediate insertion of new event into the database
+    * @param event object Event that should be inserted in to calendar.
+    * @return ID (integer) of the inserted event. */
     public Integer addEvent(Event event) throws Exception{
         logger.info("Inserting event " + event.getTitle());
         final String uri = "http://localhost:8080/events";
@@ -105,6 +119,10 @@ public class EventsClient {
 
     }
 
+
+    /** Method needed when user wants to change some data in given event.
+    * @param event Event object which is going to be updated,
+     *@param id id of that event*/
     public void updateEvent(Event event, int id) throws Exception{
         logger.info("Updating event [" + id + "]");
         final String uri = "http://localhost:8080/events/{idEvent}";
@@ -121,6 +139,9 @@ public class EventsClient {
         }
     }
 
+    /** Method used to mediate the deletion of given event.
+    * @param idUser ID of the user to whom the event belongs,
+     *@param idEvent EID of event that is going to be deleted. */
     public void deleteEvent(int idUser, int idEvent) throws Exception{
         logger.info("Deleting event [" + idEvent + "]");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";

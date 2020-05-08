@@ -21,6 +21,10 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    /**
+     * Inserting new event
+     * @param event new event
+     * @return id of new event */
     @PostMapping
     public ResponseEntity addEvent(@RequestBody Event event) {
         logger.info("Inserting new Event. Title: " + event.getTitle());
@@ -35,7 +39,11 @@ public class EventController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
+    /**
+     * @param idUser ID of user
+     * @param month selected month
+     * @param year selected year
+     * @return list of all events that belong to user and starts dates of these events are in selected year and month. */
     @RequestMapping(value = "{idUser}/{year}/{month}", method = RequestMethod.GET)
     public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") int idUser, @PathVariable("year") int year,
                                                     @PathVariable("month") int month)
@@ -48,6 +56,10 @@ public class EventController {
 
     }
 
+    /**
+     * @param idUser ID of user
+     * @param idEvent ID of event
+     * @return event with entered ID*/
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
     public ResponseEntity getEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
         logger.info("Getting user's [" + idUser + "] event [" + idEvent + "]");
@@ -63,6 +75,9 @@ public class EventController {
 
     }
 
+    /**
+     * @param idUser ID of user
+     * @return list of event that should be alerted. */
     @RequestMapping(value="alert/{idUser}", method = RequestMethod.GET)
     public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser){
         logger.info("Getting events to alert by user's id: " + idUser);
@@ -72,6 +87,10 @@ public class EventController {
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
+    /**
+     * updating event
+     * @param id ID of event that is going to be updated
+     * @param event Event for update*/
     @PutMapping("{id}")
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
         logger.info("Updating event. Event's ID: " + id);
@@ -87,6 +106,11 @@ public class EventController {
         }
     }
 
+    /**
+     * Deleting event from calendar
+     * @param idUser ID of user
+     * @param idEvent ID of event
+     * */
     @DeleteMapping("{idUser}/{idEvent}")
     public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
         logger.info("Deleting event. Event's ID: " + idEvent);

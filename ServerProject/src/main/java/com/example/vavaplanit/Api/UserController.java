@@ -21,6 +21,10 @@ public class UserController {
     @Autowired //so it is not needed to use "new UserService"
     private UserService userService;
 
+    /**
+     * Inserting new user
+     * @param user new user
+     * @return id of new user*/
     @PostMapping
     public ResponseEntity addUser(@RequestBody User user) {
         logger.info("Inserting new User. Username: " + user.getUserName() + "First name: " + user.getFirstName() + ", last name: " + user.getLastName());
@@ -37,7 +41,11 @@ public class UserController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
+    /**
+     * @param userName username
+     * @param userPassword password
+     * @return user object to which entered data belong
+     */
     @RequestMapping(value = "/{userName}/{userPassword}", method = RequestMethod.GET)
     public ResponseEntity getUserById(@PathVariable("userName") String userName, @PathVariable("userPassword") String userPassword){
         logger.info("Getting user " + userName + " and user password");

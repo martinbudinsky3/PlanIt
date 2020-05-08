@@ -34,6 +34,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+/** Controller for "PlanItMainWindow.fxml" */
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
     @FXML
     private AnchorPane ap;
@@ -76,16 +77,22 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
 
+    /** Setting year label
+     * @param selectedYear the year that is currently selected*/
     public void setSelectedYear(int selectedYear) {
         this.selectedYear = selectedYear;
         yearLabel.setText(Integer.toString(selectedYear));
     }
 
+    /** Setting month label
+     * @param selectedMonth the month that is currently selected*/
     public void setSelectedMonth(int selectedMonth) {
         this.selectedMonth = selectedMonth;
         monthLabel.setText(months[selectedMonth - 1]);
     }
 
+
+    /** Initializing calendar, current year and month, adding buttons functionality. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
@@ -100,6 +107,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
+    /** Reloading window to change to language. */
     @Override
     public void reload(ResourceBundle bundle) {
         try {
@@ -150,6 +158,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Sound of notification is played. */
     public void playAlertSound(){
         URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/chimes.wav");
         try {
@@ -178,6 +187,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Adding buttons functionality */
     public void addHandlers() {
         addHandlerToDayVBoxes();
         yearBack.setOnAction(e -> yearBackHandler());
@@ -196,6 +206,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         });
     }
 
+    /** Button for creating Pdf File. After creating PDF, informing window appears*/
     private void savePdfButtonHandler() throws Exception {
         PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle);
         pdfFile.pdf();
@@ -207,6 +218,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         alert.showAndWait();
     }
 
+    /** Finding current year and date, initializing labels and lists with these values */
     public void initializeMonthsAndYear() {
         // find out current year and month that will be displayed
         if(selectedMonth == null && selectedYear == null) {
@@ -253,6 +265,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Initialize calendar. Find out when days in months started.
+     * Fill the cells of the calendar by numbers of days. */
     public void initializeCalendar() {
         // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
@@ -292,6 +306,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Adding events into calendar cells. The starts time and title of the event are displayed.
+     * It is possible to click on each event to show the detail. */
     public void showEventsInCalendar() {
         try {
             List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
@@ -330,6 +346,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Clear calendar (without number of days and events in calendar cells.)*/
     public void clearCalendar(){
         for(int i = 1; i < 7; i++) {
             for(int j = 0; j < 7; j++) {
@@ -342,6 +359,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Button yearBack allows user to show his events in calendar for given month but last year. */
     public void yearBackHandler() {
         selectedYear -= 1;
         yearLabel.setText(Integer.toString(selectedYear));
@@ -349,6 +367,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
+    /** Button yearForward allows user to show his events in calendar for given month but next year. */
     public void yearForwardHandler() {
         selectedYear += 1;
         yearLabel.setText(Integer.toString(selectedYear));
@@ -356,6 +375,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
+    /** When user clicks on the label of event in calendar, the detail of the event shows. */
     public void eventLabelHandler(Label eventLabel){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
@@ -380,6 +400,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.show();
     }
 
+    /** Button addEventButton is used to open "PlanItAddEvent" window.
+     * @param initDate current date*/
     public void addEventButtonHandler(LocalDate initDate){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
@@ -404,6 +426,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.show();
     }
 
+    /** Button logoutButton is used for log out the current user. The "PlanItLogin" window appears.*/
     public void logoutButtonHandler() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -425,6 +448,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /** Button for selecting language
+     * Opens the "languageSelector" window.*/
     public void buttonLanguageSelectHandler(ActionEvent event){
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
@@ -444,6 +469,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         window.show();
     }
 
+    /** Shows notification window with basic information about event.
+     * @param event the event to which it is notified */
     public void showAlertWindow(Event event) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
@@ -461,9 +488,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Stage window = new Stage();
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//        System.out.println("Size of screen:");
-//        System.out.println(primaryScreenBounds.getWidth());
-//        System.out.println(primaryScreenBounds.getHeight());
         window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 380);
         window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 270);
 

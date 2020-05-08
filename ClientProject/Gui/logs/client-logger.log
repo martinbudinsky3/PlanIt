@@ -222,3 +222,19 @@
 2020-05-07 18:58:43,325 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
 2020-05-07 18:58:46,723 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
 2020-05-07 18:58:46,741 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:09,290 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-07 21:02:09,621 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
+2020-05-07 21:02:09,694 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:02:09,711 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:09,755 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:02:09,761 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:36,765 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event new
+2020-05-07 21:02:36,841 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event new successfully inserted
+2020-05-07 21:02:36,846 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:36,863 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 12 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:03:00,756 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:03:00,763 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:04:00,764 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:04:00,772 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:04:09,655 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting event by user's [23] and event's [30] ID
+2020-05-07 21:04:09,667 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning event by user's [23] and event's [30] ID

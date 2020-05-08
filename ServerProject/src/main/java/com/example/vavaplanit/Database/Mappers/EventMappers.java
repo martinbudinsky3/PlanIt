@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+/** Class for mapping Event object. */
 public class EventMappers {
     public RowMapper<Event> mapEventFromDb() {
         return (resultSet, i) -> {

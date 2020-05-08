@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
+/** Controller for "PlanItAddEvent.fxml" */
 public class PlanItAddEventController implements Initializable {
     @FXML
     private Button startsDecrement;
@@ -107,6 +107,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
 
+    /** Setting all pre-prepared times (date and time when new event starts, ends and when the event should be notified).
+     * User enters data as title, location, description of the event and also changes dates and times of the event. */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
@@ -155,6 +157,7 @@ public class PlanItAddEventController implements Initializable {
         deleteButton.setOnAction(e -> delete(e));
     }
 
+    /** If event is already created, only event detail is shown. */
     public void showDetail(){
         try {
             event = eventsClient.getEvent(idUser, idEvent);
@@ -173,6 +176,11 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /**
+     * @param actualTime
+     * @param unit
+     * @return
+     * */
     public LocalTime countNextHourUnit(LocalTime actualTime, int unit){
         int minutes = actualTime.getMinute();
         LocalTime nextHalfHour = actualTime.plusMinutes(unit - minutes % unit);
@@ -187,6 +195,11 @@ public class PlanItAddEventController implements Initializable {
         return previousHalfHour;
     }
 
+
+    /**Functionality of button for incrementing time. Increase of half an hour.
+     * @param minutes current minutes
+     * @param textField TextField where time should be incremented
+     * */
     public void incrementTimeTextField(TextField textField, int minutes){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime actualTime = null;
@@ -205,6 +218,10 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /**Functionality of button for decrementing time. Decrease of half an hour.
+     * @param minutes current minutes
+     * @param textField TextField where time should be decremented
+     * */
     public void decrementTimeTextField(TextField textField, int minutes){
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         LocalTime actualTime = null;
@@ -223,6 +240,8 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /** After entering all items, user confirms updating existing/inserting new event.
+     * If not all required values are entered, the user is notified*/
     public void save(ActionEvent ev) {
         hideErrorLabels();
 
@@ -272,6 +291,8 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+
+    /** Adding new event. (When event does not have ID yet.) */
     public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
                          LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert){
 
@@ -290,6 +311,7 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /** Updating existing event. (When ID of the event already exists.) */
     public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
@@ -304,6 +326,7 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /** After entering new event or updating existing event, main calendar updates. */
     public void updateCalendarDisplay(LocalDate date){
         // update calendar display
         planItMainWindowController.setSelectedYear(date.getYear());
@@ -312,6 +335,7 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.showEventsInCalendar();
     }
 
+    /** At the beginning of saving event, all error labels are hidden. */
     public void hideErrorLabels(){
         titleError.setVisible(false);
         startsError.setVisible(false);
@@ -319,6 +343,7 @@ public class PlanItAddEventController implements Initializable {
         alertsError.setVisible(false);
     }
 
+    /** The functionality of the deletion button. */
     private void delete(ActionEvent ev) {
         if(idEvent != null && event != null) {
             try {

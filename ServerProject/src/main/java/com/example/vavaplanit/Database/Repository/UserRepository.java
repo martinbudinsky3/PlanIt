@@ -24,8 +24,9 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-
-    // TODO - what if name and password already exists
+    /**
+     * Inserting new user into DB
+     * @param  user User objedct which is going to be inserted*/
     public Integer add(User user) {
 
         final String sql = "INSERT INTO planitschema.user (firstName, lastName, userName, userPassword) " +
@@ -61,6 +62,10 @@ public class UserRepository {
         return jdbcTemplate.query(sql, userMappers.mapUserFomDb());
     }
 
+    /**
+     * Used to login
+     * @param userName username of user
+     * @param userPassword password of user*/
     public User getUserByUserNameAndUserPassword(String userName, String userPassword){
         try {
             String sql = "SELECT * FROM planitschema.user " +

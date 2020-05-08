@@ -4,6 +4,7 @@ import com.example.vavaplanit.Model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+/** Class for mapping User object. */
 public class UserMappers {
 
     public RowMapper<User> mapUserFomDb() {

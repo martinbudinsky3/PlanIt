@@ -2,6 +2,7 @@ package com.example.client.model;
 
 import java.io.Serializable;
 
+/** Class User with attributes, constructors, getters and setters. */
 public class User implements Serializable {
     private int idUser;
     private String firstName;

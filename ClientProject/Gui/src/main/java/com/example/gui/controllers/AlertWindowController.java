@@ -20,6 +20,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
+/** Controller for "AlertWindow.fxml" */
 public class AlertWindowController implements Initializable {
     ResourceBundle resourceBundle;
     @FXML
@@ -37,6 +38,7 @@ public class AlertWindowController implements Initializable {
     private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
 
+    /** Constructor */
     public AlertWindowController(User user, Event event, EventsClient eventsClient,
                                  PlanItMainWindowController planItMainWindowController) {
         this.user = user;
@@ -58,6 +60,7 @@ public class AlertWindowController implements Initializable {
         postponeTimeChoice.setValue("5 min");
     }
 
+    /** Allowing user to click the Button (postponeButton) and to click to AnchorPane (ap) */
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
             showEventDetailWindow();
@@ -71,6 +74,8 @@ public class AlertWindowController implements Initializable {
 
     }
 
+    /** Showing AlertWindow with basic information of given event (title, starts and ends time).
+     * This window is shown at the bottom right of the screen when it's time to notify the event. */
     public void showDetail() {
         String title = event.getTitle();
         LocalDate startsDate = event.getDate();
@@ -89,6 +94,7 @@ public class AlertWindowController implements Initializable {
         timeLabel.setText(timeText);
     }
 
+    /** If user clicks somewhere to the alert window, the EventDetailWindow with with more detailed information appears.*/
     private void showEventDetailWindow() {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
@@ -113,6 +119,7 @@ public class AlertWindowController implements Initializable {
         stage.close();
     }
 
+    /** A button for the user to snooze the alert time. (postponeButton functionality) */
     private void postponeButtonHandler() {
         String postponeTime = postponeTimeChoice.getValue();
         LocalTime previousAlertTime = event.getAlert();

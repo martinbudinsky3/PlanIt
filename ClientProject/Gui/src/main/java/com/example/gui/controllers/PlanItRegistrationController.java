@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/** Controller for "PlanItregistration.fxml" */
 public class PlanItRegistrationController implements Initializable {
     @FXML
     private AnchorPane ap;
@@ -53,6 +54,14 @@ public class PlanItRegistrationController implements Initializable {
         this.usersClient = usersClient;
     }
 
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        resourceBundle = resources;
+        addHandlers();
+    }
+
+    /** Initializing buttons functionality. */
     public void addHandlers() {
         buttonRegister.setOnAction(e -> {
             try {
@@ -66,6 +75,8 @@ public class PlanItRegistrationController implements Initializable {
         });
     }
 
+    /** Button for canceling registration (buttonCancel)
+     * Shows "PlanItLogin" window. */
     private void buttonCancelHandler(ActionEvent e) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
@@ -87,6 +98,9 @@ public class PlanItRegistrationController implements Initializable {
         }
     }
 
+    /** Button for registration (buttonRegister)
+     * Getting first name, last name, username and password from TextFields.
+     * If there is no user with the same username and password, new user is registered and "PlanItMainWindow" window shows (his calendar)*/
     private void buttonRegisterHandler(ActionEvent event) throws Exception {
 
         if (textfieldFirstName.getText().isEmpty() || textfieldLastName.getText().isEmpty() || textfieldUserName.getText().isEmpty() || textfieldUserpassword.getText().isEmpty()) {
@@ -131,11 +145,5 @@ public class PlanItRegistrationController implements Initializable {
                 window.show();
             }
         }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        resourceBundle = resources;
-        addHandlers();
     }
 }

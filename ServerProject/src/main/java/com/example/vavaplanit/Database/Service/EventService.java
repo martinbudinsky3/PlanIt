@@ -17,6 +17,11 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    /**
+     * Inserting new event
+     * @param event Event object to be inserted
+     * @param idUser ID of user
+     * @return ID of new event*/
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
         if(idEvent != null) {
@@ -26,6 +31,13 @@ public class EventService {
         return idEvent;
     }
 
+    /**
+     * Getting all events that belong to user and starts dates of these events are in selected year and month.
+     * @param idUser ID of user
+     * @param year selected year
+     * @param month selected month
+     * @return list of events
+     */
     public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
         GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month - 1, 1);
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -36,14 +48,24 @@ public class EventService {
         return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
     }
 
+    /**
+     * Getting event by it's ID
+     * @param idEvent ID of the event*/
     public Event getEvent(int idEvent){
         return this.eventRepository.getEvent(idEvent);
     }
 
+    /**
+     * Getting event by it's ID and user's ID
+     * @param idUser ID of the user
+     * @param idEvent ID of the event*/
     public Event getUserEvent(int idUser, int idEvent){
         return this.eventRepository.getUserEvent(idUser, idEvent);
     }
 
+    /**
+     * Getting all events of user that have notifications set for current time and date
+     * @param idUser ID of user*/
     public List<Event> getEventsToAlert(int idUser){
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -54,10 +76,18 @@ public class EventService {
         return this.eventRepository.getEventsToAlert(idUser, date, time);
     }
 
+    /**
+     * Update event
+     * @param event event object which is going to be updated
+     * @param id id of Event which is going to be updated*/
     public void update(int id, Event event){
         this.eventRepository.update(id, event);
     }
 
+    /**
+     * Delete event by user'd and event's id
+     * @param idUser ID of user that wants to delete event
+     * @param idEvent ID of Event which is going to be deleted*/
     public void delete(int idUser, int idEvent) {
         this.eventRepository.deleteFromUserEvent(idUser, idEvent);
         this.eventRepository.deleteFromEvent(idEvent);
