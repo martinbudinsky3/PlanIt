@@ -242,6 +242,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         monthLabel.setText(months[selectedMonth - 1]);
         monthsList.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             selectedMonth = monthsList.getSelectionModel().getSelectedIndex() + 1;
+            newvalue.toLowerCase();
+            newvalue = newvalue.substring(0, 1) + newvalue.substring(1).toLowerCase();
             monthLabel.setText(newvalue);
             initializeCalendar();
             showEventsInCalendar();
