@@ -119,6 +119,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
             scene.setRoot(rootPane);
         } catch(IOException e){
+            showClientErrorAlert();
             e.printStackTrace();
         }
     }
@@ -138,21 +139,24 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void runTask() {
         while(true) {
             try {
-                List<Event> events = eventsClient.getEventToAlert(user.getIdUser());
+                List<Event> events = eventsClient.getEventsToAlert(user.getIdUser());
 
-                // show alert for every event that is returned
-                for(int i = 0; i < events.size(); i++) {
-                    Event event = events.get(i);
-                    Platform.runLater(() -> {
-                        showAlertWindow(event);
-                        playAlertSound();
-                    });
+                if(events != null) {
+                    // show alert for every event that is returned
+                    for (int i = 0; i < events.size(); i++) {
+                        Event event = events.get(i);
+                        Platform.runLater(() -> {
+                            showAlertWindow(event);
+                            playAlertSound();
+                        });
+                    }
+
+                    int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
+                    Thread.sleep(seconds * 1000);
                 }
-
-                int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
-                Thread.sleep(seconds*1000);
             }
             catch (Exception e) {
+                showClientErrorAlert();
                 e.printStackTrace();
             }
         }
@@ -167,6 +171,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             clip.open(audioIn);
             clip.start();
         } catch(Exception e){
+            showClientErrorAlert();
             e.printStackTrace();
         }
     }
@@ -198,9 +203,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         savePdfButton.setOnAction(e -> {
             try {
                 savePdfButtonHandler();
-            } catch (FileNotFoundException ex) {
-                ex.printStackTrace();
             } catch (Exception ex) {
+                showClientErrorAlert();
                 ex.printStackTrace();
             }
         });
@@ -313,6 +317,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void showEventsInCalendar() {
         try {
             List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
+            if(events == null){
+                showServerErrorAlert();
+                return;
+            }
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
@@ -344,6 +352,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 }
             }
         } catch (Exception e){
+            showClientErrorAlert();
             System.out.println(e.getMessage());
         }
     }
@@ -379,53 +388,54 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     /** When user clicks on the label of event in calendar, the detail of the event shows. */
     public void eventLabelHandler(Label eventLabel){
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
-                Integer.parseInt(eventLabel.getId()), eventsClient, this);
-        loader.setController(planItAddEventController);
-        loader.setResources(resourceBundle);
-
-        AnchorPane anchorPane = null;
         try {
-            anchorPane = (AnchorPane) loader.load();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
+                    Integer.parseInt(eventLabel.getId()), eventsClient, this);
+            loader.setController(planItAddEventController);
+            loader.setResources(resourceBundle);
+
+            AnchorPane anchorPane = anchorPane = (AnchorPane) loader.load();
+            Scene scene = new Scene(anchorPane);
+            scene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = new Stage();
+            window.setTitle(eventLabel.getText());
+            window.setScene(scene);
+            window.initModality(Modality.WINDOW_MODAL);
+            window.initOwner(ap.getScene().getWindow());
+            window.resizableProperty().setValue(false);
+            window.show();
         } catch (IOException ex) {
+            showClientErrorAlert();
             ex.printStackTrace();
         }
-        Scene scene = new Scene(anchorPane);
-        Stage window = new Stage();
-        window.setTitle(eventLabel.getText());
-        window.setScene(scene);
-        window.initModality(Modality.WINDOW_MODAL);
-        window.initOwner(ap.getScene().getWindow());
-        window.resizableProperty().setValue(false);
-        window.show();
     }
 
     /** Button addEventButton is used to open "PlanItAddEvent" window.
      * @param initDate current date*/
     public void addEventButtonHandler(LocalDate initDate){
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-        PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), initDate,
-                eventsClient, this);
-        loader.setController(planItAddEventController);
-        loader.setResources(resourceBundle);
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), initDate,
+                    eventsClient, this);
+            loader.setController(planItAddEventController);
+            loader.setResources(resourceBundle);
 
-        AnchorPane anchorPane = null;
-        try {
-            anchorPane = (AnchorPane) loader.load();
+            AnchorPane anchorPane = (AnchorPane) loader.load();
+            Scene scene = new Scene(anchorPane);
+            scene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = new Stage();
+            window.setScene(scene);
+            window.initModality(Modality.WINDOW_MODAL);
+            window.initOwner(ap.getScene().getWindow());
+            window.resizableProperty().setValue(false);
+            window.show();
         } catch (IOException ex) {
+            showClientErrorAlert();
             ex.printStackTrace();
         }
-        Scene scene = new Scene(anchorPane);
-        scene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = new Stage();
-        window.setScene(scene);
-        window.initModality(Modality.WINDOW_MODAL);
-        window.initOwner(ap.getScene().getWindow());
-        window.resizableProperty().setValue(false);
-        window.show();
     }
 
     /** Button logoutButton is used for log out the current user. The "PlanItLogin" window appears.*/
@@ -446,6 +456,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             window.resizableProperty().setValue(false);
             window.show();
         } catch (Exception exception) {
+            showClientErrorAlert();
             exception.printStackTrace();
         }
     }
@@ -453,48 +464,64 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     /** Button for selecting language
      * Opens the "languageSelector" window.*/
     public void buttonLanguageSelectHandler(ActionEvent event){
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
-        LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
-        fxmlLoader.setController(languageSelectorController);
-        AnchorPane anchorPane = null;
         try {
-            anchorPane = (AnchorPane) fxmlLoader.load();
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
+            LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
+            fxmlLoader.setController(languageSelectorController);
+            AnchorPane anchorPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(anchorPane);
+            Stage window = new Stage();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.resizableProperty().setValue(false);
+            window.show();
         } catch (IOException ex) {
+            showClientErrorAlert();
             ex.printStackTrace();
         }
-        Scene newScene = new Scene(anchorPane);
-        Stage window = new Stage();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
     }
 
     /** Shows notification window with basic information about event.
      * @param event the event to which it is notified */
     public void showAlertWindow(Event event) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
-        AlertWindowController alertWindowController = new AlertWindowController(user, event, eventsClient, this);
-        loader.setController(alertWindowController);
-        loader.setResources(resourceBundle);
-
-        AnchorPane anchorPane = null;
         try {
-            anchorPane = (AnchorPane) loader.load();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
+            AlertWindowController alertWindowController = new AlertWindowController(user, event, eventsClient, this);
+            loader.setController(alertWindowController);
+            loader.setResources(resourceBundle);
+
+            AnchorPane anchorPane = (AnchorPane) loader.load();
+            Scene scene = new Scene(anchorPane);
+            Stage window = new Stage();
+
+            Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+            window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 450);
+            window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 330);
+
+            window.setScene(scene);
+            window.resizableProperty().setValue(false);
+            window.show();
         } catch (IOException ex) {
+            showClientErrorAlert();
             ex.printStackTrace();
         }
-        Scene scene = new Scene(anchorPane);
-        Stage window = new Stage();
+    }
 
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 450);
-        window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 330);
+    public void showServerErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(resourceBundle.getString("serverError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
+    }
 
-        window.setScene(scene);
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void showClientErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
     }
 }

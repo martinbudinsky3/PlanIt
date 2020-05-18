@@ -20,12 +20,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 
-/** Controller for "PlanItLogin.fxml" */
+/**
+ * Controller for "PlanItLogin.fxml"
+ */
 public class PlanItLoginController implements Initializable, LanguageChangeWindow {
 
-    private User user;
     private final UsersClient usersClient;
-
+    private User user;
     @FXML
     private AnchorPane ap;
 
@@ -46,7 +47,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
 
     private ResourceBundle resourceBundle;
 
-    public PlanItLoginController(UsersClient usersClient)  {
+    public PlanItLoginController(UsersClient usersClient) {
         this.usersClient = usersClient;
     }
 
@@ -56,9 +57,11 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         addHandlers();
     }
 
-    /** Reloading window to change to language. */
+    /**
+     * Reloading window to change to language.
+     */
     @Override
-    public void reload(ResourceBundle bundle){
+    public void reload(ResourceBundle bundle) {
         resourceBundle = bundle;
         try {
             Scene scene = ap.getScene();
@@ -69,17 +72,20 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
             scene.setRoot(rootPane);
 
-        } catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    /** Adding functionality to the buttons. */
+    /**
+     * Adding functionality to the buttons.
+     */
     public void addHandlers() {
         buttonLogin.setOnAction(e -> {
             try {
                 buttonLoginHandler(e);
             } catch (Exception ex) {
+                showClientErrorAlert();
                 ex.printStackTrace();
             }
         });
@@ -87,20 +93,25 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             try {
                 buttonRegisterHandler(e);
             } catch (IOException ex) {
+                showClientErrorAlert();
                 ex.printStackTrace();
             }
         });
         changeLanguageButton.setOnAction(e -> {
             try {
                 buttonLanguageSelectHandler(e);
-            } catch(IOException ex) {
-                ex.printStackTrace();;
+            } catch (IOException ex) {
+                showClientErrorAlert();
+                ex.printStackTrace();
+                ;
             }
         });
     }
 
-    /** Login button.
-     * Getting username and password from the TextFields. If the entered data is valid, user is logged in and the "PlanItMainWindow" opens.*/
+    /**
+     * Login button.
+     * Getting username and password from the TextFields. If the entered data is valid, user is logged in and the "PlanItMainWindow" opens.
+     */
     void buttonLoginHandler(ActionEvent event) throws Exception {
         if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -111,14 +122,15 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         } else {
             user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
 
-            if (user == null){
+            if (user == null) {
+                showServerErrorAlert();
+            } else if (user.getUserName() == null) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
                 alert.setHeaderText(null);
                 alert.setContentText(resourceBundle.getString("loginAlertContent"));
                 alert.showAndWait();
-            }
-            else {
+            } else {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
                 PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
@@ -127,7 +139,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                 AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
                 Scene newScene = new Scene(rootPane);
                 newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-                Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 window.setScene(newScene);
                 window.centerOnScreen();
                 window.resizableProperty().setValue(false);
@@ -136,7 +148,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         }
     }
 
-    /** Registration button.
+    /**
+     * Registration button.
      * Opens the "PlanItRegistration window."
      */
     void buttonRegisterHandler(ActionEvent event) throws IOException {
@@ -148,15 +161,17 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
         Scene newScene = new Scene(rootPane);
         newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
         window.setScene(newScene);
         window.centerOnScreen();
         window.resizableProperty().setValue(false);
         window.show();
     }
 
-    /** Button for selecting language
-     * Opens the "languageSelector" window.*/
+    /**
+     * Button for selecting language
+     * Opens the "languageSelector" window.
+     */
     void buttonLanguageSelectHandler(ActionEvent event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
@@ -171,4 +186,19 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         window.show();
     }
 
+    public void showServerErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString("serverError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
+    }
+
+    public void showClientErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
+    }
 }

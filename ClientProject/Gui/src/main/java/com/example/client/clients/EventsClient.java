@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -25,7 +24,7 @@ public class EventsClient {
      * @param month chosen month.
      * @param year cosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user) */
-    public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception{
+    public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
         final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
@@ -34,7 +33,7 @@ public class EventsClient {
         params.put("year", year);
         params.put("month", month);
 
-        List<Event> events = null;
+        List<Event> events = new ArrayList<Event>();
 
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -44,8 +43,17 @@ public class EventsClient {
             });
             logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
         }
+        catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+            return null;
+        }
         catch (HttpStatusCodeException e){
-            logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode());
+            if(e.getRawStatusCode() == 500) {
+                logger.info("Returning 0 user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
+            } else {
+                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode());
+                return null;
+            }
         }
 
         return events;
@@ -71,6 +79,9 @@ public class EventsClient {
             event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {});
             logger.info("Returning event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         }
+        catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+        }
         catch (HttpStatusCodeException e) {
             logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID. HTTP status: " + e.getRawStatusCode());
         }
@@ -78,13 +89,13 @@ public class EventsClient {
         return event;
     }
 
-    public List<Event> getEventToAlert(int idUser) throws Exception{
+    public List<Event> getEventsToAlert(int idUser) throws Exception{
         logger.info("Getting all user's [" + idUser +"] events to alert.");
         final String uri = "http://localhost:8080/events/alert/{idUser}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
 
-        List<Event> events = null;
+        List<Event> events = new ArrayList<Event>();;
 
         RestTemplate restTemplate = new RestTemplate();
         try {
@@ -92,8 +103,14 @@ public class EventsClient {
             objectMapper.registerModule(new JavaTimeModule());
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning all user's [" + idUser +"] events to alert.");
+        } catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
         } catch(final HttpStatusCodeException e){
-            logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode());
+            if(e.getRawStatusCode() == 500) {
+                logger.info("Returning 0 events to alert.");
+            } else {
+                logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode());
+            }
         }
         return events;
     }
@@ -111,7 +128,8 @@ public class EventsClient {
             String id = restTemplate.postForObject(uri, event, String.class);
             idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
-
+        } catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
         } catch(final HttpStatusCodeException e){
             logger.error("Error while inserting event." + event.getTitle() + " HTTP status: " + e.getRawStatusCode());
         }
@@ -123,26 +141,31 @@ public class EventsClient {
     /** Method needed when user wants to change some data in given event.
     * @param event Event object which is going to be updated,
      *@param id id of that event*/
-    public void updateEvent(Event event, int id) throws Exception{
+    public boolean updateEvent(Event event, int id) {
         logger.info("Updating event [" + id + "]");
         final String uri = "http://localhost:8080/events/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idEvent", id);
         RestTemplate restTemplate = new RestTemplate();
 
+        boolean success = false;
         try {
             restTemplate.put(uri, event, params);
+            success = true;
             logger.info("Event [" + id + "] successffully updated.");
-        }
-        catch (HttpStatusCodeException e){
+        } catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+        } catch (HttpStatusCodeException e){
             logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: " + e.getRawStatusCode());
         }
+
+        return success;
     }
 
     /** Method used to mediate the deletion of given event.
     * @param idUser ID of the user to whom the event belongs,
      *@param idEvent EID of event that is going to be deleted. */
-    public void deleteEvent(int idUser, int idEvent) throws Exception{
+    public boolean deleteEvent(int idUser, int idEvent) {
         logger.info("Deleting event [" + idEvent + "]");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -150,12 +173,17 @@ public class EventsClient {
         params.put("idEvent", idEvent);
         RestTemplate restTemplate = new RestTemplate();
 
+        boolean success = false;
         try {
             restTemplate.delete(uri, params);
+            success = true;
             logger.info("Event [" + idEvent + "] successsffully deleted");
-        }
-        catch (HttpStatusCodeException e) {
+        } catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+        } catch (HttpStatusCodeException e) {
             logger.error("Error while deleting event." + idEvent + " HTTP status: " + e.getRawStatusCode());
         }
+
+        return success;
     }
 }

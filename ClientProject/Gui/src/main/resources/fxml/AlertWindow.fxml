@@ -18,7 +18,7 @@
       </Label>
       <Label layoutX="38.0" layoutY="122.0" text="%postponeLabel">
          <font>
-            <Font size="20.0" />
+            <Font size="18.0" />
          </font>
       </Label>
       <ChoiceBox fx:id="postponeTimeChoice" layoutX="38.0" layoutY="162.0" prefWidth="150.0" />

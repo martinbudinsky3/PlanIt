@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class UsersClient {
         params.put("userPassword", userPassword);
         RestTemplate restTemplate = new RestTemplate();
 
-        User user = null;
+        User user = new User();
 
         try {
             String userJSon = restTemplate.getForObject(uri, String.class, params);
@@ -39,8 +40,15 @@ public class UsersClient {
             user = objectMapper.readValue(userJSon, new TypeReference<User>(){});
             logger.info("User " + user.getUserName() + "successfully logged in");
         }
+        catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+            return null;
+        }
         catch (final HttpStatusCodeException e) {
-            logger.error("Error logging in user " + user.getUserName() + ". HTTP Status: " + e.getRawStatusCode());
+            logger.error("Error logging in user " + userName + ". HTTP Status: " + e.getRawStatusCode());
+            if(e.getRawStatusCode() != 500){
+                return null;
+            }
         }
 
         return user;
@@ -50,21 +58,28 @@ public class UsersClient {
      * @param user User that is going to be registered,
      * @return ID of newly registered user.*/
     public Integer addUser(User user) throws Exception{
-        logger.info("Inserting new User. Username: " + user.getUserName() + "First name: " + user.getFirstName() +
+        logger.info("Inserting new User. Username: " + user.getUserName() + " First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName());
         final String uri = "http://localhost:8080/users";
 
         RestTemplate restTemplate = new RestTemplate();
-        Integer idUser = null;
+        Integer idUser = -1;
 
         try {
             String id = restTemplate.postForObject(uri, user, String.class);
             idUser = objectMapper.readValue(id, Integer.class);
             logger.info("User " + user.getUserName() + "successfully inserted");
         }
+        catch(ResourceAccessException ex){
+            logger.error("Error while connecting to server");
+            return null;
+        }
         catch (final HttpStatusCodeException e) {
             logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName() + ". HTTP Status: " + e.getRawStatusCode());
+            if(e.getRawStatusCode() != 500) {
+                return null;
+            }
         }
         return idUser;
     }

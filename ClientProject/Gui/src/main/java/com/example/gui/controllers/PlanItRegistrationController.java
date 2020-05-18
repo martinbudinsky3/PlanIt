@@ -21,33 +21,28 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/** Controller for "PlanItregistration.fxml" */
+/**
+ * Controller for "PlanItregistration.fxml"
+ */
 public class PlanItRegistrationController implements Initializable {
-    @FXML
-    private AnchorPane ap;
-
-    @FXML
-    private TextField textfieldLastName;
-
-    @FXML
-    private TextField textfieldUserName;
-
-    @FXML
-    private TextField textfieldFirstName;
-
-    @FXML
-    private PasswordField textfieldUserpassword;
-
-    @FXML
-    private Button buttonRegister;
-
-    @FXML
-    private Button buttonCancel;
-
-    private User user;
-    private ResourceBundle resourceBundle;
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
+    @FXML
+    private AnchorPane ap;
+    @FXML
+    private TextField textfieldLastName;
+    @FXML
+    private TextField textfieldUserName;
+    @FXML
+    private TextField textfieldFirstName;
+    @FXML
+    private PasswordField textfieldUserpassword;
+    @FXML
+    private Button buttonRegister;
+    @FXML
+    private Button buttonCancel;
+    private User user;
+    private ResourceBundle resourceBundle;
 
     public PlanItRegistrationController(EventsClient eventsClient, UsersClient usersClient) {
         this.eventsClient = eventsClient;
@@ -61,46 +56,54 @@ public class PlanItRegistrationController implements Initializable {
         addHandlers();
     }
 
-    /** Initializing buttons functionality. */
+    /**
+     * Initializing buttons functionality.
+     */
     public void addHandlers() {
         buttonRegister.setOnAction(e -> {
             try {
                 buttonRegisterHandler(e);
             } catch (Exception ex) {
+                showClientErrorAlert();
                 ex.printStackTrace();
             }
         });
         buttonCancel.setOnAction(e -> {
-            buttonCancelHandler(e);
+            try {
+                buttonCancelHandler(e);
+            } catch (IOException ex) {
+                showClientErrorAlert();
+                ex.printStackTrace();
+            }
         });
     }
 
-    /** Button for canceling registration (buttonCancel)
-     * Shows "PlanItLogin" window. */
-    private void buttonCancelHandler(ActionEvent e) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-            PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
-            fxmlLoader.setController(planItLoginController);
-            fxmlLoader.setResources(resourceBundle);
-            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            Scene newScene = new Scene(rootPane);
-            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-            Stage window = (Stage) ap.getScene().getWindow();
-            window.setScene(newScene);
-            window.centerOnScreen();
-            window.setTitle("PlanIt");
-            window.resizableProperty().setValue(false);
-            window.show();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
+    /**
+     * Button for canceling registration (buttonCancel)
+     * Shows "PlanItLogin" window.
+     */
+    private void buttonCancelHandler(ActionEvent e) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+        PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
+        fxmlLoader.setController(planItLoginController);
+        fxmlLoader.setResources(resourceBundle);
+        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+        Scene newScene = new Scene(rootPane);
+        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+        Stage window = (Stage) ap.getScene().getWindow();
+        window.setScene(newScene);
+        window.centerOnScreen();
+        window.setTitle("PlanIt");
+        window.resizableProperty().setValue(false);
+        window.show();
     }
 
-    /** Button for registration (buttonRegister)
+    /**
+     * Button for registration (buttonRegister)
      * Getting first name, last name, username and password from TextFields.
-     * If there is no user with the same username and password, new user is registered and "PlanItMainWindow" window shows (his calendar)*/
+     * If there is no user with the same username and password, new user is registered and "PlanItMainWindow" window shows (his calendar)
+     */
     private void buttonRegisterHandler(ActionEvent event) throws Exception {
 
         if (textfieldFirstName.getText().isEmpty() || textfieldLastName.getText().isEmpty() || textfieldUserName.getText().isEmpty() || textfieldUserpassword.getText().isEmpty()) {
@@ -120,14 +123,16 @@ public class PlanItRegistrationController implements Initializable {
 
             Integer id = usersClient.addUser(user);
 
-            if (id == null){
+            if(id == null) {
+                showServerErrorAlert();
+            }
+            else if (id == -1) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
                 alert.setHeaderText(null);
                 alert.setContentText(resourceBundle.getString("registrationExistsAlertContent"));
                 alert.showAndWait();
-            }
-            else {
+            } else {
                 user.setIdUser(id);
 
                 FXMLLoader fxmlLoader = new FXMLLoader();
@@ -145,5 +150,21 @@ public class PlanItRegistrationController implements Initializable {
                 window.show();
             }
         }
+    }
+
+    public void showServerErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString("serverError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
+    }
+
+    public void showClientErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
     }
 }

@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import java.net.URL;
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -18,6 +20,9 @@ import java.util.ResourceBundle;
 
 /** Controller for "PlanItAddEvent.fxml" */
 public class PlanItAddEventController implements Initializable {
+    @FXML
+    private AnchorPane ap;
+
     @FXML
     private Button startsDecrement;
 
@@ -157,21 +162,26 @@ public class PlanItAddEventController implements Initializable {
         deleteButton.setOnAction(e -> delete(e));
     }
 
-    /** If event is already created, only event detail is shown. */
+    /** If event is already created, event detail is shown. */
     public void showDetail(){
         try {
             event = eventsClient.getEvent(idUser, idEvent);
 
-            titleField.setText(event.getTitle());
-            locationField.setText(event.getLocation());
-            startsDateField.setValue(event.getDate());
-            startsField.setText(String.valueOf(event.getStarts()));
-            endsDateField.setValue(event.getEndsDate());
-            endsField.setText(String.valueOf(event.getEnds()));
-            alertDateField.setValue(event.getAlertDate());
-            alertField.setText(String.valueOf(event.getAlert()));
-            descriptionField.setText(event.getDescription());
+            if(event == null){
+                showServerErrorAlert();
+            } else {
+                titleField.setText(event.getTitle());
+                locationField.setText(event.getLocation());
+                startsDateField.setValue(event.getDate());
+                startsField.setText(String.valueOf(event.getStarts()));
+                endsDateField.setValue(event.getEndsDate());
+                endsField.setText(String.valueOf(event.getEnds()));
+                alertDateField.setValue(event.getAlertDate());
+                alertField.setText(String.valueOf(event.getAlert()));
+                descriptionField.setText(event.getDescription());
+            }
         } catch(Exception e) {
+            showClientErrorAlert();
             System.out.println(e.getMessage());
         }
     }
@@ -304,9 +314,10 @@ public class PlanItAddEventController implements Initializable {
                 Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                 stage.close();
             } else {
-                // TO DO - some error message
+                showServerErrorAlert();
             }
         } catch (Exception e) {
+            showClientErrorAlert();
             System.out.println(e.getMessage());
         }
     }
@@ -317,11 +328,16 @@ public class PlanItAddEventController implements Initializable {
 
         Event event = new Event(title, location, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         try {
-            eventsClient.updateEvent(event, idEvent);
-            updateCalendarDisplay(date);
-            Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
-            stage.close();
+            boolean success = eventsClient.updateEvent(event, idEvent);
+            if(!success){
+                showServerErrorAlert();
+            } else {
+                updateCalendarDisplay(date);
+                Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+                stage.close();
+            }
         } catch (Exception e) {
+            showClientErrorAlert();
             System.out.println(e.getMessage());
         }
     }
@@ -355,19 +371,39 @@ public class PlanItAddEventController implements Initializable {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
-                    eventsClient.deleteEvent(idUser, idEvent);
-                    LocalDate date = event.getDate();
-                    updateCalendarDisplay(date);
-                    Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
-                    stage.close();
+                    boolean success = eventsClient.deleteEvent(idUser, idEvent);
+                    if(!success){
+                        showServerErrorAlert();
+                    } else {
+                        LocalDate date = event.getDate();
+                        updateCalendarDisplay(date);
+                        Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+                        stage.close();
+                    }
                 } else {
                     alert.close();
-                    return;
                 }
 
             } catch (Exception e){
+                showClientErrorAlert();
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void showServerErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString("serverError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
+    }
+
+    public void showClientErrorAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
+        alert.setContentText(resourceBundle.getString("errorAlertContext"));
+        alert.showAndWait();
     }
 }
