@@ -510,7 +510,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void showServerErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("serverError"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
@@ -518,7 +518,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("clientError"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));

@@ -161,7 +161,7 @@ public class PlanItRegistrationController implements Initializable {
     }
 
     public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("clientError"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
