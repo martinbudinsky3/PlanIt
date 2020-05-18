@@ -490,8 +490,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Stage window = new Stage();
 
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 380);
-        window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 270);
+        window.setX(primaryScreenBounds.getMinX() + primaryScreenBounds.getWidth() - 450);
+        window.setY(primaryScreenBounds.getMinY() + primaryScreenBounds.getHeight() - 330);
 
         window.setScene(scene);
         window.resizableProperty().setValue(false);

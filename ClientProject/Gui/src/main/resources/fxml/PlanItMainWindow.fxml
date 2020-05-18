@@ -33,7 +33,7 @@
                      <children>
                         <Pane styleClass="weekday-header">
                            <children>
-                              <Label fx:id="mondayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%mondayLabel" textFill="WHITE">
+                              <Label fx:id="mondayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%mondayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -42,7 +42,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="1">
                            <children>
-                              <Label fx:id="tuesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%tuesdayLabel" textFill="WHITE">
+                              <Label fx:id="tuesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%tuesdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -51,7 +51,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="2">
                            <children>
-                              <Label fx:id="wednesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="-1.0" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%wednesdayLabel" textFill="WHITE">
+                              <Label fx:id="wednesdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%wednesdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -60,7 +60,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="3">
                            <children>
-                              <Label fx:id="thursdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%thursdayLabel" textFill="WHITE">
+                              <Label fx:id="thursdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%thursdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -69,7 +69,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="4">
                            <children>
-                              <Label fx:id="fridayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%fridayLabel" textFill="WHITE">
+                              <Label fx:id="fridayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%fridayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -78,7 +78,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="5">
                            <children>
-                              <Label fx:id="saturdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="25.0" prefHeight="38.0" prefWidth="190.0" text="%saturdayLabel" textFill="WHITE">
+                              <Label fx:id="saturdayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="38.0" prefWidth="190.0" text="%saturdayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
@@ -87,7 +87,7 @@
                         </Pane>
                         <Pane styleClass="weekday-header" GridPane.columnIndex="6">
                            <children>
-                              <Label fx:id="sundayLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="24.0" prefHeight="40.0" prefWidth="190.0" text="%sundayLabel" textFill="WHITE">
+                              <Label fx:id="sundayLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="18.0" prefHeight="40.0" prefWidth="190.0" text="%sundayLabel" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="44.0" />
                                  </font>
