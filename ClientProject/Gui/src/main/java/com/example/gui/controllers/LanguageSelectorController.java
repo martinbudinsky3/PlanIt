@@ -46,6 +46,7 @@ public class LanguageSelectorController implements Initializable {
         group.selectedToggleProperty().addListener((ob, o, n) -> {
             RadioButton rb = (RadioButton)group.getSelectedToggle();
 
+            // create new Locale object with right selected language
             if (rb != null) {
                 String language = rb.getText();
                 Locale locale = new Locale("en");
@@ -60,7 +61,7 @@ public class LanguageSelectorController implements Initializable {
                 Stage stage = (Stage)ap.getScene().getWindow();
                 stage.close();
                 ResourceBundle bundle = ResourceBundle.getBundle("captions", locale, new UTF8Control());
-                languageChangeWindow.reload(bundle);
+                languageChangeWindow.reload(bundle);  // reload to display captions in new language
             }
         });
 
@@ -68,6 +69,9 @@ public class LanguageSelectorController implements Initializable {
         ap.getChildren().add(listView);
     }
 
+    /**
+     * GUI widget - list cell with radio button
+     */
     private class RadioListCell extends ListCell<String> {
         @Override
         public void updateItem(String obj, boolean empty) {
@@ -78,7 +82,6 @@ public class LanguageSelectorController implements Initializable {
             } else {
                 RadioButton radioButton = new RadioButton(obj);
                 radioButton.setToggleGroup(group);
-                // Add Listeners if any
                 setGraphic(radioButton);
             }
         }

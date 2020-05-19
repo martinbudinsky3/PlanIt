@@ -118,13 +118,13 @@ public class PlanItAddEventController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
         if(idEvent == null) { // add event
-            // set text to time fields
+            // set init times to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
             LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
             LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
             LocalDate endsDate = null;
-            if(endsInitTime.isBefore(nextHalfHour)){
+            if(endsInitTime.isBefore(nextHalfHour)){ // if ends time oversteps midnight and starts time don't, update ends date to next day
                 endsDate = initDate.plusDays(1);
             } else {
                 endsDate = initDate;
@@ -158,6 +158,7 @@ public class PlanItAddEventController implements Initializable {
             decrementButtons[i].setOnAction(e -> decrementTimeTextField(textField, 30));
         }
 
+        // add handlers to buttons
         saveButton.setOnAction(e -> save(e));
         deleteButton.setOnAction(e -> delete(e));
     }
@@ -187,8 +188,10 @@ public class PlanItAddEventController implements Initializable {
     }
 
     /**
-     * @param actualTime
-     * @param unit
+     * Method for calculate init starts time and is used by increment buttons as well.
+     * Currently it calculates nearest half hour from actual time e.g 14:00, 18:30 etc.
+     * @param actualTime time, from which is method calculate next unit
+     * @param unit currently used with value 30 - half hour
      * @return
      * */
     public LocalTime countNextHourUnit(LocalTime actualTime, int unit){
@@ -198,6 +201,12 @@ public class PlanItAddEventController implements Initializable {
         return nextHalfHour;
     }
 
+    /**
+     * Similar method as countNextHourUnit, only it calculates previous hour unit
+     * @param actualTime
+     * @param unit
+     * @return
+     */
     public LocalTime countPreviousHourUnit(LocalTime actualTime, int unit){
         int minutes = actualTime.getMinute();
         LocalTime previousHalfHour = actualTime.minusMinutes(minutes % unit);
@@ -206,8 +215,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
 
-    /**Functionality of button for incrementing time. Increase of half an hour.
-     * @param minutes current minutes
+    /**Functionality of button for incrementing time. Currently increase of half an hour.
+     * @param minutes current minute increment - 30
      * @param textField TextField where time should be incremented
      * */
     public void incrementTimeTextField(TextField textField, int minutes){
@@ -228,8 +237,8 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    /**Functionality of button for decrementing time. Decrease of half an hour.
-     * @param minutes current minutes
+    /**Functionality of button for decrementing time. Currently decrease of half an hour.
+     * @param minutes current minute decrement - 30
      * @param textField TextField where time should be decremented
      * */
     public void decrementTimeTextField(TextField textField, int minutes){
@@ -251,7 +260,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     /** After entering all items, user confirms updating existing/inserting new event.
-     * If not all required values are entered, the user is notified*/
+     * This method get and validate all entered items.
+     * If not all required values are entered or values are in wrong format, the user is notified */
     public void save(ActionEvent ev) {
         hideErrorLabels();
 
@@ -302,7 +312,9 @@ public class PlanItAddEventController implements Initializable {
     }
 
 
-    /** Adding new event. (When event does not have ID yet.) */
+    /** Adding new event. (When event does not have ID yet.)
+     * After succesful insert modal window is closed and calendar is displayed with just cretaed event
+     */
     public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
                          LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert){
 
@@ -322,7 +334,9 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    /** Updating existing event. (When ID of the event already exists.) */
+    /** Updating existing event. (When ID of the event already exists.)
+     * After succesful update modal window is closed and calendar is displayed with just cretaed event
+     */
     public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
@@ -342,9 +356,8 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    /** After entering new event or updating existing event, main calendar updates. */
+    /** After entering new event or updating existing event, main calendar updates its display. */
     public void updateCalendarDisplay(LocalDate date){
-        // update calendar display
         planItMainWindowController.setSelectedYear(date.getYear());
         planItMainWindowController.setSelectedMonth(date.getMonth().getValue());
         planItMainWindowController.initializeCalendar();
@@ -359,7 +372,7 @@ public class PlanItAddEventController implements Initializable {
         alertsError.setVisible(false);
     }
 
-    /** The functionality of the deletion button. */
+    /** The functionality of the delete button. */
     private void delete(ActionEvent ev) {
         if(idEvent != null && event != null) {
             try {
@@ -391,6 +404,9 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
+    /**
+     * Alert window that notifies user about some server error
+     */
     public void showServerErrorAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("serverError"));
@@ -399,6 +415,9 @@ public class PlanItAddEventController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Alert window that notifies user about some client error
+     */
     public void showClientErrorAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("clientError"));

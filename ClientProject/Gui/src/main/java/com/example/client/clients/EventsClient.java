@@ -22,7 +22,7 @@ public class EventsClient {
     /** Needed to fill the calendar by events.
      * @param userId logged in user,
      * @param month chosen month.
-     * @param year cosen year
+     * @param year chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user) */
     public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
@@ -89,6 +89,11 @@ public class EventsClient {
         return event;
     }
 
+    /**
+     * Needed for alerts.
+     * @param idUser user's ID,
+     * @return list of events that have alert time in current minute
+    */
     public List<Event> getEventsToAlert(int idUser) throws Exception{
         logger.info("Getting all user's [" + idUser +"] events to alert.");
         final String uri = "http://localhost:8080/events/alert/{idUser}";
@@ -139,7 +144,7 @@ public class EventsClient {
 
 
     /** Method needed when user wants to change some data in given event.
-    * @param event Event object which is going to be updated,
+    * @param event Event object with updated attributes,
      *@param id id of that event*/
     public boolean updateEvent(Event event, int id) {
         logger.info("Updating event [" + id + "]");
@@ -164,7 +169,7 @@ public class EventsClient {
 
     /** Method used to mediate the deletion of given event.
     * @param idUser ID of the user to whom the event belongs,
-     *@param idEvent EID of event that is going to be deleted. */
+     *@param idEvent ID of event that is going to be deleted. */
     public boolean deleteEvent(int idUser, int idEvent) {
         logger.info("Deleting event [" + idEvent + "]");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";

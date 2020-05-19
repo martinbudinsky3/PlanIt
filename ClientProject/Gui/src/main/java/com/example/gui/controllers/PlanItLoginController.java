@@ -58,7 +58,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     }
 
     /**
-     * Reloading window to change to language.
+     * Reloading window to change to just selected language.
      */
     @Override
     public void reload(ResourceBundle bundle) {
@@ -73,6 +73,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             scene.setRoot(rootPane);
 
         } catch (IOException e) {
+            showClientErrorAlert();
             e.printStackTrace();
         }
     }
