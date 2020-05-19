@@ -1464,3 +1464,45 @@
 2020-05-18 22:32:07,853 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 5
 2020-05-18 22:32:07,867 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Returning events to alert.
 2020-05-18 22:32:07,881 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning events.
+2020-05-18 23:06:13,067 INFO org.springframework.boot.StartupInfoLogger [main] Starting Main on DESKTOP-6TQNAQQ with PID 7852 (D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject\target\classes started by HP in D:\skola\4.semester\VAVA\Projekt\PlanIt_Balekova_Budinsky\ServerProject)
+2020-05-18 23:06:13,074 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-05-18 23:06:14,362 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-05-18 23:06:14,405 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 27ms. Found 0 JPA repository interfaces.
+2020-05-18 23:06:16,265 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat initialized with port(s): 8080 (http)
+2020-05-18 23:06:16,287 INFO org.apache.juli.logging.DirectJDKLog [main] Starting service [Tomcat]
+2020-05-18 23:06:16,288 INFO org.apache.juli.logging.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-05-18 23:06:16,592 INFO org.apache.juli.logging.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2020-05-18 23:06:16,593 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 3409 ms
+2020-05-18 23:06:17,100 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2020-05-18 23:06:17,563 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2020-05-18 23:06:17,690 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-05-18 23:06:17,916 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-05-18 23:06:18,240 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-05-18 23:06:18,575 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2020-05-18 23:06:19,600 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-05-18 23:06:19,627 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-05-18 23:06:19,988 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-05-18 23:06:20,531 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
+2020-05-18 23:06:21,090 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
+2020-05-18 23:06:21,100 INFO org.springframework.boot.StartupInfoLogger [main] Started Main in 9.109 seconds (JVM running for 10.027)
+2020-05-18 23:06:35,074 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-2] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-05-18 23:06:35,075 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Initializing Servlet 'dispatcherServlet'
+2020-05-18 23:06:35,086 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-2] Completed initialization in 11 ms
+2020-05-18 23:06:35,261 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] Getting user by his user name and user password
+2020-05-18 23:06:35,301 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] User successfully logged in
+2020-05-18 23:06:35,699 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
+2020-05-18 23:06:35,719 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-18 23:06:35,734 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning events to alert.
+2020-05-18 23:06:35,775 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning events.
+2020-05-18 23:07:00,790 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events to alert by user's id: 1
+2020-05-18 23:07:00,794 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Returning events to alert.
+2020-05-18 23:08:00,828 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
+2020-05-18 23:08:00,833 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning events to alert.
+2020-05-18 23:09:00,847 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events to alert by user's id: 1
+2020-05-18 23:09:00,850 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Returning events to alert.
+2020-05-18 23:10:02,043 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] Getting user by his user name and user password
+2020-05-18 23:10:02,045 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] User successfully logged in
+2020-05-18 23:10:02,297 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
+2020-05-18 23:10:02,300 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning events to alert.
+2020-05-18 23:10:02,320 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 5
+2020-05-18 23:10:02,344 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning events.
