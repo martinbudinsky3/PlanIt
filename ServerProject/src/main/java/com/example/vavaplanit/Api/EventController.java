@@ -52,8 +52,6 @@ public class EventController {
         List<Event> eventList = eventService.getEventsByMonthAndUserId(idUser, year, month);
         logger.info("Events successfully found. Returning " + eventList.size() + " events.");
         return new ResponseEntity<>(eventList, HttpStatus.OK);
-
-
     }
 
     /**

@@ -33,6 +33,7 @@ public class EventService {
 
     /**
      * Getting all events that belong to user and starts dates of these events are in selected year and month.
+     * It calculates boundaries in which would events starts date belong.
      * @param idUser ID of user
      * @param year selected year
      * @param month selected month
