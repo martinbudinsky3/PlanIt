@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.*;
 import java.util.List;
 
+/** Communication with database. (queries relating to the User object)*/
 @Repository
 public class UserRepository {
 
@@ -49,17 +50,6 @@ public class UserRepository {
         } else {
             return null;
         }
-    }
-
-    public List<User> getAllUsers() {
-        String sql = "" +
-                "SELECT " +
-                " idUser, " +
-                " firstName, " +
-                " lastName " +
-                "FROM planitschema.user";
-
-        return jdbcTemplate.query(sql, userMappers.mapUserFomDb());
     }
 
     /**

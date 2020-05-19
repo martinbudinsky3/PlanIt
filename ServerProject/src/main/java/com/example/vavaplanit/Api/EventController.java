@@ -24,7 +24,7 @@ public class EventController {
     /**
      * Inserting new event
      * @param event new event
-     * @return id of new event */
+     * @return id of inserted event */
     @PostMapping
     public ResponseEntity addEvent(@RequestBody Event event) {
         logger.info("Inserting new Event. Title: " + event.getTitle());
@@ -59,7 +59,7 @@ public class EventController {
     /**
      * @param idUser ID of user
      * @param idEvent ID of event
-     * @return event with entered ID*/
+     * @return event with entered ID */
     @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
     public ResponseEntity getEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent){
         logger.info("Getting user's [" + idUser + "] event [" + idEvent + "]");
@@ -77,7 +77,7 @@ public class EventController {
 
     /**
      * @param idUser ID of user
-     * @return list of event that should be alerted. */
+     * @return list of events with alert time in current minute. */
     @RequestMapping(value="alert/{idUser}", method = RequestMethod.GET)
     public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser){
         logger.info("Getting events to alert by user's id: " + idUser);
@@ -88,9 +88,9 @@ public class EventController {
     }
 
     /**
-     * updating event
+     * Updating event
      * @param id ID of event that is going to be updated
-     * @param event Event for update*/
+     * @param event Event with updated attributes */
     @PutMapping("{id}")
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event){
         logger.info("Updating event. Event's ID: " + id);

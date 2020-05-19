@@ -89,7 +89,7 @@ public class EventRepository {
     }
 
     /**
-     * Getting all events that belong to user and starts dates of these events are in selected year and month.
+     * Getting all events that belong to user and starts dates of these events are in given range.
      */
     public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
@@ -137,7 +137,7 @@ public class EventRepository {
 
     /**
      * Update event
-     * @param event event object which is going to be updated
+     * @param event event object with updated attributes
      * @param id id of Event which is going to be updated*/
     public void update(int id, Event event) {
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
@@ -157,7 +157,7 @@ public class EventRepository {
 
     /**
      * Delete event by event's id
-     * @param id ID of Event which is going to be deleted*/
+     * @param id ID of Event which is going to be deleted */
     public void deleteFromEvent(int id) {
         String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
         jdbcTemplate.update(sql, id);

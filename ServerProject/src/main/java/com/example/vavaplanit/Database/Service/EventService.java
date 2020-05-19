@@ -21,7 +21,7 @@ public class EventService {
      * Inserting new event
      * @param event Event object to be inserted
      * @param idUser ID of user
-     * @return ID of new event*/
+     * @return ID of inserted event*/
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
         if(idEvent != null) {
