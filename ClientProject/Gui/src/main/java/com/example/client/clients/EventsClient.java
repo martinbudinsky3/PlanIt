@@ -44,14 +44,14 @@ public class EventsClient {
             logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
         }
         catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
             return null;
         }
         catch (HttpStatusCodeException e){
             if(e.getRawStatusCode() == 500) {
                 logger.info("Returning 0 user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
             } else {
-                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode());
+                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode(), e);
                 return null;
             }
         }
@@ -80,10 +80,10 @@ public class EventsClient {
             logger.info("Returning event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         }
         catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
         }
         catch (HttpStatusCodeException e) {
-            logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID. HTTP status: " + e.getRawStatusCode());
+            logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID. HTTP status: " + e.getRawStatusCode(), e);
         }
 
         return event;
@@ -109,12 +109,12 @@ public class EventsClient {
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning all user's [" + idUser +"] events to alert.");
         } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
         } catch(final HttpStatusCodeException e){
             if(e.getRawStatusCode() == 500) {
                 logger.info("Returning 0 events to alert.");
             } else {
-                logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode());
+                logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode(), e);
             }
         }
         return events;
@@ -134,9 +134,9 @@ public class EventsClient {
             idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
         } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
         } catch(final HttpStatusCodeException e){
-            logger.error("Error while inserting event." + event.getTitle() + " HTTP status: " + e.getRawStatusCode());
+            logger.error("Error while inserting event." + event.getTitle() + " HTTP status: " + e.getRawStatusCode(), e);
         }
         return idEvent;
 
@@ -159,9 +159,9 @@ public class EventsClient {
             success = true;
             logger.info("Event [" + id + "] successffully updated.");
         } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
         } catch (HttpStatusCodeException e){
-            logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: " + e.getRawStatusCode());
+            logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: " + e.getRawStatusCode(), e);
         }
 
         return success;
@@ -184,9 +184,9 @@ public class EventsClient {
             success = true;
             logger.info("Event [" + idEvent + "] successsffully deleted");
         } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
         } catch (HttpStatusCodeException e) {
-            logger.error("Error while deleting event." + idEvent + " HTTP status: " + e.getRawStatusCode());
+            logger.error("Error while deleting event." + idEvent + " HTTP status: " + e.getRawStatusCode(), e);
         }
 
         return success;

@@ -32,16 +32,21 @@ public class PdfFile {
     }
 
     /** Setting name of creating document. */
-    public void pdf() throws Exception {
+    public void pdf() {
         Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream("PlanIt.pdf"));
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("PlanIt.pdf"));
 
-        document.open();
-        setText(document);
-        document.add( Chunk.NEWLINE );
-        setTable(document);
-        document.add( Chunk.NEWLINE );
-        document.close();
+            document.open();
+            setText(document);
+            document.add(Chunk.NEWLINE);
+            setTable(document);
+            document.add(Chunk.NEWLINE);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            document.close();
+        }
     }
 
     /** Setting tittle and line with name of the user.

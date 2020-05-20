@@ -41,11 +41,11 @@ public class UsersClient {
             logger.info("User " + user.getUserName() + "successfully logged in");
         }
         catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
             return null;
         }
         catch (final HttpStatusCodeException e) {
-            logger.error("Error logging in user " + userName + ". HTTP Status: " + e.getRawStatusCode());
+            logger.error("Error logging in user " + userName + ". HTTP Status: " + e.getRawStatusCode(), e);
             if(e.getRawStatusCode() != 500){
                 return null;
             }
@@ -71,12 +71,12 @@ public class UsersClient {
             logger.info("User " + user.getUserName() + "successfully inserted");
         }
         catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server");
+            logger.error("Error while connecting to server", ex);
             return null;
         }
         catch (final HttpStatusCodeException e) {
             logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
-                ", last name: " + user.getLastName() + ". HTTP Status: " + e.getRawStatusCode());
+                ", last name: " + user.getLastName() + ". HTTP Status: " + e.getRawStatusCode(), e);
             if(e.getRawStatusCode() != 500) {
                 return null;
             }
