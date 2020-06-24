@@ -60,6 +60,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private ListView<String> monthsList;
 
     private boolean threadFlag;
+    private boolean threadActive;
     private Integer selectedYear;
     private Integer selectedMonth;
     private Node[][] gridPaneNodes;
@@ -74,6 +75,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         this.usersClient = usersClient;
         this.user = user;
         threadFlag = false;
+        threadActive = true;
     }
 
 
@@ -99,8 +101,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
         if(!threadFlag) { // if thread isn't created yet
-            startTask();
             threadFlag = true;
+            startTask();
         }
         createGridPaneNodes();
         addHandlers();
@@ -146,7 +148,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is getting events at the beginning of every minute.
      */
     public void runTask() {
-        while(true) {
+        while(threadActive) {
             try {
                 List<Event> events = eventsClient.getEventsToAlert(user.getIdUser());
 
@@ -475,6 +477,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             window.setTitle("PlanIt");
             window.resizableProperty().setValue(false);
             window.show();
+            threadActive = false;
         } catch (Exception exception) {
             showClientErrorAlert();
             exception.printStackTrace();
