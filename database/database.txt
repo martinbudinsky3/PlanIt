@@ -1,0 +1,70 @@
+new database "planitdatabase" -> new schema "planitschema" ->
+
+
+create table planitschema.user (
+    idUser SERIAL NOT NULL PRIMARY KEY,
+    firstName varchar,
+    lastName varchar
+);
+
+insert into planitschema.user(firstname, lastname)
+values ('Ivana', 'Balekova'),
+       ('Martin', 'Budinsky'),
+       ('Liberty','Mccarthy'),
+       ('Faye','Hunt'),
+       ('Carrie','Burke'),
+       ('Leroy','Berry'),
+       ('Yasin','Mcbride'),
+       ('Elsie','Fleming'),
+       ('Umar','Hunt'),
+       ('Crystal','Abbott'),
+       ('Franklin','Walton'),
+       ('Kiera','Rivera'),
+       ('Ayla','Johnston'),
+       ('Aminah','Johnston');
+
+create table planitschema.event(
+    idEvent SERIAL NOT NULL PRIMARY KEY,
+    title varchar NOT NULL,
+    location varchar,
+    date DATE NOT NULL,
+    starts TIME NOT NULL,
+    ends TIME,
+    alert TIME
+);
+
+insert into planitschema.event(title, location, date, starts, ends, alert)
+values ('Test','Bratislava','2020-05-23', '09:10:00', '09:30:00', '09:00:00'),
+       ('Test','STU','2020-05-21', '12:10:00', '12:30:00', '12:00:00'),
+       ('Wedding','Bratislava','2020-05-15', '14:10:00', '23:59:00', '09:00:00'),
+       ('Training','NY','2020-05-23', '07:00:00', '09:00:00', '06:00:00'),
+       ('Training','Prague','2020-05-28', '09:10:00', '09:30:00', '09:00:00'),
+       ('Climb Mount Everest','Nepal','2020-05-29', '06:00:00', '10:00:00', '05:00:00'),
+       ('Test','FIIT','2020-05-23', '09:10:00', '09:30:00', '09:00:00'),
+       ('Coffee time','Dolny Kubin','2020-05-15', '15:10:00', '16:00:00', '15:00:00'),
+       ('Project consultation','Bratislava','2020-05-23', '09:10:00', '09:30:00', '09:00:00'),
+       ('Lunch with friends','Nova Bana','2020-05-22', '12:00:00', '14:00:00', '11:00:00');
+
+create table planitschema.userEvent(
+    idUser BIGINT NOT NULL REFERENCES planitschema.user(idUser),
+    idEvent BIGINT NOT NULL REFERENCES planitschema.event(idEvent)
+);
+
+insert into planitschema.userEvent(iduser, idevent)
+values (1,1),
+       (8,1),
+       (7,3),
+       (4,3),
+       (2,4),
+       (1,7),
+       (6,8),
+       (9,7),
+       (10,6),
+       (14,8),
+       (12,2),
+       (1,2),
+       (5,6),
+       (5,4),
+       (3,5),
+       (2,9),
+       (8,10);

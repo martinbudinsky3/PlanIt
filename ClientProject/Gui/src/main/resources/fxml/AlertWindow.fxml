@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="ap" prefHeight="290.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="titleLabel" layoutX="38.0" layoutY="30.0" text="Názov">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="timeLabel" layoutX="38.0" layoutY="65.0" text="Čas">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="38.0" layoutY="122.0" text="%postponeLabel">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="postponeTimeChoice" layoutX="38.0" layoutY="162.0" prefWidth="150.0" />
+      <Button fx:id="postponeButton" layoutX="136.0" layoutY="227.0" mnemonicParsing="false" text="%postponeButton" AnchorPane.leftAnchor="136.0" AnchorPane.rightAnchor="136.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
