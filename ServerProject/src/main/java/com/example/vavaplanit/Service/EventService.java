@@ -1,4 +1,4 @@
-package com.example.vavaplanit.Database.Service;
+package com.example.vavaplanit.Service;
 
 import com.example.vavaplanit.Database.Repository.EventRepository;
 import com.example.vavaplanit.Model.Event;

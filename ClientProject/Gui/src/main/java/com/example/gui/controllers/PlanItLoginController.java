@@ -1,19 +1,15 @@
 package com.example.gui.controllers;
 
-import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
 import com.example.client.model.User;
+import com.example.gui.utils.WindowsCreator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,29 +22,27 @@ import java.util.ResourceBundle;
 public class PlanItLoginController implements Initializable, LanguageChangeWindow {
 
     private final UsersClient usersClient;
-    private User user;
+    private final WindowsCreator windowsCreator;
+
     @FXML
     private AnchorPane ap;
-
     @FXML
     private Button buttonLogin;
-
     @FXML
     private TextField textfieldName;
-
     @FXML
     private PasswordField passwordfieldPassword;
-
     @FXML
     private Button buttonRegister;
-
     @FXML
     private Button changeLanguageButton;
 
+    private User user;
     private ResourceBundle resourceBundle;
 
-    public PlanItLoginController(UsersClient usersClient) {
+    public PlanItLoginController(UsersClient usersClient, WindowsCreator windowsCreator) {
         this.usersClient = usersClient;
+        this.windowsCreator = windowsCreator;
     }
 
     @Override
@@ -62,20 +56,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      */
     @Override
     public void reload(ResourceBundle bundle) {
-        resourceBundle = bundle;
-        try {
-            Scene scene = ap.getScene();
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-            fxmlLoader.setController(this);
-            fxmlLoader.setResources(bundle);
-            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            scene.setRoot(rootPane);
-
-        } catch (IOException e) {
-            showClientErrorAlert();
-            e.printStackTrace();
-        }
+        //resourceBundle = bundle;
+        windowsCreator.reload(ap, bundle, "fxml/PlanItLogin.fxml",this);
     }
 
     /**
@@ -92,7 +74,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         });
         buttonRegister.setOnAction(e -> {
             try {
-                buttonRegisterHandler(e);
+                windowsCreator.createRegistrationWindow(usersClient, resourceBundle, e);
             } catch (IOException ex) {
                 showClientErrorAlert();
                 ex.printStackTrace();
@@ -100,7 +82,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         });
         changeLanguageButton.setOnAction(e -> {
             try {
-                buttonLanguageSelectHandler(e);
+                windowsCreator.createLanguageSelectorWindow(this);
             } catch (IOException ex) {
                 showClientErrorAlert();
                 ex.printStackTrace();
@@ -132,59 +114,9 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                 alert.setContentText(resourceBundle.getString("loginAlertContent"));
                 alert.showAndWait();
             } else {
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-                PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(), usersClient, user);
-                fxmlLoader.setController(planItMainWindowController);
-                fxmlLoader.setResources(resourceBundle);
-                AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-                Scene newScene = new Scene(rootPane);
-                newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setScene(newScene);
-                window.centerOnScreen();
-                window.resizableProperty().setValue(false);
-                window.show();
+                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             }
         }
-    }
-
-    /**
-     * Registration button.
-     * Opens the "PlanItRegistration window."
-     */
-    void buttonRegisterHandler(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
-        PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(), usersClient);
-        fxmlLoader.setController(planItRegistrationController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
-    }
-
-    /**
-     * Button for selecting language
-     * Opens the "languageSelector" window.
-     */
-    void buttonLanguageSelectHandler(ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
-        LanguageSelectorController languageSelectorController = new LanguageSelectorController(this);
-        fxmlLoader.setController(languageSelectorController);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        Stage window = new Stage();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
     }
 
     public void showServerErrorAlert(){

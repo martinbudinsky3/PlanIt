@@ -1,12 +1,9 @@
-package com.example.vavaplanit.Database.Service;
+package com.example.vavaplanit.Service;
 
 import com.example.vavaplanit.Database.Repository.UserRepository;
-import com.example.vavaplanit.Model.Event;
 import com.example.vavaplanit.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {

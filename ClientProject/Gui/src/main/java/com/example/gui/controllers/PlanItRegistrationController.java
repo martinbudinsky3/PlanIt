@@ -4,6 +4,7 @@ import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
+import com.example.gui.utils.WindowsCreator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,11 +23,13 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller for "PlanItregistration.fxml"
+ * Controller for "PlanItRegistration.fxml"
  */
 public class PlanItRegistrationController implements Initializable {
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
+    private final WindowsCreator windowsCreator;
+
     @FXML
     private AnchorPane ap;
     @FXML
@@ -44,11 +47,11 @@ public class PlanItRegistrationController implements Initializable {
     private User user;
     private ResourceBundle resourceBundle;
 
-    public PlanItRegistrationController(EventsClient eventsClient, UsersClient usersClient) {
+    public PlanItRegistrationController(EventsClient eventsClient, UsersClient usersClient, WindowsCreator windowsCreator) {
         this.eventsClient = eventsClient;
         this.usersClient = usersClient;
+        this.windowsCreator = windowsCreator;
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -70,7 +73,7 @@ public class PlanItRegistrationController implements Initializable {
         });
         buttonCancel.setOnAction(e -> {
             try {
-                buttonCancelHandler(e);
+                windowsCreator.createLoginWindow(resourceBundle, ap);
             } catch (IOException ex) {
                 showClientErrorAlert();
                 ex.printStackTrace();
@@ -78,26 +81,6 @@ public class PlanItRegistrationController implements Initializable {
         });
     }
 
-    /**
-     * Button for canceling registration (buttonCancel)
-     * Shows "PlanItLogin" window.
-     */
-    private void buttonCancelHandler(ActionEvent e) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-        PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
-        fxmlLoader.setController(planItLoginController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ap.getScene().getWindow();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.setTitle("PlanIt");
-        window.resizableProperty().setValue(false);
-        window.show();
-    }
 
     /**
      * Button for registration (buttonRegister)
@@ -135,19 +118,7 @@ public class PlanItRegistrationController implements Initializable {
             } else {
                 user.setIdUser(id);
 
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-                PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(eventsClient, usersClient, user);
-                fxmlLoader.setController(planItMainWindowController);
-                fxmlLoader.setResources(resourceBundle);
-                AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-                Scene newScene = new Scene(rootPane);
-                newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm()); // not working // working for monthsList
-                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                window.setScene(newScene);
-                window.centerOnScreen();
-                window.resizableProperty().setValue(false);
-                window.show();
+                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             }
         }
     }

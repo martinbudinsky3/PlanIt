@@ -1,6 +1,6 @@
 package com.example.vavaplanit.Api;
 
-import com.example.vavaplanit.Database.Service.EventService;
+import com.example.vavaplanit.Service.EventService;
 import com.example.vavaplanit.Model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,6 @@ import java.util.List;
 public class EventController {
 
     Logger logger = LoggerFactory.getLogger(EventController.class);
-
 
     @Autowired
     private EventService eventService;

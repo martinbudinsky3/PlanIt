@@ -3,6 +3,7 @@ package com.example.gui;
 import com.example.client.clients.UsersClient;
 import com.example.gui.controllers.PlanItLoginController;
 import com.example.gui.utils.UTF8Control;
+import com.example.gui.utils.WindowsCreator;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -25,7 +26,7 @@ public class GuiApplication extends Application {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
 			fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-			PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient());
+			PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient(), new WindowsCreator());
 			fxmlLoader.setController(planItLoginController);
 			fxmlLoader.setResources(bundle);
 			AnchorPane rootPane = (AnchorPane) fxmlLoader.load();

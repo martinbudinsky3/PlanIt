@@ -3,6 +3,7 @@ package com.example.gui.controllers;
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
+import com.example.gui.utils.WindowsCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,7 +24,8 @@ import java.util.ResourceBundle;
 
 /** Controller for "AlertWindow.fxml" */
 public class AlertWindowController implements Initializable {
-    ResourceBundle resourceBundle;
+    private final WindowsCreator windowsCreator;
+
     @FXML
     private AnchorPane ap;
     @FXML
@@ -34,6 +36,8 @@ public class AlertWindowController implements Initializable {
     private Label titleLabel;
     @FXML
     private Label timeLabel;
+
+    private ResourceBundle resourceBundle;
     private User user;
     private Event event;
     private EventsClient eventsClient;
@@ -41,11 +45,12 @@ public class AlertWindowController implements Initializable {
 
     /** Constructor */
     public AlertWindowController(User user, Event event, EventsClient eventsClient,
-                                 PlanItMainWindowController planItMainWindowController) {
+                                 PlanItMainWindowController planItMainWindowController, WindowsCreator windowsCreator) {
         this.user = user;
         this.event = event;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
+        this.windowsCreator = windowsCreator;
     }
 
     @Override
@@ -58,13 +63,15 @@ public class AlertWindowController implements Initializable {
         postponeTimeChoice.getItems().add(resourceBundle.getString("30minutes"));
         postponeTimeChoice.getItems().add(resourceBundle.getString("1hour"));
         postponeTimeChoice.getItems().add(resourceBundle.getString("6hours"));
-        postponeTimeChoice.setValue("5 min");
+        postponeTimeChoice.setValue(resourceBundle.getString("5minutes"));
     }
 
     /** Adding handlers to click on the Button (postponeButton) and to click on the AnchorPane (ap) */
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
-            showEventDetailWindow();
+            String title = event.getStarts().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
+            windowsCreator.createEventDetailWindow(event.getIdEvent(), title, user, eventsClient, planItMainWindowController,
+                    resourceBundle, ap);
             e.consume();
         });
 
@@ -93,32 +100,6 @@ public class AlertWindowController implements Initializable {
 
         titleLabel.setText(title);
         timeLabel.setText(timeText);
-    }
-
-    /** Click on alert window handler. If user clicks somewhere to the alert window, the EventDetailWindow
-     * with more detail information appears.*/
-    private void showEventDetailWindow() {
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
-                    event.getIdEvent(), eventsClient, planItMainWindowController);
-            loader.setController(planItAddEventController);
-            loader.setResources(resourceBundle);
-
-            AnchorPane anchorPane = (AnchorPane) loader.load();
-            Scene scene = new Scene(anchorPane);
-            Stage window = new Stage();
-            window.setTitle(event.getStarts().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle());
-            window.setScene(scene);
-            window.show();
-
-            Stage stage = (Stage) ap.getScene().getWindow();
-            stage.close();
-        } catch (IOException ex) {
-            showClientErrorAlert();
-            ex.printStackTrace();
-        }
     }
 
     /** A handler for postpone button with functionality for the user to postpone the alert time. */
