@@ -20,14 +20,14 @@ import java.util.Map;
  */
 public class UsersClient {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
-
+    private final RestTemplate restTemplate = new RestTemplate();
+    private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
 
     /**
      * Method needed for login of user. After entering the username and password, this method returns User with given data
      * (if the data is correct and the user was previously registered)
      *
-     * @param userName     username of given user
+     * @param userName username of given user
      * @param userPassword password of given user
      * @return User object to which the data belong.
      */
@@ -38,14 +38,12 @@ public class UsersClient {
         Map<String, String> params = new HashMap<String, String>();
         params.put("userName", userName);
         params.put("userPassword", userPassword);
-        RestTemplate restTemplate = new RestTemplate();
 
         User user;
 
         String userJSon = restTemplate.getForObject(uri, String.class, params);
         objectMapper.registerModule(new JavaTimeModule());
-        user = objectMapper.readValue(userJSon, new TypeReference<User>() {
-        });
+        user = objectMapper.readValue(userJSon, new TypeReference<User>() {});
         logger.info("User " + user.getUserName() + "successfully logged in");
 
         return user;
@@ -70,11 +68,6 @@ public class UsersClient {
         String id = restTemplate.postForObject(uri, user, String.class);
         idUser = objectMapper.readValue(id, Integer.class);
         logger.info("User " + user.getUserName() + " successfully inserted");
-
-//        catch(ResourceAccessException ex){
-//            logger.error("Error while connecting to server", ex);
-//            return null;
-//        }
 
         return idUser;
     }

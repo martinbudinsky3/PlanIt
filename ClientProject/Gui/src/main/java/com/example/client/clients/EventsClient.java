@@ -19,6 +19,7 @@ public class EventsClient {
 
     private final WindowsCreator windowsCreator = new WindowsCreator();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final RestTemplate restTemplate = new RestTemplate();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
 
 
@@ -30,7 +31,7 @@ public class EventsClient {
     public List<Event> getUserEventsByMonth(int userId, int year, int month, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
-        final String uri = "http://localhost:8080/events123/{userId}/{year}/{month}";
+        final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("userId", userId);
         params.put("year", year);
@@ -38,7 +39,6 @@ public class EventsClient {
 
         List<Event> events = new ArrayList<Event>();
 
-        RestTemplate restTemplate = new RestTemplate();
         try {
             String eventListJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
@@ -76,7 +76,6 @@ public class EventsClient {
         params.put("idEvent", idEvent);
 
         Event event = null;
-        RestTemplate restTemplate = new RestTemplate();
 
         try {
             String eventJSon = restTemplate.getForObject(uri, String.class, params);
@@ -111,7 +110,6 @@ public class EventsClient {
 
         List<Event> events = new ArrayList<Event>();;
 
-        RestTemplate restTemplate = new RestTemplate();
         try {
             String eventsJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
@@ -142,7 +140,6 @@ public class EventsClient {
     public Integer addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
         final String uri = "http://localhost:8080/events";
-        RestTemplate restTemplate = new RestTemplate();
         Integer idEvent = null;
 
         try {
@@ -173,7 +170,6 @@ public class EventsClient {
         final String uri = "http://localhost:8080/events/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idEvent", id);
-        RestTemplate restTemplate = new RestTemplate();
 
         boolean success = false;
         try {
@@ -202,7 +198,6 @@ public class EventsClient {
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
-        RestTemplate restTemplate = new RestTemplate();
 
         boolean success = false;
         try {
