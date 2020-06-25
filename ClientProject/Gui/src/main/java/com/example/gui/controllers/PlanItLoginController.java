@@ -73,21 +73,10 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             }
         });
         buttonRegister.setOnAction(e -> {
-            try {
-                windowsCreator.createRegistrationWindow(usersClient, resourceBundle, e);
-            } catch (IOException ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-            }
+            windowsCreator.createRegistrationWindow(usersClient, resourceBundle, e);
         });
         changeLanguageButton.setOnAction(e -> {
-            try {
-                windowsCreator.createLanguageSelectorWindow(this);
-            } catch (IOException ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-                ;
-            }
+            windowsCreator.createLanguageSelectorWindow(this, resourceBundle);
         });
     }
 

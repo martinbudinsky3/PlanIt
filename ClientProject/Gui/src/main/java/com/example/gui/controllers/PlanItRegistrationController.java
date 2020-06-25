@@ -72,12 +72,7 @@ public class PlanItRegistrationController implements Initializable {
             }
         });
         buttonCancel.setOnAction(e -> {
-            try {
-                windowsCreator.createLoginWindow(resourceBundle, ap);
-            } catch (IOException ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-            }
+            windowsCreator.createLoginWindow(resourceBundle, ap);
         });
     }
 

@@ -30,6 +30,9 @@ import java.util.*;
 /** Controller for "PlanItMainWindow.fxml" */
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
     private final WindowsCreator windowsCreator;
+    private final EventsClient eventsClient;
+    private final UsersClient usersClient;
+    private final User user;
 
     @FXML
     private AnchorPane ap;
@@ -61,9 +64,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private Node[][] gridPaneNodes;
     private String months[];
     private ResourceBundle resourceBundle;
-    private final EventsClient eventsClient;
-    private final UsersClient usersClient;
-    private final User user;
 
     public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user, WindowsCreator windowsCreator) {
         this.eventsClient = eventsClient;
@@ -199,31 +199,18 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(user, LocalDate.now(), eventsClient,
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
-            try {
-                windowsCreator.createLoginWindow(resourceBundle, ap);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            windowsCreator.createLoginWindow(resourceBundle, ap);
         });
         changeLanguageButton.setOnAction(e -> {
-            try {
-                windowsCreator.createLanguageSelectorWindow(this);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            windowsCreator.createLanguageSelectorWindow(this, resourceBundle);
         });
         savePdfButton.setOnAction(e -> {
-            try {
-                savePdfButtonHandler();
-            } catch (Exception ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-            }
+            savePdfButtonHandler();
         });
     }
 
     /** Button for creating Pdf File. After creating PDF, informing window appears*/
-    private void savePdfButtonHandler() throws Exception {
+    private void savePdfButtonHandler() {
         PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle);
         pdfFile.pdf();
 

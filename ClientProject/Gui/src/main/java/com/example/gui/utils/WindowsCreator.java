@@ -11,7 +11,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -48,7 +47,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showClientErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            ex.printStackTrace(); // TODO logging
         }
     }
 
@@ -76,7 +75,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showClientErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            ex.printStackTrace(); // TODO logging
         }
     }
 
@@ -105,8 +104,8 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            //showClientErrorAlert();
-            ex.printStackTrace();
+            showClientErrorAlert(resourceBundle);
+            ex.printStackTrace(); // TODO logging
         }
     }
 
@@ -114,21 +113,26 @@ public class WindowsCreator {
      * Button for canceling registration (buttonCancel)
      * Shows "PlanItLogin" window.
      */
-    public void createLoginWindow(ResourceBundle resourceBundle, AnchorPane ap) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-        PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient(), new WindowsCreator());
-        fxmlLoader.setController(planItLoginController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ap.getScene().getWindow();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.setTitle("PlanIt");
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void createLoginWindow(ResourceBundle resourceBundle, AnchorPane ap) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+            PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient(), new WindowsCreator());
+            fxmlLoader.setController(planItLoginController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = (Stage) ap.getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.setTitle("PlanIt");
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (IOException ex) {
+            showClientErrorAlert(resourceBundle);
+            ex.printStackTrace(); // TODO logging
+        }
     }
 
     public void reload(AnchorPane ap, ResourceBundle resourceBundle, String fxmlFilePath, LanguageChangeWindow languageChangeWindow) {
@@ -141,67 +145,82 @@ public class WindowsCreator {
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
             scene.setRoot(rootPane);
 
-        } catch (IOException e) {
+        } catch (IOException ex) {
             showClientErrorAlert(resourceBundle);
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 
-    public void createMainWindow(ResourceBundle resourceBundle, UsersClient usersClient, User user, ActionEvent event)
-            throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-        PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
-                usersClient, user, this);
-        fxmlLoader.setController(planItMainWindowController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void createMainWindow(ResourceBundle resourceBundle, UsersClient usersClient, User user, ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
+            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
+                    usersClient, user, this);
+            fxmlLoader.setController(planItMainWindowController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (IOException ex) {
+            showClientErrorAlert(resourceBundle);
+            ex.printStackTrace();
+        }
     }
 
     /**
      * Registration button.
      * Opens the "PlanItRegistration window."
      */
-    public void createRegistrationWindow(UsersClient usersClient, ResourceBundle resourceBundle, ActionEvent event) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
-        PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(),
-                usersClient, this);
-        fxmlLoader.setController(planItRegistrationController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void createRegistrationWindow(UsersClient usersClient, ResourceBundle resourceBundle, ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
+            PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(),
+                    usersClient, this);
+            fxmlLoader.setController(planItRegistrationController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (IOException ex) {
+            showClientErrorAlert(resourceBundle);
+            ex.printStackTrace();
+        }
     }
 
     /**
      * Button for selecting language
      * Opens the "languageSelector" window.
      */
-    public void createLanguageSelectorWindow(LanguageChangeWindow languageChangeWindow) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
-        LanguageSelectorController languageSelectorController = new LanguageSelectorController(languageChangeWindow);
-        fxmlLoader.setController(languageSelectorController);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        Stage window = new Stage();
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void createLanguageSelectorWindow(LanguageChangeWindow languageChangeWindow, ResourceBundle resourceBundle) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/LanguageSelector.fxml"));
+            LanguageSelectorController languageSelectorController = new LanguageSelectorController(languageChangeWindow);
+            fxmlLoader.setController(languageSelectorController);
+            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            Stage window = new Stage();
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.resizableProperty().setValue(false);
+            window.show();
+        }
+        catch (IOException ex) {
+            showClientErrorAlert(resourceBundle);
+            ex.printStackTrace();
+        }
     }
 
     public void showServerErrorAlert(ResourceBundle resourceBundle){

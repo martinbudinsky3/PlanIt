@@ -24,7 +24,7 @@ public class EventsClient {
      * @param month chosen month.
      * @param year chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user) */
-    public List<Event> getUserEventsByMonth(int userId, int year, int month) throws Exception {
+    public List<Event> getUserEventsByMonth(int userId, int year, int month)  throws Exception{
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
         final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
