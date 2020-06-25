@@ -1,6 +1,8 @@
 package com.example.client.clients;
 
 import com.example.client.model.Event;
+import com.example.gui.utils.WindowsCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -15,6 +17,7 @@ import java.util.*;
 /** Class communicating with server. This class is focused on posting and getting requests related to the Event object. */
 public class EventsClient {
 
+    private final WindowsCreator windowsCreator = new WindowsCreator();
     private final ObjectMapper objectMapper = new ObjectMapper();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
 
@@ -24,10 +27,10 @@ public class EventsClient {
      * @param month chosen month.
      * @param year chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user) */
-    public List<Event> getUserEventsByMonth(int userId, int year, int month)  throws Exception{
+    public List<Event> getUserEventsByMonth(int userId, int year, int month, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
-        final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
+        final String uri = "http://localhost:8080/events123/{userId}/{year}/{month}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("userId", userId);
         params.put("year", year);
@@ -42,17 +45,19 @@ public class EventsClient {
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
-        }
-        catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-            return null;
-        }
-        catch (HttpStatusCodeException e){
-            if(e.getRawStatusCode() == 500) {
-                logger.info("Returning 0 user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof JsonProcessingException) {
+                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]", ex);
+            } else if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]. HTTP status: " + e.getRawStatusCode(), e);
-                return null;
+                if(((HttpStatusCodeException)ex).getRawStatusCode() == 500) {
+                    logger.info("Returning 0 user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
+                } else {
+                    logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: ["
+                            + year + ", " + month + "]. HTTP status: " + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
+                }
             }
         }
 
@@ -63,7 +68,7 @@ public class EventsClient {
     * @param idUser user's ID,
      * @param idEvent event's ID.
      * @return chosen Event object. */
-    public Event getEvent(int idUser, int idEvent) throws Exception{
+    public Event getEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -78,12 +83,16 @@ public class EventsClient {
             objectMapper.registerModule(new JavaTimeModule());
             event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {});
             logger.info("Returning event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
-        }
-        catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-        }
-        catch (HttpStatusCodeException e) {
-            logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID. HTTP status: " + e.getRawStatusCode(), e);
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof JsonProcessingException) {
+                logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID", ex);
+            } else if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID." +
+                        " HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
         }
 
         return event;
@@ -94,7 +103,7 @@ public class EventsClient {
      * @param idUser user's ID,
      * @return list of events that have alert time in current minute
     */
-    public List<Event> getEventsToAlert(int idUser) throws Exception{
+    public List<Event> getEventsToAlert(int idUser, ResourceBundle resourceBundle){
         logger.info("Getting all user's [" + idUser +"] events to alert.");
         final String uri = "http://localhost:8080/events/alert/{idUser}";
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -108,22 +117,29 @@ public class EventsClient {
             objectMapper.registerModule(new JavaTimeModule());
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning all user's [" + idUser +"] events to alert.");
-        } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-        } catch(final HttpStatusCodeException e){
-            if(e.getRawStatusCode() == 500) {
-                logger.info("Returning 0 events to alert.");
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof JsonProcessingException) {
+                logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert", ex);
+            } else if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: " + e.getRawStatusCode(), e);
+                if(((HttpStatusCodeException) ex).getRawStatusCode() == 500) {
+                    logger.info("Returning 0 events to alert.");
+                } else {
+                    logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert. HTTP status: "
+                            + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+                }
             }
         }
+
         return events;
     }
 
     /** Method used to mediate insertion of new event into the database
     * @param event object Event that should be inserted in to calendar.
     * @return ID (integer) of the inserted event. */
-    public Integer addEvent(Event event) throws Exception{
+    public Integer addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
         final String uri = "http://localhost:8080/events";
         RestTemplate restTemplate = new RestTemplate();
@@ -133,20 +149,26 @@ public class EventsClient {
             String id = restTemplate.postForObject(uri, event, String.class);
             idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
-        } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-        } catch(final HttpStatusCodeException e){
-            logger.error("Error while inserting event." + event.getTitle() + " HTTP status: " + e.getRawStatusCode(), e);
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof JsonProcessingException) {
+                logger.error("Error while inserting event." + event.getTitle(), ex);
+            } else if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while inserting event." + event.getTitle() + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
         }
-        return idEvent;
 
+        return idEvent;
     }
 
 
     /** Method needed when user wants to change some data in given event.
     * @param event Event object with updated attributes,
      *@param id id of that event*/
-    public boolean updateEvent(Event event, int id) {
+    public boolean updateEvent(Event event, int id, ResourceBundle resourceBundle) {
         logger.info("Updating event [" + id + "]");
         final String uri = "http://localhost:8080/events/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -158,10 +180,14 @@ public class EventsClient {
             restTemplate.put(uri, event, params);
             success = true;
             logger.info("Event [" + id + "] successffully updated.");
-        } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-        } catch (HttpStatusCodeException e){
-            logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: " + e.getRawStatusCode(), e);
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                        + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
+            }
         }
 
         return success;
@@ -170,7 +196,7 @@ public class EventsClient {
     /** Method used to mediate the deletion of given event.
     * @param idUser ID of the user to whom the event belongs,
      *@param idEvent ID of event that is going to be deleted. */
-    public boolean deleteEvent(int idUser, int idEvent) {
+    public boolean deleteEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
         logger.info("Deleting event [" + idEvent + "]");
         final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
@@ -183,10 +209,14 @@ public class EventsClient {
             restTemplate.delete(uri, params);
             success = true;
             logger.info("Event [" + idEvent + "] successsffully deleted");
-        } catch(ResourceAccessException ex){
-            logger.error("Error while connecting to server", ex);
-        } catch (HttpStatusCodeException e) {
-            logger.error("Error while deleting event." + idEvent + " HTTP status: " + e.getRawStatusCode(), e);
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while deleting event." + idEvent + " HTTP status: "
+                        + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
+            }
         }
 
         return success;

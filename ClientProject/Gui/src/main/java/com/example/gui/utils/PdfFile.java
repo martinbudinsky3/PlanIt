@@ -17,18 +17,22 @@ import java.util.stream.Stream;
 
 /** Class in which PDF file is created. */
 public class PdfFile {
+    private final WindowsCreator windowsCreator;
+
     private EventsClient eventsClient;
     private User user;
     private int selectedYear;
     private int selectedMonth;
     private ResourceBundle resourceBundle;
 
-    public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle) {
+    public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle,
+                   WindowsCreator windowsCreator) {
         this.user = user;
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
         this.eventsClient = eventsClient;
         this.resourceBundle = resourceBundle;
+        this.windowsCreator = windowsCreator;
     }
 
     /** Setting name of creating document. */
@@ -43,6 +47,7 @@ public class PdfFile {
             setTable(document);
             document.add(Chunk.NEWLINE);
         } catch(Exception e){
+            windowsCreator.showErrorAlert(resourceBundle);
             e.printStackTrace();
         } finally {
             document.close();
@@ -88,7 +93,7 @@ public class PdfFile {
 
     /** Setting table - calendar od events. Setting numbers of days and events into table cells
      * @param document created document*/
-    public void setTable(Document document) throws Exception {
+    public void setTable(Document document) throws DocumentException {
 
         PdfPTable table = new PdfPTable(7);
 
@@ -156,7 +161,7 @@ public class PdfFile {
         }
 
         /*set events to cells*/
-        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
+        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
         for(int e = 0; e < events.size(); e++) {
             fieldCounter = 1;
             dayCounter = 1;

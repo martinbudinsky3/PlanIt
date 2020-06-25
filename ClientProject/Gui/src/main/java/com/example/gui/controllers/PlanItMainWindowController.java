@@ -136,25 +136,21 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void runTask() {
         while(threadActive) {
             try {
-                List<Event> events = eventsClient.getEventsToAlert(user.getIdUser());
+                List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
 
-                if(events != null) {
-                    // show alert for every event that is returned
-                    for (int i = 0; i < events.size(); i++) {
-                        Event event = events.get(i);
-                        Platform.runLater(() -> {
-                            windowsCreator.createAlertWindow(user, event, eventsClient, this, resourceBundle);
-                            playAlertSound();
-                        });
-                    }
-
-                    int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
-                    Thread.sleep(seconds * 1000);
+                // show alert for every event that is returned
+                for (int i = 0; i < events.size(); i++) {
+                    Event event = events.get(i);
+                    Platform.runLater(() -> {
+                        windowsCreator.createAlertWindow(user, event, eventsClient, this, resourceBundle);
+                        playAlertSound();
+                    });
                 }
-            }
-            catch (Exception e) {
-                showClientErrorAlert();
-                e.printStackTrace();
+
+                int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
+                Thread.sleep(seconds * 1000);
+            } catch(InterruptedException ex) {
+                // TODO log
             }
         }
     }
@@ -217,7 +213,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     /** Button for creating Pdf File. After creating PDF, informing window appears*/
     private void savePdfButtonHandler() {
-        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle);
+        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, windowsCreator);
         pdfFile.pdf();
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -328,12 +324,12 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     /** Adding events into calendar cells. The starts time and title of the event are displayed.
      * It is possible to click on each event to show the detail. */
     public void showEventsInCalendar() {
-        try {
-            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth);
-            if(events == null){
-                showServerErrorAlert();
-                return;
-            }
+//        try {
+            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
+//            if(events == null){
+//                showServerErrorAlert();
+//                return;
+//            }
             for(int e = 0; e < events.size(); e++) {
                 for (int i = 1; i < 7; i++) {
                     for (int j = 0; j < 7; j++) {
@@ -365,10 +361,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     }
                 }
             }
-        } catch (Exception e){
-            showClientErrorAlert();
-            System.out.println(e.getMessage());
-        }
+//        } catch (Exception e){
+//            showClientErrorAlert();
+//            System.out.println(e.getMessage());
+//        }
     }
 
     /** Clear calendar (without number of days and events in calendar cells.)
