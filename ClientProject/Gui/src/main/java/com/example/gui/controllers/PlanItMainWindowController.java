@@ -21,7 +21,6 @@ import javafx.scene.layout.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -406,7 +405,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     public void showClientErrorAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setTitle(resourceBundle.getString("error"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();

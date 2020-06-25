@@ -420,7 +420,7 @@ public class PlanItAddEventController implements Initializable {
      */
     public void showClientErrorAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setTitle(resourceBundle.getString("error"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();

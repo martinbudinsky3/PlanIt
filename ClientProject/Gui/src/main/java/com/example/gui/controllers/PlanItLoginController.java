@@ -3,6 +3,7 @@ package com.example.gui.controllers;
 import com.example.client.clients.UsersClient;
 import com.example.client.model.User;
 import com.example.gui.utils.WindowsCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,8 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpStatusCodeException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -20,6 +23,8 @@ import java.util.ResourceBundle;
  * Controller for "PlanItLogin.fxml"
  */
 public class PlanItLoginController implements Initializable, LanguageChangeWindow {
+
+    private static final Logger logger = LoggerFactory.getLogger(PlanItLoginController.class);
 
     private final UsersClient usersClient;
     private final WindowsCreator windowsCreator;
@@ -56,7 +61,6 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      */
     @Override
     public void reload(ResourceBundle bundle) {
-        //resourceBundle = bundle;
         windowsCreator.reload(ap, bundle, "fxml/PlanItLogin.fxml",this);
     }
 
@@ -65,12 +69,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      */
     public void addHandlers() {
         buttonLogin.setOnAction(e -> {
-            try {
-                buttonLoginHandler(e);
-            } catch (Exception ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-            }
+            buttonLoginHandler(e);
         });
         buttonRegister.setOnAction(e -> {
             windowsCreator.createRegistrationWindow(usersClient, resourceBundle, e);
@@ -84,7 +83,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      * Login button.
      * Getting username and password from the TextFields. If the entered data is valid, user is logged in and the "PlanItMainWindow" opens.
      */
-    void buttonLoginHandler(ActionEvent event) throws Exception {
+    void buttonLoginHandler(ActionEvent event) {
         if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle(resourceBundle.getString("loginEmptyAlertTitle"));
@@ -92,35 +91,24 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             alert.setContentText(resourceBundle.getString("loginAlertContent"));
             alert.showAndWait();
         } else {
-            user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
-
-            if (user == null) {
-                showServerErrorAlert();
-            } else if (user.getUserName() == null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
-                alert.setHeaderText(null);
-                alert.setContentText(resourceBundle.getString("loginAlertContent"));
-                alert.showAndWait();
-            } else {
+            try {
+                user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
+            } catch(JsonProcessingException jsonEx) {
+                logger.error("Error logging in user " + textfieldName.getText(), jsonEx);
+                windowsCreator.showErrorAlert(resourceBundle);
+            } catch (HttpStatusCodeException httpEx) {
+                if(httpEx.getRawStatusCode() != 500) {
+                    logger.error("Error logging in user " + textfieldName.getText() + ". HTTP Status: " + httpEx.getRawStatusCode(), httpEx);
+                    windowsCreator.showErrorAlert(resourceBundle);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
+                    alert.setHeaderText(null);
+                    alert.setContentText(resourceBundle.getString("loginAlertContent"));
+                    alert.showAndWait();
+                }
             }
         }
-    }
-
-    public void showServerErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("serverError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
-
-    public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("clientError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
     }
 }

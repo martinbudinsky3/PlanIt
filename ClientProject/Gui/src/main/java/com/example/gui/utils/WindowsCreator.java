@@ -46,7 +46,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace(); // TODO logging
         }
     }
@@ -74,7 +74,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace(); // TODO logging
         }
     }
@@ -104,7 +104,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace(); // TODO logging
         }
     }
@@ -130,7 +130,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace(); // TODO logging
         }
     }
@@ -146,7 +146,7 @@ public class WindowsCreator {
             scene.setRoot(rootPane);
 
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace();
         }
     }
@@ -168,7 +168,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace();
         }
     }
@@ -181,8 +181,7 @@ public class WindowsCreator {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
-            PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(new EventsClient(),
-                    usersClient, this);
+            PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(usersClient, this);
             fxmlLoader.setController(planItRegistrationController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
@@ -194,7 +193,7 @@ public class WindowsCreator {
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace();
         }
     }
@@ -218,22 +217,14 @@ public class WindowsCreator {
             window.show();
         }
         catch (IOException ex) {
-            showClientErrorAlert(resourceBundle);
+            showErrorAlert(resourceBundle);
             ex.printStackTrace();
         }
     }
 
-    public void showServerErrorAlert(ResourceBundle resourceBundle){
+    public void showErrorAlert(ResourceBundle resourceBundle){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("serverError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
-
-    public void showClientErrorAlert(ResourceBundle resourceBundle){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setTitle(resourceBundle.getString("error"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();

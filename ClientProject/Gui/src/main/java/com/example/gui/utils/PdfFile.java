@@ -72,7 +72,7 @@ public class PdfFile {
         Paragraph paragraph_name = new Paragraph();
 
         Font font_name = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, BaseColor.BLACK);
-        String belong = new String(resourceBundle.getString("belong"));
+        String belong = resourceBundle.getString("belong");
         Chunk name = new Chunk(belong + " " + user.getFirstName() + " " + user.getLastName(), font_name);
 
         //adding chunks to paragaphs

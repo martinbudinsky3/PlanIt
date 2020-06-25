@@ -5,9 +5,7 @@ import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.gui.utils.WindowsCreator;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -15,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -151,7 +148,7 @@ public class AlertWindowController implements Initializable {
 
     public void showClientErrorAlert(){
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("clientError"));
+        alert.setTitle(resourceBundle.getString("error"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();
