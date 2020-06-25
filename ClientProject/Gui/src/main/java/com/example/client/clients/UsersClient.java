@@ -48,11 +48,6 @@ public class UsersClient {
         });
         logger.info("User " + user.getUserName() + "successfully logged in");
 
-////        catch(ResourceAccessException ex){
-//            logger.error("Error while connecting to server", ex);
-////            return null;
-////        }
-
         return user;
     }
 
@@ -74,7 +69,7 @@ public class UsersClient {
 
         String id = restTemplate.postForObject(uri, user, String.class);
         idUser = objectMapper.readValue(id, Integer.class);
-        logger.info("User " + user.getUserName() + "successfully inserted");
+        logger.info("User " + user.getUserName() + " successfully inserted");
 
 //        catch(ResourceAccessException ex){
 //            logger.error("Error while connecting to server", ex);

@@ -23,7 +23,9 @@ import java.util.ResourceBundle;
 
 public class WindowsCreator {
 
-    /** When user clicks on the label of event in calendar, the detail of the event shows. */
+    /**
+     * When user clicks on the label of event in calendar, the detail of the event shows.
+     */
     public void createEventDetailWindow(int eventId, String title, User user, EventsClient eventsClient,
                                         PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle,
                                         AnchorPane ap) {
@@ -51,12 +53,15 @@ public class WindowsCreator {
         }
     }
 
-    /** Button addEventButton is used to open "PlanItAddEvent" window.
-     * @param initDate current date*/
+    /**
+     * Button addEventButton is used to open "PlanItAddEvent" window.
+     *
+     * @param initDate current date
+     */
     public void createAddEventWindow(User user, LocalDate initDate, EventsClient eventsClient,
                                      PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle,
                                      AnchorPane ap) {
-        try{
+        try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
             PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), initDate,
@@ -79,8 +84,11 @@ public class WindowsCreator {
         }
     }
 
-    /** Shows notification window with basic information about event.
-     * @param event the event to which it is notified */
+    /**
+     * Shows notification window with basic information about event.
+     *
+     * @param event the event to which it is notified
+     */
     public void createAlertWindow(User user, Event event, EventsClient eventsClient,
                                   PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
         try {
@@ -113,26 +121,21 @@ public class WindowsCreator {
      * Button for canceling registration (buttonCancel)
      * Shows "PlanItLogin" window.
      */
-    public void createLoginWindow(ResourceBundle resourceBundle, AnchorPane ap) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-            PlanItLoginController planItLoginController = new PlanItLoginController(new UsersClient(), new WindowsCreator());
-            fxmlLoader.setController(planItLoginController);
-            fxmlLoader.setResources(resourceBundle);
-            AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-            Scene newScene = new Scene(rootPane);
-            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-            Stage window = (Stage) ap.getScene().getWindow();
-            window.setScene(newScene);
-            window.centerOnScreen();
-            window.setTitle("PlanIt");
-            window.resizableProperty().setValue(false);
-            window.show();
-        } catch (IOException ex) {
-            showErrorAlert(resourceBundle);
-            ex.printStackTrace(); // TODO logging
-        }
+    public void createLoginWindow(ResourceBundle resourceBundle, AnchorPane ap, UsersClient usersClient) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+        PlanItLoginController planItLoginController = new PlanItLoginController(usersClient, this);
+        fxmlLoader.setController(planItLoginController);
+        fxmlLoader.setResources(resourceBundle);
+        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
+        Scene newScene = new Scene(rootPane);
+        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+        Stage window = (Stage) ap.getScene().getWindow();
+        window.setScene(newScene);
+        window.centerOnScreen();
+        window.setTitle("PlanIt");
+        window.resizableProperty().setValue(false);
+        window.show();
     }
 
     public void reload(AnchorPane ap, ResourceBundle resourceBundle, String fxmlFilePath, LanguageChangeWindow languageChangeWindow) {
@@ -215,14 +218,13 @@ public class WindowsCreator {
             window.centerOnScreen();
             window.resizableProperty().setValue(false);
             window.show();
-        }
-        catch (IOException ex) {
+        } catch (IOException ex) {
             showErrorAlert(resourceBundle);
             ex.printStackTrace();
         }
     }
 
-    public void showErrorAlert(ResourceBundle resourceBundle){
+    public void showErrorAlert(ResourceBundle resourceBundle) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("error"));
         alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));

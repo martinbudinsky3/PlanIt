@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -94,19 +95,24 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             try {
                 user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
-            } catch(JsonProcessingException jsonEx) {
-                logger.error("Error logging in user " + textfieldName.getText(), jsonEx);
+            } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
-            } catch (HttpStatusCodeException httpEx) {
-                if(httpEx.getRawStatusCode() != 500) {
-                    logger.error("Error logging in user " + textfieldName.getText() + ". HTTP Status: " + httpEx.getRawStatusCode(), httpEx);
-                    windowsCreator.showErrorAlert(resourceBundle);
+                if(ex instanceof JsonProcessingException) {
+                    logger.error("Error logging in user " + textfieldName.getText(), ex);
+                } else if(ex instanceof ResourceAccessException) {
+                    logger.error("Error while connecting to server", ex);
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
-                    alert.setHeaderText(null);
-                    alert.setContentText(resourceBundle.getString("loginAlertContent"));
-                    alert.showAndWait();
+                    if(((HttpStatusCodeException)ex).getRawStatusCode() != 500) {
+                        logger.error("Error logging in user " + textfieldName.getText() + ". HTTP Status: " +
+                                ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
+                        windowsCreator.showErrorAlert(resourceBundle);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
+                        alert.setHeaderText(null);
+                        alert.setContentText(resourceBundle.getString("loginAlertContent"));
+                        alert.showAndWait();
+                    }
                 }
             }
         }

@@ -16,7 +16,9 @@ import javafx.scene.layout.AnchorPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -62,15 +64,15 @@ public class PlanItRegistrationController implements Initializable {
      */
     public void addHandlers() {
         buttonRegister.setOnAction(e -> {
-            try {
-                buttonRegisterHandler(e);
-            } catch (Exception ex) {
-                showClientErrorAlert();
-                ex.printStackTrace();
-            }
+            buttonRegisterHandler(e);
         });
         buttonCancel.setOnAction(e -> {
-            windowsCreator.createLoginWindow(resourceBundle, ap);
+            try {
+                windowsCreator.createLoginWindow(resourceBundle, ap, usersClient);
+            } catch (IOException ex) {
+                windowsCreator.showErrorAlert(resourceBundle);
+                ex.printStackTrace(); // TODO logging
+            }
         });
     }
 
@@ -101,39 +103,26 @@ public class PlanItRegistrationController implements Initializable {
                 Integer id = usersClient.addUser(user);
                 user.setIdUser(id);
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
-            } catch (JsonProcessingException jsonEx) {
-                logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
-                        ", last name: " + user.getLastName(), jsonEx);
+            } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
-            } catch (HttpStatusCodeException httpEx) {
-                if(httpEx.getRawStatusCode() != 500) {
+                if(ex instanceof JsonProcessingException) {
                     logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
-                    ", last name: " + user.getLastName() + ". HTTP Status: " + httpEx.getRawStatusCode(), httpEx);
-                    windowsCreator.showErrorAlert(resourceBundle);
+                            ", last name: " + user.getLastName(), ex);
+                } else if(ex instanceof ResourceAccessException) {
+                    logger.error("Error while connecting to server", ex);
                 } else {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
-                    alert.setHeaderText(null);
-                    alert.setContentText(resourceBundle.getString("registrationExistsAlertContent"));
-                    alert.showAndWait();
+                    if(((HttpStatusCodeException)ex).getRawStatusCode() != 500) {
+                        logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
+                                ", last name: " + user.getLastName() + ". HTTP Status: " + ((HttpStatusCodeException)ex), ex);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
+                        alert.setHeaderText(null);
+                        alert.setContentText(resourceBundle.getString("registrationExistsAlertContent"));
+                        alert.showAndWait();
+                    }
                 }
             }
         }
-    }
-
-    public void showServerErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("serverError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
-
-    public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("error"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
     }
 }

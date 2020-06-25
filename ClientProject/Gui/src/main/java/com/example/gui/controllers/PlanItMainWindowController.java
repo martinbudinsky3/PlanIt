@@ -21,6 +21,7 @@ import javafx.scene.layout.*;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -198,7 +199,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(user, LocalDate.now(), eventsClient,
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
-            windowsCreator.createLoginWindow(resourceBundle, ap);
+            try {
+                windowsCreator.createLoginWindow(resourceBundle, ap, usersClient);
+                threadActive = false;
+            } catch (IOException ex) {
+                windowsCreator.showErrorAlert(resourceBundle);
+                ex.printStackTrace(); // TODO logging
+            }
         });
         changeLanguageButton.setOnAction(e -> {
             windowsCreator.createLanguageSelectorWindow(this, resourceBundle);
