@@ -15,6 +15,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -22,6 +24,7 @@ import java.util.ResourceBundle;
 
 
 public class WindowsCreator {
+    private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
 
     /**
      * When user clicks on the label of event in calendar, the detail of the event shows.
@@ -49,7 +52,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace(); // TODO logging
+            logger.error("Error while opening event detail window", ex);
         }
     }
 
@@ -80,7 +83,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace(); // TODO logging
+            logger.error("Error while opening add event window", ex);
         }
     }
 
@@ -113,7 +116,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace(); // TODO logging
+            logger.error("Error while opening alert window", ex);
         }
     }
 
@@ -150,7 +153,7 @@ public class WindowsCreator {
 
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            logger.error("Error while reloading window", ex);
         }
     }
 
@@ -172,7 +175,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            logger.error("Error while opening main window", ex);
         }
     }
 
@@ -197,7 +200,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            logger.error("Error while opening registration window", ex);
         }
     }
 
@@ -220,7 +223,7 @@ public class WindowsCreator {
             window.show();
         } catch (IOException ex) {
             showErrorAlert(resourceBundle);
-            ex.printStackTrace();
+            logger.error("Error while opening language selector window", ex);
         }
     }
 

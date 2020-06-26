@@ -33,7 +33,7 @@ public class UserController {
         }
 
 
-        logger.error("Error inserting new user.Username: " + user.getUserName() + "First name: " + user.getFirstName() +
+        logger.error("Error inserting new user. Username: " + user.getUserName() + "First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName() + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }

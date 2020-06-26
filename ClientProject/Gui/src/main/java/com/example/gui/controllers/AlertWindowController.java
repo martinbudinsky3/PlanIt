@@ -131,20 +131,4 @@ public class AlertWindowController implements Initializable {
             stage.close();
         }
     }
-
-    public void showServerErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("serverError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
-
-    public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("error"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
 }

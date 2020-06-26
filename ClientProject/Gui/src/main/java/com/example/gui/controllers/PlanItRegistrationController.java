@@ -45,6 +45,7 @@ public class PlanItRegistrationController implements Initializable {
     private Button buttonRegister;
     @FXML
     private Button buttonCancel;
+
     private User user;
     private ResourceBundle resourceBundle;
 
@@ -71,7 +72,7 @@ public class PlanItRegistrationController implements Initializable {
                 windowsCreator.createLoginWindow(resourceBundle, ap, usersClient);
             } catch (IOException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
-                ex.printStackTrace(); // TODO logging
+                logger.error("Error while opening login window", ex);
             }
         });
     }

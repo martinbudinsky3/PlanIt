@@ -2,3 +2,25 @@
 2020-06-26 00:23:07,306 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
 2020-06-26 00:23:07,478 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
 2020-06-26 00:23:07,485 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning 0 events to alert to user [1].
+2020-06-26 00:24:08,652 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] Getting user test and user password
+2020-06-26 00:24:08,653 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] User testsuccessfully logged in
+2020-06-26 00:24:08,798 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events to alert by user's id: 1
+2020-06-26 00:24:08,800 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Returning 0 events to alert to user [1].
+2020-06-26 00:24:58,670 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-06-26 00:24:58,672 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-06-26 00:24:58,835 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
+2020-06-26 00:24:58,836 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning 0 events to alert to user [1].
+2020-06-26 00:24:58,857 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events by user's id: 1, year: 2020 and month: 6
+2020-06-26 00:24:58,862 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Events successfully found. Returning 0 events.
+2020-06-26 00:25:00,860 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Getting events to alert by user's id: 1
+2020-06-26 00:25:00,861 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-4] Returning 0 events to alert to user [1].
+2020-06-26 00:25:02,040 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 5
+2020-06-26 00:25:02,059 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning 40 events.
+2020-06-26 00:25:59,213 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] Getting user test and user password
+2020-06-26 00:25:59,214 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] User testsuccessfully logged in
+2020-06-26 00:25:59,356 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Getting events to alert by user's id: 1
+2020-06-26 00:25:59,358 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-8] Returning 0 events to alert to user [1].
+2020-06-26 00:25:59,374 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 6
+2020-06-26 00:25:59,376 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Events successfully found. Returning 0 events.
+2020-06-26 00:26:00,384 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events to alert by user's id: 1
+2020-06-26 00:26:00,385 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Returning 0 events to alert to user [1].

@@ -5,6 +5,8 @@ import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -17,6 +19,7 @@ import java.util.stream.Stream;
 
 /** Class in which PDF file is created. */
 public class PdfFile {
+    private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
     private final WindowsCreator windowsCreator;
 
     private EventsClient eventsClient;
@@ -46,9 +49,9 @@ public class PdfFile {
             document.add(Chunk.NEWLINE);
             setTable(document);
             document.add(Chunk.NEWLINE);
-        } catch(Exception e){
+        } catch(DocumentException | FileNotFoundException ex){
             windowsCreator.showErrorAlert(resourceBundle);
-            e.printStackTrace();
+            logger.error("Error while creating PDF file", ex);
         } finally {
             document.close();
         }

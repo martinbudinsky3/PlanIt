@@ -17,6 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -27,8 +29,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-/** Controller for "PlanItMainWindow.fxml" */
+/**
+ * Controller for "PlanItMainWindow.fxml"
+ */
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
+    private static final Logger logger = LoggerFactory.getLogger(PlanItMainWindowController.class);
     private final WindowsCreator windowsCreator;
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
@@ -76,28 +81,35 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
 
-    /** Setting year label
-     * @param selectedYear the year that is currently selected*/
+    /**
+     * Setting year label
+     *
+     * @param selectedYear the year that is currently selected
+     */
     public void setSelectedYear(int selectedYear) {
         this.selectedYear = selectedYear;
         yearLabel.setText(Integer.toString(selectedYear));
     }
 
-    /** Setting month label
-     * @param selectedMonth the month that is currently selected*/
+    /**
+     * Setting month label
+     *
+     * @param selectedMonth the month that is currently selected
+     */
     public void setSelectedMonth(int selectedMonth) {
         this.selectedMonth = selectedMonth;
         monthLabel.setText(months[selectedMonth - 1]);
     }
 
 
-    /** Initializing current year and month, adding buttons functionality, creating calendar layout
+    /**
+     * Initializing current year and month, adding buttons functionality, creating calendar layout
      * and display, populating calendar with events in current month, start of new thread for alert functionality
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
-        if(!threadFlag) { // if thread isn't created yet
+        if (!threadFlag) { // if thread isn't created yet
             threadFlag = true;
             startTask();
         }
@@ -108,7 +120,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
-    /** Reloading window to change to just selected language. */
+    /**
+     * Reloading window to change to just selected language.
+     */
     @Override
     public void reload(ResourceBundle bundle) {
         windowsCreator.reload(ap, bundle, "fxml/PlanItMainWindow.fxml", this);
@@ -134,7 +148,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is getting events at the beginning of every minute.
      */
     public void runTask() {
-        while(threadActive) {
+        while (threadActive) {
             try {
                 List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
 
@@ -149,45 +163,49 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                 int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
                 Thread.sleep(seconds * 1000);
-            } catch(InterruptedException ex) {
-                // TODO log
+            } catch (InterruptedException ex) {
+                logger.error("Error in thread that gets events to alert", ex);
             }
         }
     }
 
-    /** Sound of notification is played. */
-    public void playAlertSound(){
+    /**
+     * Sound of notification is played.
+     */
+    public void playAlertSound() {
         URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/chimes.wav");
         try {
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
             clip.start();
-        } catch(Exception e){
-            showClientErrorAlert();
-            e.printStackTrace();
+        } catch (Exception ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            logger.error("Error while playing alert sound", ex);
         }
     }
 
     /**
-     *  Method that creates grid pane nodes array - help for calendar layout and display
+     * Method that creates grid pane nodes array - help for calendar layout and display
      */
-    public void createGridPaneNodes(){
+    public void createGridPaneNodes() {
         gridPaneNodes = new Node[7][7];
         for (Node child : calendar.getChildren()) {
             Integer column = calendar.getColumnIndex(child);
             Integer row = calendar.getRowIndex(child);
-            if(row == null) {
+            if (row == null) {
                 row = 0;
             }
-            if(column == null){
+            if (column == null) {
                 column = 0;
             }
             gridPaneNodes[column][row] = child;
         }
     }
 
-    /** Adding functionality to buttons */
+    /**
+     * Adding functionality to buttons
+     */
     public void addHandlers() {
         addHandlerToDayVBoxes();
         yearBack.setOnAction(e -> yearBackHandler());
@@ -200,7 +218,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 threadActive = false;
             } catch (IOException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
-                ex.printStackTrace(); // TODO logging
+                logger.error("Error while logging out", ex);
             }
         });
         changeLanguageButton.setOnAction(e -> {
@@ -211,7 +229,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         });
     }
 
-    /** Button for creating Pdf File. After creating PDF, informing window appears*/
+    /**
+     * Button for creating Pdf File. After creating PDF, informing window appears
+     */
     private void savePdfButtonHandler() {
         PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, windowsCreator);
         pdfFile.pdf();
@@ -223,12 +243,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         alert.showAndWait();
     }
 
-    /** Finding current year and date, initializing labels with corresponding values
+    /**
+     * Finding current year and date, initializing labels with corresponding values
      * initialize months list
      */
     public void initializeMonthsAndYear() {
         // find out current year and month that will be displayed
-        if(selectedMonth == null && selectedYear == null) {
+        if (selectedMonth == null && selectedYear == null) {
             LocalDate today = LocalDate.now();
             selectedYear = today.getYear();
             selectedMonth = today.getMonth().getValue();
@@ -241,7 +262,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 resourceBundle.getString("july"), resourceBundle.getString("august"),
                 resourceBundle.getString("september"), resourceBundle.getString("october"),
                 resourceBundle.getString("november"), resourceBundle.getString("december")};
-        for (int i = 0; i < 12; i++){
+        for (int i = 0; i < 12; i++) {
             monthsList.getItems().add(months[i].toUpperCase());
         }
 
@@ -262,7 +283,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     /**
      * Adding handlers on click on VBoxes that represent day box in calendar
      */
-    public void addHandlerToDayVBoxes(){
+    public void addHandlerToDayVBoxes() {
         for (int i = 1; i < 7; i++) {
             for (int j = 0; j < 7; j++) {
                 VBox dayVBox = (VBox) gridPaneNodes[j][i];
@@ -280,13 +301,15 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    /** Initialize calendar. Find out when days in months started. Making som calculations so it
-     * fills the cells of the calendar by numbers of days in coresponding boxes */
+    /**
+     * Initialize calendar. Find out when days in months started. Making som calculations so it
+     * fills the cells of the calendar by numbers of days in coresponding boxes
+     */
     public void initializeCalendar() {
         // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if(firstDayOfMonth == 0){
+        if (firstDayOfMonth == 0) {
             firstDayOfMonth = 7;
         }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -321,60 +344,55 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    /** Adding events into calendar cells. The starts time and title of the event are displayed.
-     * It is possible to click on each event to show the detail. */
+    /**
+     * Adding events into calendar cells. The starts time and title of the event are displayed.
+     * It is possible to click on each event to show the detail.
+     */
     public void showEventsInCalendar() {
-//        try {
-            List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
-//            if(events == null){
-//                showServerErrorAlert();
-//                return;
-//            }
-            for(int e = 0; e < events.size(); e++) {
-                for (int i = 1; i < 7; i++) {
-                    for (int j = 0; j < 7; j++) {
-                        VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                        if(dayVBox.getChildren().isEmpty()){  // if VBox is not day box
-                            continue;
-                        }
+        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
-                        Label dayLabel = (Label) dayVBox.getChildren().get(0);
-                        int dayNumber = Integer.parseInt(dayLabel.getText());
-                        Event event = events.get(e);
+        for (int e = 0; e < events.size(); e++) {
+            for (int i = 1; i < 7; i++) {
+                for (int j = 0; j < 7; j++) {
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    if (dayVBox.getChildren().isEmpty()) {  // if VBox is not day box
+                        continue;
+                    }
 
-                        if(event.getDate().getDayOfMonth() == dayNumber) { // if event is from day of current day box add it to that day box
-                            Label eventLabel = new Label();
-                            String eventLabelText = event.getStarts() + " " + event.getTitle();
-                            eventLabel.setText(eventLabelText);
-                            eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
-                            eventLabel.setPrefWidth(dayVBox.getPrefWidth());
-                            eventLabel.getStyleClass().add("event-label");
-                            eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
-                                windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
-                                        user, eventsClient, this, resourceBundle, ap);
-                                mouseEvent.consume();
-                            });
+                    Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                    int dayNumber = Integer.parseInt(dayLabel.getText());
+                    Event event = events.get(e);
 
-                            dayVBox.getChildren().add(eventLabel);
-                            VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
-                        }
+                    if (event.getDate().getDayOfMonth() == dayNumber) { // if event is from day of current day box add it to that day box
+                        Label eventLabel = new Label();
+                        String eventLabelText = event.getStarts() + " " + event.getTitle();
+                        eventLabel.setText(eventLabelText);
+                        eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
+                        eventLabel.setPrefWidth(dayVBox.getPrefWidth());
+                        eventLabel.getStyleClass().add("event-label");
+                        eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
+                            windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
+                                    user, eventsClient, this, resourceBundle, ap);
+                            mouseEvent.consume();
+                        });
+
+                        dayVBox.getChildren().add(eventLabel);
+                        VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
                     }
                 }
             }
-//        } catch (Exception e){
-//            showClientErrorAlert();
-//            System.out.println(e.getMessage());
-//        }
+        }
     }
 
-    /** Clear calendar (without number of days and events in calendar cells.)
+    /**
+     * Clear calendar (without number of days and events in calendar cells.)
      * It is used in reloading of calendar e.g in displaying calendar for new selected month
      */
-    public void clearCalendar(){
-        for(int i = 1; i < 7; i++) {
-            for(int j = 0; j < 7; j++) {
+    public void clearCalendar() {
+        for (int i = 1; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
                 VBox vBox = (VBox) gridPaneNodes[j][i];
-                if(vBox.getChildren().isEmpty()){
+                if (vBox.getChildren().isEmpty()) {
                     continue;
                 }
                 vBox.getChildren().clear();
@@ -382,7 +400,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    /** Button yearBack allows user to show his events in calendar for given month but last year. */
+    /**
+     * Button yearBack allows user to show his events in calendar for given month but last year.
+     */
     public void yearBackHandler() {
         selectedYear -= 1;
         yearLabel.setText(Integer.toString(selectedYear));
@@ -390,27 +410,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
     }
 
-    /** Button yearForward allows user to show his events in calendar for given month but next year. */
+    /**
+     * Button yearForward allows user to show his events in calendar for given month but next year.
+     */
     public void yearForwardHandler() {
         selectedYear += 1;
         yearLabel.setText(Integer.toString(selectedYear));
         initializeCalendar();
         showEventsInCalendar();
-    }
-
-    public void showServerErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("serverError"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
-    }
-
-    public void showClientErrorAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(resourceBundle.getString("error"));
-        alert.setHeaderText(resourceBundle.getString("errorAlertHeader"));
-        alert.setContentText(resourceBundle.getString("errorAlertContext"));
-        alert.showAndWait();
     }
 }
