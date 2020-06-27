@@ -370,6 +370,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                         eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
                         eventLabel.setPrefWidth(dayVBox.getPrefWidth());
                         eventLabel.getStyleClass().add("event-label");
+                        if(event.getType() == Event.Type.FREE_TIME) {
+                            eventLabel.getStyleClass().add("free-time-label");
+                        } else if(event.getType() == Event.Type.WORK) {
+                            eventLabel.getStyleClass().add("work-label");
+                        } else if(event.getType() == Event.Type.SCHOOL) {
+                            eventLabel.getStyleClass().add("school-label");
+                        }
+
                         eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
                             windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
                                     user, eventsClient, this, resourceBundle, ap);

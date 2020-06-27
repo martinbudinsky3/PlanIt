@@ -177,6 +177,8 @@ public class PlanItAddEventController implements Initializable {
         typeSelector.getItems().add(Event.Type.WORK.toString());
         typeSelector.getItems().add(Event.Type.SCHOOL.toString());
         typeSelector.getItems().add(Event.Type.OTHERS.toString());
+
+        typeSelector.setValue(Event.Type.FREE_TIME.toString());
     }
 
     /**

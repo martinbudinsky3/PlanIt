@@ -3,8 +3,19 @@
 }
 
 .event-label {
-    -fx-text-fill: #3F87D5;
     -fx-font-weight: bold;
+}
+
+.free-time-label {
+    -fx-text-fill: #03fc13;
+}
+
+.work-label {
+    -fx-text-fill: #fc0303;
+}
+
+.school-label {
+    -fx-text-fill: #3F87D5;
 }
 
 .control-button {
