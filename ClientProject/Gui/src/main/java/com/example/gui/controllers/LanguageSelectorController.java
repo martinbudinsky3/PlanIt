@@ -12,6 +12,27 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+enum Language {
+    ENGLISH, SLOVAK, GERMAN;
+
+    @Override
+    public String toString() {
+        switch (this) {
+            case ENGLISH:
+                return "English";
+
+            case SLOVAK:
+                return "Slovensky";
+
+            case GERMAN:
+                return "Deutsch";
+
+            default:
+                return "English";
+        }
+    }
+}
+
 /** Controller for "LanguageSelector.fxml" */
 public class LanguageSelectorController implements Initializable {
 
@@ -37,7 +58,7 @@ public class LanguageSelectorController implements Initializable {
         listView.setEditable(true);
 
         names.addAll(
-                "English", "Slovak", "Deutsch"
+                Language.ENGLISH.toString(), Language.SLOVAK.toString(), Language.GERMAN.toString()
         );
 
         listView.setItems(names);
@@ -49,13 +70,13 @@ public class LanguageSelectorController implements Initializable {
             // create new Locale object with right selected language
             if (rb != null) {
                 String language = rb.getText();
-                Locale locale = new Locale("");
-                if(language.equals("English")){
-                    locale = new Locale("en");
-                } else if(language.equals("Slovak")) {
+                Locale locale;
+                if(language.equals(Language.SLOVAK.toString())) {
                     locale = new Locale("sk");
-                } else if(language.equals("Deutsch")){
+                } else if(language.equals(Language.GERMAN.toString())){
                     locale = new Locale("de");
+                } else {  // english or other language
+                    locale = new Locale("");
                 }
 
                 Stage stage = (Stage)ap.getScene().getWindow();

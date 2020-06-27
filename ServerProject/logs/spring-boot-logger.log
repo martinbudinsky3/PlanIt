@@ -19,3 +19,12 @@
 2020-06-27 11:32:42,533 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [main] Initializing ExecutorService 'applicationTaskExecutor'
 2020-06-27 11:32:42,704 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [main] Tomcat started on port(s): 8080 (http) with context path ''
 2020-06-27 11:32:42,704 INFO org.springframework.boot.StartupInfoLogger [main] Started Main in 3.706 seconds (JVM running for 4.979)
+2020-06-27 11:59:54,135 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-06-27 11:59:54,136 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-06-27 11:59:54,145 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 9 ms
+2020-06-27 11:59:54,211 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-06-27 11:59:54,261 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-06-27 11:59:54,528 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events to alert by user's id: 1
+2020-06-27 11:59:54,546 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 6
+2020-06-27 11:59:54,554 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Returning 0 events to alert to user [1].
+2020-06-27 11:59:54,555 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Events successfully found. Returning 0 events.
