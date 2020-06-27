@@ -49,7 +49,7 @@ public class LanguageSelectorController implements Initializable {
             // create new Locale object with right selected language
             if (rb != null) {
                 String language = rb.getText();
-                Locale locale = new Locale("en");
+                Locale locale = new Locale("");
                 if(language.equals("English")){
                     locale = new Locale("en");
                 } else if(language.equals("Slovak")) {

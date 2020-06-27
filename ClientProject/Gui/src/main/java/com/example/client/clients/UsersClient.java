@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -18,7 +20,10 @@ import java.util.Map;
 /**
  * Class communicating with server. This class is focused on posting and getting requests related to the User object.
  */
+
 public class UsersClient {
+    private final String BASE_URI = "http://localhost:8080";
+
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
     private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
@@ -34,7 +39,7 @@ public class UsersClient {
     public User getUserByUserNameAndUserPassword(String userName, String userPassword)
             throws JsonProcessingException, ResourceAccessException, HttpStatusCodeException {
         logger.info("Logging user by his username and password: [" + userName + "]");
-        final String uri = "http://localhost:8080/users/{userName}/{userPassword}";
+        final String uri = BASE_URI + "/users/{userName}/{userPassword}";
         Map<String, String> params = new HashMap<String, String>();
         params.put("userName", userName);
         params.put("userPassword", userPassword);
@@ -60,7 +65,7 @@ public class UsersClient {
         logger.info("Inserting new User. Username: " + user.getUserName() + " First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName());
 
-        final String uri = "http://localhost:8080/users";
+        final String uri = BASE_URI + "/users";
 
         RestTemplate restTemplate = new RestTemplate();
         Integer idUser = -1;

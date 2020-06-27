@@ -16,6 +16,7 @@ import java.util.*;
 
 /** Class communicating with server. This class is focused on posting and getting requests related to the Event object. */
 public class EventsClient {
+    private final String BASE_URI = "http://localhost:8080";
 
     private final WindowsCreator windowsCreator = new WindowsCreator();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -31,7 +32,7 @@ public class EventsClient {
     public List<Event> getUserEventsByMonth(int userId, int year, int month, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
-        final String uri = "http://localhost:8080/events/{userId}/{year}/{month}";
+        final String uri = BASE_URI + "/events/{userId}/{year}/{month}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("userId", userId);
         params.put("year", year);
@@ -70,7 +71,7 @@ public class EventsClient {
      * @return chosen Event object. */
     public Event getEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
-        final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
+        final String uri = BASE_URI + "/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
@@ -104,7 +105,7 @@ public class EventsClient {
     */
     public List<Event> getEventsToAlert(int idUser, ResourceBundle resourceBundle){
         logger.info("Getting all user's [" + idUser +"] events to alert.");
-        final String uri = "http://localhost:8080/events/alert/{idUser}";
+        final String uri = BASE_URI + "/events/alert/{idUser}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
 
@@ -139,7 +140,7 @@ public class EventsClient {
     * @return ID (integer) of the inserted event. */
     public Integer addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
-        final String uri = "http://localhost:8080/events";
+        final String uri = BASE_URI + "/events";
         Integer idEvent = null;
 
         try {
@@ -167,7 +168,7 @@ public class EventsClient {
      *@param id id of that event*/
     public boolean updateEvent(Event event, int id, ResourceBundle resourceBundle) {
         logger.info("Updating event [" + id + "]");
-        final String uri = "http://localhost:8080/events/{idEvent}";
+        final String uri = BASE_URI + "/events/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idEvent", id);
 
@@ -194,7 +195,7 @@ public class EventsClient {
      *@param idEvent ID of event that is going to be deleted. */
     public boolean deleteEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
         logger.info("Deleting event [" + idEvent + "]");
-        final String uri = "http://localhost:8080/events/{idUser}/{idEvent}";
+        final String uri = BASE_URI + "/events/{idUser}/{idEvent}";
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
