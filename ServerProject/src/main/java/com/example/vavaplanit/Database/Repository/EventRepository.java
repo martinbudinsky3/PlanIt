@@ -27,8 +27,8 @@ public class EventRepository {
      * Inserting new event into DB
      * @param event event object*/
     public Integer add(Event event) {
-        final String sql = "insert into planitschema.event (title, location, description, date, starts, ends_date, ends," +
-                " alert_date, alert) values (?,?,?,?,?,?,?,?,?)";
+        final String sql = "insert into planitschema.event (title, location, type, description, date, starts, ends_date, ends," +
+                " alert_date, alert) values (?,?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -41,17 +41,20 @@ public class EventRepository {
                 } else {
                     ps.setNull(2, Types.VARCHAR);
                 }
+
+                ps.setString(3, event.getType().toString());
+
                 if (event.getDescription() != null) {
-                    ps.setString(3, event.getDescription());
+                    ps.setString(4, event.getDescription());
                 } else {
-                    ps.setNull(3, Types.VARCHAR);
+                    ps.setNull(4, Types.VARCHAR);
                 }
-                ps.setDate(4, Date.valueOf(event.getDate()));
-                ps.setTime(5, Time.valueOf(event.getStarts()));
-                ps.setDate(6, Date.valueOf(event.getEndsDate()));
-                ps.setTime(7, Time.valueOf(event.getEnds()));
-                ps.setDate(8, Date.valueOf(event.getAlertDate()));
-                ps.setTime(9, Time.valueOf(event.getAlert()));
+                ps.setDate(5, Date.valueOf(event.getDate()));
+                ps.setTime(6, Time.valueOf(event.getStarts()));
+                ps.setDate(7, Date.valueOf(event.getEndsDate()));
+                ps.setTime(8, Time.valueOf(event.getEnds()));
+                ps.setDate(9, Date.valueOf(event.getAlertDate()));
+                ps.setTime(10, Time.valueOf(event.getAlert()));
                 return ps;
             }
         }, keyHolder);
@@ -140,10 +143,10 @@ public class EventRepository {
      * @param event event object with updated attributes
      * @param id id of Event which is going to be updated*/
     public void update(int id, Event event) {
-        String sql = "UPDATE planitschema.event SET title = ?, location = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
+        String sql = "UPDATE planitschema.event SET title = ?, location = ?, type = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
                 " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
-        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getDate(), event.getStarts(), event.getEndsDate(),
-                event.getEnds(), event.getAlertDate(), event.getAlert(), event.getDescription(), id);
+        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getType().toString(), event.getDate(),
+                event.getStarts(), event.getEndsDate(), event.getEnds(), event.getAlertDate(), event.getAlert(), event.getDescription(), id);
     }
 
     /**

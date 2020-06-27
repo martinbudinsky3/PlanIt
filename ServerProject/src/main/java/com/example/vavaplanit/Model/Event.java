@@ -7,10 +7,45 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Event implements Serializable {
+    public enum Type {
+        FREE_TIME, WORK, SCHOOL, OTHERS;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case FREE_TIME:
+                    return "Free time";
+
+                case WORK:
+                    return "Work";
+
+                case SCHOOL:
+                    return "School";
+
+                case OTHERS:
+                    return "Others";
+
+                default:
+                    return "";
+            }
+        }
+
+        public static Type fromString(String stringType) {
+            for(Type t : Type.values()) {
+                if(t.toString().equalsIgnoreCase(stringType)) {
+                    return t;
+                }
+            }
+
+            return null;
+        }
+    }
+
     private int idEvent;
     private int idUser;
     private String title;
     private String location;
+    private Type type;
     private String description;
     private LocalDate date;
     private LocalTime starts;
@@ -35,11 +70,12 @@ public class Event implements Serializable {
         this.idUser = idUser;
     }
 
-    public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
+    public Event(int idEvent, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
         this.location = location;
+        this.type = type;
         this.description = description;
         this.date = date;
         this.starts = starts;
@@ -79,6 +115,14 @@ public class Event implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -146,6 +190,7 @@ public class Event implements Serializable {
                 idUser == event.idUser &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
+                type == event.type &&
                 Objects.equals(description, event.description) &&
                 Objects.equals(date, event.date) &&
                 Objects.equals(starts, event.starts) &&
@@ -157,6 +202,6 @@ public class Event implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, description, date, starts, endsDate, ends, alertDate, alert);
+        return Objects.hash(idEvent, idUser, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
     }
 }

@@ -28,7 +28,7 @@ enum Language {
                 return "Deutsch";
 
             default:
-                return "English";
+                return "";
         }
     }
 }

@@ -16,3 +16,11 @@ alter table planitschema.event add column ends_date date;
 alter table planitschema.event add column alert_date date;
 
 update planitschema.event set ends_date=date, alert_date = date;
+
+------------------------27.6.2020--------------------------------
+
+create domain event_type varchar(20)
+  check value in ('Free time', 'Work', 'School', 'Others'));
+
+alter table planitschema.event add column type event_type;
+update planitschema.event set type = 'Others';

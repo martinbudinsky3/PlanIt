@@ -13,6 +13,7 @@ public class EventMappers {
             int idEvent = resultSet.getInt("idevent");
             String title = resultSet.getString("title");
             String location = resultSet.getString("location");
+            Event.Type type = Event.Type.fromString(resultSet.getString("type"));
             String description = resultSet.getString("description");
             LocalDate date = resultSet.getObject("date", LocalDate.class);
             LocalTime starts = resultSet.getObject("starts", LocalTime.class);
@@ -24,6 +25,7 @@ public class EventMappers {
                     idEvent,
                     title,
                     location,
+                    type,
                     description,
                     date,
                     starts,
