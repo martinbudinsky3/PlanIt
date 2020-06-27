@@ -83,6 +83,9 @@ public class PlanItAddEventController implements Initializable {
     private TextArea descriptionField;
 
     @FXML
+    private ChoiceBox<String> typeSelector;
+
+    @FXML
     private DatePicker startsDateField;
 
     @FXML
@@ -165,6 +168,15 @@ public class PlanItAddEventController implements Initializable {
         // add handlers to buttons
         saveButton.setOnAction(e -> save(e));
         deleteButton.setOnAction(e -> delete(e));
+
+        initializeTypeSelector();
+    }
+
+    private void initializeTypeSelector() {
+        typeSelector.getItems().add(Event.Type.FREE_TIME.toString());
+        typeSelector.getItems().add(Event.Type.WORK.toString());
+        typeSelector.getItems().add(Event.Type.SCHOOL.toString());
+        typeSelector.getItems().add(Event.Type.OTHERS.toString());
     }
 
     /**
@@ -176,6 +188,7 @@ public class PlanItAddEventController implements Initializable {
         if (event != null) {
             titleField.setText(event.getTitle());
             locationField.setText(event.getLocation());
+            typeSelector.setValue(event.getType().toString());
             startsDateField.setValue(event.getDate());
             startsField.setText(String.valueOf(event.getStarts()));
             endsDateField.setValue(event.getEndsDate());
@@ -274,6 +287,7 @@ public class PlanItAddEventController implements Initializable {
 
         String title = titleField.getText();
         String location = locationField.getText();
+        Event.Type type = Event.Type.fromString(typeSelector.getValue());
         LocalDate date = startsDateField.getValue();
         LocalTime starts = null;
         LocalDate endsDate = endsDateField.getValue();
@@ -311,9 +325,9 @@ public class PlanItAddEventController implements Initializable {
 
         if (checkFlag) {
             if (idEvent == null) {
-                addEvent(ev, title, location, description, date, starts, endsDate, ends, alertDate, alert);
+                addEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
             } else {
-                updateEvent(ev, title, location, description, date, starts, endsDate, ends, alertDate, alert);
+                updateEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
             }
         }
     }
@@ -323,10 +337,10 @@ public class PlanItAddEventController implements Initializable {
      * Adding new event. (When event does not have ID yet.)
      * After succesful insert modal window is closed and calendar is displayed with just cretaed event
      */
-    public void addEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
+    public void addEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                          LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(title, location, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         Integer id = eventsClient.addEvent(event, resourceBundle);
         if (id != null) {
             updateCalendarDisplay(date);
@@ -339,10 +353,10 @@ public class PlanItAddEventController implements Initializable {
      * Updating existing event. (When ID of the event already exists.)
      * After succesful update modal window is closed and calendar is displayed with just cretaed event
      */
-    public void updateEvent(ActionEvent ev, String title, String location, String description, LocalDate date,
+    public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(title, location, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         boolean success = eventsClient.updateEvent(event, idEvent, resourceBundle);
         if (success) {
             updateCalendarDisplay(date);
