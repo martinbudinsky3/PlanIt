@@ -61,7 +61,7 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
 
-        logger.error("Error logging user " + userName + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.info("User with username[" + userName + "] and given password doesn't exists");
+        return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
     }
 }

@@ -27,7 +27,12 @@ public class UserService {
      * @param username username of user
      * @param password password of user */
     public User getUserByUsernameAndPassword(String username, String password){
-        return userRepository.getUserByUsernameAndPassword(username, password);
+        User user = getUserByUsername(username);
+        if(user != null && BCrypt.checkpw(password, user.getUserPassword())) {
+            return user;
+        }
+
+        return null;
     }
 
     public User getUserByUsername(String username) {

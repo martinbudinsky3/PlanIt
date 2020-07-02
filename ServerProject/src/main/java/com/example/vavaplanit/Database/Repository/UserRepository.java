@@ -52,19 +52,19 @@ public class UserRepository {
         }
     }
 
-    /**
-     * Used to login
-     * @param username username of user
-     * @param password password of user*/
-    public User getUserByUsernameAndPassword(String username, String password){
-        try {
-            String sql = "SELECT * FROM planitschema.user " +
-                    " where username = '" + username + "' and userpassword = '" + password + "';";
-            return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
+//    /**
+//     * Used to login
+//     * @param username username of user
+//     * @param password password of user*/
+//    public User getUserByUsernameAndPassword(String username, String password){
+//        try {
+//            String sql = "SELECT * FROM planitschema.user " +
+//                    " where username = '" + username + "' and userpassword = '" + password + "';";
+//            return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
+//        } catch (EmptyResultDataAccessException e) {
+//            return null;
+//        }
+//    }
 
     public User getUserByUsername(String username){
         try {
