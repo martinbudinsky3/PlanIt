@@ -14,7 +14,9 @@ public class UserService {
 
     /**
      * Inserting new user. Used in registration.
-     * @param  user User object which is going to be inserted */
+     *
+     * @param user User object which is going to be inserted
+     */
     public Integer add(User user) {
         String plainPassword = user.getUserPassword();
         user.setUserPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
@@ -24,11 +26,18 @@ public class UserService {
 
     /**
      * Used to login
+     *
      * @param username username of user
-     * @param password password of user */
-    public User getUserByUsernameAndPassword(String username, String password){
+     * @param password password of user
+     */
+    public User getUserByUsernameAndPassword(String username, String password) {
         User user = getUserByUsername(username);
-        if(user != null && BCrypt.checkpw(password, user.getUserPassword())) {
+        if (!userRepository.getHashed(username)) {
+            user.setUserPassword(BCrypt.hashpw(user.getUserPassword(), BCrypt.gensalt(10)));
+            userRepository.updateHashed(username, user.getUserPassword());
+        }
+
+        if (user != null && BCrypt.checkpw(password, user.getUserPassword())) {
             return user;
         }
 

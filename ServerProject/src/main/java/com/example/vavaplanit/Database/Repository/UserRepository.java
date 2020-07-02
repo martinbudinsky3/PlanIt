@@ -76,7 +76,15 @@ public class UserRepository {
         }
     }
 
-    public boolean getHashed(String username, String password) {
-        return false;
+    public boolean getHashed(String username) {
+        String sql = "SELECT hashed FROM planitschema.user " +
+                " where username = '" + username + "';";
+        return jdbcTemplate.queryForObject(sql, Boolean.class);
+    }
+
+    public void updateHashed(String username, String hashedPassword) {
+        String sql = "UPDATE planitschema.user set hashed = ?, userpassword = ?" +
+                " where username = ?;";
+        jdbcTemplate.update(sql, true, hashedPassword, username);
     }
 }
