@@ -3,6 +3,7 @@ package com.example.vavaplanit.Service;
 import com.example.vavaplanit.Database.Repository.UserRepository;
 import com.example.vavaplanit.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +16,9 @@ public class UserService {
      * Inserting new user. Used in registration.
      * @param  user User object which is going to be inserted */
     public Integer add(User user) {
+        String plainPassword = user.getUserPassword();
+        user.setUserPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
+
         return userRepository.add(user);
     }
 

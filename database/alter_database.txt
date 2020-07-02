@@ -24,3 +24,9 @@ create domain event_type varchar(20)
 
 alter table planitschema.event add column type event_type;
 update planitschema.event set type = 'Others';
+
+
+------------------------2.7.2020--------------------------------
+
+alter table planitschema.user add column hashed boolean default true;
+update planitschema.user set hashed = false; 

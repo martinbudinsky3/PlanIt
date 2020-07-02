@@ -28,7 +28,7 @@ public class UserController {
         User userFromDB = userService.getUserByUsername(user.getUserName());
 
         if(userFromDB != null) {
-            logger.info("User with username [" + user.getUserName() + " already exists.");
+            logger.info("User with username [" + user.getUserName() + "] already exists.");
 
             return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
         }

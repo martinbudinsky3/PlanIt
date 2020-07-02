@@ -24,3 +24,64 @@
 2020-07-02 20:44:28,960 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 8 ms
 2020-07-02 20:44:29,106 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Inserting new User. Username: testFirst name: test, last name: test
 2020-07-02 20:44:29,182 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User with username [test already exists.
+2020-07-02 20:47:51,645 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-3] Inserting new User. Username: testFirst name: test, last name: test
+2020-07-02 20:47:51,648 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-3] User with username [test already exists.
+2020-07-02 20:50:35,918 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] Inserting new User. Username: testFirst name: test, last name: test
+2020-07-02 20:50:35,921 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] User with username [test already exists.
+2020-07-02 20:51:40,907 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] Inserting new User. Username: testFirst name: test, last name: test
+2020-07-02 20:51:40,909 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] User with username [test already exists.
+2020-07-02 20:55:45,059 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting Main on DESKTOP-6TQNAQQ with PID 12356 (D:\Informatika\projekty-java\PlanIt\ServerProject\target\classes started by HP in D:\Informatika\projekty-java\PlanIt\ServerProject)
+2020-07-02 20:55:45,063 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2020-07-02 20:55:45,147 INFO org.springframework.boot.logging.DeferredLog [restartedMain] The Class-Path manifest attribute in C:\Users\HP\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.2\jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
+2020-07-02 20:55:45,147 INFO org.springframework.boot.logging.DeferredLog [restartedMain] Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2020-07-02 20:55:45,147 INFO org.springframework.boot.logging.DeferredLog [restartedMain] For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2020-07-02 20:55:46,236 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-07-02 20:55:46,280 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 30ms. Found 0 JPA repository interfaces.
+2020-07-02 20:55:47,286 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2020-07-02 20:55:47,302 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2020-07-02 20:55:47,302 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-02 20:55:47,498 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2020-07-02 20:55:47,498 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 2351 ms
+2020-07-02 20:55:47,694 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Starting...
+2020-07-02 20:55:47,914 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-1 - Start completed.
+2020-07-02 20:55:47,998 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-07-02 20:55:48,249 INFO org.hibernate.Version [restartedMain] HHH000412: Hibernate ORM core version 5.4.12.Final
+2020-07-02 20:55:48,507 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [restartedMain] HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2020-07-02 20:55:48,714 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2020-07-02 20:55:49,396 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-07-02 20:55:49,404 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-07-02 20:55:49,516 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-07-02 20:55:49,680 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-02 20:55:49,860 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2020-07-02 20:55:49,924 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2020-07-02 20:55:49,932 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started Main in 5.602 seconds (JVM running for 7.233)
+2020-07-02 20:56:06,378 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-18] Shutting down ExecutorService 'applicationTaskExecutor'
+2020-07-02 20:56:06,382 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-18] Closing JPA EntityManagerFactory for persistence unit 'default'
+2020-07-02 20:56:06,389 INFO com.zaxxer.hikari.HikariDataSource [Thread-18] HikariPool-1 - Shutdown initiated...
+2020-07-02 20:56:06,401 INFO com.zaxxer.hikari.HikariDataSource [Thread-18] HikariPool-1 - Shutdown completed.
+2020-07-02 20:56:07,137 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting Main on DESKTOP-6TQNAQQ with PID 12356 (D:\Informatika\projekty-java\PlanIt\ServerProject\target\classes started by HP in D:\Informatika\projekty-java\PlanIt\ServerProject)
+2020-07-02 20:56:07,137 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
+2020-07-02 20:56:07,438 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2020-07-02 20:56:07,446 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [restartedMain] Finished Spring Data repository scanning in 8ms. Found 0 JPA repository interfaces.
+2020-07-02 20:56:07,658 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat initialized with port(s): 8080 (http)
+2020-07-02 20:56:07,662 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting service [Tomcat]
+2020-07-02 20:56:07,662 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Starting Servlet engine: [Apache Tomcat/9.0.33]
+2020-07-02 20:56:07,710 INFO org.apache.juli.logging.DirectJDKLog [restartedMain] Initializing Spring embedded WebApplicationContext
+2020-07-02 20:56:07,710 INFO org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext [restartedMain] Root WebApplicationContext: initialization completed in 569 ms
+2020-07-02 20:56:07,756 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Starting...
+2020-07-02 20:56:07,845 INFO com.zaxxer.hikari.HikariDataSource [restartedMain] HikariPool-2 - Start completed.
+2020-07-02 20:56:07,857 INFO org.hibernate.jpa.internal.util.LogHelper [restartedMain] HHH000204: Processing PersistenceUnitInfo [name: default]
+2020-07-02 20:56:07,865 INFO org.hibernate.dialect.Dialect [restartedMain] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2020-07-02 20:56:08,537 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [restartedMain] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2020-07-02 20:56:08,537 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [restartedMain] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2020-07-02 20:56:08,645 WARN org.springframework.boot.autoconfigure.orm.jpa.JpaBaseConfiguration$JpaWebConfiguration [restartedMain] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2020-07-02 20:56:08,733 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [restartedMain] Initializing ExecutorService 'applicationTaskExecutor'
+2020-07-02 20:56:08,889 INFO org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer [restartedMain] LiveReload server is running on port 35729
+2020-07-02 20:56:08,921 INFO org.springframework.boot.web.embedded.tomcat.TomcatWebServer [restartedMain] Tomcat started on port(s): 8080 (http) with context path ''
+2020-07-02 20:56:08,925 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Started Main in 1.841 seconds (JVM running for 26.226)
+2020-07-02 20:56:08,927 INFO org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener [restartedMain] Condition evaluation unchanged
+2020-07-02 20:56:29,107 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
+2020-07-02 20:56:29,109 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
+2020-07-02 20:56:29,118 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 8 ms
+2020-07-02 20:56:29,257 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Inserting new User. Username: testFirst name: test, last name: test
+2020-07-02 20:56:29,275 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User with username [test] already exists.

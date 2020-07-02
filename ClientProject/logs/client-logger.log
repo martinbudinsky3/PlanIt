@@ -62,3 +62,4 @@ org.springframework.web.client.HttpClientErrorException: 412 : [no body]
 2020-07-02 20:47:51,498 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: test First name: test, last name: test
 2020-07-02 20:50:35,778 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: test First name: test, last name: test
 2020-07-02 20:51:40,771 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: test First name: test, last name: test
+2020-07-02 20:56:28,888 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: test First name: test, last name: test
