@@ -43,8 +43,7 @@ public class EventsClient {
         try {
             String eventListJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
-            events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
-            });
+            events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle);

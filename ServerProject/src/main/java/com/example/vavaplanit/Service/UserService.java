@@ -15,15 +15,18 @@ public class UserService {
      * Inserting new user. Used in registration.
      * @param  user User object which is going to be inserted */
     public Integer add(User user) {
-        Integer idUser = userRepository.add(user);
-        return idUser;
+        return userRepository.add(user);
     }
 
     /**
      * Used to login
-     * @param userName username of user
-     * @param userPassword password of user */
-    public User getUserByUserNameAndUserPassword(String userName, String userPassword){
-        return this.userRepository.getUserByUserNameAndUserPassword(userName, userPassword);
+     * @param username username of user
+     * @param password password of user */
+    public User getUserByUsernameAndPassword(String username, String password){
+        return userRepository.getUserByUsernameAndPassword(username, password);
+    }
+
+    public User getUserByUsername(String username) {
+        return userRepository.getUserByUsername(username);
     }
 }

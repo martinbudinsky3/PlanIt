@@ -31,18 +31,18 @@ public class UserRepository {
     public Integer add(User user) {
 
         final String sql = "INSERT INTO planitschema.user (firstName, lastName, userName, userPassword) " +
-                    " SELECT '" + user.getFirstName() + "', '" + user.getLastName() + "', '" + user.getUserName() + "', '" + user.getUserPassword() + "' " +
-                    " WHERE NOT EXISTS (SELECT * FROM planitschema.user WHERE username='" + user.getUserName() + "' " +
-                    " and userpassword = '" + user.getUserPassword() + "');";
+                    "values (?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
-                return ps;
-            }
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getUserName());
+            ps.setString(4, user.getUserPassword());
+
+            return ps;
         }, keyHolder);
 
         if(keyHolder.getKeys() != null) {
@@ -56,7 +56,7 @@ public class UserRepository {
      * Used to login
      * @param userName username of user
      * @param userPassword password of user*/
-    public User getUserByUserNameAndUserPassword(String userName, String userPassword){
+    public User getUserByUsernameAndPassword(String userName, String userPassword){
         try {
             String sql = "SELECT * FROM planitschema.user " +
                     " where username = '" + userName + "' and userpassword = '" + userPassword + "';";
@@ -66,5 +66,13 @@ public class UserRepository {
         }
     }
 
-
+    public User getUserByUsername(String username){
+        try {
+            String sql = "SELECT * FROM planitschema.user " +
+                    " where username = '" + username + "';";
+            return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 }

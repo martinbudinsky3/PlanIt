@@ -25,16 +25,24 @@ public class UserController {
     @PostMapping
     public ResponseEntity addUser(@RequestBody User user) {
         logger.info("Inserting new User. Username: " + user.getUserName() + "First name: " + user.getFirstName() + ", last name: " + user.getLastName());
-        Integer id = userService.add(user);
+        User userFromDB = userService.getUserByUsername(user.getUserName());
 
+        if(userFromDB != null) {
+            logger.info("User with username [" + user.getUserName() + " already exists.");
+
+            return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
+        }
+
+        Integer id = userService.add(user);
         if(id != null) {
             logger.info("User successfully inserted with id [" + id + "].");
+
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
-
         logger.error("Error inserting new user. Username: " + user.getUserName() + "First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName() + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
+
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -46,7 +54,7 @@ public class UserController {
     @RequestMapping(value = "/{userName}/{userPassword}", method = RequestMethod.GET)
     public ResponseEntity getUserByUsernameAndPassword(@PathVariable("userName") String userName, @PathVariable("userPassword") String userPassword){
         logger.info("Getting user " + userName + " and user password");
-        User user =  userService.getUserByUserNameAndUserPassword(userName, userPassword);
+        User user =  userService.getUserByUsernameAndPassword(userName, userPassword);
 
         if (user != null){
             logger.info("User " + user.getUserName() + "successfully logged in");
