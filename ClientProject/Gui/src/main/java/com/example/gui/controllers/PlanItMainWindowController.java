@@ -17,12 +17,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -233,14 +235,33 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * Button for creating Pdf File. After creating PDF, informing window appears
      */
     private void savePdfButtonHandler() {
-        PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, windowsCreator);
-        pdfFile.pdf();
+        File file = showFileChooser();
+        if (file != null) {  // if user hit cancel button nothing happens
+            PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, file, windowsCreator);
+            pdfFile.pdf();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(resourceBundle.getString("pdfAlertTitle"));
-        alert.setHeaderText(null);
-        alert.setContentText(resourceBundle.getString("pdfAlertContent"));
-        alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(resourceBundle.getString("pdfAlertTitle"));
+            alert.setHeaderText(null);
+            alert.setContentText(resourceBundle.getString("pdfAlertContent"));
+            alert.showAndWait();
+        }
+    }
+
+    private File showFileChooser() {
+        FileChooser fileChooser = new FileChooser();
+
+        // set extension filter for pdf files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        // set default pdf file name
+        fileChooser.setInitialFileName("PlanIt.pdf");
+
+        // show save file dialog
+        File file = fileChooser.showSaveDialog(ap.getScene().getWindow());
+
+        return file;
     }
 
     /**

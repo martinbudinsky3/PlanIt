@@ -8,6 +8,7 @@ import com.itextpdf.text.pdf.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.DateFormatSymbols;
@@ -27,14 +28,16 @@ public class PdfFile {
     private int selectedYear;
     private int selectedMonth;
     private ResourceBundle resourceBundle;
+    private File file;
 
     public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle,
-                   WindowsCreator windowsCreator) {
+                   File file, WindowsCreator windowsCreator) {
         this.user = user;
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
         this.eventsClient = eventsClient;
         this.resourceBundle = resourceBundle;
+        this.file = file;
         this.windowsCreator = windowsCreator;
     }
 
@@ -42,13 +45,14 @@ public class PdfFile {
     public void pdf() {
         Document document = new Document();
         try {
-            PdfWriter.getInstance(document, new FileOutputStream("PlanIt.pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(file));
 
             document.open();
             setText(document);
             document.add(Chunk.NEWLINE);
             setTable(document);
             document.add(Chunk.NEWLINE);
+            // TODO directory chooser
         } catch(DocumentException | FileNotFoundException ex){
             windowsCreator.showErrorAlert(resourceBundle);
             logger.error("Error while creating PDF file", ex);
