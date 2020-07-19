@@ -13,6 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -69,7 +70,7 @@ public class PlanItRegistrationController implements Initializable {
         });
         buttonCancel.setOnAction(e -> {
             try {
-                windowsCreator.createLoginWindow(resourceBundle, ap, usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
             } catch (IOException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
                 logger.error("Error while opening login window", ex);

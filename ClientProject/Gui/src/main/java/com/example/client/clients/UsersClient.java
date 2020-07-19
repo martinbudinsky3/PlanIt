@@ -44,11 +44,9 @@ public class UsersClient {
         params.put("userName", userName);
         params.put("userPassword", userPassword);
 
-        User user;
-
         String userJSon = restTemplate.getForObject(uri, String.class, params);
         objectMapper.registerModule(new JavaTimeModule());
-        user = objectMapper.readValue(userJSon, new TypeReference<User>() {});
+        User user = objectMapper.readValue(userJSon, new TypeReference<User>() {});
         logger.info("User " + user.getUserName() + "successfully logged in");
 
         return user;
@@ -67,11 +65,8 @@ public class UsersClient {
 
         final String uri = BASE_URI + "/users";
 
-        RestTemplate restTemplate = new RestTemplate();
-        Integer idUser = -1;
-
         String id = restTemplate.postForObject(uri, user, String.class);
-        idUser = objectMapper.readValue(id, Integer.class);
+        Integer idUser = objectMapper.readValue(id, Integer.class);
         logger.info("User " + user.getUserName() + " successfully inserted");
 
         return idUser;

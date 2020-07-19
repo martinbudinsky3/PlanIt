@@ -124,7 +124,7 @@ public class WindowsCreator {
      * Button for canceling registration (buttonCancel)
      * Shows "PlanItLogin" window.
      */
-    public void createLoginWindow(ResourceBundle resourceBundle, AnchorPane ap, UsersClient usersClient) throws IOException {
+    public void createLoginWindow(ResourceBundle resourceBundle, Stage window, UsersClient usersClient) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
         PlanItLoginController planItLoginController = new PlanItLoginController(usersClient, this);
@@ -133,7 +133,6 @@ public class WindowsCreator {
         AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
         Scene newScene = new Scene(rootPane);
         newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        Stage window = (Stage) ap.getScene().getWindow();
         window.setScene(newScene);
         window.centerOnScreen();
         window.setTitle("PlanIt");

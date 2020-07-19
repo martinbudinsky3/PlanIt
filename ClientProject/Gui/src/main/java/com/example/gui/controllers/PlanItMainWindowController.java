@@ -18,6 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -216,7 +217,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
             try {
-                windowsCreator.createLoginWindow(resourceBundle, ap, usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
                 threadActive = false;
             } catch (IOException ex) {
                 windowsCreator.showErrorAlert(resourceBundle);
