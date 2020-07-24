@@ -12,10 +12,13 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /** Class communicating with server. This class is focused on posting and getting requests related to the Event object. */
 public class EventsClient {
+    // TODO show better messages in alert windows - pass messages as parameter to showAlertWindow method
+
     private final String BASE_URI = "http://localhost:8080";
 
     private final WindowsCreator windowsCreator = new WindowsCreator();
@@ -104,9 +107,12 @@ public class EventsClient {
     */
     public List<Event> getEventsToAlert(int idUser, ResourceBundle resourceBundle){
         logger.info("Getting all user's [" + idUser +"] events to alert.");
-        final String uri = BASE_URI + "/events/alert/{idUser}";
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        final String uri = BASE_URI + "/events/alert/{idUser}/{currentTime}";
+        Map<String, Object> params = new HashMap<>();
         params.put("idUser", idUser);
+        params.put("currentTime", LocalDateTime.now());
+
+        logger.debug("Current time is:" + LocalDateTime.now());
 
         List<Event> events = new ArrayList<Event>();;
 

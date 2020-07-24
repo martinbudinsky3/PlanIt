@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -67,12 +68,14 @@ public class EventService {
     /**
      * Getting all events of user that have notifications set for current time and date
      * @param idUser ID of user*/
-    public List<Event> getEventsToAlert(int idUser){
+    public List<Event> getEventsToAlert(int idUser, String currentTimeString){
+        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String time = LocalTime.now().withSecond(0).format(dtfTime);
-        String date = LocalDate.now().format(dtfDate);
+        String time = LocalTime.of(currentTime.getHour(), currentTime.getMinute()).format(dtfTime);
+        String date = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth())
+                .format(dtfDate);
 
         return this.eventRepository.getEventsToAlert(idUser, date, time);
     }

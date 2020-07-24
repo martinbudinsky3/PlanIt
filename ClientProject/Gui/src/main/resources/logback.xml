@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration scan="true">
 
     <property name="LOGS" value="./logs" />
 
@@ -37,7 +37,10 @@
 
     <root level="info">
         <appender-ref ref="RollingFile" />
-        <appender-ref ref="Console" />-->
+tdte    </root>
+
+    <root level="debug">
+        <appender-ref ref="Console"/>
     </root>
 
 </configuration>

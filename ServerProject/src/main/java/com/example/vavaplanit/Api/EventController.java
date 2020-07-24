@@ -5,10 +5,12 @@ import com.example.vavaplanit.Model.Event;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -75,12 +77,14 @@ public class EventController {
     /**
      * @param idUser ID of user
      * @return list of events with alert time in current minute. */
-    @RequestMapping(value="alert/{idUser}", method = RequestMethod.GET)
-    public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser){
+    @RequestMapping(value="alert/{idUser}/{currentTime}", method = RequestMethod.GET)
+    public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser,
+                                           @PathVariable("currentTime") String currentTime){ // @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SX")
         logger.info("Getting events to alert by user's id: " + idUser);
-        List<Event> events = eventService.getEventsToAlert(idUser);
+        List<Event> events = eventService.getEventsToAlert(idUser, currentTime);
 
-        logger.info("Returning " + events.size() + " events to alert to user ["+ idUser + "].");
+        logger.info("Returning " + events.size() + " events to alert to user ["+ idUser +"].");
+
         return new ResponseEntity<>(events, HttpStatus.OK);
     }
 
