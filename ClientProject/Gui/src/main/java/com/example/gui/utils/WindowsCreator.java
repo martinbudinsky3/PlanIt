@@ -237,7 +237,7 @@ public class WindowsCreator {
     public void showErrorAlert(String message, ResourceBundle resourceBundle) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("error"));
-        alert.setHeaderText(messages);
+        alert.setHeaderText(message);
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();
     }
