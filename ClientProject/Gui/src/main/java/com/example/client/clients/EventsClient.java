@@ -17,7 +17,6 @@ import java.util.*;
 
 /** Class communicating with server. This class is focused on posting and getting requests related to the Event object. */
 public class EventsClient {
-    // TODO show better messages in alert windows - pass messages as parameter to showAlertWindow method
 
     private final String BASE_URI = "http://localhost:8080";
 
@@ -49,7 +48,7 @@ public class EventsClient {
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning " + events.size() + " user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
+            windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
             if(ex instanceof JsonProcessingException) {
                 logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]", ex);
             } else if(ex instanceof ResourceAccessException) {
@@ -86,7 +85,7 @@ public class EventsClient {
             event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {});
             logger.info("Returning event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
+            windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
             if(ex instanceof JsonProcessingException) {
                 logger.error("Error. Something went wrong while finding event by user's [" + idUser + "] and event's [" + idEvent + "] ID", ex);
             } else if(ex instanceof ResourceAccessException) {
@@ -122,7 +121,6 @@ public class EventsClient {
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {});
             logger.info("Returning all user's [" + idUser +"] events to alert.");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
             if(ex instanceof JsonProcessingException) {
                 logger.error("Error. Something went wrong while finding all user's [" + idUser +"] events to alert", ex);
             } else if(ex instanceof ResourceAccessException) {
@@ -153,7 +151,7 @@ public class EventsClient {
             idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
+            windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
             if(ex instanceof JsonProcessingException) {
                 logger.error("Error while inserting event." + event.getTitle(), ex);
             } else if(ex instanceof ResourceAccessException) {
@@ -183,7 +181,7 @@ public class EventsClient {
             success = true;
             logger.info("Event [" + id + "] successffully updated.");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
+            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             if(ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
@@ -211,7 +209,7 @@ public class EventsClient {
             success = true;
             logger.info("Event [" + idEvent + "] successsffully deleted");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
+            windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
             if(ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
