@@ -2,6 +2,7 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
+import com.example.client.clients.WeatherClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.gui.utils.PdfFile;
@@ -111,6 +112,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+//        WeatherClient weatherClient = new WeatherClient();
+
         this.resourceBundle = resourceBundle;
         if (!threadFlag) { // if thread isn't created yet
             threadFlag = true;
