@@ -50,7 +50,7 @@ public class EventsClient {
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
             if(ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]", ex);
+                logger.error("Error. Something went wrong with json processing while finding user's [" + userId + "] events in year and month: [" + year + ", " + month + "]", ex);
             } else if(ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
