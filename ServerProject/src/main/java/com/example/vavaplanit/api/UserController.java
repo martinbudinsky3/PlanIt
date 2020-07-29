@@ -1,7 +1,7 @@
-package com.example.vavaplanit.Api;
+package com.example.vavaplanit.api;
 
-import com.example.vavaplanit.Model.User;
-import com.example.vavaplanit.Service.UserService;
+import com.example.vavaplanit.model.User;
+import com.example.vavaplanit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

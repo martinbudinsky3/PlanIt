@@ -26,25 +26,25 @@
 2020-07-20 00:36:16,601 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-07-20 00:36:16,601 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2020-07-20 00:36:16,606 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 5 ms
-2020-07-20 00:36:16,695 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 00:36:16,929 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
-2020-07-20 00:36:17,203 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:36:16,695 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 00:36:16,929 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 00:36:17,203 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
 2020-07-20 00:36:17,208 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: "alert"]
-2020-07-20 00:36:17,345 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
-2020-07-20 00:38:59,930 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] Getting user test and user password
-2020-07-20 00:39:00,030 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-5] User testsuccessfully logged in
+2020-07-20 00:36:17,345 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
+2020-07-20 00:38:59,930 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-5] Getting user test and user password
+2020-07-20 00:39:00,030 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-5] User testsuccessfully logged in
 2020-07-20 00:39:00,087 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-6] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: "alert"]
-2020-07-20 00:39:00,089 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:39:00,091 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.
-2020-07-20 00:41:15,876 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] Getting user test and user password
-2020-07-20 00:41:15,962 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
+2020-07-20 00:39:00,089 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:39:00,091 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.
+2020-07-20 00:41:15,876 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] Getting user test and user password
+2020-07-20 00:41:15,962 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
 2020-07-20 00:41:16,120 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: "alert"]
-2020-07-20 00:41:16,126 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:41:16,128 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
-2020-07-20 00:46:29,789 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-3] Getting user test and user password
-2020-07-20 00:46:29,874 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-3] User testsuccessfully logged in
-2020-07-20 00:46:30,040 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:46:30,042 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Events successfully found. Returning 0 events.
+2020-07-20 00:41:16,126 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:41:16,128 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
+2020-07-20 00:46:29,789 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-3] Getting user test and user password
+2020-07-20 00:46:29,874 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-3] User testsuccessfully logged in
+2020-07-20 00:46:30,040 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:46:30,042 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-5] Events successfully found. Returning 0 events.
 2020-07-20 00:46:30,045 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-4] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable java.time.LocalDateTime] for value '2020-07-20T00:46:30.026'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:46:30.026]]
 2020-07-20 00:48:19,889 INFO org.springframework.scheduling.concurrent.ExecutorConfigurationSupport [Thread-22] Shutting down ExecutorService 'applicationTaskExecutor'
 2020-07-20 00:48:19,889 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [Thread-22] Closing JPA EntityManagerFactory for persistence unit 'default'
@@ -124,10 +124,10 @@
 2020-07-20 00:50:11,628 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-07-20 00:50:11,628 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2020-07-20 00:50:11,633 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 5 ms
-2020-07-20 00:50:11,695 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 00:50:11,797 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
-2020-07-20 00:50:12,014 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:50:12,023 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
+2020-07-20 00:50:11,695 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 00:50:11,797 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 00:50:12,014 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:50:12,023 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
 2020-07-20 00:50:12,028 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:50:11.998'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:50:11.998]]
 2020-07-20 00:52:31,183 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting Main on DESKTOP-6TQNAQQ with PID 13100 (D:\Informatika\projekty-java\PlanIt\ServerProject\target\classes started by HP in D:\Informatika\projekty-java\PlanIt\ServerProject)
 2020-07-20 00:52:31,191 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
@@ -157,10 +157,10 @@
 2020-07-20 00:52:39,772 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-07-20 00:52:39,772 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2020-07-20 00:52:39,777 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 5 ms
-2020-07-20 00:52:39,840 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 00:52:39,940 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
-2020-07-20 00:52:40,064 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:52:40,076 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-5] Events successfully found. Returning 0 events.
+2020-07-20 00:52:39,840 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 00:52:39,940 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 00:52:40,064 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-5] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:52:40,076 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-5] Events successfully found. Returning 0 events.
 2020-07-20 00:52:40,079 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:52:40.051'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:52:40.051]]
 2020-07-20 00:53:48,991 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting Main on DESKTOP-6TQNAQQ with PID 9752 (D:\Informatika\projekty-java\PlanIt\ServerProject\target\classes started by HP in D:\Informatika\projekty-java\PlanIt\ServerProject)
 2020-07-20 00:53:48,997 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
@@ -190,11 +190,11 @@
 2020-07-20 00:53:59,327 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-07-20 00:53:59,327 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2020-07-20 00:53:59,333 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 5 ms
-2020-07-20 00:53:59,396 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 00:53:59,496 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
-2020-07-20 00:53:59,609 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:53:59,396 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 00:53:59,496 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 00:53:59,609 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 7
 2020-07-20 00:53:59,621 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-4] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:53:59.599'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:53:59.599]]
-2020-07-20 00:53:59,621 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning 0 events.
+2020-07-20 00:53:59,621 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-6] Events successfully found. Returning 0 events.
 2020-07-20 00:55:21,142 INFO org.springframework.boot.StartupInfoLogger [restartedMain] Starting Main on DESKTOP-6TQNAQQ with PID 11508 (D:\Informatika\projekty-java\PlanIt\ServerProject\target\classes started by HP in D:\Informatika\projekty-java\PlanIt\ServerProject)
 2020-07-20 00:55:21,147 INFO org.springframework.boot.SpringApplication [restartedMain] No active profile set, falling back to default profiles: default
 2020-07-20 00:55:21,203 INFO org.springframework.boot.logging.DeferredLog [restartedMain] The Class-Path manifest attribute in C:\Users\HP\.m2\repository\org\glassfish\jaxb\jaxb-runtime\2.3.2\jaxb-runtime-2.3.2.jar referenced one or more files that do not exist: file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.xml.bind-api-2.3.2.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/txw2-2.3.2.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/istack-commons-runtime-3.0.8.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/stax-ex-1.8.1.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/FastInfoset-1.2.16.jar,file:/C:/Users/HP/.m2/repository/org/glassfish/jaxb/jaxb-runtime/2.3.2/jakarta.activation-api-1.2.1.jar
@@ -223,48 +223,48 @@
 2020-07-20 00:55:26,329 INFO org.apache.juli.logging.DirectJDKLog [http-nio-8080-exec-1] Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-07-20 00:55:26,330 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Initializing Servlet 'dispatcherServlet'
 2020-07-20 00:55:26,334 INFO org.springframework.web.servlet.FrameworkServlet [http-nio-8080-exec-1] Completed initialization in 4 ms
-2020-07-20 00:55:26,397 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 00:55:26,497 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
-2020-07-20 00:55:26,594 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:55:26,603 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
+2020-07-20 00:55:26,397 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 00:55:26,497 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 00:55:26,594 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:55:26,603 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-3] Events successfully found. Returning 0 events.
 2020-07-20 00:55:26,607 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-2] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:55:26.586'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:55:26.586]]
-2020-07-20 00:56:59,833 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] Getting user test and user password
-2020-07-20 00:56:59,917 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] User testsuccessfully logged in
-2020-07-20 00:57:00,105 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:56:59,833 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-7] Getting user test and user password
+2020-07-20 00:56:59,917 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-7] User testsuccessfully logged in
+2020-07-20 00:57:00,105 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-10] Getting events by user's id: 1, year: 2020 and month: 7
 2020-07-20 00:57:00,105 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-6] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:57:00.080'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:57:00.080]]
-2020-07-20 00:57:00,108 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-10] Events successfully found. Returning 0 events.
-2020-07-20 00:57:31,152 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] Getting user test and user password
-2020-07-20 00:57:31,238 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
+2020-07-20 00:57:00,108 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-10] Events successfully found. Returning 0 events.
+2020-07-20 00:57:31,152 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] Getting user test and user password
+2020-07-20 00:57:31,238 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
 2020-07-20 00:57:31,481 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-5] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T00:57:31.473'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T00:57:31.473]]
-2020-07-20 00:57:31,486 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 00:57:31,487 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
-2020-07-20 01:00:22,466 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] Getting user test and user password
-2020-07-20 01:00:22,552 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] User testsuccessfully logged in
+2020-07-20 00:57:31,486 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 00:57:31,487 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
+2020-07-20 01:00:22,466 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-2] Getting user test and user password
+2020-07-20 01:00:22,552 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-2] User testsuccessfully logged in
 2020-07-20 01:00:22,708 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-4] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:00:22.700'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:00:22.700]]
-2020-07-20 01:00:22,713 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:00:22,715 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.
-2020-07-20 01:02:46,593 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-6] Getting user test and user password
-2020-07-20 01:02:46,678 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-6] User testsuccessfully logged in
+2020-07-20 01:00:22,713 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:00:22,715 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.
+2020-07-20 01:02:46,593 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-6] Getting user test and user password
+2020-07-20 01:02:46,678 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-6] User testsuccessfully logged in
 2020-07-20 01:02:46,839 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-8] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:02:46.830'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:02:46.830]]
-2020-07-20 01:02:46,843 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:02:46,845 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-9] Events successfully found. Returning 0 events.
-2020-07-20 01:03:56,816 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] Getting user test and user password
-2020-07-20 01:03:56,902 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
+2020-07-20 01:02:46,843 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-9] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:02:46,845 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-9] Events successfully found. Returning 0 events.
+2020-07-20 01:03:56,816 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] Getting user test and user password
+2020-07-20 01:03:56,902 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-1] User testsuccessfully logged in
 2020-07-20 01:03:57,069 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-3] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:03:57.061'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:03:57.061]]
-2020-07-20 01:03:57,074 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:03:57,076 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-2] Events successfully found. Returning 0 events.
-2020-07-20 01:05:11,140 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] Getting user test and user password
-2020-07-20 01:05:11,226 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-7] User testsuccessfully logged in
+2020-07-20 01:03:57,074 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-2] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:03:57,076 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-2] Events successfully found. Returning 0 events.
+2020-07-20 01:05:11,140 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-7] Getting user test and user password
+2020-07-20 01:05:11,226 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-7] User testsuccessfully logged in
 2020-07-20 01:05:11,380 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-10] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:05:11.373'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:05:11.373]]
-2020-07-20 01:05:11,386 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:05:11,389 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-6] Events successfully found. Returning 0 events.
-2020-07-20 01:06:42,017 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] Getting user test and user password
-2020-07-20 01:06:42,102 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
+2020-07-20 01:05:11,386 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-6] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:05:11,389 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-6] Events successfully found. Returning 0 events.
+2020-07-20 01:06:42,017 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] Getting user test and user password
+2020-07-20 01:06:42,102 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-9] User testsuccessfully logged in
 2020-07-20 01:06:42,268 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-5] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:06:42.260'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:06:42.260]]
-2020-07-20 01:06:42,274 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:06:42,276 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
-2020-07-20 01:08:45,036 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] Getting user test and user password
-2020-07-20 01:08:45,121 INFO com.example.vavaplanit.Api.UserController [http-nio-8080-exec-2] User testsuccessfully logged in
+2020-07-20 01:06:42,274 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:06:42,276 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-1] Events successfully found. Returning 0 events.
+2020-07-20 01:08:45,036 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-2] Getting user test and user password
+2020-07-20 01:08:45,121 INFO com.example.vavaplanit.api.UserController [http-nio-8080-exec-2] User testsuccessfully logged in
 2020-07-20 01:08:45,303 WARN org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver [http-nio-8080-exec-4] Resolved [org.springframework.web.method.annotation.MethodArgumentTypeMismatchException: Failed to convert value of type 'java.lang.String' to required type 'java.time.LocalDateTime'; nested exception is org.springframework.core.convert.ConversionFailedException: Failed to convert from type [java.lang.String] to type [@org.springframework.web.bind.annotation.PathVariable @org.springframework.format.annotation.DateTimeFormat java.time.LocalDateTime] for value '2020-07-20T01:08:45.295'; nested exception is java.lang.IllegalArgumentException: Parse attempt failed for value [2020-07-20T01:08:45.295]]
-2020-07-20 01:08:45,308 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
-2020-07-20 01:08:45,310 INFO com.example.vavaplanit.Api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.
+2020-07-20 01:08:45,308 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Getting events by user's id: 1, year: 2020 and month: 7
+2020-07-20 01:08:45,310 INFO com.example.vavaplanit.api.EventController [http-nio-8080-exec-7] Events successfully found. Returning 0 events.

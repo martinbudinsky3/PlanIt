@@ -1,25 +1,21 @@
-package com.example.vavaplanit.Database.Repository;
+package com.example.vavaplanit.database.repository;
 
-import com.example.vavaplanit.Database.Mappers.UserMappers;
-import com.example.vavaplanit.Model.Event;
-import com.example.vavaplanit.Model.User;
+import com.example.vavaplanit.database.mappers.UserMapper;
+import com.example.vavaplanit.model.User;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.util.List;
 
 /** Communication with database. (queries relating to the User object)*/
 @Repository
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserMappers userMappers = new UserMappers();
+    private final UserMapper userMappers = new UserMapper();
 
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;

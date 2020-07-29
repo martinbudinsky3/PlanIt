@@ -1,7 +1,7 @@
-package com.example.vavaplanit.Service;
+package com.example.vavaplanit.service;
 
-import com.example.vavaplanit.Database.Repository.EventRepository;
-import com.example.vavaplanit.Model.Event;
+import com.example.vavaplanit.database.repository.EventRepository;
+import com.example.vavaplanit.model.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

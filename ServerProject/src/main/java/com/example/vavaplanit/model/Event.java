@@ -1,4 +1,4 @@
-package com.example.vavaplanit.Model;
+package com.example.vavaplanit.model;
 
 
 import java.io.Serializable;

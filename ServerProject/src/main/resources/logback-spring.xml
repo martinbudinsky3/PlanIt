@@ -42,6 +42,8 @@
 
     <root level="info">
         <appender-ref ref="RollingFile" />
+    </root>
+    <root level="debug">
         <appender-ref ref="Console" />-->
     </root>
 

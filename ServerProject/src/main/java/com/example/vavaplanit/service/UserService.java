@@ -1,7 +1,7 @@
-package com.example.vavaplanit.Service;
+package com.example.vavaplanit.service;
 
-import com.example.vavaplanit.Database.Repository.UserRepository;
-import com.example.vavaplanit.Model.User;
+import com.example.vavaplanit.database.repository.UserRepository;
+import com.example.vavaplanit.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;

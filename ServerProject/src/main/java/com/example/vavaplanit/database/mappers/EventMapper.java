@@ -1,13 +1,13 @@
-package com.example.vavaplanit.Database.Mappers;
+package com.example.vavaplanit.database.mappers;
 
-import com.example.vavaplanit.Model.Event;
+import com.example.vavaplanit.model.Event;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 /** Class for mapping Event object. */
-public class EventMappers {
+public class EventMapper {
     public RowMapper<Event> mapEventFromDb() {
         return (resultSet, i) -> {
             int idEvent = resultSet.getInt("idevent");

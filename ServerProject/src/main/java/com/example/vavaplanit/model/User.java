@@ -1,6 +1,5 @@
-package com.example.vavaplanit.Model;
+package com.example.vavaplanit.model;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 
 public class User implements Serializable {

@@ -1,11 +1,10 @@
-package com.example.vavaplanit.Database.Mappers;
+package com.example.vavaplanit.database.mappers;
 
-import com.example.vavaplanit.Model.User;
-import org.springframework.jdbc.core.JdbcTemplate;
+import com.example.vavaplanit.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
 /** Class for mapping User object. */
-public class UserMappers {
+public class UserMapper {
 
     public RowMapper<User> mapUserFomDb() {
         return (resultSet, i) -> {

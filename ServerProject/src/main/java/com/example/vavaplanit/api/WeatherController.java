@@ -1,7 +1,7 @@
-package com.example.vavaplanit.Api;
+package com.example.vavaplanit.api;
 
-import com.example.vavaplanit.Model.GeoLocation;
-import com.example.vavaplanit.Service.WeatherService;
+import com.example.vavaplanit.model.GeoLocation;
+import com.example.vavaplanit.service.WeatherService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +30,11 @@ public class WeatherController {
                 return new ResponseEntity<>("Unable to get location by IP", HttpStatus.PRECONDITION_FAILED);
             }
 
+            return new ResponseEntity<>(weatherService.getWeather(geoLocation), HttpStatus.OK);
 
         } catch (JsonProcessingException ex) {
+            // TODO log
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return null;
     }
 }
