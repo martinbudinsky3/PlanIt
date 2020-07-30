@@ -375,6 +375,7 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.setSelectedMonth(date.getMonth().getValue());
         planItMainWindowController.initializeCalendar();
         planItMainWindowController.showEventsInCalendar();
+        planItMainWindowController.addWeatherToCalendar();
     }
 
     /**

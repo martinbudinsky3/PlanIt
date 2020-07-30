@@ -18,6 +18,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
@@ -28,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -40,6 +43,9 @@ import java.util.*;
  * Controller for "PlanItMainWindow.fxml"
  */
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
+    private static final int CALENDAR_WIDTH = 7;
+    private static final int CALENDAR_HEIGHT = 7;
+    private static final int FORECASTED_DAYS = 8;
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int SECONDS_IN_DAY = 86400;
     private static final int MILLIS_IN_SECOND = 1000;
@@ -121,20 +127,18 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        WeatherClient weatherClient = new WeatherClient();
-//        weatherClient.getWeather();
-
         this.resourceBundle = resourceBundle;
-        if (!threadFlag) { // if thread isn't created yet
-            threadFlag = true;
-            startAlertTask();
-            startWeatherTask();
-        }
+
         createGridPaneNodes();
         addHandlers();
         initializeMonthsAndYear();
         initializeCalendar();
         showEventsInCalendar();
+        if (!threadFlag) { // if thread isn't created yet
+            threadFlag = true;
+            startAlertTask();
+            startWeatherTask();
+        }
     }
 
     /**
@@ -203,18 +207,49 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         while (threadActive) {
             try {
                 Platform.runLater(() -> {
-
-                    List<DailyWeather> weatherForecast = weatherClient.getWeather();
-
-                    // show alert for every event that is returned
-                    weatherForecast.stream().forEach(dailyWeather -> logger.debug("Min temperature at " + dailyWeather.getDate()
-                            + " : " + dailyWeather.getMinTemperature()));
+                    addWeatherToCalendar();
                 });
+
                 int seconds = SECONDS_IN_DAY - LocalTime.now().toSecondOfDay();  // so alert comes at the beginning of the minute
                 logger.debug("LocalTime.now().toSecondOfDay() = " + LocalTime.now().toSecondOfDay());
                 Thread.sleep(seconds * MILLIS_IN_SECOND);
             } catch (InterruptedException ex) {
                 logger.error("Error in thread that gets weather forecast", ex);
+            }
+        }
+    }
+
+    public void addWeatherToCalendar() {
+        List<DailyWeather> weatherForecast = weatherClient.getWeather();
+
+        for(int d = 0; d < weatherForecast.size(); d++) {
+            for (int i = 1; i < CALENDAR_HEIGHT; i++) {
+                for (int j = 0; j < CALENDAR_WIDTH; j++) {
+                    int dayOfForecast = weatherForecast.get(d).getDate().getDayOfMonth();
+                    int monthOfForecast = weatherForecast.get(d).getDate().getMonthValue();
+
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    if (dayVBox.getChildren().isEmpty()) {  // if VBox is not day box
+                        continue;
+                    }
+
+                    HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
+                    Label dayLabel = (Label) dayHeader.getChildren().get(0);
+                    int dayNumber = Integer.parseInt(dayLabel.getText());
+                    if (dayNumber == dayOfForecast && selectedMonth == monthOfForecast) {
+                        // TODO add weather info to this vbox
+                        DailyWeather dailyWeather = weatherForecast.get(d);
+                        Image img = new Image(new ByteArrayInputStream(dailyWeather.getWeather().get(0).getIconImage()));
+                        ImageView imageView = new ImageView(img);
+                        imageView.setFitHeight(50);
+                        imageView.setFitWidth(50);
+                        dayHeader.getChildren().add(imageView);
+                        Label temperatureLabel = new Label("" + dailyWeather.getMinTemperature() + " - " + dailyWeather.getMaxTemperature() + "°C");
+                        dayHeader.getChildren().add(temperatureLabel);
+                        HBox.setMargin(imageView, new Insets(0, 0, 0, 10));
+                        HBox.setMargin(temperatureLabel, new Insets(10, 0, 0, 0));
+                    }
+                }
             }
         }
     }
@@ -341,11 +376,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         // add listener to list cells
         monthsList.getSelectionModel().selectedItemProperty().addListener((observable, oldvalue, newvalue) -> {
             selectedMonth = monthsList.getSelectionModel().getSelectedIndex() + 1;
-            newvalue.toLowerCase();
             newvalue = newvalue.substring(0, 1) + newvalue.substring(1).toLowerCase();
             monthLabel.setText(newvalue);
             initializeCalendar();
             showEventsInCalendar();
+            addWeatherToCalendar();
         });
     }
 
@@ -353,12 +388,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * Adding handlers on click on VBoxes that represent day box in calendar
      */
     public void addHandlerToDayVBoxes() {
-        for (int i = 1; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 1; i < CALENDAR_HEIGHT; i++) {
+            for (int j = 0; j < CALENDAR_WIDTH; j++) {
                 VBox dayVBox = (VBox) gridPaneNodes[j][i];
                 dayVBox.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if (!dayVBox.getChildren().isEmpty()) {  // that's how i know it is day VBox
-                        Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                        HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
+                        Label dayLabel = (Label) dayHeader.getChildren().get(0);
                         int day = Integer.parseInt(dayLabel.getText());  // get day from dayLabel
                         LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
                         windowsCreator.createAddEventWindow(user, initDate, eventsClient, this,
@@ -388,11 +424,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         // add day number labels to calendar fields
         int fieldCounter = 1;
         int dayCounter = 1;
-        for (int i = 1; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 1; i < CALENDAR_HEIGHT; i++) {
+            for (int j = 0; j < CALENDAR_WIDTH; j++) {
                 if (dayCounter > daysInMonth || fieldCounter < firstDayOfMonth) {  // this VBoxes will not be day boxes in current month
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    dayVBox.getStyleClass().clear();
+                    //dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("extra-day");
                     fieldCounter++;
                     continue;
@@ -402,10 +438,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
-                    dayVBox.getChildren().add(dayLabel);
-                    dayVBox.getStyleClass().clear();
+                    HBox dayHeader = new HBox();
+                    dayHeader.setMaxHeight(60);
+//                    dayHeader.setStyle("-fx-background-color: aqua");
+                    dayHeader.getChildren().add(dayLabel);
+                    dayVBox.getChildren().add(dayHeader);
+                    //dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("day");
-                    VBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
+                    HBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
                     dayCounter++;
                     fieldCounter++;
                 }
@@ -421,14 +461,15 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
         for (int e = 0; e < events.size(); e++) {
-            for (int i = 1; i < 7; i++) {
-                for (int j = 0; j < 7; j++) {
+            for (int i = 1; i < CALENDAR_HEIGHT; i++) {
+                for (int j = 0; j < CALENDAR_WIDTH; j++) {
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
                     if (dayVBox.getChildren().isEmpty()) {  // if VBox is not day box
                         continue;
                     }
 
-                    Label dayLabel = (Label) dayVBox.getChildren().get(0);
+                    HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
+                    Label dayLabel = (Label) dayHeader.getChildren().get(0);
                     int dayNumber = Integer.parseInt(dayLabel.getText());
                     Event event = events.get(e);
 
@@ -466,8 +507,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is used in reloading of calendar e.g in displaying calendar for new selected month
      */
     public void clearCalendar() {
-        for (int i = 1; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 1; i < CALENDAR_HEIGHT; i++) {
+            for (int j = 0; j < CALENDAR_WIDTH; j++) {
                 VBox vBox = (VBox) gridPaneNodes[j][i];
                 if (vBox.getChildren().isEmpty()) {
                     continue;
@@ -485,6 +526,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         yearLabel.setText(Integer.toString(selectedYear));
         initializeCalendar();
         showEventsInCalendar();
+        addWeatherToCalendar();
     }
 
     /**
@@ -495,5 +537,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         yearLabel.setText(Integer.toString(selectedYear));
         initializeCalendar();
         showEventsInCalendar();
+        addWeatherToCalendar();
     }
 }

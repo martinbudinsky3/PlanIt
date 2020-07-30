@@ -61,11 +61,12 @@ public class WeatherService {
     public List<DailyWeatherDTO> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
         // TODO constants to configuration file
         String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
-                "&appid={api-key}";
+                "&appid={api-key}&units={units}";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("lat", geoLocation.getLatitude());
         params.put("lon", geoLocation.getLongitude());
         params.put("api-key", "bf115f2ec4f3aaf15a3585f872e895de");
+        params.put("units", "metric");
 
         String weatherJson = restTemplate.getForObject(uri, String.class, params);
         WeatherForecast weatherForecast = objectMapper.readValue(weatherJson, new TypeReference<WeatherForecast>() {
