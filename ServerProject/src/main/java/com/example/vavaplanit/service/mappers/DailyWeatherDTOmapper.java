@@ -14,7 +14,7 @@ public interface DailyWeatherDTOmapper {
     @Mappings({
             @Mapping(target = "date", source = "dt"),
             @Mapping(target = "minTemperature", source = "temp.min"),
-            @Mapping(target = "maxTemperature", source = "temp.max")
+            @Mapping(target = "maxTemperature", source = "temp.max"),
     })
     DailyWeatherDTO dailyWeatherToDailyWeatherDTO(DailyWeather daily);
 }

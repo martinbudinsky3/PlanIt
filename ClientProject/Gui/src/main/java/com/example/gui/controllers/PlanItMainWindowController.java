@@ -222,35 +222,27 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void addWeatherToCalendar() {
         List<DailyWeather> weatherForecast = weatherClient.getWeather();
 
-        for(int d = 0; d < weatherForecast.size(); d++) {
-            for (int i = 1; i < CALENDAR_HEIGHT; i++) {
-                for (int j = 0; j < CALENDAR_WIDTH; j++) {
-                    int dayOfForecast = weatherForecast.get(d).getDate().getDayOfMonth();
-                    int monthOfForecast = weatherForecast.get(d).getDate().getMonthValue();
-
-                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    if (dayVBox.getChildren().isEmpty()) {  // if VBox is not day box
-                        continue;
-                    }
-
-                    HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
-                    Label dayLabel = (Label) dayHeader.getChildren().get(0);
-                    int dayNumber = Integer.parseInt(dayLabel.getText());
-                    if (dayNumber == dayOfForecast && selectedMonth == monthOfForecast) {
-                        // TODO add weather info to this vbox
-                        DailyWeather dailyWeather = weatherForecast.get(d);
-                        Image img = new Image(new ByteArrayInputStream(dailyWeather.getWeather().get(0).getIconImage()));
-                        ImageView imageView = new ImageView(img);
-                        imageView.setFitHeight(50);
-                        imageView.setFitWidth(50);
-                        dayHeader.getChildren().add(imageView);
-                        Label temperatureLabel = new Label("" + dailyWeather.getMinTemperature() + " - " + dailyWeather.getMaxTemperature() + "°C");
-                        dayHeader.getChildren().add(temperatureLabel);
-                        HBox.setMargin(imageView, new Insets(0, 0, 0, 10));
-                        HBox.setMargin(temperatureLabel, new Insets(10, 0, 0, 0));
-                    }
-                }
+        for (int d = 0; d < weatherForecast.size(); d++) {
+            DailyWeather dailyWeather = weatherForecast.get(d);
+            if (dailyWeather.getDate().getMonthValue() != selectedMonth) {
+                continue;
             }
+
+            int j = countColumnIndexInCalendar(dailyWeather.getDate().getDayOfMonth());
+            int i = countRowIndexInCalendar(dailyWeather.getDate().getDayOfMonth());
+
+            VBox dayVBox = (VBox) gridPaneNodes[j][i];
+
+            HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
+            Image img = new Image(new ByteArrayInputStream(dailyWeather.getWeather().get(0).getIconImage()));
+            ImageView imageView = new ImageView(img);
+            imageView.setFitHeight(50);
+            imageView.setFitWidth(50);
+            dayHeader.getChildren().add(imageView);
+            Label temperatureLabel = new Label("" + dailyWeather.getMinTemperature() + " - " + dailyWeather.getMaxTemperature() + "°C");
+            dayHeader.getChildren().add(temperatureLabel);
+            HBox.setMargin(imageView, new Insets(0, 0, 0, 10));
+            HBox.setMargin(temperatureLabel, new Insets(10, 0, 0, 0));
         }
     }
 
@@ -428,7 +420,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             for (int j = 0; j < CALENDAR_WIDTH; j++) {
                 if (dayCounter > daysInMonth || fieldCounter < firstDayOfMonth) {  // this VBoxes will not be day boxes in current month
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    //dayVBox.getStyleClass().clear();
+                    dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("extra-day");
                     fieldCounter++;
                     continue;
@@ -440,10 +432,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     HBox dayHeader = new HBox();
                     dayHeader.setMaxHeight(60);
-//                    dayHeader.setStyle("-fx-background-color: aqua");
                     dayHeader.getChildren().add(dayLabel);
                     dayVBox.getChildren().add(dayHeader);
-                    //dayVBox.getStyleClass().clear();
+                    dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("day");
                     HBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
                     dayCounter++;
@@ -451,6 +442,28 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 }
             }
         }
+    }
+
+    private int countFirstDayOfMonth() {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
+        int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (firstDayOfMonth == 0) {
+            firstDayOfMonth = 7;
+        }
+
+        return firstDayOfMonth;
+    }
+
+    public int countRowIndexInCalendar(int day) {
+        int firstDayOfMonth = countFirstDayOfMonth();
+
+        return (day - 1 + firstDayOfMonth - 1) / 7 + 1;
+    }
+
+    public int countColumnIndexInCalendar(int day) {
+        int firstDayOfMonth = countFirstDayOfMonth();
+
+        return (day - 1 + firstDayOfMonth - 1) % 7;
     }
 
     /**
@@ -461,44 +474,33 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
         for (int e = 0; e < events.size(); e++) {
-            for (int i = 1; i < CALENDAR_HEIGHT; i++) {
-                for (int j = 0; j < CALENDAR_WIDTH; j++) {
-                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    if (dayVBox.getChildren().isEmpty()) {  // if VBox is not day box
-                        continue;
-                    }
+            Event event = events.get(e);
+            int j = countColumnIndexInCalendar(events.get(e).getDate().getDayOfMonth());
+            int i = countRowIndexInCalendar(events.get(e).getDate().getDayOfMonth());
+            VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
-                    HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
-                    Label dayLabel = (Label) dayHeader.getChildren().get(0);
-                    int dayNumber = Integer.parseInt(dayLabel.getText());
-                    Event event = events.get(e);
-
-                    if (event.getDate().getDayOfMonth() == dayNumber) { // if event is from day of current day box add it to that day box
-                        Label eventLabel = new Label();
-                        String eventLabelText = event.getStarts() + " " + event.getTitle();
-                        eventLabel.setText(eventLabelText);
-                        eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
-                        eventLabel.setPrefWidth(dayVBox.getPrefWidth());
-                        eventLabel.getStyleClass().add("event-label");
-                        if(event.getType() == Event.Type.FREE_TIME) {
-                            eventLabel.getStyleClass().add("free-time-label");
-                        } else if(event.getType() == Event.Type.WORK) {
-                            eventLabel.getStyleClass().add("work-label");
-                        } else if(event.getType() == Event.Type.SCHOOL) {
-                            eventLabel.getStyleClass().add("school-label");
-                        }
-
-                        eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
-                            windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
-                                    user, eventsClient, this, resourceBundle, ap);
-                            mouseEvent.consume();
-                        });
-
-                        dayVBox.getChildren().add(eventLabel);
-                        VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
-                    }
-                }
+            Label eventLabel = new Label();
+            String eventLabelText = event.getStarts() + " " + event.getTitle();
+            eventLabel.setText(eventLabelText);
+            eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
+            eventLabel.setPrefWidth(dayVBox.getPrefWidth());
+            eventLabel.getStyleClass().add("event-label");
+            if (event.getType() == Event.Type.FREE_TIME) {
+                eventLabel.getStyleClass().add("free-time-label");
+            } else if (event.getType() == Event.Type.WORK) {
+                eventLabel.getStyleClass().add("work-label");
+            } else if (event.getType() == Event.Type.SCHOOL) {
+                eventLabel.getStyleClass().add("school-label");
             }
+
+            eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
+                windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
+                        user, eventsClient, this, resourceBundle, ap);
+                mouseEvent.consume();
+            });
+
+            dayVBox.getChildren().add(eventLabel);
+            VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
         }
     }
 

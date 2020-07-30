@@ -33,7 +33,7 @@ import java.util.TimeZone;
 public class DailyWeather {
 
     @JsonProperty("dt")
-    private LocalDate dt;
+    private Long dt;
     @JsonProperty("sunrise")
     private Integer sunrise;
     @JsonProperty("sunset")
@@ -62,14 +62,13 @@ public class DailyWeather {
     private Double uvi;
 
     @JsonProperty("dt")
-    public LocalDate getDt() {
+    public Long getDt() {
         return dt;
     }
 
     @JsonProperty("dt")
     public void setDt(Long dt) {
-        this.dt = LocalDate.ofInstant(Instant.ofEpochSecond(dt),
-                TimeZone.getDefault().toZoneId());
+        this.dt = dt;
     }
 
     @JsonProperty("sunrise")

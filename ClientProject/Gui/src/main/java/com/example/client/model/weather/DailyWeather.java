@@ -6,33 +6,33 @@ import java.util.Objects;
 
 public class DailyWeather {
     private LocalDate date;
-    private double minTemperature;
-    private double maxTemperature;
+    private int minTemperature;
+    private int maxTemperature;
     private List<Weather> weather = null;
 
     public DailyWeather() {
     }
 
-    public DailyWeather(LocalDate date, double minTemperature, double maxTemperature, List<Weather> weather) {
+    public DailyWeather(LocalDate date, int minTemperature, int maxTemperature, List<Weather> weather) {
         this.date = date;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
         this.weather = weather;
     }
 
-    public double getMinTemperature() {
+    public int getMinTemperature() {
         return minTemperature;
     }
 
-    public void setMinTemperature(double minTemperature) {
+    public void setMinTemperature(int minTemperature) {
         this.minTemperature = minTemperature;
     }
 
-    public double getMaxTemperature() {
+    public int getMaxTemperature() {
         return maxTemperature;
     }
 
-    public void setMaxTemperature(double maxTemperature) {
+    public void setMaxTemperature(int maxTemperature) {
         this.maxTemperature = maxTemperature;
     }
 
