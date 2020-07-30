@@ -2,7 +2,6 @@ package com.example.vavaplanit.service;
 
 import com.example.vavaplanit.model.GeoLocation;
 import com.example.vavaplanit.model.dto.DailyWeatherDTO;
-import com.example.vavaplanit.model.weather.Weather;
 import com.example.vavaplanit.model.weather.WeatherForecast;
 import com.example.vavaplanit.service.mappers.DailyWeatherDTOmapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,6 +50,14 @@ public class WeatherService {
         return geoCoordinates;
     }
 
+    public byte[] getImage(String icon) {
+        String uri = "http://openweathermap.org/img/wn/{icon}@2x.png";
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("icon", icon);
+
+        return restTemplate.getForObject(uri, byte[].class, params);
+    }
+
     public List<DailyWeatherDTO> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
         // TODO constants to configuration file
         String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
@@ -63,6 +70,12 @@ public class WeatherService {
         String weatherJson = restTemplate.getForObject(uri, String.class, params);
         WeatherForecast weatherForecast = objectMapper.readValue(weatherJson, new TypeReference<WeatherForecast>() {
         });
+
+        weatherForecast.getDaily().
+                stream().
+                forEach(dailyWeather -> dailyWeather.getWeather().
+                    stream().
+                    forEach(weather -> weather.setIconImage(getImage(weather.getIcon()))));
 
         return weatherForecast.getDaily().
                 stream().

@@ -40,6 +40,7 @@ public class WeatherClient {
             String publicIP = getPublicIPadress();
             Map<String, String> params = new HashMap<String, String>();
             params.put("ip", publicIP);
+            String weatherForecastJson = restTemplate.getForObject(uri, String.class, params);
         } catch (JsonProcessingException ex) {
             logger.error("Error. Something went wrong with json processing.", ex);
         }

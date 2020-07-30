@@ -24,6 +24,7 @@ public class WeatherController {
 
     @RequestMapping(value = "{ip}", method = RequestMethod.GET)
     public ResponseEntity getWeather(@PathVariable String ip) {
+        logger.info("Getting weather forecast for location by public IP " + ip);
         try {
             GeoLocation geoLocation = weatherService.getLocation(ip);
             if(geoLocation == null) {
@@ -33,7 +34,7 @@ public class WeatherController {
             return new ResponseEntity<>(weatherService.getWeather(geoLocation), HttpStatus.OK);
 
         } catch (JsonProcessingException ex) {
-            // TODO log
+            logger.error("Error while processing Json", ex);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

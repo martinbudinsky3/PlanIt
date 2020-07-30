@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class DailyWeatherDTO {
-    private Integer date;
+    private LocalDate date;
     private double minTemperature;
     private double maxTemperature;
     private List<Weather> weather = null;
@@ -15,7 +15,7 @@ public class DailyWeatherDTO {
     public DailyWeatherDTO() {
     }
 
-    public DailyWeatherDTO(Integer date, double minTemperature, double maxTemperature, List<Weather> weather) {
+    public DailyWeatherDTO(LocalDate date, double minTemperature, double maxTemperature, List<Weather> weather) {
         this.date = date;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
@@ -46,11 +46,11 @@ public class DailyWeatherDTO {
         this.weather = weather;
     }
 
-    public Integer getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

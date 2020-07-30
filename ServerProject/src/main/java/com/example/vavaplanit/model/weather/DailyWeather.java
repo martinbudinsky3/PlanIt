@@ -7,7 +7,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.TimeZone;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -30,7 +33,7 @@ import java.util.List;
 public class DailyWeather {
 
     @JsonProperty("dt")
-    private Integer dt;
+    private LocalDate dt;
     @JsonProperty("sunrise")
     private Integer sunrise;
     @JsonProperty("sunset")
@@ -59,13 +62,14 @@ public class DailyWeather {
     private Double uvi;
 
     @JsonProperty("dt")
-    public Integer getDt() {
+    public LocalDate getDt() {
         return dt;
     }
 
     @JsonProperty("dt")
-    public void setDt(Integer dt) {
-        this.dt = dt;
+    public void setDt(Long dt) {
+        this.dt = LocalDate.ofInstant(Instant.ofEpochSecond(dt),
+                TimeZone.getDefault().toZoneId());
     }
 
     @JsonProperty("sunrise")

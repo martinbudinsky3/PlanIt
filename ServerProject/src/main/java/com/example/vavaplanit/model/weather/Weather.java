@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "id",
@@ -22,6 +23,7 @@ public class Weather {
     private String description;
     @JsonProperty("icon")
     private String icon;
+    private byte[] iconImage;
 
     @JsonProperty("id")
     public Integer getId() {
@@ -63,5 +65,12 @@ public class Weather {
         this.icon = icon;
     }
 
+    public byte[] getIconImage() {
+        return iconImage;
+    }
+
+    public void setIconImage(byte[] iconImage) {
+        this.iconImage = iconImage;
+    }
 }
 
