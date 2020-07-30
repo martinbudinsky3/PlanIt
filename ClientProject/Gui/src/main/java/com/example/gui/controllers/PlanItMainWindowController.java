@@ -5,6 +5,8 @@ import com.example.client.clients.UsersClient;
 import com.example.client.clients.WeatherClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
+import com.example.client.model.weather.DailyWeather;
+import com.example.client.model.weather.Weather;
 import com.example.gui.utils.PdfFile;
 import com.example.gui.utils.WindowsCreator;
 import javafx.application.Platform;
@@ -30,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -37,10 +40,15 @@ import java.util.*;
  * Controller for "PlanItMainWindow.fxml"
  */
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
+    private static final int SECONDS_IN_MINUTE = 60;
+    private static final int SECONDS_IN_DAY = 86400;
+    private static final int MILLIS_IN_SECOND = 1000;
+
     private static final Logger logger = LoggerFactory.getLogger(PlanItMainWindowController.class);
     private final WindowsCreator windowsCreator;
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
+    private final WeatherClient weatherClient;
     private final User user;
 
     @FXML
@@ -74,9 +82,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private String months[];
     private ResourceBundle resourceBundle;
 
-    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, User user, WindowsCreator windowsCreator) {
+    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, WeatherClient weatherClient, User user, WindowsCreator windowsCreator) {
         this.eventsClient = eventsClient;
         this.usersClient = usersClient;
+        this.weatherClient = weatherClient;
         this.user = user;
         this.windowsCreator = windowsCreator;
 
@@ -113,11 +122,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        WeatherClient weatherClient = new WeatherClient();
+//        weatherClient.getWeather();
 
         this.resourceBundle = resourceBundle;
         if (!threadFlag) { // if thread isn't created yet
             threadFlag = true;
-            startTask();
+            startAlertTask();
+            startWeatherTask();
         }
         createGridPaneNodes();
         addHandlers();
@@ -137,9 +148,21 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     /**
      * Method that creates and starts new background thread with event alert functionality
      */
-    public void startTask() {
+    public void startAlertTask() {
         // Create a Runnable
-        Runnable task = () -> runTask();
+        Runnable task = () -> runAlertTask();
+
+        // Run the task in a background thread
+        Thread backgroundThread = new Thread(task);
+        // Terminate the running thread if the application exits
+        backgroundThread.setDaemon(true);
+        // Start the thread
+        backgroundThread.start();
+    }
+
+    public void startWeatherTask() {
+        // Create a Runnable
+        Runnable task = () -> runWeatherTask();
 
         // Run the task in a background thread
         Thread backgroundThread = new Thread(task);
@@ -153,7 +176,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * Functionality of thread - getting events with alert time in current minute.
      * It is getting events at the beginning of every minute.
      */
-    public void runTask() {
+    public void runAlertTask() {
         while (threadActive) {
             try {
                 Platform.runLater(() -> {
@@ -168,10 +191,30 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     }
                 });
 
-                int seconds = 60 - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
-                Thread.sleep(seconds * 1000);
+                int seconds = SECONDS_IN_MINUTE - LocalTime.now().getSecond();  // so alert comes at the beginning of the minute
+                Thread.sleep(seconds * MILLIS_IN_SECOND);
             } catch (InterruptedException ex) {
                 logger.error("Error in thread that gets events to alert", ex);
+            }
+        }
+    }
+
+    public void runWeatherTask() {
+        while (threadActive) {
+            try {
+                Platform.runLater(() -> {
+
+                    List<DailyWeather> weatherForecast = weatherClient.getWeather();
+
+                    // show alert for every event that is returned
+                    weatherForecast.stream().forEach(dailyWeather -> logger.debug("Min temperature at " + dailyWeather.getDate()
+                            + " : " + dailyWeather.getMinTemperature()));
+                });
+                int seconds = SECONDS_IN_DAY - LocalTime.now().toSecondOfDay();  // so alert comes at the beginning of the minute
+                logger.debug("LocalTime.now().toSecondOfDay() = " + LocalTime.now().toSecondOfDay());
+                Thread.sleep(seconds * MILLIS_IN_SECOND);
+            } catch (InterruptedException ex) {
+                logger.error("Error in thread that gets weather forecast", ex);
             }
         }
     }

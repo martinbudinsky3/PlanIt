@@ -2,6 +2,7 @@ package com.example.gui.utils;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
+import com.example.client.clients.WeatherClient;
 import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.gui.controllers.*;
@@ -161,7 +162,7 @@ public class WindowsCreator {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
             PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
-                    usersClient, user, this);
+                    usersClient, new WeatherClient(), user, this);
             fxmlLoader.setController(planItMainWindowController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();

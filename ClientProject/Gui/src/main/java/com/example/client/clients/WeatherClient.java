@@ -1,12 +1,15 @@
 package com.example.client.clients;
 
+import com.example.client.model.weather.DailyWeather;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,26 +26,35 @@ public class WeatherClient {
         logger.info("Getting public IP adress of device");
         final String uri = "https://api.ipify.org?format=json";
 
-        String publicIP = "";
         String publicIPjson = restTemplate.getForObject(uri, String.class);
         Map<String, String> publicIPmap = objectMapper.readValue(publicIPjson, new TypeReference<Map<String, String>>() {});
-        publicIP = publicIPmap.get("ip");
+        String publicIP = publicIPmap.get("ip");
 
         logger.debug("Public IP adress of client device: " + publicIP);
+
         return publicIP;
     }
 
-    public void getWeather() {
+    public List<DailyWeather> getWeather() {
         logger.info("Getting weather forecast");
         final String uri = BASE_URI + "/weather/{ip}";
 
+        List<DailyWeather> weatherForecast = new ArrayList<>();
         try {
             String publicIP = getPublicIPadress();
             Map<String, String> params = new HashMap<String, String>();
             params.put("ip", publicIP);
             String weatherForecastJson = restTemplate.getForObject(uri, String.class, params);
+
+            objectMapper.registerModule(new JavaTimeModule());
+            weatherForecast = objectMapper.readValue(weatherForecastJson, new TypeReference<List<DailyWeather>>() {
+            });
+            logger.debug("Today's min temperature: " + weatherForecast.get(0).getMinTemperature() +
+                    ", Today's max temperature:" + weatherForecast.get(0).getMaxTemperature());
         } catch (JsonProcessingException ex) {
             logger.error("Error. Something went wrong with json processing.", ex);
         }
+
+        return weatherForecast;
     }
 }
