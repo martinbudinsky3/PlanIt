@@ -124,6 +124,8 @@ public class PlanItAddEventController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+        initializeTypeSelector();
+        
         if (idEvent == null) { // add event
             // set init times to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
@@ -168,8 +170,6 @@ public class PlanItAddEventController implements Initializable {
         // add handlers to buttons
         saveButton.setOnAction(e -> save(e));
         deleteButton.setOnAction(e -> delete(e));
-
-        initializeTypeSelector();
     }
 
     private void initializeTypeSelector() {

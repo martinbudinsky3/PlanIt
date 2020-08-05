@@ -1,4 +1,4 @@
-package com.example.gui.utils;
+package com.example.utils;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;

@@ -2,7 +2,7 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.UsersClient;
 import com.example.client.model.User;
-import com.example.gui.utils.WindowsCreator;
+import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

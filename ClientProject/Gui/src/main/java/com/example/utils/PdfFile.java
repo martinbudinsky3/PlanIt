@@ -1,4 +1,4 @@
-package com.example.gui.utils;
+package com.example.utils;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;

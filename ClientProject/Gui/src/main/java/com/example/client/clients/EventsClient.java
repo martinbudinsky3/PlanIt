@@ -1,7 +1,7 @@
 package com.example.client.clients;
 
 import com.example.client.model.Event;
-import com.example.gui.utils.WindowsCreator;
+import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

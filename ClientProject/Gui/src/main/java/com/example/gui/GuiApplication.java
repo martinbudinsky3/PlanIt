@@ -1,14 +1,9 @@
 package com.example.gui;
 
 import com.example.client.clients.UsersClient;
-import com.example.gui.controllers.PlanItLoginController;
-import com.example.gui.controllers.PlanItRegistrationController;
-import com.example.gui.utils.UTF8Control;
-import com.example.gui.utils.WindowsCreator;
+import com.example.utils.UTF8Control;
+import com.example.utils.WindowsCreator;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

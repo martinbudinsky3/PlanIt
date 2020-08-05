@@ -1,6 +1,6 @@
 package com.example.gui.controllers;
 
-import com.example.gui.utils.UTF8Control;
+import com.example.utils.UTF8Control;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
