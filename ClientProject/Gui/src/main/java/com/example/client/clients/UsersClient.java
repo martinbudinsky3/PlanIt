@@ -23,6 +23,7 @@ import java.util.Map;
  */
 
 public class UsersClient {
+
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_USERS_URI = uriPropertiesReader.getProperty("base-uri") +
             uriPropertiesReader.getProperty("users-endpoint");

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WeatherClient {
+
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 

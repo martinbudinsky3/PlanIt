@@ -32,12 +32,16 @@ public class UserService {
      */
     public User getUserByUsernameAndPassword(String username, String password) {
         User user = getUserByUsername(username);
+        if(user == null) {
+            return null;
+        }
+
         if (!userRepository.getHashed(username)) {
             user.setUserPassword(BCrypt.hashpw(user.getUserPassword(), BCrypt.gensalt(10)));
             userRepository.updateHashed(username, user.getUserPassword());
         }
 
-        if (user != null && BCrypt.checkpw(password, user.getUserPassword())) {
+        if (BCrypt.checkpw(password, user.getUserPassword())) {
             return user;
         }
 
