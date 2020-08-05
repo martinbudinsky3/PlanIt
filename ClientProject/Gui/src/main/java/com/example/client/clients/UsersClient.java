@@ -1,6 +1,7 @@
 package com.example.client.clients;
 
 import com.example.client.model.User;
+import com.example.utils.PropertiesReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,7 +23,9 @@ import java.util.Map;
  */
 
 public class UsersClient {
-    private final String BASE_URI = "http://localhost:8080";
+    private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
+    private final String BASE_USERS_URI = uriPropertiesReader.getProperty("base-uri") +
+            uriPropertiesReader.getProperty("users-endpoint");
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
@@ -39,7 +42,8 @@ public class UsersClient {
     public User getUserByUserNameAndUserPassword(String userName, String userPassword)
             throws JsonProcessingException, ResourceAccessException, HttpStatusCodeException {
         logger.info("Logging user by his username and password: [" + userName + "]");
-        final String uri = BASE_URI + "/users/{userName}/{userPassword}";
+        final String LOGIN_ENDPOINT = uriPropertiesReader.getProperty("login-endpoint");
+        final String uri = BASE_USERS_URI + LOGIN_ENDPOINT;
         Map<String, String> params = new HashMap<String, String>();
         params.put("userName", userName);
         params.put("userPassword", userPassword);
@@ -63,7 +67,7 @@ public class UsersClient {
         logger.info("Inserting new User. Username: " + user.getUserName() + " First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName());
 
-        final String uri = BASE_URI + "/users";
+        final String uri = BASE_USERS_URI;
 
         String id = restTemplate.postForObject(uri, user, String.class);
         Integer idUser = objectMapper.readValue(id, Integer.class);
