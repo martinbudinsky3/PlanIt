@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,7 +23,11 @@ import java.util.stream.Collectors;
 // TODO uri's to config file
 
 @Service
+@PropertySource("classpath:uri.properties")
 public class WeatherService {
+    @Value("${weather-api-key}")
+    private String API_KEY;
+
     @Autowired
     private RestTemplate restTemplate;
     
@@ -60,13 +66,12 @@ public class WeatherService {
 
     public List<DailyWeatherDTO> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
         // TODO constants to configuration file
-        String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
-                "&appid={api-key}&units={units}";
+        final String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
+                "&appid={api-key}&units=metric";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("lat", geoLocation.getLatitude());
         params.put("lon", geoLocation.getLongitude());
-        params.put("api-key", "bf115f2ec4f3aaf15a3585f872e895de");
-        params.put("units", "metric");
+        params.put("api-key", API_KEY);
 
         String weatherJson = restTemplate.getForObject(uri, String.class, params);
         WeatherForecast weatherForecast = objectMapper.readValue(weatherJson, new TypeReference<WeatherForecast>() {
