@@ -21,13 +21,12 @@ import java.util.stream.Stream;
 public class PdfFile {
     private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
     private final WindowsCreator windowsCreator;
-
-    private EventsClient eventsClient;
-    private User user;
-    private int selectedYear;
-    private int selectedMonth;
-    private ResourceBundle resourceBundle;
-    private File file;
+    private final EventsClient eventsClient;
+    private final User user;
+    private final int selectedYear;
+    private final int selectedMonth;
+    private final ResourceBundle resourceBundle;
+    private final File file;
 
     public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle,
                    File file, WindowsCreator windowsCreator) {

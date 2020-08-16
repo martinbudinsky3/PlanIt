@@ -1238,3 +1238,156 @@ java.io.FileNotFoundException: C:\Users\HP\Desktop\PlanIt.pdf (The process canno
 2020-08-16 20:08:00,734 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
 2020-08-16 20:08:00,736 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
 2020-08-16 20:08:00,737 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:08:54,474 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-08-16 20:08:54,526 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/users/test/test
+2020-08-16 20:08:54,546 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:08:54,779 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:08:54,782 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:08:54,860 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-08-16 20:08:55,066 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 8]
+2020-08-16 20:08:55,068 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/1/2020/8
+2020-08-16 20:08:55,069 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:08:55,082 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:08:55,083 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:08:55,150 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 27 user's [1] events in year and month: [2020, 8]
+2020-08-16 20:08:55,161 DEBUG com.example.gui.controllers.PlanItMainWindowController [Thread-5] LocalTime.now().toSecondOfDay() = 72535
+2020-08-16 20:08:55,829 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:08:55,830 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:08:55.830
+2020-08-16 20:08:55,831 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:08:55.830
+2020-08-16 20:08:55,832 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:08:55,843 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:08:55,843 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:08:55,885 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:08:55,885 INFO com.example.client.clients.WeatherClient [JavaFX Application Thread] Getting weather forecast
+2020-08-16 20:08:55,886 INFO com.example.client.clients.WeatherClient [JavaFX Application Thread] Getting public IP adress of device
+2020-08-16 20:08:57,062 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET https://ip.seeip.org/jsonip
+2020-08-16 20:08:57,063 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:08:58,295 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:08:58,297 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json;charset=utf-8"
+2020-08-16 20:08:58,311 DEBUG com.example.client.clients.WeatherClient [JavaFX Application Thread] Public IP adress of client device: 46.34.226.62
+2020-08-16 20:08:58,312 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/weather/46.34.226.62
+2020-08-16 20:08:58,313 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:08:59,248 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:08:59,250 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:08:59,285 DEBUG com.example.client.clients.WeatherClient [JavaFX Application Thread] Today's min temperature: 19, Today's max temperature:20
+2020-08-16 20:09:00,551 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:09:00,552 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:09:00.552
+2020-08-16 20:09:00,553 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:09:00.552
+2020-08-16 20:09:00,554 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:09:00,563 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:09:00,564 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:09:00,564 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:09:04,952 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 8]
+2020-08-16 20:09:04,954 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/1/2020/8
+2020-08-16 20:09:04,955 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:09:04,965 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:09:04,966 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:09:04,974 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 27 user's [1] events in year and month: [2020, 8]
+2020-08-16 20:10:00,162 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:10:00,163 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:10:00.163
+2020-08-16 20:10:00,164 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:10:00.163
+2020-08-16 20:10:00,165 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:10:00,176 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:10:00,177 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:10:00,178 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:11:00,163 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:11:00,165 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:11:00.165
+2020-08-16 20:11:00,166 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:11:00.164
+2020-08-16 20:11:00,167 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:11:00,186 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:11:00,187 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:11:00,187 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:12:00,164 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:12:00,165 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:12:00.165
+2020-08-16 20:12:00,166 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:12:00.165
+2020-08-16 20:12:00,167 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:12:00,185 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:12:00,186 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:12:00,187 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:13:00,164 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:13:00,166 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:13:00.166
+2020-08-16 20:13:00,168 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:13:00.166
+2020-08-16 20:13:00,169 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:13:00,184 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:13:00,185 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:13:00,186 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:14:00,165 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:14:00,168 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:14:00.168
+2020-08-16 20:14:00,168 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:14:00.168
+2020-08-16 20:14:00,170 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:14:00,186 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:14:00,186 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:14:00,187 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:15:00,165 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:15:00,168 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:15:00.167
+2020-08-16 20:15:00,169 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:15:00.167
+2020-08-16 20:15:00,170 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:15:00,185 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:15:00,186 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:15:00,188 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:16:00,165 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:16:00,166 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:16:00.166
+2020-08-16 20:16:00,167 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:16:00.166
+2020-08-16 20:16:00,167 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:16:00,178 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:16:00,179 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:16:00,179 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:17:00,166 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:17:00,168 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:17:00.168
+2020-08-16 20:17:00,169 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:17:00.168
+2020-08-16 20:17:00,170 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:00,183 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:00,185 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:00,185 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:17:40,090 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-08-16 20:17:40,146 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/users/test/test
+2020-08-16 20:17:40,169 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:40,414 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:40,417 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:40,500 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-08-16 20:17:40,712 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 8]
+2020-08-16 20:17:40,715 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/1/2020/8
+2020-08-16 20:17:40,716 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:40,728 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:40,729 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:40,801 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 27 user's [1] events in year and month: [2020, 8]
+2020-08-16 20:17:40,816 DEBUG com.example.gui.controllers.PlanItMainWindowController [Thread-5] LocalTime.now().toSecondOfDay() = 73060
+2020-08-16 20:17:41,515 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:17:41,517 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:17:41.517
+2020-08-16 20:17:41,518 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:17:41.517
+2020-08-16 20:17:41,519 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:41,530 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:41,531 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:41,532 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:17:41,533 INFO com.example.client.clients.WeatherClient [JavaFX Application Thread] Getting weather forecast
+2020-08-16 20:17:41,534 INFO com.example.client.clients.WeatherClient [JavaFX Application Thread] Getting public IP adress of device
+2020-08-16 20:17:42,684 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET https://ip.seeip.org/jsonip
+2020-08-16 20:17:42,685 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:43,892 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:43,893 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json;charset=utf-8"
+2020-08-16 20:17:43,901 DEBUG com.example.client.clients.WeatherClient [JavaFX Application Thread] Public IP adress of client device: 46.34.226.62
+2020-08-16 20:17:43,902 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/weather/46.34.226.62
+2020-08-16 20:17:43,903 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:46,172 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:46,174 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:46,211 DEBUG com.example.client.clients.WeatherClient [JavaFX Application Thread] Today's min temperature: 19, Today's max temperature:20
+2020-08-16 20:17:51,385 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 8]
+2020-08-16 20:17:51,386 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/1/2020/8
+2020-08-16 20:17:51,387 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:17:51,397 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:17:51,398 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:17:51,407 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 27 user's [1] events in year and month: [2020, 8]
+2020-08-16 20:18:00,816 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:18:00,818 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:18:00.818
+2020-08-16 20:18:00,820 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:18:00.818
+2020-08-16 20:18:00,821 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:18:00,829 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:18:00,830 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:18:00,831 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
+2020-08-16 20:19:00,817 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events to alert.
+2020-08-16 20:19:00,818 DEBUG com.example.client.clients.EventsClient [JavaFX Application Thread] Current time is:2020-08-16T20:19:00.818
+2020-08-16 20:19:00,819 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] HTTP GET http://localhost:8080/events/alert/1/2020-08-16T20:19:00.818
+2020-08-16 20:19:00,820 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Accept=[text/plain, application/json, application/*+json, */*]
+2020-08-16 20:19:00,827 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Response 200 OK
+2020-08-16 20:19:00,829 DEBUG org.springframework.core.log.CompositeLog [JavaFX Application Thread] Reading to [java.lang.String] as "application/json"
+2020-08-16 20:19:00,829 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning all user's [1] events to alert.
