@@ -312,9 +312,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         if (file != null) {  // if user hit cancel button nothing happens
             PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, file, windowsCreator);
             pdfFile.pdf();
-
-            windowsCreator.showInfoAlert(resourceBundle.getString("pdfAlertTitle"),
-                    resourceBundle.getString("pdfAlertContent"));
         }
     }
 
