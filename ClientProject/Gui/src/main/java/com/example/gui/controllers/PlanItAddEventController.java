@@ -134,13 +134,13 @@ public class PlanItAddEventController implements Initializable {
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
             LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
             LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
-            LocalDate endsDate = null;
+            LocalDate endsDate;
             if (endsInitTime.isBefore(nextHalfHour)) { // if ends time oversteps midnight and starts time don't, update ends date to next day
                 endsDate = initDate.plusDays(1);
             } else {
                 endsDate = initDate;
             }
-            LocalDate alertDate = null;
+            LocalDate alertDate;
             if (nextHalfHour.isBefore(alertInitTime)) {
                 alertDate = initDate.minusDays(1);
             } else {
@@ -157,6 +157,10 @@ public class PlanItAddEventController implements Initializable {
             showDetail();
         }
 
+        addHandlers();
+    }
+
+    private void addHandlers() {
         // add handlers to increment decrement buttons of time text fields
         final int size = 3;  // constant size of arrays
         Button[] incrementButtons = {startsIncrement, endsIncrement, alertsIncrement};
