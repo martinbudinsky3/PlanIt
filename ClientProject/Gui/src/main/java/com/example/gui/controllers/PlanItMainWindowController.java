@@ -44,7 +44,6 @@ import java.util.*;
 public class PlanItMainWindowController implements Initializable, LanguageChangeWindow {
     private static final int CALENDAR_WIDTH = 7;
     private static final int CALENDAR_HEIGHT = 7;
-    private static final int FORECASTED_DAYS = 8;
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int SECONDS_IN_DAY = 86400;
     private static final int MILLIS_IN_SECOND = 1000;
@@ -237,8 +236,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void addWeatherToCalendar() {
         List<DailyWeather> weatherForecast = weatherClient.getWeather();
 
-        for (int d = 0; d < weatherForecast.size(); d++) {
-            DailyWeather dailyWeather = weatherForecast.get(d);
+        for (DailyWeather dailyWeather : weatherForecast) {
             if (dailyWeather.getDate().getMonthValue() != selectedMonth) {
                 continue;
             }
@@ -444,11 +442,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void showEventsInCalendar() {
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
-        for (int e = 0; e < events.size(); e++) {
-            Event event = events.get(e);
+        for (Event event : events) {
 
-            int j = Utils.countColumnIndexInCalendar(events.get(e).getDate().getDayOfMonth(), selectedYear, selectedMonth);
-            int i = Utils.countRowIndexInCalendar(events.get(e).getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
             VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
