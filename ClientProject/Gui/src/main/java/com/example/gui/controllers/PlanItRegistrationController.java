@@ -86,13 +86,9 @@ public class PlanItRegistrationController implements Initializable {
     private void buttonRegisterHandler(ActionEvent event) {
 
         if (textfieldFirstName.getText().isEmpty() || textfieldLastName.getText().isEmpty() || textfieldUserName.getText().isEmpty() || textfieldUserpassword.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(resourceBundle.getString("loginEmptyAlertTitle"));
-            alert.setHeaderText(null);
-            alert.setContentText(resourceBundle.getString("registrationEmptyContentTitle"));
-            alert.showAndWait();
+            windowsCreator.showInfoAlert(resourceBundle.getString("loginEmptyAlertTitle"),
+                    resourceBundle.getString("registrationEmptyAlertContent"));
         } else {
-
             String firstName = textfieldFirstName.getText();
             String lastName = textfieldLastName.getText();
             String userName = textfieldUserName.getText();
@@ -114,11 +110,8 @@ public class PlanItRegistrationController implements Initializable {
                     logger.error("Error while connecting to server", ex);
                 } else {
                     if(((HttpStatusCodeException)ex).getRawStatusCode() == 412) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle(resourceBundle.getString("registrationExistsAlertTitle"));
-                        alert.setHeaderText(null);
-                        alert.setContentText(resourceBundle.getString("registrationExistsAlertContent"));
-                        alert.showAndWait();
+                        windowsCreator.showInfoAlert(resourceBundle.getString("registrationExistsAlertTitle"),
+                                resourceBundle.getString("registrationExistsAlertContent"));
                     } else {
                         windowsCreator.showErrorAlert(resourceBundle);
                         logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +

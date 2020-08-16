@@ -2,6 +2,7 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
+import com.example.utils.WindowsCreator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,6 +23,10 @@ import java.util.ResourceBundle;
  * Controller for "PlanItAddEvent.fxml"
  */
 public class PlanItAddEventController implements Initializable {
+    private final Integer idUser;
+    private final EventsClient eventsClient;
+    private final PlanItMainWindowController planItMainWindowController;
+
     @FXML
     private AnchorPane ap;
 
@@ -94,12 +99,9 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private DatePicker alertDateField;
 
-    private Integer idUser;
     private Integer idEvent;
     private LocalDate initDate;
-    private EventsClient eventsClient;
     private ResourceBundle resourceBundle;
-    private PlanItMainWindowController planItMainWindowController;
     private Event event;
 
     public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {

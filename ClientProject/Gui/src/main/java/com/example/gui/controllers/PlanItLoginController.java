@@ -86,11 +86,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      */
     void buttonLoginHandler(ActionEvent event) {
         if (textfieldName.getText().isEmpty() || passwordfieldPassword.getText().isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(resourceBundle.getString("loginEmptyAlertTitle"));
-            alert.setHeaderText(null);
-            alert.setContentText(resourceBundle.getString("loginAlertContent"));
-            alert.showAndWait();
+            windowsCreator.showInfoAlert(resourceBundle.getString("loginEmptyAlertTitle"),
+                    resourceBundle.getString("loginAlertContent"));
         } else {
             try {
                 user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
@@ -104,11 +101,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                     logger.error("Error while connecting to server", ex);
                 } else {
                     if(((HttpStatusCodeException)ex).getRawStatusCode() == 412) {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle(resourceBundle.getString("loginWrongAlertTitle"));
-                        alert.setHeaderText(null);
-                        alert.setContentText(resourceBundle.getString("loginAlertContent"));
-                        alert.showAndWait();
+                        windowsCreator.showInfoAlert(resourceBundle.getString("loginWrongAlertTitle"),
+                                resourceBundle.getString("loginAlertContent"));
                     } else {
                         logger.error("Error logging in user " + textfieldName.getText() + ". HTTP Status: " +
                                 ((HttpStatusCodeException)ex).getRawStatusCode(), ex);

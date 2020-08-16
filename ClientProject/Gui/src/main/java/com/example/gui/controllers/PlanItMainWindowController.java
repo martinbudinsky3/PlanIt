@@ -201,6 +201,22 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    /**
+     * Sound of notification is played.
+     */
+    public void playAlertSound() {
+        URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/chimes.wav");
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            logger.error("Error while playing alert sound", ex);
+        }
+    }
+
     public void runWeatherTask() {
         while (threadActive) {
             try {
@@ -241,22 +257,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             dayHeader.getChildren().add(temperatureLabel);
             HBox.setMargin(imageView, new Insets(0, 0, 0, 10));
             HBox.setMargin(temperatureLabel, new Insets(10, 0, 0, 0));
-        }
-    }
-
-    /**
-     * Sound of notification is played.
-     */
-    public void playAlertSound() {
-        URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/chimes.wav");
-        try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (Exception ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
-            logger.error("Error while playing alert sound", ex);
         }
     }
 
@@ -313,11 +313,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, file, windowsCreator);
             pdfFile.pdf();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(resourceBundle.getString("pdfAlertTitle"));
-            alert.setHeaderText(null);
-            alert.setContentText(resourceBundle.getString("pdfAlertContent"));
-            alert.showAndWait();
+            windowsCreator.showInfoAlert(resourceBundle.getString("pdfAlertTitle"),
+                    resourceBundle.getString("pdfAlertContent"));
         }
     }
 

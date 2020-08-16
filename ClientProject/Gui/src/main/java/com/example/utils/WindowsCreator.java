@@ -227,6 +227,14 @@ public class WindowsCreator {
         }
     }
 
+    public void showInfoAlert(String title, String contentText) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
     public void showErrorAlert(ResourceBundle resourceBundle) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("error"));
@@ -235,10 +243,10 @@ public class WindowsCreator {
         alert.showAndWait();
     }
 
-    public void showErrorAlert(String message, ResourceBundle resourceBundle) {
+    public void showErrorAlert(String headerText, ResourceBundle resourceBundle) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(resourceBundle.getString("error"));
-        alert.setHeaderText(message);
+        alert.setHeaderText(headerText);
         alert.setContentText(resourceBundle.getString("errorAlertContext"));
         alert.showAndWait();
     }
