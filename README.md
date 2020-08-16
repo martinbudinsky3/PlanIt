@@ -7,6 +7,10 @@ School project, that I improved in my free time afterwards. It's just a simple c
 - Java, JavaFX 1.8
 - Spring Boot
 - PostgreSQL
+- external APIs
+  * ipify API: to get public IP of client device
+  * IP API: to get location by public IP
+  * OpenWeatherMap API: to get weather forecast for location
 
 # Instalation
 
@@ -24,6 +28,7 @@ project and then client project.
 - show event detail
 - events alerts
 - PDF generation
+- weather forecast for week
 
 ## TODO
 - multiuser events
