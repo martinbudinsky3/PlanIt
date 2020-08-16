@@ -65,10 +65,6 @@ public class PdfFile {
     /** Setting tittle and line with name of the user.
      * @param document created document*/
     public void setHeader(Document document) throws DocumentException {
-        Font nameFont = FontFactory.getFont(FontFactory.TIMES_ROMAN, 15, BaseColor.BLACK);
-        String belong = resourceBundle.getString("belong");
-        Chunk name = new Chunk(belong + " " + user.getFirstName() + " " + user.getLastName(), nameFont);
-
         Paragraph dateParagraph = setDateParagraph();
         Paragraph nameParagraph = setNameParagraph();
 
@@ -126,33 +122,7 @@ public class PdfFile {
         setTableHeader(table, daysFont);
         initializeCalendar(table, numbersFont);
 
-        /*set events to cells*/
-//        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
-//        for(int e = 0; e < events.size(); e++) {
-//            fieldCounter = 1;
-//            dayCounter = 1;
-//            int dayNumber = 0;
-//            for (int i = 1; i < 7; i++) {
-//                for (int j = 0; j < 7; j++) {
-//
-//                    if (dayCounter > daysInMonth) {
-//                        break;
-//                    }
-//
-//                    if (fieldCounter >= firstDayOfMonth) {
-//                        dayNumber++;
-//                        Event event = events.get(e);
-//                        if (event.getDate().getDayOfMonth() == dayNumber) {
-//                            PdfPCell cell = table.getRow(i).getCells()[j];
-//                            cell.addElement(new Paragraph(event.getStarts() + " " + event.getTitle(), font));
-//                        }
-//
-//                        dayCounter++;
-//                    }
-//                    fieldCounter++;
-//                }
-//            }
-//        }
+        showEventsInCalendar(table, font);
         
         table.setWidthPercentage(100);
         document.add(table);
@@ -171,12 +141,14 @@ public class PdfFile {
                     header.setPhrase(new Phrase(columnTitle, daysFont));
                     header.setHorizontalAlignment(Element.ALIGN_CENTER);
                     header.setVerticalAlignment(Element.ALIGN_CENTER);
+                    header.setPaddingTop(10);
+                    header.setMinimumHeight(35);
                     table.addCell(header);
                 });
     }
 
     private void initializeCalendar(PdfPTable table, Font numbersFont) {
-        /*find out when does month start and end*/
+        // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
         if(firstDayOfMonth == 0){
@@ -184,7 +156,7 @@ public class PdfFile {
         }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
-        /*set numbers of days to table cells - cells which represents days in the month (have day numbers) are white */
+        // set numbers of days to table cells
         int fieldCounter = 1;
         int dayCounter = 1;
         for (int i = 1; i < 7; i++) {
@@ -195,7 +167,7 @@ public class PdfFile {
                 if (dayCounter > daysInMonth || fieldCounter < firstDayOfMonth) {
                     cell.setBackgroundColor(new BaseColor(230, 230, 230));
                 } else {
-                    cell.addElement(new Paragraph(Integer.toString(dayCounter) + "\n", numbersFont));
+                    cell.addElement(new Paragraph(dayCounter + "\n", numbersFont));
                     cell.setBackgroundColor(BaseColor.WHITE);
 
                     dayCounter++;
@@ -204,6 +176,26 @@ public class PdfFile {
                 table.addCell(cell);
                 fieldCounter++;
             }
+        }
+    }
+
+    private void showEventsInCalendar(PdfPTable table, Font font) {
+        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
+
+        for(Event event : events) {
+            int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+
+            PdfPCell cell = table.getRow(i).getCells()[j];
+            if (event.getType() == Event.Type.FREE_TIME) {
+                font.setColor(3, 252, 19);
+            } else if (event.getType() == Event.Type.WORK) {
+                font.setColor(252, 3, 3);
+            } else if (event.getType() == Event.Type.SCHOOL) {
+                font.setColor(63, 135, 213);
+            }
+
+            cell.addElement(new Paragraph(event.getStarts() + " " + event.getTitle(), font));
         }
     }
 }

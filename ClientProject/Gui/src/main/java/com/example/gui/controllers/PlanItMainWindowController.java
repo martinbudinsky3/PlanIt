@@ -7,6 +7,7 @@ import com.example.client.model.Event;
 import com.example.client.model.User;
 import com.example.client.model.weather.DailyWeather;
 import com.example.utils.PdfFile;
+import com.example.utils.Utils;
 import com.example.utils.WindowsCreator;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -242,8 +243,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 continue;
             }
 
-            int j = countColumnIndexInCalendar(dailyWeather.getDate().getDayOfMonth());
-            int i = countRowIndexInCalendar(dailyWeather.getDate().getDayOfMonth());
+            int j = Utils.countColumnIndexInCalendar(dailyWeather.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int i = Utils.countRowIndexInCalendar(dailyWeather.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
             VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
@@ -436,28 +437,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    private int countFirstDayOfMonth() {
-        GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
-        int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if (firstDayOfMonth == 0) {
-            firstDayOfMonth = 7;
-        }
-
-        return firstDayOfMonth;
-    }
-
-    public int countRowIndexInCalendar(int day) {
-        int firstDayOfMonth = countFirstDayOfMonth();
-
-        return (day - 1 + firstDayOfMonth - 1) / 7 + 1;
-    }
-
-    public int countColumnIndexInCalendar(int day) {
-        int firstDayOfMonth = countFirstDayOfMonth();
-
-        return (day - 1 + firstDayOfMonth - 1) % 7;
-    }
-
     /**
      * Adding events into calendar cells. The starts time and title of the event are displayed.
      * It is possible to click on each event to show the detail.
@@ -467,8 +446,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
         for (int e = 0; e < events.size(); e++) {
             Event event = events.get(e);
-            int j = countColumnIndexInCalendar(events.get(e).getDate().getDayOfMonth());
-            int i = countRowIndexInCalendar(events.get(e).getDate().getDayOfMonth());
+
+            int j = Utils.countColumnIndexInCalendar(events.get(e).getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int i = Utils.countRowIndexInCalendar(events.get(e).getDate().getDayOfMonth(), selectedYear, selectedMonth);
+
             VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
             Label eventLabel = new Label();
