@@ -53,6 +53,7 @@ public class PdfFile {
 
             windowsCreator.showInfoAlert(resourceBundle.getString("pdfAlertTitle"),
                     resourceBundle.getString("pdfAlertContent"));
+            logger.debug("PDF file was created and saved at: " + file.getAbsolutePath());
         } catch(DocumentException | FileNotFoundException ex){
             windowsCreator.showErrorAlert(resourceBundle);
             logger.error("Error while creating PDF file", ex);
