@@ -448,29 +448,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
             VBox dayVBox = (VBox) gridPaneNodes[j][i];
-
-            Label eventLabel = new Label();
-            String eventLabelText = event.getStarts() + " " + event.getTitle();
-            eventLabel.setText(eventLabelText);
-            eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
-            eventLabel.setPrefWidth(dayVBox.getPrefWidth());
-            eventLabel.getStyleClass().add("event-label");
-            if (event.getType() == Event.Type.FREE_TIME) {
-                eventLabel.getStyleClass().add("free-time-label");
-            } else if (event.getType() == Event.Type.WORK) {
-                eventLabel.getStyleClass().add("work-label");
-            } else if (event.getType() == Event.Type.SCHOOL) {
-                eventLabel.getStyleClass().add("school-label");
-            }
-
-            eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
-                windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
-                        user, eventsClient, this, resourceBundle, ap);
-                mouseEvent.consume();
-            });
-
-            dayVBox.getChildren().add(eventLabel);
-            VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
+            addEventToCalendar(event, dayVBox);
         }
     }
 
@@ -512,9 +490,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addWeatherToCalendar();
     }
 
-    public void onEventDelete(Event event) {
-        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+    public void deleteEventFromCalendar(int idEvent, LocalDate date) {
+        int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
 
         VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
@@ -522,48 +500,55 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
         for(int n = 1; n < nodes.size(); n++) {
             Label eventLabel = (Label) nodes.get(n);
-            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+            logger.debug("ID of event in date " + date + ": " + Integer.parseInt(eventLabel.getId()));
+            logger.debug("ID of event to remove from field of date " + date + ": " + idEvent);
+            if(Integer.parseInt(eventLabel.getId()) == idEvent) {
+                logger.debug("Removing event with id " + idEvent + " from field of date " + date);
                 nodes.remove(eventLabel);
                 break;
             }
         }
     }
 
-    // TODO event update logic
-    public void onEventUpdate(Event event) {
-        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+    public void updateOrCreateEventInCalendar(int idEvent, LocalDate newDate, LocalDate oldDate) {
+        deleteEventFromCalendar(idEvent, oldDate);
+
+        int j = Utils.countColumnIndexInCalendar(newDate.getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(newDate.getDayOfMonth(), selectedYear, selectedMonth);
 
         VBox dayVBox = (VBox) gridPaneNodes[j][i];
-
         List<Node> nodes = dayVBox.getChildren();
+        nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        for(int n = 1; n < nodes.size(); n++) {
-            Label eventLabel = (Label) nodes.get(n);
-            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
-                String eventLabelText = event.getStarts() + " " + event.getTitle();
-                eventLabel.setText(eventLabelText);
-                break;
-            }
+        List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), newDate, resourceBundle);
+
+        for(Event ev : events) {
+            addEventToCalendar(ev, dayVBox);
         }
     }
 
-    // TODO event create logic
-    public void onEventCreate(Event event) {
-        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-
-        VBox dayVBox = (VBox) gridPaneNodes[j][i];
-
-        List<Node> nodes = dayVBox.getChildren();
-
-        for(int n = 1; n < nodes.size(); n++) {
-            Label eventLabel = (Label) nodes.get(n);
-            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
-                String eventLabelText = event.getStarts() + " " + event.getTitle();
-                eventLabel.setText(eventLabelText);
-                break;
-            }
+    private void addEventToCalendar(Event event, VBox dayVBox) {
+        Label eventLabel = new Label();
+        String eventLabelText = event.getStarts() + " " + event.getTitle();
+        eventLabel.setText(eventLabelText);
+        eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
+        eventLabel.setPrefWidth(dayVBox.getPrefWidth());
+        eventLabel.getStyleClass().add("event-label");
+        if (event.getType() == Event.Type.FREE_TIME) {
+            eventLabel.getStyleClass().add("free-time-label");
+        } else if (event.getType() == Event.Type.WORK) {
+            eventLabel.getStyleClass().add("work-label");
+        } else if (event.getType() == Event.Type.SCHOOL) {
+            eventLabel.getStyleClass().add("school-label");
         }
+
+        eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
+            windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
+                    user, eventsClient, this, resourceBundle, ap);
+            mouseEvent.consume();
+        });
+
+        dayVBox.getChildren().add(eventLabel);
+        VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
     }
 }

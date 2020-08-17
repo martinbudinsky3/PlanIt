@@ -2,7 +2,6 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
-import com.example.utils.WindowsCreator;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -127,7 +126,7 @@ public class PlanItAddEventController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
         initializeTypeSelector();
-        
+
         if (idEvent == null) { // add event
             // set init times to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
@@ -367,7 +366,8 @@ public class PlanItAddEventController implements Initializable {
         Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         boolean success = eventsClient.updateEvent(event, idEvent, resourceBundle);
         if (success) {
-            updateCalendarDisplay(date);
+            //updateCalendarDisplay(date);
+            planItMainWindowController.updateOrCreateEventInCalendar(idEvent, event.getDate(), this.event.getDate());
             Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -408,7 +408,7 @@ public class PlanItAddEventController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 boolean success = eventsClient.deleteEvent(idUser, idEvent, resourceBundle);
                 if (success) {
-                    planItMainWindowController.onEventDelete(event);
+                    planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
                     Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                     stage.close();
                 }

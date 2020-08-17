@@ -32,6 +32,11 @@ public class EventService {
         return idEvent;
     }
 
+    public List<Event> getEventsByDate(int idUser, String dateString) {
+        LocalDate date = LocalDate.parse(dateString);
+        return eventRepository.getEventsByDate(idUser, date);
+    }
+
     /**
      * Getting all events that belong to user and starts dates of these events are in selected year and month.
      * It calculates boundaries in which would events starts date belong.
@@ -96,4 +101,6 @@ public class EventService {
         this.eventRepository.deleteFromUserEvent(idUser, idEvent);
         this.eventRepository.deleteFromEvent(idEvent);
     }
+
+
 }

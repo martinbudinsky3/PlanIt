@@ -91,6 +91,13 @@ public class EventRepository {
         }
     }
 
+    public List<Event> getEventsByDate(int idUser, LocalDate date) {
+        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
+                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
+                "AND e.date = '" + date + "' ORDER BY e.starts;";
+        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
+    }
+
     /**
      * Getting all events that belong to user and starts dates of these events are in given range.
      */
@@ -165,4 +172,6 @@ public class EventRepository {
         String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
         jdbcTemplate.update(sql, id);
     }
+
+
 }

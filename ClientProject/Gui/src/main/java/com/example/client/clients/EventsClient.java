@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,6 +29,45 @@ public class EventsClient {
     private final RestTemplate restTemplate = new RestTemplate();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
 
+    /** Needed to render one calendar field after creation or update of event.
+     * @param userId logged in user,
+     * @param date date that represents calendar field.
+     * @return List of objects Event.  Method that returns all events for a given date. (Only events belonging to the logged in user) */
+    public List<Event> getUserEventsByDate(int userId, LocalDate date, ResourceBundle resourceBundle) {
+        logger.info("Getting all user's [" + userId + "] events from date: [" + date +  "]");
+
+        final String EVENTS_BY_DATE_ENDPOINT = uriPropertiesReader.getProperty("events-by-date-endpoint");
+        final String uri = BASE_EVENTS_URI + EVENTS_BY_DATE_ENDPOINT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("userId", userId);
+        params.put("date", date);
+
+        List<Event> events = new ArrayList<Event>();
+
+        try {
+            String eventListJSon = restTemplate.getForObject(uri, String.class, params);
+            objectMapper.registerModule(new JavaTimeModule());
+            events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {});
+            logger.info("Returning " + events.size() + " user's [" + userId + "] events from date: [" + date + "]");
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
+            if(ex instanceof JsonProcessingException) {
+                logger.error("Error. Something went wrong with json processing while finding user's [" + userId + "] " +
+                        "events from date: [" + date + "]", ex);
+            } else if(ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                if(((HttpStatusCodeException)ex).getRawStatusCode() == 500) {
+                    logger.info("Returning 0 user's [" + userId + "] events from date: [" + date +  "]");
+                } else {
+                    logger.error("Error. Something went wrong while finding user's [" + userId + "] events in year and month: ["
+                            + date + "]. HTTP status: " + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
+                }
+            }
+        }
+
+        return events;
+    }
 
     /** Needed to fill the calendar by events.
      * @param userId logged in user,
