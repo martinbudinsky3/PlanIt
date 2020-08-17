@@ -408,8 +408,7 @@ public class PlanItAddEventController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 boolean success = eventsClient.deleteEvent(idUser, idEvent, resourceBundle);
                 if (success) {
-                    LocalDate date = event.getDate();
-                    updateCalendarDisplay(date);
+                    planItMainWindowController.onEventDelete(event);
                     Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
                     stage.close();
                 }

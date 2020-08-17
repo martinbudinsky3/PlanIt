@@ -511,4 +511,59 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         showEventsInCalendar();
         addWeatherToCalendar();
     }
+
+    public void onEventDelete(Event event) {
+        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+
+        VBox dayVBox = (VBox) gridPaneNodes[j][i];
+
+        List<Node> nodes = dayVBox.getChildren();
+
+        for(int n = 1; n < nodes.size(); n++) {
+            Label eventLabel = (Label) nodes.get(n);
+            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+                nodes.remove(eventLabel);
+                break;
+            }
+        }
+    }
+
+    // TODO event update logic
+    public void onEventUpdate(Event event) {
+        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+
+        VBox dayVBox = (VBox) gridPaneNodes[j][i];
+
+        List<Node> nodes = dayVBox.getChildren();
+
+        for(int n = 1; n < nodes.size(); n++) {
+            Label eventLabel = (Label) nodes.get(n);
+            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+                String eventLabelText = event.getStarts() + " " + event.getTitle();
+                eventLabel.setText(eventLabelText);
+                break;
+            }
+        }
+    }
+
+    // TODO event create logic
+    public void onEventCreate(Event event) {
+        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+
+        VBox dayVBox = (VBox) gridPaneNodes[j][i];
+
+        List<Node> nodes = dayVBox.getChildren();
+
+        for(int n = 1; n < nodes.size(); n++) {
+            Label eventLabel = (Label) nodes.get(n);
+            if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+                String eventLabelText = event.getStarts() + " " + event.getTitle();
+                eventLabel.setText(eventLabelText);
+                break;
+            }
+        }
+    }
 }
