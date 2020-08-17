@@ -30,14 +30,13 @@ public class WindowsCreator {
     /**
      * When user clicks on the label of event in calendar, the detail of the event shows.
      */
-    public void createEventDetailWindow(int eventId, String title, User user, EventsClient eventsClient,
-                                        PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle,
-                                        AnchorPane ap) {
+    public void createEventDetailWindow(Event event, String title, User user, EventsClient eventsClient,
+                                        PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
             PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
-                    eventId, eventsClient, planItMainWindowController);
+                    event, eventsClient, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
 
@@ -48,7 +47,7 @@ public class WindowsCreator {
             window.setTitle(title);
             window.setScene(scene);
             window.initModality(Modality.WINDOW_MODAL);
-            window.initOwner(ap.getScene().getWindow());
+            window.initOwner(planItMainWindowController.getAnchorPane().getScene().getWindow());
             window.resizableProperty().setValue(false);
             window.show();
         } catch (IOException ex) {

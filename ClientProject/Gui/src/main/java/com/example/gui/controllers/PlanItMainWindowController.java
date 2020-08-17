@@ -9,7 +9,9 @@ import com.example.client.model.weather.DailyWeather;
 import com.example.utils.PdfFile;
 import com.example.utils.Utils;
 import com.example.utils.WindowsCreator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -26,6 +28,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -96,6 +100,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
         threadFlag = false;
         threadActive = true;
+    }
+
+    public AnchorPane getAnchorPane() {
+        return ap;
     }
 
     public int getSelectedYear() {
@@ -587,12 +595,31 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
 
         eventLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEvent -> { // add handler to event label
-            windowsCreator.createEventDetailWindow(Integer.parseInt(eventLabel.getId()), eventLabel.getText(),
-                    user, eventsClient, this, resourceBundle, ap);
+            eventLabelClickedHandler(eventLabel);
             mouseEvent.consume();
         });
 
         dayVBox.getChildren().add(eventLabel);
         VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
+    }
+
+    private void eventLabelClickedHandler(Label eventLabel) {
+        try {
+            Event event = eventsClient.getEvent(user.getIdUser(), Integer.parseInt(eventLabel.getId()));
+            windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
+                    user, eventsClient, this, resourceBundle);
+        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
+            if (ex instanceof JsonProcessingException) {
+                logger.error("Error. Something went wrong while finding event by user's [" + user.getIdUser() + "] " +
+                        "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID", ex);
+            } else if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error. Something went wrong while finding event by user's [" + user.getIdUser() + "] " +
+                        "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID." +
+                        " HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
     }
 }

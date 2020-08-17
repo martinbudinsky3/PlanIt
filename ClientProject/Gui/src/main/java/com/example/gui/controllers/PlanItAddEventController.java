@@ -98,7 +98,6 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private DatePicker alertDateField;
 
-    private Integer idEvent;
     private LocalDate initDate;
     private ResourceBundle resourceBundle;
     private Event event;
@@ -110,9 +109,9 @@ public class PlanItAddEventController implements Initializable {
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(int idUser, int idEvent, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(int idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
-        this.idEvent = idEvent;
+        this.event = event;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
@@ -127,7 +126,7 @@ public class PlanItAddEventController implements Initializable {
         this.resourceBundle = resourceBundle;
         initializeTypeSelector();
 
-        if (idEvent == null) { // add event
+        if (event == null) { // add event
             // set init times to time fields
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
@@ -190,20 +189,16 @@ public class PlanItAddEventController implements Initializable {
      * If event is already created, event detail is shown.
      */
     public void showDetail() {
-        event = eventsClient.getEvent(idUser, idEvent, resourceBundle);
-
-        if (event != null) {
-            titleField.setText(event.getTitle());
-            locationField.setText(event.getLocation());
-            typeSelector.setValue(event.getType().toString());
-            startsDateField.setValue(event.getDate());
-            startsField.setText(String.valueOf(event.getStarts()));
-            endsDateField.setValue(event.getEndsDate());
-            endsField.setText(String.valueOf(event.getEnds()));
-            alertDateField.setValue(event.getAlertDate());
-            alertField.setText(String.valueOf(event.getAlert()));
-            descriptionField.setText(event.getDescription());
-        }
+        titleField.setText(event.getTitle());
+        locationField.setText(event.getLocation());
+        typeSelector.setValue(event.getType().toString());
+        startsDateField.setValue(event.getDate());
+        startsField.setText(String.valueOf(event.getStarts()));
+        endsDateField.setValue(event.getEndsDate());
+        endsField.setText(String.valueOf(event.getEnds()));
+        alertDateField.setValue(event.getAlertDate());
+        alertField.setText(String.valueOf(event.getAlert()));
+        descriptionField.setText(event.getDescription());
     }
 
     /**
@@ -331,7 +326,7 @@ public class PlanItAddEventController implements Initializable {
         }
 
         if (checkFlag) {
-            if (idEvent == null) {
+            if (event == null) {
                 addEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
             } else {
                 updateEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
@@ -351,7 +346,7 @@ public class PlanItAddEventController implements Initializable {
         Integer id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
-            if(newDateIsInCalendarDisplay(date)) {
+            if (newDateIsInCalendarDisplay(date)) {
                 planItMainWindowController.createEventInCalendar(date);
             } else {
                 updateCalendarDisplay(date);
@@ -369,15 +364,15 @@ public class PlanItAddEventController implements Initializable {
     public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(idEvent, title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
-        boolean success = eventsClient.updateEvent(event, idEvent, resourceBundle);
+        Event event = new Event(this.event.getIdEvent(), title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        boolean success = eventsClient.updateEvent(event, this.event.getIdEvent(), resourceBundle);
 
         if (!success) {
             return;
         }
 
-        if(!newEventLabelIsEqualWithOld(event)) {
-            if(newDateIsInCalendarDisplay(date)) {
+        if (!newEventLabelIsEqualWithOld(event)) {
+            if (newDateIsInCalendarDisplay(date)) {
                 planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
             } else {
                 updateCalendarDisplay(date);
@@ -426,7 +421,7 @@ public class PlanItAddEventController implements Initializable {
      * The functionality of the delete button.
      */
     private void delete(ActionEvent ev) {
-        if (idEvent != null && event != null) {
+        if (event != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(resourceBundle.getString("deleteConfirmationTitle"));
             alert.setHeaderText(resourceBundle.getString("deleteConfirmationHeaderText") + event.getTitle());
@@ -434,7 +429,7 @@ public class PlanItAddEventController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                boolean success = eventsClient.deleteEvent(idUser, idEvent, resourceBundle);
+                boolean success = eventsClient.deleteEvent(idUser, this.event.getIdEvent(), resourceBundle);
                 if (success) {
                     planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
                     Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();

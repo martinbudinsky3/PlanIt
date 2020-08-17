@@ -6,6 +6,7 @@ import com.example.client.model.User;
 import com.example.utils.WindowsCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -66,8 +67,10 @@ public class AlertWindowController implements Initializable {
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
             String title = event.getStarts().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
-            windowsCreator.createEventDetailWindow(event.getIdEvent(), title, user, eventsClient, planItMainWindowController,
-                    resourceBundle, ap);
+            windowsCreator.createEventDetailWindow(event, title, user, eventsClient, planItMainWindowController,
+                    resourceBundle);
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
             e.consume();
         });
 
