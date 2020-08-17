@@ -1,5 +1,5 @@
 *.properties
-logs
+*.log
 
 HELP.md
 target/
