@@ -351,8 +351,12 @@ public class PlanItAddEventController implements Initializable {
         Integer id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
-            event.setIdEvent(id);
-            updateCalendarDisplay(date);
+            if(newDateIsInCalendarDisplay(date)) {
+                planItMainWindowController.createEventInCalendar(date);
+            } else {
+                updateCalendarDisplay(date);
+            }
+
             Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -360,7 +364,7 @@ public class PlanItAddEventController implements Initializable {
 
     /**
      * Updating existing event. (When ID of the event already exists.)
-     * After succesful update modal window is closed and calendar is displayed with just created event
+     * After successful update modal window is closed and calendar is displayed with just created event
      */
     public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {

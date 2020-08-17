@@ -544,6 +544,22 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    public void createEventInCalendar(LocalDate date) {
+        int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+
+        VBox dayVBox = (VBox) gridPaneNodes[j][i];
+
+        List<Node> nodes = dayVBox.getChildren();
+        nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
+
+        List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), date, resourceBundle);
+
+        for (Event ev : events) {
+            addEventToCalendar(ev, dayVBox);
+        }
+    }
+
     private void addEventToCalendar(Event event, VBox dayVBox) {
         Label eventLabel = new Label();
         String eventLabelText = event.getStarts() + " " + event.getTitle();
