@@ -349,7 +349,9 @@ public class PlanItAddEventController implements Initializable {
 
         Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         Integer id = eventsClient.addEvent(event, resourceBundle);
+
         if (id != null) {
+            event.setIdEvent(id);
             updateCalendarDisplay(date);
             Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
             stage.close();
@@ -358,19 +360,41 @@ public class PlanItAddEventController implements Initializable {
 
     /**
      * Updating existing event. (When ID of the event already exists.)
-     * After succesful update modal window is closed and calendar is displayed with just cretaed event
+     * After succesful update modal window is closed and calendar is displayed with just created event
      */
     public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        Event event = new Event(idEvent, title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         boolean success = eventsClient.updateEvent(event, idEvent, resourceBundle);
-        if (success) {
-            //updateCalendarDisplay(date);
-            planItMainWindowController.updateOrCreateEventInCalendar(idEvent, event.getDate(), this.event.getDate());
-            Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
-            stage.close();
+
+        if (!success) {
+            return;
         }
+
+        if(!newEventLabelIsEqualWithOld(event)) {
+            if(newDateIsInCalendarDisplay(date)) {
+                planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
+            } else {
+                updateCalendarDisplay(date);
+            }
+        }
+
+        Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+        stage.close();
+    }
+
+    private boolean newEventLabelIsEqualWithOld(Event updatedEvent) {
+        return updatedEvent.getDate().equals(this.event.getDate()) && updatedEvent.getStarts().equals(this.event.getStarts()) &&
+                updatedEvent.getTitle().equals(this.event.getTitle());
+    }
+
+    private boolean newDateIsInCalendarDisplay(LocalDate newDate) {
+        int newYear = newDate.getYear();
+        int newMonth = newDate.getMonthValue();
+
+        return newYear == planItMainWindowController.getSelectedYear() &&
+                newMonth == planItMainWindowController.getSelectedMonth();
     }
 
     /**

@@ -97,6 +97,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         threadActive = true;
     }
 
+    public int getSelectedYear() {
+        return selectedYear;
+    }
 
     /**
      * Setting year label
@@ -106,6 +109,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     public void setSelectedYear(int selectedYear) {
         this.selectedYear = selectedYear;
         yearLabel.setText(Integer.toString(selectedYear));
+    }
+
+    public int getSelectedMonth() {
+        return selectedMonth;
     }
 
     /**
@@ -500,8 +507,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
         for(int n = 1; n < nodes.size(); n++) {
             Label eventLabel = (Label) nodes.get(n);
-            logger.debug("ID of event in date " + date + ": " + Integer.parseInt(eventLabel.getId()));
-            logger.debug("ID of event to remove from field of date " + date + ": " + idEvent);
             if(Integer.parseInt(eventLabel.getId()) == idEvent) {
                 logger.debug("Removing event with id " + idEvent + " from field of date " + date);
                 nodes.remove(eventLabel);
@@ -510,20 +515,32 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    public void updateOrCreateEventInCalendar(int idEvent, LocalDate newDate, LocalDate oldDate) {
-        deleteEventFromCalendar(idEvent, oldDate);
-
-        int j = Utils.countColumnIndexInCalendar(newDate.getDayOfMonth(), selectedYear, selectedMonth);
-        int i = Utils.countRowIndexInCalendar(newDate.getDayOfMonth(), selectedYear, selectedMonth);
+    public void updateEventInCalendar(Event event, LocalDate oldDate, LocalTime oldTime) {
+        int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+        int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
         VBox dayVBox = (VBox) gridPaneNodes[j][i];
         List<Node> nodes = dayVBox.getChildren();
-        nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), newDate, resourceBundle);
+        if(oldDate.equals(event.getDate()) && oldTime.equals(event.getStarts())) {
+            for(int n = 1; n < nodes.size(); n++) {
+                Label eventLabel = (Label) nodes.get(n);
+                if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+                    String eventLabelText = event.getStarts() + " " + event.getTitle();
+                    eventLabel.setText(eventLabelText);
+                    break;
+                }
+            }
+        } else {
+            deleteEventFromCalendar(event.getIdEvent(), oldDate);
 
-        for(Event ev : events) {
-            addEventToCalendar(ev, dayVBox);
+            nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
+
+            List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), event.getDate(), resourceBundle);
+
+            for (Event ev : events) {
+                addEventToCalendar(ev, dayVBox);
+            }
         }
     }
 
