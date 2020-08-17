@@ -47,6 +47,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private static final int SECONDS_IN_MINUTE = 60;
     private static final int SECONDS_IN_DAY = 86400;
     private static final int MILLIS_IN_SECOND = 1000;
+    private static final int FORECASTED_DAYS = 7;
 
     private static final Logger logger = LoggerFactory.getLogger(PlanItMainWindowController.class);
     private final WindowsCreator windowsCreator;
@@ -241,6 +242,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void addWeatherToCalendar() {
+        if(!checkWeatherForecast()) {
+            return;
+        }
+
         List<DailyWeather> weatherForecast = weatherClient.getWeather();
 
         for (DailyWeather dailyWeather : weatherForecast) {
@@ -264,6 +269,12 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             HBox.setMargin(imageView, new Insets(0, 0, 0, 10));
             HBox.setMargin(temperatureLabel, new Insets(10, 0, 0, 0));
         }
+    }
+
+    private boolean checkWeatherForecast() {
+        return selectedYear == LocalDate.now().getYear() &&
+                (selectedMonth == LocalDate.now().getMonthValue() ||
+                        selectedMonth == LocalDate.now().plusDays(FORECASTED_DAYS).getMonthValue());
     }
 
     /**
