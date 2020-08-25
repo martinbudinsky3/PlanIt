@@ -201,6 +201,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
 
+                    // TODO for each
                     // show alert for every event that is returned
                     for (int i = 0; i < events.size(); i++) {
                         Event event = events.get(i);
@@ -217,6 +218,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
+    // TODO this should be in AlertWindowController
     /**
      * Sound of notification is played.
      */

@@ -17,7 +17,7 @@ public class DailyWeatherDTO {
     public DailyWeatherDTO() {
     }
 
-    public DailyWeatherDTO(Long date, int minTemperature, int maxTemperature, List<Weather> weather) {
+    public DailyWeatherDTO(Long date, double minTemperature, double maxTemperature, List<Weather> weather) {
         setDate(date);
         setMinTemperature(minTemperature);
         setMaxTemperature(maxTemperature);
