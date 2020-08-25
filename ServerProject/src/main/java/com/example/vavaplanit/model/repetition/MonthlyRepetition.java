@@ -10,8 +10,9 @@ public class MonthlyRepetition extends Repetition {
     public MonthlyRepetition() {
     }
 
-    public MonthlyRepetition(LocalDate start, LocalDate end, int repetitionInterval, int dayOfMonth, WeekdayOfMonth weekdayOfMonth) {
-        super(start, end, repetitionInterval);
+    public MonthlyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int dayOfMonth,
+                             WeekdayOfMonth weekdayOfMonth) {
+        super(eventId, start, end, repetitionInterval);
         this.dayOfMonth = dayOfMonth;
         this.weekdayOfMonth = weekdayOfMonth;
     }

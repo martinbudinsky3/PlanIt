@@ -10,8 +10,8 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(LocalDate start, LocalDate end, int repetitionInterval, int daysOfWeek) {
-        super(start, end, repetitionInterval);
+    public WeeklyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int daysOfWeek) {
+        super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
     }
 

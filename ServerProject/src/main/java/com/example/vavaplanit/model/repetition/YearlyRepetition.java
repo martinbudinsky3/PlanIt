@@ -9,8 +9,9 @@ public class YearlyRepetition extends MonthlyRepetition {
     public YearlyRepetition() {
     }
 
-    public YearlyRepetition(LocalDate start, LocalDate end, int repetitionInterval, int dayOfMonth, WeekdayOfMonth weekdayOfMonth, int month) {
-        super(start, end, repetitionInterval, dayOfMonth, weekdayOfMonth);
+    public YearlyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int dayOfMonth,
+                            WeekdayOfMonth weekdayOfMonth, int month) {
+        super(eventId, start, end, repetitionInterval, dayOfMonth, weekdayOfMonth);
         this.month = month;
     }
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Repetition {
+    private int eventId;
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
@@ -11,7 +12,8 @@ public class Repetition {
     public Repetition() {
     }
 
-    public Repetition(LocalDate start, LocalDate end, int repetitionInterval) {
+    public Repetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval) {
+        this.eventId = eventId;
         this.start = start;
         this.end = end;
         this.repetitionInterval = repetitionInterval;
@@ -39,6 +41,14 @@ public class Repetition {
 
     public void setRepetitionInterval(int repetitionInterval) {
         this.repetitionInterval = repetitionInterval;
+    }
+
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
     }
 
     public List<LocalDate> figureOutDates(int month) {

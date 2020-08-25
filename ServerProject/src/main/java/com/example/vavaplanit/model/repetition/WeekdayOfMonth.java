@@ -9,9 +9,9 @@ public class WeekdayOfMonth {
     public WeekdayOfMonth() {
     }
 
-    public WeekdayOfMonth(int ordinal, DayOfWeek dayOfWeek) {
+    public WeekdayOfMonth(int ordinal, int dayOfWeek) {
         this.ordinal = ordinal;
-        this.dayOfWeek = dayOfWeek;
+        setDayOfWeek(dayOfWeek);
     }
 
     public int getOrdinal() {
@@ -26,7 +26,7 @@ public class WeekdayOfMonth {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DayOfWeek dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDayOfWeek(int dayOfWeek) {
+        // TODO extract day of week from int
     }
 }

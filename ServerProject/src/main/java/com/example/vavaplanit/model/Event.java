@@ -9,6 +9,7 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class Event implements Serializable {
+    // TODO move enum to separate class file
     public enum Type {
         FREE_TIME, WORK, SCHOOL, OTHERS;
 
