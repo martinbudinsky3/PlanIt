@@ -30,3 +30,19 @@ update planitschema.event set type = 'Others';
 
 alter table planitschema.user add column hashed boolean default true;
 update planitschema.user set hashed = false; 
+
+------------------------25.8.2020--------------------------------
+CREATE DOMAIN repetition_type VARCHAR
+   CHECK (VALUE IN ('Daily', 'Weekly', 'Monthly', 'Yearly'));
+
+CREATE TABLE planitschema.repetition (
+    event_id bigint NOT NULL primary key references planitschema.event(idevent),
+    starts date NOT NULL,
+    ends date NOT NULL,
+    repeat_interval integer NOT NULL,
+    days_of_week integer,
+    day_of_month integer,
+    repeat_ordinal integer,
+    month integer,
+    type repetition_type NOT NULL
+);
