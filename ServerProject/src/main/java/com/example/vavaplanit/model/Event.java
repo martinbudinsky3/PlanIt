@@ -1,6 +1,8 @@
 package com.example.vavaplanit.model;
 
 
+import com.example.vavaplanit.model.repetition.Repetition;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -53,6 +55,7 @@ public class Event implements Serializable {
     private LocalTime ends;
     private LocalDate alertDate;
     private LocalTime alert;
+    private Repetition repetition;
 
     public Event() {};
 
@@ -83,6 +86,23 @@ public class Event implements Serializable {
         this.ends = ends;
         this.alertDate = alertDate;
         this.alert = alert;
+    }
+
+    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
+                 LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert, Repetition repetition) {
+        this.idEvent = idEvent;
+        this.idUser = idUser;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.date = date;
+        this.starts = starts;
+        this.endsDate = endsDate;
+        this.ends = ends;
+        this.alertDate = alertDate;
+        this.alert = alert;
+        this.repetition = repetition;
     }
 
     public int getIdEvent() {
@@ -181,6 +201,14 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
+    public Repetition getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(Repetition repetition) {
+        this.repetition = repetition;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -197,11 +225,13 @@ public class Event implements Serializable {
                 Objects.equals(endsDate, event.endsDate) &&
                 Objects.equals(ends, event.ends) &&
                 Objects.equals(alertDate, event.alertDate) &&
-                Objects.equals(alert, event.alert);
+                Objects.equals(alert, event.alert) &&
+                Objects.equals(repetition, event.repetition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
+        return Objects.hash(idEvent, idUser, title, location, type, description, date, starts, endsDate, ends, alertDate,
+                alert, repetition);
     }
 }

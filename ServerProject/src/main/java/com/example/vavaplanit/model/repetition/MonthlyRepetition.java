@@ -3,7 +3,7 @@ package com.example.vavaplanit.model.repetition;
 import java.time.LocalDate;
 import java.util.List;
 
-public class MonthlyRepetition extends DailyRepetition {
+public class MonthlyRepetition extends Repetition {
     private int dayOfMonth;
     private WeekdayOfMonth weekdayOfMonth;
 

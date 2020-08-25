@@ -4,7 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-public class WeeklyRepetition extends DailyRepetition {
+public class WeeklyRepetition extends Repetition {
     private List<DayOfWeek> daysOfWeek;
 
     public WeeklyRepetition() {

@@ -3,15 +3,15 @@ package com.example.vavaplanit.model.repetition;
 import java.time.LocalDate;
 import java.util.List;
 
-public class DailyRepetition {
+public class Repetition {
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
 
-    public DailyRepetition() {
+    public Repetition() {
     }
 
-    public DailyRepetition(LocalDate start, LocalDate end, int repetitionInterval) {
+    public Repetition(LocalDate start, LocalDate end, int repetitionInterval) {
         this.start = start;
         this.end = end;
         this.repetitionInterval = repetitionInterval;
