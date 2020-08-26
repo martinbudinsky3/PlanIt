@@ -1,6 +1,10 @@
 package com.example.vavaplanit.model.repetition;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repetition {
@@ -52,6 +56,20 @@ public class Repetition {
     }
 
     public List<LocalDate> figureOutDates(int month, int year) {
-        return null;
+        List<LocalDate> dates = new ArrayList<>();
+
+        LocalDate minDate = LocalDate.of(year, month, 1);
+        LocalDate maxDate = minDate.plusMonths(1);
+
+        for(LocalDate date = minDate; date.isBefore(maxDate); date = date.plusDays(1)) {
+            long diff = Days.daysBetween(new DateTime(start.getYear(), start.getMonthValue(), start.getDayOfMonth(), 0, 0, 0),
+                    new DateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0)).getDays();
+
+            if(diff % repetitionInterval == 0) {
+                dates.add(date);
+            }
+        }
+
+        return dates;
     }
 }
