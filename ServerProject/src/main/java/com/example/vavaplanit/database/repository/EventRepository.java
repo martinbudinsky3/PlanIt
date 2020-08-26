@@ -2,6 +2,7 @@ package com.example.vavaplanit.database.repository;
 
 import com.example.vavaplanit.database.mappers.EventMapper;
 import com.example.vavaplanit.model.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -19,6 +20,7 @@ public class EventRepository {
     private final JdbcTemplate jdbcTemplate;
     private final EventMapper eventMappers = new EventMapper();
 
+    @Autowired
     public EventRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }

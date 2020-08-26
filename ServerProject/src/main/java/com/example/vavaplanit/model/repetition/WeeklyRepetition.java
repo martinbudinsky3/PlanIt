@@ -16,6 +16,7 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public List<DayOfWeek> getDaysOfWeek() {
+        // TODO return daysOfWeek as int
         return daysOfWeek;
     }
 

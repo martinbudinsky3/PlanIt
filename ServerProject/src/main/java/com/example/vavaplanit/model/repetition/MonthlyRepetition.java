@@ -3,18 +3,19 @@ package com.example.vavaplanit.model.repetition;
 import java.time.LocalDate;
 import java.util.List;
 
-public class MonthlyRepetition extends Repetition {
+// TODO extends Weekly Repetition
+public class MonthlyRepetition extends WeeklyRepetition {
     private int dayOfMonth;
-    private WeekdayOfMonth weekdayOfMonth;
+    private int ordinal;
 
     public MonthlyRepetition() {
     }
 
-    public MonthlyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int dayOfMonth,
-                             WeekdayOfMonth weekdayOfMonth) {
-        super(eventId, start, end, repetitionInterval);
+    public MonthlyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int daysOfWeek,
+                             int dayOfMonth, int ordinal) {
+        super(eventId, start, end, repetitionInterval, daysOfWeek);
         this.dayOfMonth = dayOfMonth;
-        this.weekdayOfMonth = weekdayOfMonth;
+        this.ordinal = ordinal;
     }
 
     public int getDayOfMonth() {
@@ -25,12 +26,12 @@ public class MonthlyRepetition extends Repetition {
         this.dayOfMonth = dayOfMonth;
     }
 
-    public WeekdayOfMonth getWeekdayOfMonth() {
-        return weekdayOfMonth;
+    public int getOrdinal() {
+        return ordinal;
     }
 
-    public void setWeekdayOfMonth(WeekdayOfMonth weekdayOfMonth) {
-        this.weekdayOfMonth = weekdayOfMonth;
+    public void setOrdinal(int ordinal) {
+        this.ordinal = ordinal;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.example.vavaplanit.database.repository;
 
 import com.example.vavaplanit.database.mappers.UserMapper;
 import com.example.vavaplanit.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -17,6 +18,7 @@ public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMappers = new UserMapper();
 
+    @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
