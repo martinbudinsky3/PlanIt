@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class RepetitionMapper {
     public RowMapper<Repetition> mapRepetitionFromDb() {
         return (resultSet, i) -> {
-            int eventId = resultSet.getInt("event_id");
+            Long eventId = resultSet.getLong("event_id");
             LocalDate start = resultSet.getObject("starts", LocalDate.class);
             LocalDate end = resultSet.getObject("ends", LocalDate.class);
             int repeatInterval = resultSet.getInt("repeat_interval");

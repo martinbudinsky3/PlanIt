@@ -10,7 +10,7 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek) {
+    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
     }
@@ -26,7 +26,7 @@ public class WeeklyRepetition extends Repetition {
     }
 
     @Override
-    public List<LocalDate> figureOutDates(int month) {
+    public List<LocalDate> figureOutDates(int month, int year) {
         return null;
     }
 }

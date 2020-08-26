@@ -9,7 +9,7 @@ public class YearlyRepetition extends MonthlyRepetition {
     public YearlyRepetition() {
     }
 
-    public YearlyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
+    public YearlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
                             Integer dayOfMonth, Integer ordinal, int month) {
         super(eventId, start, end, repetitionInterval, daysOfWeek, dayOfMonth, ordinal);
         this.month = month;
@@ -24,7 +24,7 @@ public class YearlyRepetition extends MonthlyRepetition {
     }
 
     @Override
-    public List<LocalDate> figureOutDates(int month) {
+    public List<LocalDate> figureOutDates(int month, int year) {
         return null;
     }
 }

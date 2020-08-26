@@ -8,9 +8,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 
 import java.sql.*;
 
+@Repository
 public class RepetitionRepository {
     private final JdbcTemplate jdbcTemplate;
     private final RepetitionMapper repetitionMapper = new RepetitionMapper();
@@ -20,7 +22,7 @@ public class RepetitionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Integer add(Repetition repetition) {
+    public Long add(Repetition repetition) {
         final String sql = "insert into planitschema.repetition (event_id, starts, ends, repeat_interval, days_of_week, " +
                 "day_of_month, repeat_ordinal, month, type) values (?,?,?,?,?,?,?,?,?)";
 
@@ -29,7 +31,7 @@ public class RepetitionRepository {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, repetition.getEventId());
+                ps.setLong(1, repetition.getEventId());
                 ps.setDate(2, Date.valueOf(repetition.getStart()));
                 ps.setDate(3, Date.valueOf(repetition.getEnd()));
                 ps.setInt(4, repetition.getRepetitionInterval());
@@ -78,7 +80,7 @@ public class RepetitionRepository {
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("event_id");
+            return (Long) keyHolder.getKeys().get("event_id");
         } else {
             return null;
         }
