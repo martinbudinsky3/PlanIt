@@ -10,17 +10,18 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, int daysOfWeek) {
+    public WeeklyRepetition(int eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
     }
 
-    public List<DayOfWeek> getDaysOfWeek() {
+    public Integer getDaysOfWeek() {
         // TODO return daysOfWeek as int
-        return daysOfWeek;
+        //return daysOfWeek;
+        return 0;
     }
 
-    public void setDaysOfWeek(int daysOfWeek) {
+    public void setDaysOfWeek(Integer daysOfWeek) {
         // TODO extract days of week from int
     }
 

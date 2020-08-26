@@ -114,8 +114,8 @@ public class EventRepository {
      * Getting event by it's ID
      * @param idEvent ID of the event*/
     public Event getEvent(int idEvent) {
+        String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
         try {
-            String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
             return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
         } catch(EmptyResultDataAccessException e) {
             return null;
