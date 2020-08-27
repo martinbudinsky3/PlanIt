@@ -154,11 +154,26 @@ public class WeeklyRepetitionTest {
         }
 
         @Test
-        public void weeklyRepetitionWithNoOccurenceInAugust2020() {
+        public void weeklyRepetitionWithNoOccurrenceInAugust2020() {
             List<LocalDate> expectedDates = new ArrayList<>();
 
             List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 31),
                     LocalDate.of(2020, 12, 1), 6, 16, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        @Test
+        public void weeklyRepetitionWithStartInAnotherYearEvery2Weeks() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2021, 1, 14));
+                    add(LocalDate.of(2021, 1, 28));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 12, 31),
+                    LocalDate.of(2021, 2, 1), 2, 8, 1, 2021);
 
             assertEquals(expectedDates, actualDates);
         }

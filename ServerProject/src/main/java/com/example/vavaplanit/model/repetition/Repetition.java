@@ -2,8 +2,11 @@ package com.example.vavaplanit.model.repetition;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Weeks;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,14 +69,18 @@ public class Repetition {
                 continue;
             }
 
-            long diff = Days.daysBetween(new DateTime(start.getYear(), start.getMonthValue(), start.getDayOfMonth(), 0, 0, 0),
-                    new DateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0)).getDays();
-
-            if(diff % repetitionInterval == 0) {
+            if(getDayDiff(date) % repetitionInterval == 0) {
                 dates.add(date);
             }
         }
 
         return dates;
+    }
+
+    private int getDayDiff(LocalDate date) {
+        DateTime startDateTime = new DateTime().withDate(start.getYear(), start.getMonthValue(), start.getDayOfMonth());
+        DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+
+        return Days.daysBetween(startDateTime, dateTime).getDays();
     }
 }

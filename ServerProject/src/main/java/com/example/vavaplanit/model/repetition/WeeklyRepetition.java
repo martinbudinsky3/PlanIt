@@ -2,10 +2,13 @@ package com.example.vavaplanit.model.repetition;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.Weeks;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 public class WeeklyRepetition extends Repetition {
@@ -93,18 +96,11 @@ public class WeeklyRepetition extends Repetition {
     }
 
     private int getWeekDiff(LocalDate date) {
-        Calendar calendar = Calendar.getInstance();
+        LocalDate start = getStart().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
 
-        calendar.setTime(getDateFromLocalDate(date));
-        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+        DateTime startDateTime = new DateTime().withDate(start.getYear(), start.getMonthValue(), start.getDayOfMonth());
+        DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 
-        calendar.setTime(getDateFromLocalDate(getStart()));
-        int startWeek = calendar.get(Calendar.WEEK_OF_YEAR);
-
-        return currentWeek - startWeek;
-    }
-
-    private Date getDateFromLocalDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        return Weeks.weeksBetween(startDateTime, dateTime).getWeeks();
     }
 }
