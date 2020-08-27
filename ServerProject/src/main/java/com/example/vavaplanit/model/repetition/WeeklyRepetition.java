@@ -1,11 +1,12 @@
 package com.example.vavaplanit.model.repetition;
 
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZoneId;
+import java.util.*;
 
 public class WeeklyRepetition extends Repetition {
     private final int DAYS_OF_WEEK_NUMBER = 7;
@@ -36,9 +37,19 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public Integer getDaysOfWeekInt() {
-        // TODO return daysOfWeek as int
-        //return daysOfWeek;
-        return 0;
+        Integer daysOfWeekInt = 0;
+        for(DayOfWeek dayOfWeek : daysOfWeek) {
+            int key = getKeyByValue(dayOfWeek);
+            if(key >= 0) {
+                daysOfWeekInt += (int) Math.pow(2, key);
+            }
+        }
+
+        return daysOfWeekInt;
+    }
+
+    public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
     }
 
     public void setDaysOfWeek(Integer daysOfWeek) {
@@ -52,6 +63,48 @@ public class WeeklyRepetition extends Repetition {
 
     @Override
     public List<LocalDate> figureOutDates(int month, int year) {
-        return null;
+        List<LocalDate> dates = new ArrayList<>();
+
+        LocalDate minDate = LocalDate.of(year, month, 1);
+        LocalDate maxDate = minDate.plusMonths(1);
+
+        for(LocalDate date = minDate; date.isBefore(maxDate); date = date.plusDays(1)) {
+            if(date.isBefore(getStart()) || date.isAfter(getEnd())) {
+                continue;
+            }
+
+            if(getWeekDiff(date) % getRepetitionInterval() == 0 && daysOfWeek.contains(date.getDayOfWeek())) {
+                dates.add(date);
+            }
+        }
+
+        return dates;
+    }
+
+    private int getKeyByValue(DayOfWeek value) {
+        Set<Map.Entry<Integer, DayOfWeek>> entrySet = intToDayOfWeekMap.entrySet();
+        for(Map.Entry<Integer, DayOfWeek> entry : entrySet) {
+            if(entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+
+        return -1;
+    }
+
+    private int getWeekDiff(LocalDate date) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(getDateFromLocalDate(date));
+        int currentWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        calendar.setTime(getDateFromLocalDate(getStart()));
+        int startWeek = calendar.get(Calendar.WEEK_OF_YEAR);
+
+        return currentWeek - startWeek;
+    }
+
+    private Date getDateFromLocalDate(LocalDate localDate) {
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 }

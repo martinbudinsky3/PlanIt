@@ -14,7 +14,9 @@ public class RepetitionTest {
 
     @Test
     public void dailyRepetitionInOneMonthEverySecondDay() {
-        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(2, 8, 2020);
+        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(2, 8, 2020, LocalDate.of(2020, 8, 1),
+                LocalDate.of(2020, 9, 1));
+
         List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
                 LocalDate.of(2020, 8, 31), 2, 8, 2020);
 
@@ -23,18 +25,48 @@ public class RepetitionTest {
 
     @Test
     public void dailyRepetitionInTwoMonthsEveryDay() {
-        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(1, 8, 2020);
+        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(1, 8, 2020, LocalDate.of(2020, 8, 1),
+                LocalDate.of(2020, 9, 1));
+
         List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
                 LocalDate.of(2020, 9, 30), 1, 8, 2020);
 
         assertEquals(expectedDates, actualDates);
     }
 
-    private List<LocalDate> getEveryNdateInMonthAndYear(int N, int month, int year) {
+    @Test
+    public void dailyRepetitionLastHalfOfMonthEveryDay() {
+        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(1, 8, 2020, LocalDate.of(2020, 8, 15),
+                LocalDate.of(2020, 9, 1));
+
+        List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 15),
+                LocalDate.of(2020, 9, 30), 1, 8, 2020);
+
+        assertEquals(expectedDates, actualDates);
+    }
+
+    @Test
+    public void dailyRepetitionFirstHalfOfMonthEveryThirdDay() {
+        List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(3, 8, 2020, LocalDate.of(2020, 8, 1),
+                LocalDate.of(2020, 8, 15));
+        List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
+                LocalDate.of(2020, 8, 15), 3, 8, 2020);
+
+        assertEquals(expectedDates, actualDates);
+    }
+
+    private List<LocalDate> getEveryNdateInMonthAndYear(int N, int month, int year, LocalDate start, LocalDate end) {
         List<LocalDate> dates = new ArrayList<>();
 
         LocalDate minDate = LocalDate.of(year, month, 1);
+        if(minDate.isBefore(start)) {
+            minDate = start;
+        }
+
         LocalDate maxDate = minDate.plusMonths(1);
+        if(maxDate.isAfter(end)) {
+            maxDate = end;
+        }
 
         for(LocalDate date = minDate; date.isBefore(maxDate); date = date.plusDays(N)) {
             dates.add(date);

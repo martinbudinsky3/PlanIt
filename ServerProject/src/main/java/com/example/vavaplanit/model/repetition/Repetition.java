@@ -62,6 +62,10 @@ public class Repetition {
         LocalDate maxDate = minDate.plusMonths(1);
 
         for(LocalDate date = minDate; date.isBefore(maxDate); date = date.plusDays(1)) {
+            if(date.isBefore(start) || date.isAfter(end)) {
+                continue;
+            }
+
             long diff = Days.daysBetween(new DateTime(start.getYear(), start.getMonthValue(), start.getDayOfMonth(), 0, 0, 0),
                     new DateTime(date.getYear(), date.getMonthValue(), date.getDayOfMonth(), 0, 0, 0)).getDays();
 

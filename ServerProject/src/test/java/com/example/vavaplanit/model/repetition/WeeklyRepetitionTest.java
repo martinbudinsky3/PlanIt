@@ -18,7 +18,7 @@ public class WeeklyRepetitionTest {
     @DisplayName("Tests for extracting days of week from int in setter method")
     class SetterTests {
         @Test
-        public void _3IsMondayAndTuesday() {
+        public void _3isMondayAndTuesday() {
             List<DayOfWeek> expectedValue = createDayOfWeekList(DayOfWeek.MONDAY, DayOfWeek.TUESDAY);
 
             List<DayOfWeek> actualValue = createWeeklyRepetitionAndSetDaysOfWeek(3);
@@ -27,21 +27,12 @@ public class WeeklyRepetitionTest {
         }
 
         @Test
-        public void _70IsTuesdayAndWednesdayAndSunday() {
+        public void _70isTuesdayAndWednesdayAndSunday() {
             List<DayOfWeek> expectedValue = createDayOfWeekList(DayOfWeek.TUESDAY, DayOfWeek.WEDNESDAY, DayOfWeek.SUNDAY);
 
             List<DayOfWeek> actualValue = createWeeklyRepetitionAndSetDaysOfWeek(70);
 
             assertEquals(expectedValue, actualValue);
-        }
-
-        private List<DayOfWeek> createDayOfWeekList(DayOfWeek ...daysOfWeek) {
-            List<DayOfWeek> expectedValue = new ArrayList<>();
-            for(DayOfWeek dayOfWeek : daysOfWeek) {
-                expectedValue.add(dayOfWeek);
-            }
-
-            return expectedValue;
         }
 
         private List<DayOfWeek> createWeeklyRepetitionAndSetDaysOfWeek(int daysOfWeek) {
@@ -52,4 +43,43 @@ public class WeeklyRepetitionTest {
         }
     }
 
+    @Nested
+    @DisplayName("Tests for extracting int from days of week in getter method")
+    class GetterTests {
+        @Test
+        public void wednesdayAndThursdayis12() {
+            int expectedValue = 12;
+
+            int actualValue = createWeeklyRepetitionSetDaysOfWeekAndGetIntValue(
+                    createDayOfWeekList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY));
+
+            assertEquals(expectedValue, actualValue);
+        }
+
+        @Test
+        public void mondayAndFridayAndSaturdayIs() {
+            int expectedValue = 49;
+
+            int actualValue = createWeeklyRepetitionSetDaysOfWeekAndGetIntValue(
+                    createDayOfWeekList(DayOfWeek.MONDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY));
+
+            assertEquals(expectedValue, actualValue);
+        }
+
+        private int createWeeklyRepetitionSetDaysOfWeekAndGetIntValue(List<DayOfWeek> daysOfWeek) {
+            WeeklyRepetition weeklyRepetition = new WeeklyRepetition();
+            weeklyRepetition.setDaysOfWeek(daysOfWeek);
+
+            return weeklyRepetition.getDaysOfWeekInt();
+        }
+    }
+
+    private List<DayOfWeek> createDayOfWeekList(DayOfWeek ...daysOfWeek) {
+        List<DayOfWeek> expectedValue = new ArrayList<>();
+        for(DayOfWeek dayOfWeek : daysOfWeek) {
+            expectedValue.add(dayOfWeek);
+        }
+
+        return expectedValue;
+    }
 }
