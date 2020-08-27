@@ -188,7 +188,7 @@ public class WeeklyRepetitionTest {
         }
 
         private List<LocalDate> createWeeklyRepetitionAndGetDates(Long eventId, LocalDate start, LocalDate end,
-                                                                 int repetitionInterval, int daysOfWeek, int month, int year) {
+                                                                 int repetitionInterval, Integer daysOfWeek, int month, int year) {
             WeeklyRepetition repetition = new WeeklyRepetition(eventId, start, end, repetitionInterval, daysOfWeek);
 
             return repetition.figureOutDates(month, year);

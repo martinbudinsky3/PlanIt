@@ -56,10 +56,13 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public void setDaysOfWeek(Integer daysOfWeek) {
-        // TODO extract days of week from int
-        for(int i = 0; i < DAYS_OF_WEEK_NUMBER; i++) {
-            if(((daysOfWeek >> i) & 1) == 1) {
-                this.daysOfWeek.add(intToDayOfWeekMap.get(i));
+        if(daysOfWeek == null) {
+            this.daysOfWeek = null;
+        } else {
+            for(int i = 0; i < DAYS_OF_WEEK_NUMBER; i++) {
+                if(((daysOfWeek >> i) & 1) == 1) {
+                    this.daysOfWeek.add(intToDayOfWeekMap.get(i));
+                }
             }
         }
     }

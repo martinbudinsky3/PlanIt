@@ -1,6 +1,7 @@
 package com.example.vavaplanit.model.repetition;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class YearlyRepetition extends MonthlyRepetition {
@@ -25,6 +26,16 @@ public class YearlyRepetition extends MonthlyRepetition {
 
     @Override
     public List<LocalDate> figureOutDates(int month, int year) {
-        return null;
+        if(getMonth() != month || (year - getStart().getYear()) % getRepetitionInterval() != 0) {
+            return new ArrayList<>();
+        }
+
+        if(getDayOfMonth() != null) {
+            return figureOutDatesFromDayOfMonth(month, year);
+        } else if(getOrdinal() != null && getDaysOfWeek() != null) {
+            return figureOutDatesFromOrdinalAndDayOfWeek(month, year);
+        }
+
+        return new ArrayList<>();
     }
 }
