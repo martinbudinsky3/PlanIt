@@ -55,6 +55,32 @@ public class RepetitionTest {
         assertEquals(expectedDates, actualDates);
     }
 
+    @Test
+    public void dailyRepetitionWithStartAndEndOutsideAugust2020() {
+        List<LocalDate> expectedDates = new ArrayList<>(){
+            {
+                add(LocalDate.of(2020, 8, 10));
+                add(LocalDate.of(2020, 8, 20));
+                add(LocalDate.of(2020, 8, 30));
+            }
+        };
+
+        List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+                LocalDate.of(2020, 12, 31), 10, 8, 2020);
+
+        assertEquals(expectedDates, actualDates);
+    }
+
+    @Test
+    public void dailyRepetitionWithoutOccurenceInAugust2020() {
+        List<LocalDate> expectedDates = new ArrayList<>();
+
+        List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+                LocalDate.of(2020, 12, 31), 100, 8, 2020);
+
+        assertEquals(expectedDates, actualDates);
+    }
+
     private List<LocalDate> getEveryNdateInMonthAndYear(int N, int month, int year, LocalDate start, LocalDate end) {
         List<LocalDate> dates = new ArrayList<>();
 
