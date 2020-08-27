@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Nested;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +72,102 @@ public class WeeklyRepetitionTest {
             weeklyRepetition.setDaysOfWeek(daysOfWeek);
 
             return weeklyRepetition.getDaysOfWeekInt();
+        }
+    }
+
+    @Nested
+    @DisplayName("Tests for computing dates in method figureOutDates")
+    class FigureOutDatesTests {
+        @Test
+        public void weeklyRepetitionEveryWeekOnMondayAndFriday() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2020, 8, 3));
+                    add(LocalDate.of(2020, 8, 7));
+                    add(LocalDate.of(2020, 8, 10));
+                    add(LocalDate.of(2020, 8, 14));
+                    add(LocalDate.of(2020, 8, 17));
+                    add(LocalDate.of(2020, 8, 21));
+                    add(LocalDate.of(2020, 8, 24));
+                    add(LocalDate.of(2020, 8, 28));
+                    add(LocalDate.of(2020, 8, 31));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 3),
+                    LocalDate.of(2020, 9, 1), 1, 17, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        @Test
+        public void weeklyRepetitionEvery2WeeksOnTuesdayAndWednesdayAndSaturday() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2020, 8, 1));
+                    add(LocalDate.of(2020, 8, 11));
+                    add(LocalDate.of(2020, 8, 12));
+                    add(LocalDate.of(2020, 8, 15));
+                    add(LocalDate.of(2020, 8, 25));
+                    add(LocalDate.of(2020, 8, 26));
+                    add(LocalDate.of(2020, 8, 29));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+                    LocalDate.of(2020, 9, 1), 2, 38, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        @Test
+        public void weeklyRepetitionLastHalfOfMonthEveryWeekOnSaturday() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2020, 8, 15));
+                    add(LocalDate.of(2020, 8, 22));
+                    add(LocalDate.of(2020, 8, 29));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 15),
+                    LocalDate.of(2020, 9, 1), 1, 32, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        @Test
+        public void weeklyRepetitionFirstHalfOfMonthEveryWeekOnThursdayAndSunday() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2020, 8, 2));
+                    add(LocalDate.of(2020, 8, 6));
+                    add(LocalDate.of(2020, 8, 9));
+                    add(LocalDate.of(2020, 8, 13));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+                    LocalDate.of(2020, 8, 15), 1, 72, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        @Test
+        public void weeklyRepetitionWithNoOccurenceInAugust2020() {
+            List<LocalDate> expectedDates = new ArrayList<>();
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 31),
+                    LocalDate.of(2020, 12, 1), 6, 16, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
+        private List<LocalDate> createWeeklyRepetitionAndGetDates(Long eventId, LocalDate start, LocalDate end,
+                                                                 int repetitionInterval, int daysOfWeek, int month, int year) {
+            WeeklyRepetition repetition = new WeeklyRepetition(eventId, start, end, repetitionInterval, daysOfWeek);
+
+            return repetition.figureOutDates(month, year);
         }
     }
 
