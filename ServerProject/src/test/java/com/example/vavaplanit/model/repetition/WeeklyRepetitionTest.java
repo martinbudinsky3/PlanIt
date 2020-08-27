@@ -75,6 +75,15 @@ public class WeeklyRepetitionTest {
         }
     }
 
+    private List<DayOfWeek> createDayOfWeekList(DayOfWeek ...daysOfWeek) {
+        List<DayOfWeek> expectedValue = new ArrayList<>();
+        for(DayOfWeek dayOfWeek : daysOfWeek) {
+            expectedValue.add(dayOfWeek);
+        }
+
+        return expectedValue;
+    }
+
     @Nested
     @DisplayName("Tests for computing dates in method figureOutDates")
     class FigureOutDatesTests {
@@ -184,14 +193,5 @@ public class WeeklyRepetitionTest {
 
             return repetition.figureOutDates(month, year);
         }
-    }
-
-    private List<DayOfWeek> createDayOfWeekList(DayOfWeek ...daysOfWeek) {
-        List<DayOfWeek> expectedValue = new ArrayList<>();
-        for(DayOfWeek dayOfWeek : daysOfWeek) {
-            expectedValue.add(dayOfWeek);
-        }
-
-        return expectedValue;
     }
 }

@@ -43,6 +43,10 @@ public class MonthlyRepetition extends WeeklyRepetition {
 
     @Override
     public List<LocalDate> figureOutDates(int month, int year) {
+        if(getMonthDiff(LocalDate.of(year, month, 1)) % getRepetitionInterval() != 0) {
+            return null;
+        }
+
         if(dayOfMonth != null) {
             return figureOutDatesFromDayOfMonth(month, year);
         } else if(ordinal != null && getDaysOfWeek() != null) {
@@ -55,18 +59,12 @@ public class MonthlyRepetition extends WeeklyRepetition {
     private List<LocalDate> figureOutDatesFromDayOfMonth(int month, int year) {
         List<LocalDate> dates = new ArrayList<>();
 
-        LocalDate minDate = LocalDate.of(year, month, 1);
-        LocalDate maxDate = minDate.plusMonths(1);
-
-        for(LocalDate date = minDate; date.isBefore(maxDate); date = date.plusDays(1)) {
-            if(getMonthDiff(date) % getRepetitionInterval() != 0) {
-                break;
-            }
-
-            if(date.isBefore(getStart()) || date.isAfter(getEnd())) {
-                continue;
-            }
-
+        LocalDate lastDayOfMonth = LocalDate.of(year, month, 1).minusDays(1);
+        
+        if(dayOfMonth > lastDayOfMonth.getDayOfMonth()) {
+            dates.add(lastDayOfMonth);
+        } else {
+            dates.add(LocalDate.of(year, month, dayOfMonth));
         }
 
         return dates;
@@ -88,7 +86,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
     }
 
     private int getMonthDiff(LocalDate date) {
-        DateTime startDateTime = new DateTime().withDate(getStart().getYear(), getStart().getMonthValue(), getStart().getDayOfMonth());
+        DateTime startDateTime = new DateTime().withDate(getStart().getYear(), getStart().getMonthValue(), 1);
         DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 
         return Months.monthsBetween(startDateTime, dateTime).getMonths();
