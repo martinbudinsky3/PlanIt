@@ -36,7 +36,7 @@ public class RepetitionRepository {
                 ps.setDate(3, Date.valueOf(repetition.getEnd()));
                 ps.setInt(4, repetition.getRepetitionInterval());
                 if(repetition instanceof WeeklyRepetition && ((WeeklyRepetition) repetition).getDaysOfWeek() != null) {
-                    ps.setInt(5, ((WeeklyRepetition) repetition).getDaysOfWeek());
+                    ps.setInt(5, ((WeeklyRepetition) repetition).getDaysOfWeekInt());
                 } else {
                     ps.setNull(5, Types.INTEGER);
                 }

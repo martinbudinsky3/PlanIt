@@ -19,7 +19,7 @@ public class WeeklyRepetition extends Repetition {
             put(5, DayOfWeek.SATURDAY);
             put(6, DayOfWeek.SUNDAY);
         }
-    };;
+    };
 
     private List<DayOfWeek> daysOfWeek = new ArrayList<DayOfWeek>();
 
@@ -31,7 +31,11 @@ public class WeeklyRepetition extends Repetition {
         setDaysOfWeek(daysOfWeek);
     }
 
-    public Integer getDaysOfWeek() {
+    public List<DayOfWeek> getDaysOfWeek() {
+        return daysOfWeek;
+    }
+
+    public Integer getDaysOfWeekInt() {
         // TODO return daysOfWeek as int
         //return daysOfWeek;
         return 0;
