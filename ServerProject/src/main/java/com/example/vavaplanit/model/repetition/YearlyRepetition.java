@@ -25,17 +25,7 @@ public class YearlyRepetition extends MonthlyRepetition {
     }
 
     @Override
-    public List<LocalDate> figureOutDates(int month, int year) {
-        if(getMonth() != month || (year - getStart().getYear()) % getRepetitionInterval() != 0) {
-            return new ArrayList<>();
-        }
-
-        if(getDayOfMonth() != null) {
-            return figureOutDatesFromDayOfMonth(month, year);
-        } else if(getOrdinal() != null && getDaysOfWeek() != null) {
-            return figureOutDatesFromOrdinalAndDayOfWeek(month, year);
-        }
-
-        return new ArrayList<>();
+    protected boolean checkBasicCondition(int month, int year) {
+        return getMonth() != month || (year - getStart().getYear()) % getRepetitionInterval() != 0;
     }
 }

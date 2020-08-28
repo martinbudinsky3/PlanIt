@@ -45,7 +45,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
 
     @Override
     public List<LocalDate> figureOutDates(int month, int year) {
-        if(getMonthDiff(LocalDate.of(year, month, 1)) % getRepetitionInterval() != 0) {
+        if(checkBasicCondition(month, year)) {
             return new ArrayList<>();
         }
 
@@ -56,6 +56,10 @@ public class MonthlyRepetition extends WeeklyRepetition {
         }
 
         return new ArrayList<>();
+    }
+
+    protected boolean checkBasicCondition(int month, int year) {
+        return getMonthDiff(LocalDate.of(year, month, 1)) % getRepetitionInterval() != 0;
     }
 
     protected List<LocalDate> figureOutDatesFromDayOfMonth(int month, int year) {

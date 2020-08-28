@@ -25,11 +25,9 @@ public class RepetitionService {
 
     public List<LocalDate> getEventDates(int eventId, int month, int year) {
         Repetition repetition = getRepetitionByEventId(eventId);
-        GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month - 1, 1);
-        int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
-        LocalDate maxDate = LocalDate.of(year, month, daysInMonth);
+        LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
 
         if(repetition == null || minDate.isAfter(repetition.getEnd()) || maxDate.isBefore(repetition.getStart())) {
             return null;
