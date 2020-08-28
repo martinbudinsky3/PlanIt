@@ -104,10 +104,10 @@ public class EventRepository {
      * Getting all events that belong to user and starts dates of these events are in given range.
      */
     public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.user u ON ue.iduser = u.iduser " +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
-                "AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate + "' ORDER BY e.starts;";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
+        String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue JOIN planitschema.event e " +
+                "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate +
+                "' ORDER BY e.starts;";
+        return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
     }
 
     /**

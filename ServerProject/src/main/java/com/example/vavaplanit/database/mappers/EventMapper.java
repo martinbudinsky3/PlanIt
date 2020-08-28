@@ -36,4 +36,22 @@ public class EventMapper {
             );
         };
     }
+
+    public RowMapper<Event> mapBasicEventInfoFromDb() {
+        return (resultSet, i) -> {
+            int idEvent = resultSet.getInt("idevent");
+            String title = resultSet.getString("title");
+            Event.Type type = Event.Type.fromString(resultSet.getString("type"));
+            LocalDate date = resultSet.getObject("date", LocalDate.class);
+            LocalTime starts = resultSet.getObject("starts", LocalTime.class);
+
+            return new Event(
+                    idEvent,
+                    title,
+                    type,
+                    date,
+                    starts
+            );
+        };
+    }
 }

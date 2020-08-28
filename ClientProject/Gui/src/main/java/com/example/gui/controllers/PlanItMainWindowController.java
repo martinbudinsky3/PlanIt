@@ -201,7 +201,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
 
-                    // TODO for each
+                    // TODO for eachtes
                     // show alert for every event that is returned
                     for (int i = 0; i < events.size(); i++) {
                         Event event = events.get(i);
