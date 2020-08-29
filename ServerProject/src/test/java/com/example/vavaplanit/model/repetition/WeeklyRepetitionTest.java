@@ -187,6 +187,21 @@ public class WeeklyRepetitionTest {
             assertEquals(expectedDates, actualDates);
         }
 
+        @Test
+        public void weeklyRepetitionLastHalfOfMonthEverySecondMonday() {
+            List<LocalDate> expectedDates = new ArrayList<>() {
+                {
+                    add(LocalDate.of(2020, 8, 10));
+                    add(LocalDate.of(2020, 8, 24));
+                }
+            };
+
+            List<LocalDate> actualDates = createWeeklyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 10),
+                    LocalDate.of(2020, 9, 7), 2, 1, 8, 2020);
+
+            assertEquals(expectedDates, actualDates);
+        }
+
         private List<LocalDate> createWeeklyRepetitionAndGetDates(Long eventId, LocalDate start, LocalDate end,
                                                                  int repetitionInterval, Integer daysOfWeek, int month, int year) {
             WeeklyRepetition repetition = new WeeklyRepetition(eventId, start, end, repetitionInterval, daysOfWeek);

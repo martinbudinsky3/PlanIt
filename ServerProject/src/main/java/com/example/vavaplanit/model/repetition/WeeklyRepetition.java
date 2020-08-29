@@ -99,8 +99,13 @@ public class WeeklyRepetition extends Repetition {
     }
 
     private int getWeekDiff(LocalDate date) {
-        // TODO what if start is on Monday
-        LocalDate start = getStart().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        LocalDate start;
+
+        if(getStart().getDayOfWeek().equals(DayOfWeek.MONDAY)) {
+            start = getStart();
+        } else {
+            start = getStart().with(TemporalAdjusters.previous(DayOfWeek.MONDAY));
+        }
 
         DateTime startDateTime = new DateTime().withDate(start.getYear(), start.getMonthValue(), start.getDayOfMonth());
         DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
