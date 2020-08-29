@@ -19,12 +19,6 @@ public class YearlyRepetition extends MonthlyRepetition {
         this.month = month;
     }
 
-    public YearlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions,
-                            List<DayOfWeek> daysOfWeek, Integer dayOfMonth, Integer ordinal, int month) {
-        super(eventId, start, end, repetitionInterval, exceptions, daysOfWeek, dayOfMonth, ordinal);
-        this.month = month;
-    }
-
     public int getMonth() {
         return month;
     }

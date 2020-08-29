@@ -13,7 +13,6 @@ public class Repetition {
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
-    private List<Exception> exceptions = new ArrayList<>();
 
     public Repetition() {
     }
@@ -22,15 +21,7 @@ public class Repetition {
         this.eventId = eventId;
         this.start = start;
         this.end = end;
-        this.exceptions = exceptions;
-    }
-
-    public Repetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions) {
-        this.eventId = eventId;
-        this.start = start;
-        this.end = end;
         this.repetitionInterval = repetitionInterval;
-        this.exceptions = exceptions;
     }
 
     public LocalDate getStart() {
@@ -63,14 +54,6 @@ public class Repetition {
 
     public void setEventId(Long eventId) {
         this.eventId = eventId;
-    }
-
-    public List<Exception> getExceptions() {
-        return exceptions;
-    }
-
-    public void setExceptions(List<Exception> exceptions) {
-        this.exceptions = exceptions;
     }
 
     public List<LocalDate> figureOutDates(int month, int year) {

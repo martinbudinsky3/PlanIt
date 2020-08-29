@@ -37,12 +37,6 @@ public class WeeklyRepetition extends Repetition {
         setDaysOfWeek(daysOfWeek);
     }
 
-    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions,
-                            List<DayOfWeek> daysOfWeek) {
-        super(eventId, start, end, repetitionInterval, exceptions);
-        this.daysOfWeek = daysOfWeek;
-    }
-
     public List<DayOfWeek> getDaysOfWeek() {
         return daysOfWeek;
     }
