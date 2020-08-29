@@ -77,9 +77,7 @@ public class WeatherService {
         });
 
         weatherForecast.getDaily().
-                stream().
                 forEach(dailyWeather -> dailyWeather.getWeather().
-                    stream().
                     forEach(weather -> weather.setIconImage(getImage(weather.getIcon()))));
 
         return weatherForecast.getDaily().

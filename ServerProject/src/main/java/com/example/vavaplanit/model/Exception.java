@@ -3,7 +3,7 @@ package com.example.vavaplanit.model;
 import java.time.LocalDate;
 
 public class Exception {
-    private int exceptionId;
+    private long exceptionId;
     private LocalDate date;
     private int repetitionId;
     private Integer eventId;
@@ -15,18 +15,18 @@ public class Exception {
         this.date = date;
     }
 
-    public Exception(int exceptionId, LocalDate date, int repetitionId, Integer eventId) {
+    public Exception(long exceptionId, LocalDate date, int repetitionId, Integer eventId) {
         this.exceptionId = exceptionId;
         this.date = date;
         this.repetitionId = repetitionId;
         this.eventId = eventId;
     }
 
-    public int getExceptionId() {
+    public long getExceptionId() {
         return exceptionId;
     }
 
-    public void setExceptionId(int exceptionId) {
+    public void setExceptionId(long exceptionId) {
         this.exceptionId = exceptionId;
     }
 
