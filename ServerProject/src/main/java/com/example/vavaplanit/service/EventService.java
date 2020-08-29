@@ -46,11 +46,7 @@ public class EventService {
      * @return list of events
      */
     public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
-//        GregorianCalendar gregorianCalendar = new GregorianCalendar(year, month - 1, 1);
-//        int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
         LocalDate minDate = LocalDate.of(year, month, 1);
-//        LocalDate maxDate = LocalDate.of(year, month, daysInMonth);
         LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
 
         return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
