@@ -34,7 +34,7 @@ public class RepetitionService {
         LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
 
         if(repetition == null || minDate.isAfter(repetition.getEnd()) || maxDate.isBefore(repetition.getStart())) {
-            return null;
+            return new ArrayList<>();
         }
 
         List<Exception> exceptions = exceptionRepository.getExceptionsDates(repetition.getEventId());

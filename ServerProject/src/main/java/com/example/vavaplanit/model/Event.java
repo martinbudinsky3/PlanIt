@@ -6,6 +6,8 @@ import com.example.vavaplanit.model.repetition.Repetition;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Event implements Serializable {
@@ -51,10 +53,13 @@ public class Event implements Serializable {
     private Type type;
     private String description;
     private LocalDate date;
+    private List<LocalDate> dates = new ArrayList<>();
     private LocalTime starts;
     private LocalDate endsDate;
+    private List<LocalDate> endsDates = new ArrayList<>();
     private LocalTime ends;
     private LocalDate alertDate;
+    private List<LocalDate> alertDates = new ArrayList<>();
     private LocalTime alert;
     private Repetition repetition;
 
@@ -96,6 +101,27 @@ public class Event implements Serializable {
         this.endsDate = endsDate;
         this.ends = ends;
         this.alertDate = alertDate;
+        this.alert = alert;
+        this.repetition = repetition;
+    }
+
+    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
+                 List<LocalDate> dates, LocalTime starts, LocalDate endsDate, List<LocalDate> endsDates, LocalTime ends,
+                 LocalDate alertDate, List<LocalDate> alertDates, LocalTime alert, Repetition repetition) {
+        this.idEvent = idEvent;
+        this.idUser = idUser;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.date = date;
+        this.dates = dates;
+        this.starts = starts;
+        this.endsDate = endsDate;
+        this.endsDates = endsDates;
+        this.ends = ends;
+        this.alertDate = alertDate;
+        this.alertDates = alertDates;
         this.alert = alert;
         this.repetition = repetition;
     }
@@ -204,6 +230,30 @@ public class Event implements Serializable {
         this.repetition = repetition;
     }
 
+    public List<LocalDate> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<LocalDate> dates) {
+        this.dates = dates;
+    }
+
+    public List<LocalDate> getEndsDates() {
+        return endsDates;
+    }
+
+    public void setEndsDates(List<LocalDate> endsDates) {
+        this.endsDates = endsDates;
+    }
+
+    public List<LocalDate> getAlertDates() {
+        return alertDates;
+    }
+
+    public void setAlertDates(List<LocalDate> alertDates) {
+        this.alertDates = alertDates;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -216,17 +266,19 @@ public class Event implements Serializable {
                 type == event.type &&
                 Objects.equals(description, event.description) &&
                 Objects.equals(date, event.date) &&
+                Objects.equals(dates, event.dates) &&
                 Objects.equals(starts, event.starts) &&
                 Objects.equals(endsDate, event.endsDate) &&
+                Objects.equals(endsDates, event.endsDates) &&
                 Objects.equals(ends, event.ends) &&
                 Objects.equals(alertDate, event.alertDate) &&
+                Objects.equals(alertDates, event.alertDates) &&
                 Objects.equals(alert, event.alert) &&
                 Objects.equals(repetition, event.repetition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, type, description, date, starts, endsDate, ends, alertDate,
-                alert, repetition);
+        return Objects.hash(idEvent, idUser, title, location, type, description, date, dates, starts, endsDate, endsDates, ends, alertDate, alertDates, alert, repetition);
     }
 }

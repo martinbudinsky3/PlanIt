@@ -2,19 +2,26 @@ package com.example.vavaplanit.service;
 
 import com.example.vavaplanit.database.repository.EventRepository;
 import com.example.vavaplanit.model.Event;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EventService {
+    @Autowired
+    private RepetitionService repetitionService;
     @Autowired
     private EventRepository eventRepository;
 
@@ -47,9 +54,26 @@ public class EventService {
      */
     public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
         LocalDate minDate = LocalDate.of(year, month, 1);
-        LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
+        LocalDate maxDate = minDate.plusMonths(1);
 
-        return this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
+        List<Event> events = eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
+        List<Event> filteredOutEvents = new ArrayList<>();
+
+        for(Event event : events) {
+            List<LocalDate> dates = repetitionService.getEventDates(event.getIdEvent(), month, year);
+            if(dates.isEmpty() && event.getDate().isBefore(minDate)) {
+                filteredOutEvents.add(event);
+                continue;
+            }
+
+            event.setDates(dates);
+            event.setEndsDates(countEndDates(event.getDate(), event.getEndsDate(), dates));
+            event.setAlertDates(countAlertDates(event.getDate(), event.getAlertDate(), dates));
+        }
+
+        events.removeAll(filteredOutEvents);
+
+        return events;
     }
 
     /**
@@ -94,10 +118,28 @@ public class EventService {
      * Delete event by user'd and event's id
      * @param idUser ID of user that wants to delete event
      * @param idEvent ID of Event which is going to be deleted*/
+    @Transactional
     public void delete(int idUser, int idEvent) {
         this.eventRepository.deleteFromUserEvent(idUser, idEvent);
         this.eventRepository.deleteFromEvent(idEvent);
     }
 
+    private List<LocalDate> countEndDates(LocalDate date1, LocalDate date2, List<LocalDate> dates) {
+        int dayDiff = getDayDiff(date1, date2);
 
+        return dates.stream().map(date -> date.plusDays(dayDiff)).collect(Collectors.toList());
+    }
+
+    private List<LocalDate> countAlertDates(LocalDate date1, LocalDate date2, List<LocalDate> dates) {
+        int dayDiff = getDayDiff(date1, date2);
+
+        return dates.stream().map(date -> date.minusDays(dayDiff)).collect(Collectors.toList());
+    }
+
+    private int getDayDiff(LocalDate date1, LocalDate date2) {
+        DateTime dateTime1 = new DateTime().withDate(date1.getYear(), date1.getMonthValue(), date1.getDayOfMonth());
+        DateTime dateTime2 = new DateTime().withDate(date2.getYear(), date2.getMonthValue(), date2.getDayOfMonth());
+
+        return Days.daysBetween(dateTime1, dateTime2).getDays();
+    }
 }

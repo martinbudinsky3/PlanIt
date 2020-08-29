@@ -105,7 +105,7 @@ public class EventRepository {
      */
     public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue JOIN planitschema.event e " +
-                "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date >= '" + minDate + "' AND e.date <= '" + maxDate +
+                "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date < '" + maxDate +
                 "' ORDER BY e.starts;";
         return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
     }
