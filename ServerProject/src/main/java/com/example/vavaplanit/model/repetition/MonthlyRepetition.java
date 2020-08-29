@@ -1,5 +1,6 @@
 package com.example.vavaplanit.model.repetition;
 
+import com.example.vavaplanit.model.Exception;
 import org.joda.time.DateTime;
 import org.joda.time.Months;
 
@@ -12,7 +13,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-// TODO extends Weekly Repetition
 public class MonthlyRepetition extends WeeklyRepetition {
     private Integer dayOfMonth;
     private Integer ordinal;
@@ -20,9 +20,16 @@ public class MonthlyRepetition extends WeeklyRepetition {
     public MonthlyRepetition() {
     }
 
-    public MonthlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
-                             Integer dayOfMonth, Integer ordinal) {
+    public MonthlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval,
+                             Integer daysOfWeek, Integer dayOfMonth, Integer ordinal) {
         super(eventId, start, end, repetitionInterval, daysOfWeek);
+        this.dayOfMonth = dayOfMonth;
+        this.ordinal = ordinal;
+    }
+
+    public MonthlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions,
+                             List<DayOfWeek> daysOfWeek, Integer dayOfMonth, Integer ordinal) {
+        super(eventId, start, end, repetitionInterval, exceptions, daysOfWeek);
         this.dayOfMonth = dayOfMonth;
         this.ordinal = ordinal;
     }

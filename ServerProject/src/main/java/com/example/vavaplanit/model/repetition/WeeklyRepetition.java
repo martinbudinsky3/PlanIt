@@ -1,5 +1,6 @@
 package com.example.vavaplanit.model.repetition;
 
+import com.example.vavaplanit.model.Exception;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Weeks;
@@ -30,9 +31,16 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek) {
+    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval,
+                            int daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
+    }
+
+    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions,
+                            List<DayOfWeek> daysOfWeek) {
+        super(eventId, start, end, repetitionInterval, exceptions);
+        this.daysOfWeek = daysOfWeek;
     }
 
     public List<DayOfWeek> getDaysOfWeek() {

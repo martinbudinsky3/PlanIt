@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+// TODO without anonymous methods
 /** Class for mapping Event object. */
 public class EventMapper {
     public RowMapper<Event> mapEventFromDb() {

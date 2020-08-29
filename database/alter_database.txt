@@ -46,3 +46,11 @@ CREATE TABLE planitschema.repetition (
     month integer,
     type repetition_type NOT NULL
 );
+
+------------------------29.8.2020--------------------------------
+CREATE TABLE planitschema.exception (
+    exception_id serial PRIMARY KEY,
+    date date NOT NULL,
+    repetition_id bigint NOT NULL REFERENCES planitschema.repetition(event_id),
+	updated_event_id bigint REFERENCES planitschema.event(idevent)
+);

@@ -97,6 +97,14 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.simpleflatmapper/sfm-jdbc -->
+        <dependency>
+            <groupId>org.simpleflatmapper</groupId>
+            <artifactId>sfm-springjdbc</artifactId>
+            <version>8.2.3</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>

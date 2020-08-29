@@ -1,5 +1,8 @@
 package com.example.vavaplanit.model.repetition;
 
+import com.example.vavaplanit.model.Exception;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +13,15 @@ public class YearlyRepetition extends MonthlyRepetition {
     public YearlyRepetition() {
     }
 
-    public YearlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
-                            Integer dayOfMonth, Integer ordinal, int month) {
+    public YearlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval,
+                            Integer daysOfWeek, Integer dayOfMonth, Integer ordinal, int month) {
         super(eventId, start, end, repetitionInterval, daysOfWeek, dayOfMonth, ordinal);
+        this.month = month;
+    }
+
+    public YearlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<Exception> exceptions,
+                            List<DayOfWeek> daysOfWeek, Integer dayOfMonth, Integer ordinal, int month) {
+        super(eventId, start, end, repetitionInterval, exceptions, daysOfWeek, dayOfMonth, ordinal);
         this.month = month;
     }
 

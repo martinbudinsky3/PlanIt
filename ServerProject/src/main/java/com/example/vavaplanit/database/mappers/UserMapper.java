@@ -3,6 +3,7 @@ package com.example.vavaplanit.database.mappers;
 import com.example.vavaplanit.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
+// TODO without anonymous methods
 /** Class for mapping User object. */
 public class UserMapper {
 

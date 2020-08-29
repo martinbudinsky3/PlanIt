@@ -3,7 +3,6 @@ package com.example.vavaplanit.database.repository;
 import com.example.vavaplanit.database.mappers.RepetitionMapper;
 import com.example.vavaplanit.model.repetition.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,7 +14,7 @@ import java.sql.*;
 @Repository
 public class RepetitionRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final RepetitionMapper repetitionMapper = new RepetitionMapper();
+    private final RepetitionMapper repetitionInfoMapper = new RepetitionMapper();
 
     @Autowired
     public RepetitionRepository(JdbcTemplate jdbcTemplate) {
@@ -86,12 +85,9 @@ public class RepetitionRepository {
         }
     }
 
-    public Repetition getRepetitionByEventId(int eventId) {
+    public Repetition getRepetitionByEventId(int eventId) /*throws EmptyResultDataAccessException*/{
         String sql = "SELECT * FROM planitschema.repetition WHERE event_id = " + eventId + ";";
-        try {
-            return jdbcTemplate.queryForObject(sql, repetitionMapper.mapRepetitionFromDb());
-        } catch(EmptyResultDataAccessException e) {
-            return null;
-        }
+
+        return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
     }
 }
