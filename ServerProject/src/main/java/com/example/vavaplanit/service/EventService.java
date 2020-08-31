@@ -30,10 +30,14 @@ public class EventService {
      * @param event Event object to be inserted
      * @param idUser ID of user
      * @return ID of inserted event*/
+    @Transactional
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
-        if(idEvent != null) {
-            idEvent = eventRepository.addEventUser(idUser, idEvent);
+//        if(idEvent != null) {
+        idEvent = eventRepository.addEventUser(idUser, idEvent);
+//        }
+        if(event.getRepetition() != null) {
+            repetitionService.add(event.getRepetition());
         }
 
         return idEvent;
@@ -118,6 +122,7 @@ public class EventService {
      * Delete event by user'd and event's id
      * @param idUser ID of user that wants to delete event
      * @param idEvent ID of Event which is going to be deleted*/
+    // TODO in DB make FK on delete cascade instead
     @Transactional
     public void delete(int idUser, int idEvent) {
         this.eventRepository.deleteFromUserEvent(idUser, idEvent);
