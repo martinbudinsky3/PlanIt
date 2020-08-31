@@ -54,3 +54,18 @@ CREATE TABLE planitschema.exception (
     repetition_id bigint NOT NULL REFERENCES planitschema.repetition(event_id),
 	updated_event_id bigint REFERENCES planitschema.event(idevent)
 );
+
+------------------------31.8.2020--------------------------------
+ALTER TABLE planitschema.repetition
+DROP CONSTRAINT repetition_event_id_fkey,
+ADD CONSTRAINT repetition_event_id_fkey
+   FOREIGN KEY (event_id)
+   REFERENCES planitschema.event(idevent)
+   ON DELETE CASCADE;
+   
+ALTER TABLE planitschema.userevent
+DROP CONSTRAINT userevent_idevent_fkey,
+ADD CONSTRAINT userevent_idevent_fkey
+   FOREIGN KEY (idevent)
+   REFERENCES planitschema.event(idevent)
+   ON DELETE CASCADE;

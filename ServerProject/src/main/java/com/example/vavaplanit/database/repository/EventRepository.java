@@ -159,15 +159,6 @@ public class EventRepository {
     }
 
     /**
-     * Delete event by user'd and event's id
-     * @param idUser ID of user that wants to delete event
-     * @param idEvent ID of Event which is going to be deleted*/
-    public void deleteFromUserEvent(int idUser, int idEvent) {
-        String sql = "DELETE FROM planitschema.userevent WHERE iduser = ? AND idevent = ?";
-        jdbcTemplate.update(sql, idUser, idEvent);
-    }
-
-    /**
      * Delete event by event's id
      * @param id ID of Event which is going to be deleted */
     public void deleteFromEvent(int id) {

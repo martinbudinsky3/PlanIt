@@ -91,4 +91,6 @@ public class RepetitionRepository {
 
         return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
     }
+
+    
 }

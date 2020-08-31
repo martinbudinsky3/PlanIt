@@ -122,21 +122,18 @@ public class EventService {
     }
 
     public void updateRepetition(int id, Event event){
-//      int repetitionEventId = this.repetitionService.update(id);
+//        int repetitionEventId = this.repetitionService.update(id, event.getRepetition());
 //        if(repetitionEventId != id) {
 //            delete(id);
 //        }
+
         update(id, event);
     }
 
     /**
      * Delete event by user'd and event's id
-     * @param idUser ID of user that wants to delete event
      * @param idEvent ID of Event which is going to be deleted*/
-    // TODO in DB make FK on delete cascade instead
-    @Transactional
-    public void delete(int idUser, int idEvent) {
-        this.eventRepository.deleteFromUserEvent(idUser, idEvent);
+    public void delete(int idEvent) {
         this.eventRepository.deleteFromEvent(idEvent);
     }
 
