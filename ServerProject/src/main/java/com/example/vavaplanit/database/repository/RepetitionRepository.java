@@ -86,7 +86,8 @@ public class RepetitionRepository {
     }
 
     public Repetition getRepetitionByEventId(int eventId) /*throws EmptyResultDataAccessException*/{
-        String sql = "SELECT * FROM planitschema.repetition WHERE event_id = " + eventId + ";";
+        String sql = "SELECT r.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
+                " OR e.updated_event_id = " + eventId + ";";
 
         return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
     }

@@ -122,8 +122,8 @@ public class EventController {
     public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent) {
         logger.info("Deleting event. Event's ID: " + idEvent);
         if(eventService.getUserEvent(idUser, idEvent) != null){
-            logger.info("Event [" + idEvent + "] successfully deleted.");
             eventService.delete(idUser, idEvent);
+            logger.info("Event [" + idEvent + "] successfully deleted.");
             return ResponseEntity.ok().build();
         } else {
             logger.error("Error. Event with id: " + idEvent + " does not exist ");

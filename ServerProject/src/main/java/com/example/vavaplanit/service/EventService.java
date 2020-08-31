@@ -34,10 +34,10 @@ public class EventService {
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
 //        if(idEvent != null) {
-        idEvent = eventRepository.addEventUser(idUser, idEvent);
+        idEvent = this.eventRepository.addEventUser(idUser, idEvent);
 //        }
         if(event.getRepetition() != null) {
-            repetitionService.add(event.getRepetition());
+            this.repetitionService.add(event.getRepetition());
         }
 
         return idEvent;
@@ -45,7 +45,7 @@ public class EventService {
 
     public List<Event> getEventsByDate(int idUser, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
-        return eventRepository.getEventsByDate(idUser, date);
+        return this.eventRepository.getEventsByDate(idUser, date);
     }
 
     /**
@@ -60,11 +60,11 @@ public class EventService {
         LocalDate minDate = LocalDate.of(year, month, 1);
         LocalDate maxDate = minDate.plusMonths(1);
 
-        List<Event> events = eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
+        List<Event> events = this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
         List<Event> filteredOutEvents = new ArrayList<>();
 
         for(Event event : events) {
-            List<LocalDate> dates = repetitionService.getEventDates(event.getIdEvent(), month, year);
+            List<LocalDate> dates = this.repetitionService.getEventDates(event.getIdEvent(), month, year);
             if(dates.isEmpty() && event.getDate().isBefore(minDate)) {
                 filteredOutEvents.add(event);
                 continue;
@@ -83,8 +83,11 @@ public class EventService {
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
+    @Transactional
     public Event getEvent(int idEvent){
-        return this.eventRepository.getEvent(idEvent);
+        Event event = this.eventRepository.getEvent(idEvent);
+        event.setRepetition(this.repetitionService.getRepetitionByEventId(idEvent));
+        return event;
     }
 
     /**
@@ -116,6 +119,14 @@ public class EventService {
      * @param id id of Event which is going to be updated*/
     public void update(int id, Event event){
         this.eventRepository.update(id, event);
+    }
+
+    public void updateRepetition(int id, Event event){
+//      int repetitionEventId = this.repetitionService.update(id);
+//        if(repetitionEventId != id) {
+//            delete(id);
+//        }
+        update(id, event);
     }
 
     /**
