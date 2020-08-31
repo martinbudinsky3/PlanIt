@@ -364,7 +364,7 @@ public class PlanItAddEventController implements Initializable {
     public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
-        Event event = new Event(this.event.getIdEvent(), title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
         boolean success = eventsClient.updateEvent(event, this.event.getIdEvent(), resourceBundle);
 
         if (!success) {

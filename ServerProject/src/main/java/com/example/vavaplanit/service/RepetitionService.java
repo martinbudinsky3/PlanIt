@@ -24,7 +24,7 @@ public class RepetitionService {
     }
 
     public Repetition getRepetitionByEventId(int eventId) {
-        return repetitionRepository.getRepetitionByEventId(eventId);
+        return this.repetitionRepository.getRepetitionByEventId(eventId);
     }
 
     public List<LocalDate> getEventDates(int eventId, int month, int year) {
@@ -37,11 +37,15 @@ public class RepetitionService {
             return new ArrayList<>();
         }
 
-        List<Exception> exceptions = exceptionRepository.getExceptionsDates(repetition.getEventId());
+        List<Exception> exceptions = this.exceptionRepository.getExceptionsDates(repetition.getEventId());
         List<LocalDate> exceptionsDates = new ArrayList<>();
         exceptions.forEach(exception -> exceptionsDates.add(exception.getDate()));
 
         return repetition.figureOutDates(month, year).stream().filter(date -> !exceptionsDates.contains(date))
                 .collect(Collectors.toList());
+    }
+
+    public void update(Repetition repetition) {
+        this.repetitionRepository.update(repetition);
     }
 }

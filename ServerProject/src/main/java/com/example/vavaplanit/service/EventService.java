@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -122,17 +120,17 @@ public class EventService {
     }
 
     public void updateRepetition(int id, Event event){
-//        int repetitionEventId = this.repetitionService.update(id, event.getRepetition());
-//        if(repetitionEventId != id) {
-//            delete(id);
-//        }
+        this.repetitionService.update(event.getRepetition());
+        if(event.getRepetition().getEventId() != id) {
+            delete(id);
+        }
 
-        update(id, event);
+//        update(event.getRepetition().getEventId(), event);
     }
 
     /**
      * Delete event by user'd and event's id
-     * @param idEvent ID of Event which is going to be deleted*/
+     * @param idEvent ID of Event which is going to be deleted */
     public void delete(int idEvent) {
         this.eventRepository.deleteFromEvent(idEvent);
     }
