@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class Exception {
     private long exceptionId;
     private LocalDate date;
-    private int repetitionId;
+    private long repetitionId;
     private Integer eventId;
 
     public Exception() {
@@ -15,7 +15,7 @@ public class Exception {
         this.date = date;
     }
 
-    public Exception(long exceptionId, LocalDate date, int repetitionId, Integer eventId) {
+    public Exception(long exceptionId, LocalDate date, long repetitionId, Integer eventId) {
         this.exceptionId = exceptionId;
         this.date = date;
         this.repetitionId = repetitionId;
@@ -38,11 +38,11 @@ public class Exception {
         this.date = date;
     }
 
-    public int getRepetitionId() {
+    public long getRepetitionId() {
         return repetitionId;
     }
 
-    public void setRepetitionId(int repetitionId) {
+    public void setRepetitionId(long repetitionId) {
         this.repetitionId = repetitionId;
     }
 

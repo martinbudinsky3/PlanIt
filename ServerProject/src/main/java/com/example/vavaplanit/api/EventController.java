@@ -29,7 +29,7 @@ public class EventController {
     public ResponseEntity addEvent(@RequestBody Event event) {
         logger.info("Inserting new Event. Title: " + event.getTitle());
 
-        Integer id = eventService.add(event, event.getIdUser());
+        Long id = eventService.add(event, event.getIdUser());
         if(id != null) {
             logger.info("Event successfully inserted. It's ID is: " + id);
             return new ResponseEntity<>(id, HttpStatus.CREATED);

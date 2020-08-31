@@ -46,8 +46,8 @@ public class Event implements Serializable {
         }
     }
 
-    private int idEvent;
-    private int idUser;
+    private long idEvent;
+    private long idUser;
     private String title;
     private String location;
     private Type type;
@@ -65,7 +65,7 @@ public class Event implements Serializable {
 
     public Event() {};
 
-    public Event(int idEvent, String title, Type type, LocalDate date, LocalTime starts) {
+    public Event(long idEvent, String title, Type type, LocalDate date, LocalTime starts) {
         this.idEvent = idEvent;
         this.title = title;
         this.type = type;
@@ -73,7 +73,7 @@ public class Event implements Serializable {
         this.starts = starts;
     }
 
-    public Event(int idEvent, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
+    public Event(long idEvent, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
@@ -88,7 +88,7 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
-    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
+    public Event(long idEvent, long idUser, String title, String location, Type type, String description, LocalDate date,
                  LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert, Repetition repetition) {
         this.idEvent = idEvent;
         this.idUser = idUser;
@@ -105,7 +105,7 @@ public class Event implements Serializable {
         this.repetition = repetition;
     }
 
-    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
+    public Event(long idEvent, long idUser, String title, String location, Type type, String description, LocalDate date,
                  List<LocalDate> dates, LocalTime starts, LocalDate endsDate, List<LocalDate> endsDates, LocalTime ends,
                  LocalDate alertDate, List<LocalDate> alertDates, LocalTime alert, Repetition repetition) {
         this.idEvent = idEvent;
@@ -126,19 +126,19 @@ public class Event implements Serializable {
         this.repetition = repetition;
     }
 
-    public int getIdEvent() {
+    public long getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(int idEvent) {
+    public void setIdEvent(long idEvent) {
         this.idEvent = idEvent;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 

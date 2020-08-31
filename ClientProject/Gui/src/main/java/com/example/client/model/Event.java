@@ -42,8 +42,8 @@ public class Event implements Serializable {
         }
     }
 
-    private int idEvent;
-    private int idUser;
+    private long idEvent;
+    private long idUser;
     private String title;
     private String location;
     private Type type;
@@ -58,7 +58,7 @@ public class Event implements Serializable {
     public Event() {};
 
     public Event(String title, String location, Type type, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
-                 LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
+                 LocalTime ends, LocalDate alertDate, LocalTime alert, long idUser) {
         this.title = title;
         this.location = location;
         this.type = type;
@@ -72,7 +72,7 @@ public class Event implements Serializable {
         this.idUser = idUser;
     }
 
-    public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
+    public Event(long idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
@@ -86,19 +86,19 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
-    public int getIdEvent() {
+    public long getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(int idEvent) {
+    public void setIdEvent(long idEvent) {
         this.idEvent = idEvent;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 

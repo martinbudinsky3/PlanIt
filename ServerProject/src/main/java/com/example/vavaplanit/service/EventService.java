@@ -29,8 +29,8 @@ public class EventService {
      * @param idUser ID of user
      * @return ID of inserted event*/
     @Transactional
-    public Integer add(Event event, int idUser) {
-        Integer idEvent = eventRepository.add(event);
+    public Long add(Event event, long idUser) {
+        Long idEvent = eventRepository.add(event);
 //        if(idEvent != null) {
         idEvent = this.eventRepository.addEventUser(idUser, idEvent);
 //        }
@@ -115,7 +115,7 @@ public class EventService {
      * Update event
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
-    public void update(int id, Event event){
+    public void update(long id, Event event){
         this.eventRepository.update(id, event);
     }
 
@@ -125,7 +125,7 @@ public class EventService {
             delete(id);
         }
 
-//        update(event.getRepetition().getEventId(), event);
+        update(event.getRepetition().getEventId(), event);
     }
 
     /**

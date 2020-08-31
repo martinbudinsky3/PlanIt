@@ -28,7 +28,7 @@ public class EventRepository {
     /**
      * Inserting new event into DB
      * @param event event object*/
-    public Integer add(Event event) {
+    public Long add(Event event) {
         final String sql = "insert into planitschema.event (title, location, type, description, date, starts, ends_date, ends," +
                 " alert_date, alert) values (?,?,?,?,?,?,?,?,?,?)";
 
@@ -62,7 +62,7 @@ public class EventRepository {
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("idevent");
+            return (Long) keyHolder.getKeys().get("idevent");
         } else {
             return null;
         }
@@ -72,22 +72,22 @@ public class EventRepository {
      * Assigning an event to a user
      * @param idUser ID of user
      * @param idEvent ID of Event*/
-    public Integer addEventUser(int idUser, int idEvent) {
+    public Long addEventUser(long idUser, long idEvent) {
         final String sql = "insert into planitschema.userevent (iduser, idevent) values (?,?)";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setInt(1, idUser);
-                ps.setInt(2, idEvent);
+                ps.setLong(1, idUser);
+                ps.setLong(2, idEvent);
 
                 return ps;
             }
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("idevent");
+            return (Long) keyHolder.getKeys().get("idevent");
         } else {
             return null;
         }
@@ -151,7 +151,7 @@ public class EventRepository {
      * Update event
      * @param event event object with updated attributes
      * @param id id of Event which is going to be updated*/
-    public void update(int id, Event event) {
+    public void update(long id, Event event) {
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, type = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
                 " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
         jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getType().toString(), event.getDate(),

@@ -518,7 +518,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addWeatherToCalendar();
     }
 
-    public void deleteEventFromCalendar(int idEvent, LocalDate date) {
+    public void deleteEventFromCalendar(long idEvent, LocalDate date) {
         int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
         int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
 
@@ -585,7 +585,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         Label eventLabel = new Label();
         String eventLabelText = event.getStarts() + " " + event.getTitle();
         eventLabel.setText(eventLabelText);
-        eventLabel.setId(Integer.toString(event.getIdEvent())); // storing event id in its label id
+        eventLabel.setId(Long.toString(event.getIdEvent())); // storing event id in its label id
         eventLabel.setPrefWidth(dayVBox.getPrefWidth());
         eventLabel.getStyleClass().add("event-label");
         if (event.getType() == Event.Type.FREE_TIME) {

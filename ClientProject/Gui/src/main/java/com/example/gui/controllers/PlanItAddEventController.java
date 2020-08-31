@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  * Controller for "PlanItAddEvent.fxml"
  */
 public class PlanItAddEventController implements Initializable {
-    private final Integer idUser;
+    private final Long idUser;
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
 
@@ -102,14 +102,14 @@ public class PlanItAddEventController implements Initializable {
     private ResourceBundle resourceBundle;
     private Event event;
 
-    public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(long idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
         this.initDate = initDate;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(int idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(long idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
         this.event = event;
         this.eventsClient = eventsClient;

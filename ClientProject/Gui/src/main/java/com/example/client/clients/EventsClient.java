@@ -38,7 +38,7 @@ public class EventsClient {
      * @param date   date that represents calendar field.
      * @return List of objects Event.  Method that returns all events for a given date. (Only events belonging to the logged in user)
      */
-    public List<Event> getUserEventsByDate(int userId, LocalDate date, ResourceBundle resourceBundle) {
+    public List<Event> getUserEventsByDate(long userId, LocalDate date, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events from date: [" + date + "]");
 
         final String EVENTS_BY_DATE_ENDPOINT = uriPropertiesReader.getProperty("events-by-date-endpoint");
@@ -83,12 +83,12 @@ public class EventsClient {
      * @param year   chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user)
      */
-    public List<Event> getUserEventsByMonth(int userId, int year, int month, ResourceBundle resourceBundle) {
+    public List<Event> getUserEventsByMonth(long userId, int year, int month, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
         final String EVENTS_BY_MONTH_ENDPOINT = uriPropertiesReader.getProperty("events-by-month-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_BY_MONTH_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
         params.put("year", year);
         params.put("month", month);
@@ -127,12 +127,12 @@ public class EventsClient {
      * @param idEvent event's ID.
      * @return chosen Event object.
      */
-    public Event getEvent(int idUser, int idEvent) throws JsonProcessingException, ResourceAccessException,
+    public Event getEvent(long idUser, long idEvent) throws JsonProcessingException, ResourceAccessException,
             HttpStatusCodeException {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String EVENT_ENDPOINT = uriPropertiesReader.getProperty("event-endpoint");
         final String uri = BASE_EVENTS_URI + EVENT_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
 
@@ -153,7 +153,7 @@ public class EventsClient {
      * @param idUser user's ID,
      * @return list of events that have alert time in current minute
      */
-    public List<Event> getEventsToAlert(int idUser, ResourceBundle resourceBundle) {
+    public List<Event> getEventsToAlert(long idUser, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + idUser + "] events to alert.");
         final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("events-alert-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
@@ -173,6 +173,7 @@ public class EventsClient {
             });
             logger.info("Returning all user's [" + idUser + "] events to alert.");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
+//            windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
             if (ex instanceof JsonProcessingException) {
                 logger.error("Error. Something went wrong while finding all user's [" + idUser + "] events to alert", ex);
             } else if (ex instanceof ResourceAccessException) {
@@ -227,11 +228,11 @@ public class EventsClient {
      * @param event Event object with updated attributes,
      * @param id    id of that event
      */
-    public boolean updateEvent(Event event, int id, ResourceBundle resourceBundle) {
+    public boolean updateEvent(Event event, long id, ResourceBundle resourceBundle) {
         logger.info("Updating event [" + id + "]");
         final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("idEvent", id);
 
         boolean success = false;
@@ -258,11 +259,11 @@ public class EventsClient {
      * @param idUser  ID of the user to whom the event belongs,
      * @param idEvent ID of event that is going to be deleted.
      */
-    public boolean deleteEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
+    public boolean deleteEvent(long idUser, long idEvent, ResourceBundle resourceBundle) {
         logger.info("Deleting event [" + idEvent + "]");
         final String DELETE_EVENT_ENDPOINT = uriPropertiesReader.getProperty("delete-event-endpoint");
         final String uri = BASE_EVENTS_URI + DELETE_EVENT_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
 

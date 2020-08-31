@@ -36,7 +36,7 @@ public class RepetitionRepository {
         }
     }
 
-    public Repetition getRepetitionByEventId(int eventId) /*throws EmptyResultDataAccessException*/ {
+    public Repetition getRepetitionByEventId(long eventId) /*throws EmptyResultDataAccessException*/ {
         String sql = "SELECT r.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
                 " OR e.updated_event_id = " + eventId + ";";
 

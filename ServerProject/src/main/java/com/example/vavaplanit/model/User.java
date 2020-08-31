@@ -3,13 +3,13 @@ package com.example.vavaplanit.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private int idUser;
+    private long idUser;
     private String firstName;
     private String lastName;
     private String userName;
     private String userPassword;
 
-    public User(int idUser, String firstName, String lastName, String userName, String userPassword) {
+    public User(long idUser, String firstName, String lastName, String userName, String userPassword) {
         this.idUser = idUser;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -33,11 +33,11 @@ public class User implements Serializable {
         this.userPassword = userPassword;
     }
 
-    public int getIdUser() {
+    public long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 

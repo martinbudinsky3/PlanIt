@@ -23,11 +23,11 @@ public class RepetitionService {
         return repetitionRepository.add(repetition);
     }
 
-    public Repetition getRepetitionByEventId(int eventId) {
+    public Repetition getRepetitionByEventId(long eventId) {
         return this.repetitionRepository.getRepetitionByEventId(eventId);
     }
 
-    public List<LocalDate> getEventDates(int eventId, int month, int year) {
+    public List<LocalDate> getEventDates(long eventId, int month, int year) {
         Repetition repetition = getRepetitionByEventId(eventId);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
