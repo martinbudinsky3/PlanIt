@@ -72,9 +72,8 @@ public class EventRepository {
      * Assigning an event to a user
      * @param idUser ID of user
      * @param idEvent ID of Event*/
-    public Long addEventUser(long idUser, long idEvent) {
+    public void addEventUser(long idUser, long idEvent) {
         final String sql = "insert into planitschema.userevent (iduser, idevent) values (?,?)";
-        KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -84,13 +83,7 @@ public class EventRepository {
 
                 return ps;
             }
-        }, keyHolder);
-
-        if (keyHolder.getKeys() != null) {
-            return (Long) keyHolder.getKeys().get("idevent");
-        } else {
-            return null;
-        }
+        });
     }
 
     public List<Event> getEventsByDate(int idUser, LocalDate date) {

@@ -31,10 +31,10 @@ public class EventService {
     @Transactional
     public Long add(Event event, long idUser) {
         Long idEvent = eventRepository.add(event);
-//        if(idEvent != null) {
-        idEvent = this.eventRepository.addEventUser(idUser, idEvent);
-//        }
+        this.eventRepository.addEventUser(idUser, idEvent);
+
         if(event.getRepetition() != null) {
+            event.getRepetition().setEventId(idEvent);
             this.repetitionService.add(event.getRepetition());
         }
 
