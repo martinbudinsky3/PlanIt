@@ -57,7 +57,11 @@ public class Repetition {
     }
 
     public boolean checkDate(LocalDate date) {
-        return getDayDiff(date) % repetitionInterval == 0;
+        return checkBasicCondition(date) && getDayDiff(date) % repetitionInterval == 0;
+    }
+
+    protected boolean checkBasicCondition(LocalDate date) {
+        return !date.isBefore(start) && !date.isAfter(end);
     }
 
     public List<LocalDate> figureOutDates(int month, int year) {

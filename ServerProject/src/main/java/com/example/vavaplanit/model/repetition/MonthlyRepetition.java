@@ -45,7 +45,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
 
     @Override
     public boolean checkDate(LocalDate date) {
-        if(checkBasicCondition(date.getMonthValue(), date.getYear())) {
+        if(checkBasicCondition(date.getMonthValue(), date.getYear()) || checkBasicCondition(date)) {
             return false;
         }
 

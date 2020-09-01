@@ -71,7 +71,8 @@ public class WeeklyRepetition extends Repetition {
 
     @Override
     public boolean checkDate(LocalDate date) {
-        return getWeekDiff(date) % getRepetitionInterval() == 0 && daysOfWeek.contains(date.getDayOfWeek());
+        return checkBasicCondition(date) && getWeekDiff(date) % getRepetitionInterval() == 0 &&
+                daysOfWeek.contains(date.getDayOfWeek());
     }
 
     @Override
