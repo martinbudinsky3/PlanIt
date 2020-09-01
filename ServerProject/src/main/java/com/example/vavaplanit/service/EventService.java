@@ -42,10 +42,13 @@ public class EventService {
     }
 
     public List<Event> getEventsByDate(int idUser, String dateString) {
-        // TODO get all events that starts before or at given date
-        // TODO for each event: if has repetition check if given date match with repetition rules else check if given date equals with event's
         LocalDate date = LocalDate.parse(dateString);
-        return this.eventRepository.getEventsByDate(idUser, date);
+        List<Event> events = this.eventRepository.getEventsByDate(idUser, date);
+        // TODO for each event: if has repetition check if given date match with repetition rules else check if given date equals with event's
+        for(Event event : events) {
+
+        }
+        return events;
     }
 
     /**

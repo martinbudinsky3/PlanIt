@@ -45,6 +45,15 @@ public class RepetitionService {
                 .collect(Collectors.toList());
     }
 
+    public boolean checkDate(long eventId, LocalDate date) {
+        Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
+        if(repetition == null) {
+            return false;
+        }
+
+        return repetition.checkDate(date);
+    }
+
     public void update(Repetition repetition) {
         this.repetitionRepository.update(repetition);
     }

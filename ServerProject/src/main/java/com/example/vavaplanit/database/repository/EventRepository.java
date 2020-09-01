@@ -95,7 +95,7 @@ public class EventRepository {
     public List<Event> getEventsByDate(int idUser, LocalDate date) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
-                "AND e.date = '" + date + "' ORDER BY e.starts;";
+                "AND e.date <= '" + date + "' ORDER BY e.starts;";
         return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
     }
 

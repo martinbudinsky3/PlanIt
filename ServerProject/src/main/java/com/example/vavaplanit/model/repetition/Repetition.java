@@ -56,6 +56,10 @@ public class Repetition {
         this.eventId = eventId;
     }
 
+    public boolean checkDate(LocalDate date) {
+        return getDayDiff(date) % repetitionInterval == 0;
+    }
+
     public List<LocalDate> figureOutDates(int month, int year) {
         List<LocalDate> dates = new ArrayList<>();
 

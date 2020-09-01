@@ -70,6 +70,11 @@ public class WeeklyRepetition extends Repetition {
     }
 
     @Override
+    public boolean checkDate(LocalDate date) {
+        return getWeekDiff(date) % getRepetitionInterval() == 0 && daysOfWeek.contains(date.getDayOfWeek());
+    }
+
+    @Override
     public List<LocalDate> figureOutDates(int month, int year) {
         List<LocalDate> dates = new ArrayList<>();
 

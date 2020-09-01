@@ -44,6 +44,39 @@ public class MonthlyRepetition extends WeeklyRepetition {
     }
 
     @Override
+    public boolean checkDate(LocalDate date) {
+        if(checkBasicCondition(date.getMonthValue(), date.getYear())) {
+            return false;
+        }
+
+        if(dayOfMonth != null) {
+            return checkDateByDayOfMonth(date);
+        } else if(ordinal != null && getDaysOfWeek() != null) {
+            checkDateByOrdinalAndDayOfWeek(date);
+        }
+
+        return false;
+    }
+
+    private boolean checkDateByDayOfMonth(LocalDate date) {
+        LocalDate lastDayOfMonth = LocalDate.of(date.getYear(), date.getMonthValue(), 1).plusMonths(1).minusDays(1);
+
+        if(dayOfMonth > lastDayOfMonth.getDayOfMonth()) {
+            return date.equals(lastDayOfMonth);
+        } else {
+            return date.getDayOfMonth() == dayOfMonth;
+        }
+    }
+
+    private boolean checkDateByOrdinalAndDayOfWeek(LocalDate date) {
+        if(ordinal == 5) {
+            return date.equals(getDateOfLastWeekdayInMonth(date.getMonthValue(), date.getYear()));
+        } else {
+            return date.equals(getDateOfNthWeekdayInMonth(date.getMonthValue(), date.getYear()));
+        }
+    }
+
+    @Override
     public List<LocalDate> figureOutDates(int month, int year) {
         if(checkBasicCondition(month, year)) {
             return new ArrayList<>();
