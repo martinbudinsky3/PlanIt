@@ -23,12 +23,12 @@ public class RepetitionService {
         return repetitionRepository.add(repetition);
     }
 
-    public Repetition getRepetitionByEventId(long eventId) {
-        return this.repetitionRepository.getRepetitionByEventId(eventId);
+    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Long exceptionId) {
+        return this.repetitionRepository.getRepetitionByEventIdOrExceptionId(eventId, exceptionId);
     }
 
     public List<LocalDate> getEventDates(long eventId, int month, int year) {
-        Repetition repetition = getRepetitionByEventId(eventId);
+        Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
         LocalDate maxDate = minDate.plusMonths(1).minusDays(1);

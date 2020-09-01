@@ -48,6 +48,7 @@ public class Event implements Serializable {
 
     private long idEvent;
     private long idUser;
+    private long exceptionId;
     private String title;
     private String location;
     private Type type;
@@ -126,6 +127,22 @@ public class Event implements Serializable {
         this.repetition = repetition;
     }
 
+    public Event(long idEvent, long exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
+                 LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
+        this.idEvent = idEvent;
+        this.exceptionId = exceptionId;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.date = date;
+        this.starts = starts;
+        this.endsDate = endsDate;
+        this.ends = ends;
+        this.alertDate = alertDate;
+        this.alert = alert;
+    }
+
     public long getIdEvent() {
         return idEvent;
     }
@@ -140,6 +157,14 @@ public class Event implements Serializable {
 
     public void setIdUser(long idUser) {
         this.idUser = idUser;
+    }
+
+    public long getExceptionId() {
+        return exceptionId;
+    }
+
+    public void setExceptionId(long exceptionId) {
+        this.exceptionId = exceptionId;
     }
 
     public String getTitle() {
@@ -261,6 +286,7 @@ public class Event implements Serializable {
         Event event = (Event) o;
         return idEvent == event.idEvent &&
                 idUser == event.idUser &&
+                exceptionId == event.exceptionId &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
                 type == event.type &&
@@ -279,6 +305,6 @@ public class Event implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, type, description, date, dates, starts, endsDate, endsDates, ends, alertDate, alertDates, alert, repetition);
+        return Objects.hash(idEvent, idUser, exceptionId, title, location, type, description, date, dates, starts, endsDate, endsDates, ends, alertDate, alertDates, alert, repetition);
     }
 }

@@ -37,8 +37,14 @@ public class RepetitionRepository {
     }
 
     public Repetition getRepetitionByEventId(long eventId) /*throws EmptyResultDataAccessException*/ {
+        String sql = "SELECT r.* FROM planitschema.repetition WHERE event_id = " + eventId + ";";
+
+        return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
+    }
+
+    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Long exception_id) /*throws EmptyResultDataAccessException*/ {
         String sql = "SELECT r.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
-                " OR e.updated_event_id = " + eventId + ";";
+                " OR e.exception_id = " + exception_id + ";";
 
         return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
     }

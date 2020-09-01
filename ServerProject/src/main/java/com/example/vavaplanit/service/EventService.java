@@ -42,6 +42,7 @@ public class EventService {
     }
 
     public List<Event> getEventsByDate(int idUser, String dateString) {
+        // TODO repetition logic
         LocalDate date = LocalDate.parse(dateString);
         return this.eventRepository.getEventsByDate(idUser, date);
     }
@@ -69,8 +70,8 @@ public class EventService {
             }
 
             event.setDates(dates);
-            event.setEndsDates(countEndDates(event.getDate(), event.getEndsDate(), dates));
-            event.setAlertDates(countAlertDates(event.getDate(), event.getAlertDate(), dates));
+//            event.setEndsDates(countEndDates(event.getDate(), event.getEndsDate(), dates));
+//            event.setAlertDates(countAlertDates(event.getDate(), event.getAlertDate(), dates));
         }
 
         events.removeAll(filteredOutEvents);
@@ -84,7 +85,8 @@ public class EventService {
     @Transactional
     public Event getEvent(int idEvent){
         Event event = this.eventRepository.getEvent(idEvent);
-        event.setRepetition(this.repetitionService.getRepetitionByEventId(idEvent));
+        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+
         return event;
     }
 
@@ -116,6 +118,7 @@ public class EventService {
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
     public void update(long id, Event event){
+
         this.eventRepository.update(id, event);
     }
 
