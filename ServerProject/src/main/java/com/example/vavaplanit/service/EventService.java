@@ -42,7 +42,8 @@ public class EventService {
     }
 
     public List<Event> getEventsByDate(int idUser, String dateString) {
-        // TODO repetition logic
+        // TODO get all events that starts before or at given date
+        // TODO for each event: if has repetition check if given date match with repetition rules else check if given date equals with event's
         LocalDate date = LocalDate.parse(dateString);
         return this.eventRepository.getEventsByDate(idUser, date);
     }
@@ -70,8 +71,6 @@ public class EventService {
             }
 
             event.setDates(dates);
-//            event.setEndsDates(countEndDates(event.getDate(), event.getEndsDate(), dates));
-//            event.setAlertDates(countAlertDates(event.getDate(), event.getAlertDate(), dates));
         }
 
         events.removeAll(filteredOutEvents);
@@ -82,6 +81,7 @@ public class EventService {
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
+    // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
     @Transactional
     public Event getEvent(int idEvent){
         Event event = this.eventRepository.getEvent(idEvent);
@@ -101,6 +101,7 @@ public class EventService {
     /**
      * Getting all events of user that have notifications set for current time and date
      * @param idUser ID of user*/
+    // TODO new alert logic
     public List<Event> getEventsToAlert(int idUser, String currentTimeString){
         LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -118,8 +119,14 @@ public class EventService {
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
     public void update(long id, Event event){
+        if(event.getRepetition() == null) {
+            this.eventRepository.update(id, event);
+        } else {
+            // TODO create exception
+            // TODO set exceptionId to event
+            // TODO insert event
+        }
 
-        this.eventRepository.update(id, event);
     }
 
     public void updateRepetition(int id, Event event){
@@ -128,14 +135,19 @@ public class EventService {
             delete(id);
         }
 
-        update(event.getRepetition().getEventId(), event);
+        this.eventRepository.update(event.getRepetition().getEventId(), event);
     }
 
     /**
-     * Delete event by user'd and event's id
+     * Delete event by event's id
      * @param idEvent ID of Event which is going to be deleted */
     public void delete(int idEvent) {
         this.eventRepository.deleteFromEvent(idEvent);
+    }
+
+    public void deleteFromRepetition(int idEvent, String date) {
+        // TODO parse LocalDate from String param
+        // TODO insert exception with repetition_id = idEvent and param date
     }
 
     private List<LocalDate> countEndDates(LocalDate date1, LocalDate date2, List<LocalDate> dates) {
