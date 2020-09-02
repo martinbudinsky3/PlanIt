@@ -32,7 +32,7 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval,
-                            int daysOfWeek) {
+                            Integer daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
     }
@@ -58,9 +58,7 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public void setDaysOfWeek(Integer daysOfWeek) {
-        if(daysOfWeek == null) {
-            this.daysOfWeek = null;
-        } else {
+        if(daysOfWeek != null) {
             for(int i = 0; i < DAYS_OF_WEEK_NUMBER; i++) {
                 if(((daysOfWeek >> i) & 1) == 1) {
                     this.daysOfWeek.add(intToDayOfWeekMap.get(i));

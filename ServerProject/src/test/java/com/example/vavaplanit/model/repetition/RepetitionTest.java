@@ -192,5 +192,4 @@ public class RepetitionTest {
             return repetition.checkDate(date);
         }
     }
-
 }
