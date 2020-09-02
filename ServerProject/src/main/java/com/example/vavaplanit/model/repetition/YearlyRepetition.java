@@ -29,6 +29,6 @@ public class YearlyRepetition extends MonthlyRepetition {
 
     @Override
     protected boolean checkBasicCondition(int month, int year) {
-        return getMonth() != month || (year - getStart().getYear()) % getRepetitionInterval() != 0;
+        return getMonth() == month && (year - getStart().getYear()) % getRepetitionInterval() == 0;
     }
 }

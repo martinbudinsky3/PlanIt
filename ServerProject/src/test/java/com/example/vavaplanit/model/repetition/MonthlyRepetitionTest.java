@@ -164,13 +164,22 @@ public class MonthlyRepetitionTest {
 
         @Nested
         @DisplayName("Repetition with day of month tests")
-        class FigureOutDatesFromDayOfMonthTests {
+        class CheckDateRepetitionWithDayOfMonthTests {
+            @Test
+            public void lastDateOfMonthWithDayOfMonth31ReturnsTrue() {
+                boolean expected = true;
 
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 31),
+                        LocalDate.of(2020, 12, 31), 1, null, 31, null,
+                        LocalDate.of(2020, 9, 30));
+
+                assertEquals(expected, actual);
+            }
         }
 
         @Nested
         @DisplayName("Repetition with ordinal of day of week tests")
-        class FigureOutDatesFromOrdinalAndDayOfWeekTests {
+        class CheckDateWithOrdinalAndDayOfWeekTests {
 
         }
 

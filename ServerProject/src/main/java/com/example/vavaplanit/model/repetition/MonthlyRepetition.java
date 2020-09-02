@@ -1,8 +1,11 @@
 package com.example.vavaplanit.model.repetition;
 
+import com.example.vavaplanit.api.EventController;
 import com.example.vavaplanit.model.Exception;
 import org.joda.time.DateTime;
 import org.joda.time.Months;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -45,14 +48,14 @@ public class MonthlyRepetition extends WeeklyRepetition {
 
     @Override
     public boolean checkDate(LocalDate date) {
-        if(checkBasicCondition(date.getMonthValue(), date.getYear()) || checkBasicCondition(date)) {
+        if(!checkBasicCondition(date.getMonthValue(), date.getYear()) || !checkBasicCondition(date)) {
             return false;
         }
 
         if(dayOfMonth != null) {
             return checkDateByDayOfMonth(date);
         } else if(ordinal != null && getDaysOfWeek() != null) {
-            checkDateByOrdinalAndDayOfWeek(date);
+            return checkDateByOrdinalAndDayOfWeek(date);
         }
 
         return false;
@@ -78,7 +81,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
 
     @Override
     public List<LocalDate> figureOutDates(int month, int year) {
-        if(checkBasicCondition(month, year)) {
+        if(!checkBasicCondition(month, year)) {
             return new ArrayList<>();
         }
 
@@ -92,7 +95,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
     }
 
     protected boolean checkBasicCondition(int month, int year) {
-        return getMonthDiff(LocalDate.of(year, month, 1)) % getRepetitionInterval() != 0;
+        return getMonthDiff(LocalDate.of(year, month, 1)) % getRepetitionInterval() == 0;
     }
 
     protected List<LocalDate> figureOutDatesFromDayOfMonth(int month, int year) {
