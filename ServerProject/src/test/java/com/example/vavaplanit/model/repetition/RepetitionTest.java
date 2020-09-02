@@ -166,6 +166,26 @@ public class RepetitionTest {
             assertEquals(expected, actual);
         }
 
+        @Test
+        public void dateInRepetitionStartDateReturnsTrue() {
+            boolean expected = true;
+
+            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 3, LocalDate.of(2020, 9, 15));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateInRepetitionEndDateReturnsTrue() {
+            boolean expected = true;
+
+            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 1, LocalDate.of(2020, 12, 15));
+
+            assertEquals(expected, actual);
+        }
+
         private boolean createDailyRepetitionAndCheckDate(Long eventId, LocalDate start, LocalDate end,
                                                           int repetitionInterval, LocalDate date) {
             Repetition repetition = new Repetition(eventId, start, end, repetitionInterval);

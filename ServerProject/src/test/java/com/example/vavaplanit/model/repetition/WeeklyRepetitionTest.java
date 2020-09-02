@@ -209,4 +209,85 @@ public class WeeklyRepetitionTest {
             return repetition.figureOutDates(month, year);
         }
     }
+
+    @Nested
+    @DisplayName("Tests for checking given date against repetition rules")
+    class CheckDateTests {
+        @Test
+        public void dateBeforeRepetitionStartReturnsFalse() {
+            boolean expected = false;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 1, 2, LocalDate.of(2020, 9, 1));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateAfterRepetitionEndReturnsFalse() {
+            boolean expected = false;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 1, 2, LocalDate.of(2020, 12, 16));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateSomewhereBetweenTwoRepetitionsReturnsFalse() {
+            boolean expected = false;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 2, 2, LocalDate.of(2020, 10, 1));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateExactlyBetweenTwoRepetitionsReturnsFalse() {
+            boolean expected = false;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 2, 2, LocalDate.of(2020, 9, 22));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateInRepetitionDateReturnsTrue() {
+            boolean expected = true;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 2, 2, LocalDate.of(2020, 10, 13));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateInRepetitionStartDateReturnsTrue() {
+            boolean expected = true;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 2, 2, LocalDate.of(2020, 9, 15));
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void dateInRepetitionEndDateReturnsTrue() {
+            boolean expected = true;
+
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+                    LocalDate.of(2020, 12, 15), 1, 2, LocalDate.of(2020, 12, 15));
+
+            assertEquals(expected, actual);
+        }
+
+        private boolean createWeeklyRepetitionAndCheckDate(Long eventId, LocalDate start, LocalDate end,
+                                                                  int repetitionInterval, Integer daysOfWeek, LocalDate date) {
+            WeeklyRepetition repetition = new WeeklyRepetition(eventId, start, end, repetitionInterval, daysOfWeek);
+
+            return repetition.checkDate(date);
+        }
+    }
 }
