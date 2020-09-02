@@ -166,6 +166,28 @@ public class MonthlyRepetitionTest {
         @DisplayName("Repetition with day of month tests")
         class CheckDateRepetitionWithDayOfMonthTests {
             @Test
+            public void dateExactlyBetweenTwoRepetitionsReturnsFalse() {
+                boolean expected = false;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                        LocalDate.of(2020, 12, 15), 2, null, 15, null,
+                        LocalDate.of(2020, 9, 15));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void dateSomewhereBetweenTwoRepetitionsReturnsFalse() {
+                boolean expected = false;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                        LocalDate.of(2020, 12, 15), 2, null, 15, null,
+                        LocalDate.of(2020, 11, 5));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
             public void lastDateOfMonthWithDayOfMonth31ReturnsTrue() {
                 boolean expected = true;
 
@@ -175,12 +197,87 @@ public class MonthlyRepetitionTest {
 
                 assertEquals(expected, actual);
             }
+
+            @Test
+            public void dateInRepetitionDayOfMonthAndInterval3ReturnsTrue() {
+                boolean expected = true;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                        LocalDate.of(2021, 8, 15), 3, null, 15, null,
+                        LocalDate.of(2020, 11, 15));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void dateInRepetitionDateWithYearOverlapReturnsTrue() {
+                boolean expected = true;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2019, 8, 31),
+                        LocalDate.of(2020, 12, 31), 2, null, 31, null,
+                        LocalDate.of(2020, 2, 29));
+
+                assertEquals(expected, actual);
+            }
         }
 
         @Nested
         @DisplayName("Repetition with ordinal of day of week tests")
         class CheckDateWithOrdinalAndDayOfWeekTests {
+            @Test
+            public void dateExactlyBetweenTwoRepetitionsReturnsFalse() {
+                boolean expected = false;
 
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                        LocalDate.of(2020, 12, 19), 2, 32, null, 3,
+                        LocalDate.of(2020, 9, 19));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void dateSomewhereBetweenTwoRepetitionsReturnsFalse() {
+                boolean expected = false;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                        LocalDate.of(2020, 12, 19), 2, 32, null, 3,
+                        LocalDate.of(2020, 11, 5));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void lastFridayDateReturnsTrue() {
+                boolean expected = true;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 28),
+                        LocalDate.of(2020, 12, 25), 1, 16, null, 5,
+                        LocalDate.of(2020, 9, 25));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void dateIn3rdWednesdayAndInterval3ReturnsTrue() {
+                boolean expected = true;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 19),
+                        LocalDate.of(2021, 5, 19), 3, 4, null, 3,
+                        LocalDate.of(2020, 11, 18));
+
+                assertEquals(expected, actual);
+            }
+
+            @Test
+            public void dateInRepetitionDateWithYearOverlapReturnsTrue() {
+                boolean expected = true;
+
+                boolean actual = createMonthlyRepetitionAndCheckDate(1L, LocalDate.of(2019, 8, 31),
+                        LocalDate.of(2021, 2, 22), 1, 1, null, 5,
+                        LocalDate.of(2021, 1, 25));
+
+                assertEquals(expected, actual);
+            }
         }
 
         private boolean createMonthlyRepetitionAndCheckDate(Long eventId, LocalDate start, LocalDate end,

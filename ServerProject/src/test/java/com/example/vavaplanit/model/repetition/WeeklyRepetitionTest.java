@@ -264,21 +264,11 @@ public class WeeklyRepetitionTest {
         }
 
         @Test
-        public void dateInRepetitionStartDateReturnsTrue() {
+        public void dateInRepetitionDateWithYearOverlapReturnsTrue() {
             boolean expected = true;
 
-            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
-                    LocalDate.of(2020, 12, 15), 2, 2, LocalDate.of(2020, 9, 15));
-
-            assertEquals(expected, actual);
-        }
-
-        @Test
-        public void dateInRepetitionEndDateReturnsTrue() {
-            boolean expected = true;
-
-            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
-                    LocalDate.of(2020, 12, 15), 1, 2, LocalDate.of(2020, 12, 15));
+            boolean actual = createWeeklyRepetitionAndCheckDate(1L, LocalDate.of(2020, 12, 15),
+                    LocalDate.of(2021, 6, 15), 2, 2, LocalDate.of(2021, 1, 12));
 
             assertEquals(expected, actual);
         }
