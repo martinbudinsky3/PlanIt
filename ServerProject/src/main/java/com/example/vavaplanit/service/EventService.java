@@ -79,10 +79,27 @@ public class EventService {
      * Getting event by it's ID
      * @param idEvent ID of the event*/
     // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
-    @Transactional
     public Event getEvent(int idEvent){
         Event event = this.eventRepository.getEvent(idEvent);
         event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+
+        return event;
+    }
+
+    /**
+     * Getting event by it's ID
+     * @param idEvent ID of the event*/
+    // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
+    public Event getEvent(int idEvent, String dateString){
+        LocalDate date = LocalDate.parse(dateString);
+        Event event = this.eventRepository.getEvent(idEvent);
+
+        if(this.repetitionService.checkDate(idEvent, date)) {
+            event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+            event.setDate(date);
+            event.setEndsDate(countEndDate(event.getDate(), event.getEndsDate(), date));
+            event.setAlertDate(countAlertDate(event.getDate(), event.getAlertDate(), date));
+        }
 
         return event;
     }
@@ -147,16 +164,16 @@ public class EventService {
         // TODO insert exception with repetition_id = idEvent and param date
     }
 
-    private List<LocalDate> countEndDates(LocalDate date1, LocalDate date2, List<LocalDate> dates) {
-        int dayDiff = getDayDiff(date1, date2);
+    private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {
+        int dayDiff = getDayDiff(defaultStart, defaultEnd);
 
-        return dates.stream().map(date -> date.plusDays(dayDiff)).collect(Collectors.toList());
+        return date.plusDays(dayDiff);
     }
 
-    private List<LocalDate> countAlertDates(LocalDate date1, LocalDate date2, List<LocalDate> dates) {
-        int dayDiff = getDayDiff(date1, date2);
+    private LocalDate countAlertDate(LocalDate defaultStart, LocalDate defaultAlert, LocalDate date) {
+        int dayDiff = getDayDiff(defaultStart, defaultAlert);
 
-        return dates.stream().map(date -> date.minusDays(dayDiff)).collect(Collectors.toList());
+        return date.minusDays(dayDiff);
     }
 
     private int getDayDiff(LocalDate date1, LocalDate date2) {
