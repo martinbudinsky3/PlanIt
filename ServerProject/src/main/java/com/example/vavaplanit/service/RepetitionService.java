@@ -19,8 +19,14 @@ public class RepetitionService {
     @Autowired
     private ExceptionRepository exceptionRepository;
 
-    public Long add(Repetition repetition) {
+    public Long addRepetition(Repetition repetition) {
         return repetitionRepository.add(repetition);
+    }
+
+    public Long addException(Long repetitionId, LocalDate exceptionDate) {
+        Exception exception = new Exception(exceptionDate, repetitionId);
+
+        return exceptionRepository.add(exception);
     }
 
     public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Long exceptionId) {

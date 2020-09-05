@@ -6,7 +6,6 @@ public class Exception {
     private long exceptionId;
     private LocalDate date;
     private long repetitionId;
-    private Integer eventId;
 
     public Exception() {
     }
@@ -15,11 +14,15 @@ public class Exception {
         this.date = date;
     }
 
-    public Exception(long exceptionId, LocalDate date, long repetitionId, Integer eventId) {
+    public Exception(LocalDate date, long repetitionId) {
+        this.date = date;
+        this.repetitionId = repetitionId;
+    }
+
+    public Exception(long exceptionId, LocalDate date, long repetitionId) {
         this.exceptionId = exceptionId;
         this.date = date;
         this.repetitionId = repetitionId;
-        this.eventId = eventId;
     }
 
     public long getExceptionId() {
@@ -44,13 +47,5 @@ public class Exception {
 
     public void setRepetitionId(long repetitionId) {
         this.repetitionId = repetitionId;
-    }
-
-    public Integer getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Integer eventId) {
-        this.eventId = eventId;
     }
 }

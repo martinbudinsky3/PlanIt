@@ -35,7 +35,7 @@ public class EventService {
 
         if(event.getRepetition() != null) {
             event.getRepetition().setEventId(idEvent);
-            this.repetitionService.add(event.getRepetition());
+            this.repetitionService.addRepetition(event.getRepetition());
         }
 
         return idEvent;
@@ -137,6 +137,7 @@ public class EventService {
             this.eventRepository.update(id, event);
         } else {
             // TODO create exception
+            repetitionService.addException(id, event.getDate());
             // TODO set exceptionId to event
             // TODO insert event
         }
