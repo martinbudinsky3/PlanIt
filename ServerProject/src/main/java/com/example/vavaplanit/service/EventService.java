@@ -78,8 +78,7 @@ public class EventService {
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
-    // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
-    public Event getEvent(int idEvent){
+    public Event getEvent(long idEvent){
         Event event = this.eventRepository.getEvent(idEvent);
         event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
 
@@ -90,7 +89,7 @@ public class EventService {
      * Getting event by it's ID
      * @param idEvent ID of the event*/
     // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
-    public Event getEvent(int idEvent, String dateString){
+    public Event getEvent(long idEvent, String dateString){
         LocalDate date = LocalDate.parse(dateString);
         Event event = this.eventRepository.getEvent(idEvent);
 
@@ -134,8 +133,8 @@ public class EventService {
      * @param id id of Event which is going to be updated*/
     @Transactional
     public void update(long id, Event event){
-        // TODO create 2 methods for update one for event with repetiton, one for event without
-        if(event.getRepetition() == null) {
+        Event eventFromDb = this.eventRepository.getEvent(id);
+        if(event.getRepetition() == null || eventFromDb.getExceptionId() != null) {
             this.eventRepository.update(id, event);
         } else {
             Long exceptionId = repetitionService.addException(id, event.getDate());

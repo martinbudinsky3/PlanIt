@@ -48,7 +48,7 @@ public class Event implements Serializable {
 
     private long idEvent;
     private long idUser;
-    private long exceptionId;
+    private Long exceptionId;
     private String title;
     private String location;
     private Type type;
@@ -57,10 +57,8 @@ public class Event implements Serializable {
     private List<LocalDate> dates = new ArrayList<>();
     private LocalTime starts;
     private LocalDate endsDate;
-    private List<LocalDate> endsDates = new ArrayList<>();
     private LocalTime ends;
     private LocalDate alertDate;
-    private List<LocalDate> alertDates = new ArrayList<>();
     private LocalTime alert;
     private Repetition repetition;
 
@@ -74,60 +72,7 @@ public class Event implements Serializable {
         this.starts = starts;
     }
 
-    public Event(long idEvent, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
-                 LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
-        this.idEvent = idEvent;
-        this.title = title;
-        this.location = location;
-        this.type = type;
-        this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
-        this.alertDate = alertDate;
-        this.alert = alert;
-    }
-
-    public Event(long idEvent, long idUser, String title, String location, Type type, String description, LocalDate date,
-                 LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert, Repetition repetition) {
-        this.idEvent = idEvent;
-        this.idUser = idUser;
-        this.title = title;
-        this.location = location;
-        this.type = type;
-        this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
-        this.alertDate = alertDate;
-        this.alert = alert;
-        this.repetition = repetition;
-    }
-
-    public Event(long idEvent, long idUser, String title, String location, Type type, String description, LocalDate date,
-                 List<LocalDate> dates, LocalTime starts, LocalDate endsDate, List<LocalDate> endsDates, LocalTime ends,
-                 LocalDate alertDate, List<LocalDate> alertDates, LocalTime alert, Repetition repetition) {
-        this.idEvent = idEvent;
-        this.idUser = idUser;
-        this.title = title;
-        this.location = location;
-        this.type = type;
-        this.description = description;
-        this.date = date;
-        this.dates = dates;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.endsDates = endsDates;
-        this.ends = ends;
-        this.alertDate = alertDate;
-        this.alertDates = alertDates;
-        this.alert = alert;
-        this.repetition = repetition;
-    }
-
-    public Event(long idEvent, long exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
+    public Event(long idEvent, Long exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.exceptionId = exceptionId;
@@ -159,11 +104,11 @@ public class Event implements Serializable {
         this.idUser = idUser;
     }
 
-    public long getExceptionId() {
+    public Long getExceptionId() {
         return exceptionId;
     }
 
-    public void setExceptionId(long exceptionId) {
+    public void setExceptionId(Long exceptionId) {
         this.exceptionId = exceptionId;
     }
 
@@ -263,22 +208,6 @@ public class Event implements Serializable {
         this.dates = dates;
     }
 
-    public List<LocalDate> getEndsDates() {
-        return endsDates;
-    }
-
-    public void setEndsDates(List<LocalDate> endsDates) {
-        this.endsDates = endsDates;
-    }
-
-    public List<LocalDate> getAlertDates() {
-        return alertDates;
-    }
-
-    public void setAlertDates(List<LocalDate> alertDates) {
-        this.alertDates = alertDates;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -286,7 +215,7 @@ public class Event implements Serializable {
         Event event = (Event) o;
         return idEvent == event.idEvent &&
                 idUser == event.idUser &&
-                exceptionId == event.exceptionId &&
+                Objects.equals(exceptionId, event.exceptionId) &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
                 type == event.type &&
@@ -295,16 +224,15 @@ public class Event implements Serializable {
                 Objects.equals(dates, event.dates) &&
                 Objects.equals(starts, event.starts) &&
                 Objects.equals(endsDate, event.endsDate) &&
-                Objects.equals(endsDates, event.endsDates) &&
                 Objects.equals(ends, event.ends) &&
                 Objects.equals(alertDate, event.alertDate) &&
-                Objects.equals(alertDates, event.alertDates) &&
                 Objects.equals(alert, event.alert) &&
                 Objects.equals(repetition, event.repetition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, exceptionId, title, location, type, description, date, dates, starts, endsDate, endsDates, ends, alertDate, alertDates, alert, repetition);
+        return Objects.hash(idEvent, idUser, exceptionId, title, location, type, description, date, dates, starts, endsDate,
+                ends, alertDate, alert, repetition);
     }
 }

@@ -114,7 +114,7 @@ public class EventRepository {
      *
      * @param idEvent ID of the event
      */
-    public Event getEvent(int idEvent) {
+    public Event getEvent(long idEvent) {
         String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
