@@ -114,17 +114,50 @@ public class EventController {
         }
     }
 
+    @PutMapping("/repetition/{id}")
+    public ResponseEntity updateRepetition(@PathVariable("id") int id, @RequestBody Event event) {
+        logger.info("Updating repetition. Event's ID: " + id);
+        Event eventFromDb = eventService.getEvent(id);
+        if(eventFromDb != null && eventFromDb.getRepetition() != null){
+            eventService.updateRepetition(id, event);
+            logger.info("Repetition [" + id + "] successfully updated.");
+            return ResponseEntity.ok().build();
+        } else {
+            logger.error("Error. Repetition with id: " + id + " does not exist.");
+            return ResponseEntity.status(HttpStatus.
+                    PRECONDITION_FAILED).
+                    body("Repetition with id: " + id + " does not exist");
+        }
+    }
+
     /**
      * Deleting event from calendar
      * @param idUser ID of user
      * @param idEvent ID of event
      * */
     @DeleteMapping("{idUser}/{idEvent}")
-    public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent) {
+    public ResponseEntity delete(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent) {
         logger.info("Deleting event. Event's ID: " + idEvent);
         if(eventService.getUserEvent(idUser, idEvent) != null){
             eventService.delete(idEvent);
             logger.info("Event [" + idEvent + "] successfully deleted.");
+            return ResponseEntity.ok().build();
+        } else {
+            logger.error("Error. Event with id: " + idEvent + " does not exist ");
+            return ResponseEntity.status(HttpStatus.
+                    PRECONDITION_FAILED).
+                    body("Event with id: " + idEvent + " does not exist");
+        }
+    }
+
+    @DeleteMapping("/repetition/{idUser}/{idEvent}/{date}")
+    public ResponseEntity deleteFromRepetition(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent,
+                                               @PathVariable("date") String date) {
+        logger.info("Deleting event from repetition. Event's ID: " + idEvent);
+        Event eventFromDb = eventService.getUserEvent(idUser, idEvent);
+        if(eventFromDb != null){
+            eventService.deleteFromRepetition(idEvent, date, eventFromDb.getExceptionId());
+            logger.info("Event [" + idEvent + "] successfully deleted from repetition.");
             return ResponseEntity.ok().build();
         } else {
             logger.error("Error. Event with id: " + idEvent + " does not exist ");

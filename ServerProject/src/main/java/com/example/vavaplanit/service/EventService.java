@@ -107,7 +107,7 @@ public class EventService {
      * Getting event by it's ID and user's ID
      * @param idUser ID of the user
      * @param idEvent ID of the event*/
-    public Event getUserEvent(int idUser, int idEvent){
+    public Event getUserEvent(long idUser, long idEvent){
         return this.eventRepository.getUserEvent(idUser, idEvent);
     }
 
@@ -157,13 +157,18 @@ public class EventService {
     /**
      * Delete event by event's id
      * @param idEvent ID of Event which is going to be deleted */
-    public void delete(int idEvent) {
+    public void delete(long idEvent) {
         this.eventRepository.delete(idEvent);
     }
 
-    public void deleteFromRepetition(long idEvent, String dateString) {
+    public void deleteFromRepetition(long idEvent, String dateString, Long exceptionId) {
         LocalDate date = LocalDate.parse(dateString);
-        this.repetitionService.addException(idEvent, date);
+
+        if(exceptionId == null) {
+            this.repetitionService.addException(idEvent, date);
+        } else {
+            delete(idEvent);
+        }
     }
 
     private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {

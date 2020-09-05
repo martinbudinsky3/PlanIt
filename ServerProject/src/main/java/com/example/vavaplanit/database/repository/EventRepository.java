@@ -111,7 +111,6 @@ public class EventRepository {
 
     /**
      * Getting event by it's ID
-     *
      * @param idEvent ID of the event
      */
     public Event getEvent(long idEvent) {
@@ -125,7 +124,7 @@ public class EventRepository {
      * @param idUser  ID of the user
      * @param idEvent ID of the event
      */
-    public Event getUserEvent(int idUser, int idEvent) {
+    public Event getUserEvent(long idUser, long idEvent) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
                 " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
@@ -163,7 +162,7 @@ public class EventRepository {
      *
      * @param id ID of Event which is going to be deleted
      */
-    public void delete(int id) {
+    public void delete(long id) {
         String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
         jdbcTemplate.update(sql, id);
     }
