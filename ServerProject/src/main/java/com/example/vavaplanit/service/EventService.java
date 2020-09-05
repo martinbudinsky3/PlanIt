@@ -132,14 +132,13 @@ public class EventService {
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
     @Transactional
-    public void update(long id, Event event){
-        Event eventFromDb = this.eventRepository.getEvent(id);
-        if(event.getRepetition() == null || eventFromDb.getExceptionId() != null) {
+    public void update(long id, Event event, Long exceptionId){
+        if(event.getRepetition() == null || exceptionId != null) {
             this.eventRepository.update(id, event);
         } else {
-            Long exceptionId = repetitionService.addException(id, event.getDate());
-            if(exceptionId != null) {
-                event.setExceptionId(exceptionId);
+            Long newExceptionId = repetitionService.addException(id, event.getDate());
+            if(newExceptionId != null) {
+                event.setExceptionId(newExceptionId);
                 this.eventRepository.add(event);
             }
         }
@@ -159,12 +158,12 @@ public class EventService {
      * Delete event by event's id
      * @param idEvent ID of Event which is going to be deleted */
     public void delete(int idEvent) {
-        this.eventRepository.deleteFromEvent(idEvent);
+        this.eventRepository.delete(idEvent);
     }
 
-    public void deleteFromRepetition(int idEvent, String date) {
-        // TODO parse LocalDate from String param
-        // TODO insert exception with repetition_id = idEvent and param date
+    public void deleteFromRepetition(long idEvent, String dateString) {
+        LocalDate date = LocalDate.parse(dateString);
+        this.repetitionService.addException(idEvent, date);
     }
 
     private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {

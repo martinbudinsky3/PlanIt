@@ -163,7 +163,7 @@ public class EventRepository {
      *
      * @param id ID of Event which is going to be deleted
      */
-    public void deleteFromEvent(int id) {
+    public void delete(int id) {
         String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
         jdbcTemplate.update(sql, id);
     }

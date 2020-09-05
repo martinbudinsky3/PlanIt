@@ -101,8 +101,9 @@ public class EventController {
     @PutMapping("{id}")
     public ResponseEntity updateEvent(@PathVariable("id") int id, @RequestBody Event event) {
         logger.info("Updating event. Event's ID: " + id);
-        if(eventService.getEvent(id) != null){
-            eventService.update(id, event);
+        Event eventFromDb = eventService.getEvent(id);
+        if(eventFromDb != null){
+            eventService.update(id, event, eventFromDb.getExceptionId());
             logger.info("Event [" + id + "] successfully updated.");
             return ResponseEntity.ok().build();
         } else {
