@@ -44,11 +44,9 @@ public class EventService {
     public List<Event> getEventsByDate(int idUser, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
         List<Event> events = this.eventRepository.getEventsByDate(idUser, date);
-        // TODO for each event: if has repetition check if given date match with repetition rules else check if given date equals with event's
-        for(Event event : events) {
 
-        }
-        return events;
+        return events.stream().filter(event -> this.repetitionService.checkDate(event.getIdEvent(), date) ||
+                event.getDate().equals(date)).collect(Collectors.toList());
     }
 
     /**
@@ -64,21 +62,17 @@ public class EventService {
         LocalDate maxDate = minDate.plusMonths(1);
 
         List<Event> events = this.eventRepository.getEventsByMonthAndUserId(idUser, minDate, maxDate);
-        List<Event> filteredOutEvents = new ArrayList<>();
+        List<Event> eventsInMonth = new ArrayList<>();
 
         for(Event event : events) {
             List<LocalDate> dates = this.repetitionService.getEventDates(event.getIdEvent(), month, year);
-            if(dates.isEmpty() && event.getDate().isBefore(minDate)) {
-                filteredOutEvents.add(event);
-                continue;
+            if(!dates.isEmpty() || !event.getDate().isBefore(minDate)) {
+                event.setDates(dates);
+                eventsInMonth.add(event);
             }
-
-            event.setDates(dates);
         }
 
-        events.removeAll(filteredOutEvents);
-
-        return events;
+        return eventsInMonth;
     }
 
     /**
