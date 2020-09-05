@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// TODO more detail error handling - with own exceptions thrown from service layer and caught in controllers
+
 @Service
 public class EventService {
     @Autowired
@@ -41,7 +43,7 @@ public class EventService {
         return idEvent;
     }
 
-    public List<Event> getEventsByDate(int idUser, String dateString) {
+    public List<Event> getEventsByDate(long idUser, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
         List<Event> events = this.eventRepository.getEventsByDate(idUser, date);
 
@@ -57,7 +59,7 @@ public class EventService {
      * @param month selected month
      * @return list of events
      */
-    public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
+    public List<Event> getEventsByMonthAndUserId(long idUser, int year, int month){
         LocalDate minDate = LocalDate.of(year, month, 1);
         LocalDate maxDate = minDate.plusMonths(1);
 
@@ -78,20 +80,23 @@ public class EventService {
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
-    public Event getEvent(long idEvent){
-        Event event = this.eventRepository.getEvent(idEvent);
-        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
-
-        return event;
+    public Event getEvent(long idUser, long idEvent){
+        return this.eventRepository.getEvent(idUser, idEvent);
     }
 
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
-    // TODO add date to parameter, check date in Repetition, set date to event and count end and alert date of event
-    public Event getEvent(long idEvent, String dateString){
+    public Event getEventWithRepetition(long idUser, long idEvent){
+        Event event = this.eventRepository.getEvent(idUser, idEvent);
+        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+
+        return event;
+    }
+
+    public Event getEvent(long idUser, long idEvent, String dateString){
         LocalDate date = LocalDate.parse(dateString);
-        Event event = this.eventRepository.getEvent(idEvent);
+        Event event = this.eventRepository.getEvent(idUser, idEvent);
 
         if(this.repetitionService.checkDate(idEvent, date)) {
             event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
@@ -104,18 +109,10 @@ public class EventService {
     }
 
     /**
-     * Getting event by it's ID and user's ID
-     * @param idUser ID of the user
-     * @param idEvent ID of the event*/
-    public Event getUserEvent(long idUser, long idEvent){
-        return this.eventRepository.getUserEvent(idUser, idEvent);
-    }
-
-    /**
      * Getting all events of user that have notifications set for current time and date
      * @param idUser ID of user*/
     // TODO new alert logic
-    public List<Event> getEventsToAlert(int idUser, String currentTimeString){
+    public List<Event> getEventsToAlert(long idUser, String currentTimeString){
         LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -92,7 +92,7 @@ public class EventRepository {
         });
     }
 
-    public List<Event> getEventsByDate(int idUser, LocalDate date) {
+    public List<Event> getEventsByDate(long idUser, LocalDate date) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
                 "AND e.date <= '" + date + "' ORDER BY e.starts;";
@@ -102,20 +102,11 @@ public class EventRepository {
     /**
      * Getting all events that belong to user and starts dates of these events are in given range.
      */
-    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
+    public List<Event> getEventsByMonthAndUserId(long idUser, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue JOIN planitschema.event e " +
                 "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date < '" + maxDate +
                 "' ORDER BY e.starts;";
         return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
-    }
-
-    /**
-     * Getting event by it's ID
-     * @param idEvent ID of the event
-     */
-    public Event getEvent(long idEvent) {
-        String sql = "SELECT * FROM planitschema.event WHERE idevent = '" + idEvent + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
     /**
@@ -124,7 +115,7 @@ public class EventRepository {
      * @param idUser  ID of the user
      * @param idEvent ID of the event
      */
-    public Event getUserEvent(long idUser, long idEvent) {
+    public Event getEvent(long idUser, long idEvent) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
                 " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
@@ -138,7 +129,7 @@ public class EventRepository {
      * @param date   selected date
      * @param time   selected time
      */
-    public List<Event> getEventsToAlert(int idUser, String date, String time) {
+    public List<Event> getEventsToAlert(long idUser, String date, String time) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
                 " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
         return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
