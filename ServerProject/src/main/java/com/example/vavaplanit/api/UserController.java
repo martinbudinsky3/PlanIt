@@ -51,7 +51,7 @@ public class UserController {
      * @param userPassword password
      * @return user object to which entered data belong
      */
-    @RequestMapping(value = "/{userName}/{userPassword}", method = RequestMethod.GET)
+    @GetMapping(value = "/{userName}/{userPassword}")
     public ResponseEntity getUserByUsernameAndPassword(@PathVariable("userName") String userName, @PathVariable("userPassword") String userPassword){
         logger.info("Getting user " + userName + " and user password");
         User user =  userService.getUserByUsernameAndPassword(userName, userPassword);

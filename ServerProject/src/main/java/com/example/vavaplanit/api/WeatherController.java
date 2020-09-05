@@ -8,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/weather")
@@ -22,7 +19,7 @@ public class WeatherController {
     @Autowired
     private WeatherService weatherService;
 
-    @RequestMapping(value = "{ip}", method = RequestMethod.GET)
+    @GetMapping(value = "{ip}")
     public ResponseEntity getWeather(@PathVariable String ip) {
         logger.info("Getting weather forecast for location by public IP " + ip);
         try {

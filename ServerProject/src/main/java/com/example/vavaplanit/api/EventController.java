@@ -39,7 +39,7 @@ public class EventController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(value = "{idUser}", method = RequestMethod.GET)
+    @GetMapping(value = "{idUser}")
     public ResponseEntity getEventsByDate(@PathVariable("idUser") int idUser, @RequestParam(value="date") String date) {
         logger.info("Getting events by user's id: " + idUser + ", date: " + date);
         List<Event> eventList = eventService.getEventsByDate(idUser, date);
@@ -52,7 +52,7 @@ public class EventController {
      * @param month selected month
      * @param year selected year
      * @return list of all events that belong to user and starts dates of these events are in selected year and month. */
-    @RequestMapping(value = "{idUser}/{year}/{month}", method = RequestMethod.GET)
+    @GetMapping(value = "{idUser}/{year}/{month}")
     public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") int idUser, @PathVariable("year") int year,
                                                     @PathVariable("month") int month) {
         logger.info("Getting events by user's id: " + idUser + ", year: " + year + " and month: " + month);
@@ -65,7 +65,7 @@ public class EventController {
      * @param idUser ID of user
      * @param idEvent ID of event
      * @return event with entered ID */
-    @RequestMapping(value = "{idUser}/{idEvent}", method = RequestMethod.GET)
+    @GetMapping(value = "{idUser}/{idEvent}")
     public ResponseEntity getEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent) {
         logger.info("Getting user's [" + idUser + "] event [" + idEvent + "]");
         Event event = eventService.getEvent(idEvent);
@@ -83,7 +83,7 @@ public class EventController {
     /**
      * @param idUser ID of user
      * @return list of events with alert time in current minute. */
-    @RequestMapping(value="alert/{idUser}/{currentTime}", method = RequestMethod.GET)
+    @GetMapping(value="alert/{idUser}/{currentTime}")
     public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser,
                                            @PathVariable("currentTime") String currentTime) {
         logger.info("Getting events to alert by user's id: " + idUser);
