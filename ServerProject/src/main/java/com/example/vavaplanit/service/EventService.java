@@ -132,18 +132,21 @@ public class EventService {
      * Update event
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
+    @Transactional
     public void update(long id, Event event){
+        // TODO create 2 methods for update one for event with repetiton, one for event without
         if(event.getRepetition() == null) {
             this.eventRepository.update(id, event);
         } else {
-            // TODO create exception
-            repetitionService.addException(id, event.getDate());
-            // TODO set exceptionId to event
-            // TODO insert event
+            Long exceptionId = repetitionService.addException(id, event.getDate());
+            if(exceptionId != null) {
+                event.setExceptionId(exceptionId);
+                this.eventRepository.add(event);
+            }
         }
-
     }
 
+    @Transactional
     public void updateRepetition(int id, Event event){
         this.repetitionService.update(event.getRepetition());
         if(event.getRepetition().getEventId() != id) {
