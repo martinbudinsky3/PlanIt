@@ -55,3 +55,7 @@
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 44px;
 }
+
+.error-label {
+    -fx-text-fill: #FF0000;
+}

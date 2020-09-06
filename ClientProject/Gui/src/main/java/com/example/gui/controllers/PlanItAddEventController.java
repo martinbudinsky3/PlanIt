@@ -8,6 +8,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -15,6 +17,8 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -26,8 +30,25 @@ public class PlanItAddEventController implements Initializable {
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
 
+    private List<HBox> errorBoxes = new ArrayList<HBox>();
+
     @FXML
     private AnchorPane ap;
+
+    @FXML
+    private VBox detailBox;
+
+    @FXML
+    private HBox titleRow;
+
+    @FXML
+    private HBox startsRow;
+
+    @FXML
+    private HBox endsRow;
+
+    @FXML
+    private HBox alertRow;
 
     @FXML
     private Button startsDecrement;
@@ -52,21 +73,6 @@ public class PlanItAddEventController implements Initializable {
 
     @FXML
     private Button deleteButton;
-
-    @FXML
-    private Label titleError;
-
-    @FXML
-    private Label dateError;
-
-    @FXML
-    private Label startsError;
-
-    @FXML
-    private Label endsError;
-
-    @FXML
-    private Label alertsError;
 
     @FXML
     private TextArea titleField;
@@ -132,6 +138,7 @@ public class PlanItAddEventController implements Initializable {
             LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
             LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
             LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
+
             LocalDate endsDate;
             if (endsInitTime.isBefore(nextHalfHour)) { // if ends time oversteps midnight and starts time don't, update ends date to next day
                 endsDate = initDate.plusDays(1);
@@ -300,28 +307,36 @@ public class PlanItAddEventController implements Initializable {
 
         boolean checkFlag = true;
         if (title.equals("")) {
-            titleError.setVisible(true);
+            HBox titleErrorHBox = createErrorHBox("titleErrorLabel");
+            int index = detailBox.getChildren().indexOf(titleRow);
+            detailBox.getChildren().add(index+1, titleErrorHBox);
             checkFlag = false;
         }
 
         try {
             starts = LocalTime.parse(startsField.getText());
         } catch (DateTimeException dte) {
-            startsError.setVisible(true);
+            HBox timeErrorHBox = createErrorHBox("timeErrorLabel");
+            int index = detailBox.getChildren().indexOf(startsRow);
+            detailBox.getChildren().add(index+1, timeErrorHBox);
             checkFlag = false;
         }
 
         try {
             ends = LocalTime.parse(endsField.getText());
         } catch (DateTimeException dte) {
-            endsError.setVisible(true);
+            HBox timeErrorHBox = createErrorHBox("timeErrorLabel");
+            int index = detailBox.getChildren().indexOf(endsRow);
+            detailBox.getChildren().add(index+1, timeErrorHBox);
             checkFlag = false;
         }
 
         try {
             alert = LocalTime.parse(alertField.getText());
         } catch (DateTimeException dte) {
-            alertsError.setVisible(true);
+            HBox timeErrorHBox = createErrorHBox("timeErrorLabel");
+            int index = detailBox.getChildren().indexOf(alertRow);
+            detailBox.getChildren().add(index+1, timeErrorHBox);
             checkFlag = false;
         }
 
@@ -411,10 +426,7 @@ public class PlanItAddEventController implements Initializable {
      * At the beginning of saving event, all error labels are hidden.
      */
     public void hideErrorLabels() {
-        titleError.setVisible(false);
-        startsError.setVisible(false);
-        endsError.setVisible(false);
-        alertsError.setVisible(false);
+        detailBox.getChildren().removeAll(errorBoxes);
     }
 
     /**
@@ -439,5 +451,25 @@ public class PlanItAddEventController implements Initializable {
                 alert.close();
             }
         }
+    }
+
+    private HBox createErrorHBox(String label) {
+        HBox errorHBox = new HBox();
+        errorHBox.setPrefSize(746, 30);
+
+        HBox firstHBox = new HBox();
+        firstHBox.setPrefWidth(235);
+
+        HBox secondHBox = new HBox();
+        secondHBox.setPrefWidth(450);
+
+        Label errorLabel = new Label(resourceBundle.getString(label));
+        errorLabel.getStyleClass().add("error-label");
+        secondHBox.getChildren().add(errorLabel);
+
+        errorHBox.getChildren().addAll(firstHBox, secondHBox);
+        errorBoxes.add(errorHBox);
+
+        return errorHBox;
     }
 }
