@@ -31,7 +31,7 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
     private final Integer DATE_ERROR_FIRST_HBOX_WIDTH = 445;
 
-    private final Long idUser;
+    private final Integer idUser;
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
 
@@ -116,14 +116,14 @@ public class PlanItAddEventController implements Initializable {
     private ResourceBundle resourceBundle;
     private Event event;
 
-    public PlanItAddEventController(long idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
         this.initDate = initDate;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(long idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(int idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
         this.event = event;
         this.eventsClient = eventsClient;
@@ -344,7 +344,7 @@ public class PlanItAddEventController implements Initializable {
 
         timeErrorHBox = null;
         try {
-            ends = LocalTime.parse(alertField.getText());
+            alert = LocalTime.parse(alertField.getText());
         } catch (DateTimeException dte) {
             timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
             int index = detailBox.getChildren().indexOf(alertRow);
@@ -403,7 +403,7 @@ public class PlanItAddEventController implements Initializable {
                          LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
         Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
-        Integer id = eventsClient.addEvent(event, resourceBundle);
+        Long id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
             if (newDateIsInCalendarDisplay(date)) {

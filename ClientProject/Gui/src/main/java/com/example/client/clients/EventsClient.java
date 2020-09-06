@@ -132,9 +132,10 @@ public class EventsClient {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String EVENT_ENDPOINT = uriPropertiesReader.getProperty("event-endpoint");
         final String uri = BASE_EVENTS_URI + EVENT_ENDPOINT;
-        Map<String, Long> params = new HashMap<String, Long>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
+        params.put("date", LocalDate.now());
 
         Event event = null;
 
@@ -197,14 +198,15 @@ public class EventsClient {
      * @param event object Event that should be inserted in to calendar.
      * @return ID (integer) of the inserted event.
      */
-    public Integer addEvent(Event event, ResourceBundle resourceBundle) {
+    public Long addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
         final String uri = BASE_EVENTS_URI;
-        Integer idEvent = null;
 
+        logger.debug("Event [" + event.getIdEvent() + "] alert time " + event.getAlert());
+        Long idEvent = null;
         try {
             String id = restTemplate.postForObject(uri, event, String.class);
-            idEvent = objectMapper.readValue(id, Integer.class);
+            idEvent = objectMapper.readValue(id, Long.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);

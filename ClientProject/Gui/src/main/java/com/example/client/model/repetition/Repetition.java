@@ -3,7 +3,7 @@ package com.example.client.model.repetition;
 import java.time.LocalDate;
 
 public class Repetition {
-    private Long eventId;
+    private Integer eventId;
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
@@ -11,7 +11,7 @@ public class Repetition {
     public Repetition() {
     }
 
-    public Repetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval) {
+    public Repetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval) {
         this.eventId = eventId;
         this.start = start;
         this.end = end;
@@ -42,11 +42,11 @@ public class Repetition {
         this.repetitionInterval = repetitionInterval;
     }
 
-    public Long getEventId() {
+    public Integer getEventId() {
         return eventId;
     }
 
-    public void setEventId(Long eventId) {
+    public void setEventId(Integer eventId) {
         this.eventId = eventId;
     }
 }

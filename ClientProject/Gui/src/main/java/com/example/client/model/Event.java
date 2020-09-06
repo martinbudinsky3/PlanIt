@@ -47,8 +47,8 @@ public class Event implements Serializable {
         }
     }
 
-    private long idEvent;
-    private long idUser;
+    private int idEvent;
+    private int idUser;
     private String title;
     private String location;
     private Type type;
@@ -65,7 +65,7 @@ public class Event implements Serializable {
     public Event() {};
 
     public Event(String title, String location, Type type, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
-                 LocalTime ends, LocalDate alertDate, LocalTime alert, long idUser) {
+                 LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
         this.title = title;
         this.location = location;
         this.type = type;
@@ -79,7 +79,7 @@ public class Event implements Serializable {
         this.idUser = idUser;
     }
 
-    public Event(long idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
+    public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.title = title;
@@ -93,7 +93,7 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
-    public Event(long idEvent, long idUser, String title, String location, Type type, String description, LocalDate date,
+    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
                  List<LocalDate> dates, LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate,
                  LocalTime alert, Repetition repetition) {
         this.idEvent = idEvent;
@@ -112,19 +112,19 @@ public class Event implements Serializable {
         this.repetition = repetition;
     }
 
-    public long getIdEvent() {
+    public int getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(long idEvent) {
+    public void setIdEvent(int idEvent) {
         this.idEvent = idEvent;
     }
 
-    public long getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(long idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 

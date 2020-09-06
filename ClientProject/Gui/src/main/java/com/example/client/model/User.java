@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 /** Class User with attributes, constructors, getters and setters. */
 public class User implements Serializable {
-    private long idUser;
+    private int idUser;
     private String firstName;
     private String lastName;
     private String userName;
     private String userPassword;
 
-    public User(long idUser, String firstName, String lastName, String userName, String userPassword) {
+    public User(int idUser, String firstName, String lastName, String userName, String userPassword) {
         this.idUser = idUser;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,11 +43,11 @@ public class User implements Serializable {
 
     public User(){}
 
-    public long getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(long idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 

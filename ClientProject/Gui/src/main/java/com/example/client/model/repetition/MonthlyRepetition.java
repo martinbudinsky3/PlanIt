@@ -11,7 +11,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
     public MonthlyRepetition() {
     }
 
-    public MonthlyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek,
+    public MonthlyRepetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek,
                              Integer dayOfMonth, Integer ordinal) {
         super(eventId, start, end, repetitionInterval, daysOfWeek);
         this.dayOfMonth = dayOfMonth;

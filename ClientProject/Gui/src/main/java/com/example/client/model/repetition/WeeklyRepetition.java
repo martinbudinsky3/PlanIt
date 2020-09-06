@@ -10,7 +10,7 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(Long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
+    public WeeklyRepetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         this.daysOfWeek = daysOfWeek;
     }
