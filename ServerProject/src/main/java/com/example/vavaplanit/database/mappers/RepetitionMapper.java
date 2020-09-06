@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class RepetitionMapper implements RowMapper<Repetition> {
     @Override
     public Repetition mapRow(ResultSet resultSet, int i) throws SQLException {
-        Long eventId = resultSet.getLong("event_id");
+        int eventId = resultSet.getInt("event_id");
         LocalDate start = resultSet.getObject("starts", LocalDate.class);
         LocalDate end = resultSet.getObject("ends", LocalDate.class);
         int repeatInterval = resultSet.getInt("repeat_interval");

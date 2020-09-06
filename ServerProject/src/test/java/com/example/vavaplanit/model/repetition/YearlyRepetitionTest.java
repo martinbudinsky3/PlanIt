@@ -24,7 +24,7 @@ public class YearlyRepetitionTest {
             public void yearlyRepetitionEveryYearOn29thFebruary() {
                 LocalDate expectedDate = LocalDate.of(2021, 2, 28);
 
-                LocalDate actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2020, 2, 29),
+                LocalDate actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2020, 2, 29),
                         LocalDate.of(2022, 2, 28), 1, null, 29, null,
                         2, 2, 2021).get(0);
 
@@ -35,7 +35,7 @@ public class YearlyRepetitionTest {
             public void yearlyRepetitionEvery2ndYearOn15thJuly() {
                 LocalDate expectedDate = LocalDate.of(2021, 7, 15);
 
-                LocalDate actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2017, 7, 15),
+                LocalDate actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2017, 7, 15),
                         LocalDate.of(2021, 7, 15), 2, null, 15, null,
                         7, 7, 2021).get(0);
 
@@ -46,7 +46,7 @@ public class YearlyRepetitionTest {
             public void yearlyRepetitionEveryYearWithoutOccurrence() {
                 List<LocalDate> expectedDate = new ArrayList<>();
 
-                List<LocalDate> actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2017, 7, 15),
+                List<LocalDate> actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2017, 7, 15),
                         LocalDate.of(2021, 7, 15), 1, null, 15, null,
                         7, 6, 2021);
 
@@ -57,7 +57,7 @@ public class YearlyRepetitionTest {
             public void yearlyRepetitionEvery2ndYearWithoutOccurrence() {
                 List<LocalDate> expectedDate = new ArrayList<>();
 
-                List<LocalDate> actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2017, 7, 15),
+                List<LocalDate> actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2017, 7, 15),
                         LocalDate.of(2021, 7, 15), 2, null, 15, null,
                         7, 7, 2020);
 
@@ -72,7 +72,7 @@ public class YearlyRepetitionTest {
             public void monthlyRepetitionEveryAugustOnLastMonday() {
                 LocalDate expectedDate = LocalDate.of(2020, 8, 31);
 
-                LocalDate actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2019, 8, 26),
+                LocalDate actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2019, 8, 26),
                         LocalDate.of(2021, 8, 30), 1, 1, null,
                         5, 8,8, 2020).get(0);
 
@@ -83,7 +83,7 @@ public class YearlyRepetitionTest {
             public void monthlyRepetitionEveryAugustOnFirstWednesday() {
                 LocalDate expectedDate = LocalDate.of(2020, 8, 5);
 
-                LocalDate actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2019, 8, 7),
+                LocalDate actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2019, 8, 7),
                         LocalDate.of(2021, 8, 4), 1, 4, null,
                         1, 8,8, 2020).get(0);
 
@@ -94,7 +94,7 @@ public class YearlyRepetitionTest {
             public void monthlyRepetitionEvery2ndAugustOn3rdSunday() {
                 LocalDate expectedDate = LocalDate.of(2020, 8, 16);
 
-                LocalDate actualDate = createYearlyRepetitionAndGetDates(1L, LocalDate.of(2018, 8, 19),
+                LocalDate actualDate = createYearlyRepetitionAndGetDates(1, LocalDate.of(2018, 8, 19),
                         LocalDate.of(2022, 8, 21), 2, 64, null,
                         3, 8,8, 2020).get(0);
 
@@ -102,7 +102,7 @@ public class YearlyRepetitionTest {
             }
         }
 
-        private List<LocalDate> createYearlyRepetitionAndGetDates(Long eventId, LocalDate start, LocalDate end,
+        private List<LocalDate> createYearlyRepetitionAndGetDates(Integer eventId, LocalDate start, LocalDate end,
                                                                   int repetitionInterval, Integer daysOfWeek, Integer dayOfMonth,
                                                                   Integer ordinal, int repeatMonth, int month, int year) {
 
@@ -121,7 +121,7 @@ public class YearlyRepetitionTest {
         public void dateBeforeRepetitionStartReturnsFalse() {
             boolean expected = false;
 
-            boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 9, 16), 1, 2, null, 3,
                     9, LocalDate.of(2020, 9, 1));
 
@@ -132,7 +132,7 @@ public class YearlyRepetitionTest {
         public void dateAfterRepetitionEndReturnsFalse() {
             boolean expected = false;
 
-            boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2022, 9, 15), 1, null, 15, null,
                     9, LocalDate.of(2023, 9, 15));
 
@@ -146,7 +146,7 @@ public class YearlyRepetitionTest {
             public void dateExactlyBetweenTwoRepetitionsReturnsFalse() {
                 boolean expected = false;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 15),
                         LocalDate.of(2024, 8, 15), 2, null, 15, null,
                         9, LocalDate.of(2021, 8, 15));
 
@@ -157,7 +157,7 @@ public class YearlyRepetitionTest {
             public void dateSomewhereBetweenTwoRepetitionsReturnsFalse() {
                 boolean expected = false;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 15),
                         LocalDate.of(2024, 8, 15), 2, null, 15, null,
                         8, LocalDate.of(2020, 8, 17));
 
@@ -168,7 +168,7 @@ public class YearlyRepetitionTest {
             public void dateInRepetitionDayOfMonthAndInterval2ReturnsTrue() {
                 boolean expected = true;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 15),
                         LocalDate.of(2026, 8, 15), 2, null, 15, null,
                         8, LocalDate.of(2024, 8, 15));
 
@@ -183,7 +183,7 @@ public class YearlyRepetitionTest {
             public void dateExactlyBetweenTwoRepetitionsReturnsFalse() {
                 boolean expected = false;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 15),
                         LocalDate.of(2022, 8, 20), 2, 32, null, 3,
                         8, LocalDate.of(2021, 8, 21));
 
@@ -194,7 +194,7 @@ public class YearlyRepetitionTest {
             public void dateSomewhereBetweenTwoRepetitionsReturnsFalse() {
                 boolean expected = false;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 15),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 15),
                         LocalDate.of(2022, 8, 20), 1, 32, null, 3,
                         8, LocalDate.of(2021, 8, 5));
 
@@ -205,7 +205,7 @@ public class YearlyRepetitionTest {
             public void lastMondayDateReturnsTrue() {
                 boolean expected = true;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 8, 31),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 8, 31),
                         LocalDate.of(2021, 8, 30), 1, 1, null, 5,
                         8, LocalDate.of(2021, 8, 30));
 
@@ -216,7 +216,7 @@ public class YearlyRepetitionTest {
             public void dateIn2ndThursdayAndInterval3ReturnsTrue() {
                 boolean expected = true;
 
-                boolean actual = createYearlyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 10),
+                boolean actual = createYearlyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 10),
                         LocalDate.of(2026, 9, 10), 3, 8, null, 2,
                         9, LocalDate.of(2023, 9, 14));
 
@@ -224,7 +224,7 @@ public class YearlyRepetitionTest {
             }
         }
 
-        private boolean createYearlyRepetitionAndCheckDate(Long eventId, LocalDate start, LocalDate end,
+        private boolean createYearlyRepetitionAndCheckDate(Integer eventId, LocalDate start, LocalDate end,
                                                                   int repetitionInterval, Integer daysOfWeek, Integer dayOfMonth,
                                                                   Integer ordinal, int repeatMonth, LocalDate date) {
 

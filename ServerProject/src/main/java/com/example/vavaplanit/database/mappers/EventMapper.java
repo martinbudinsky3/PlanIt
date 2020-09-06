@@ -22,7 +22,7 @@ public class EventMapper {
             LocalTime ends = resultSet.getObject("ends", LocalTime.class);
             LocalDate alertDate = resultSet.getObject("alert_date", LocalDate.class);
             LocalTime alert = resultSet.getObject("alert", LocalTime.class);
-            Long exceptionId = resultSet.getLong("exception_id");
+            Integer exceptionId = resultSet.getInt("exception_id");
             return new Event(
                     idEvent,
                     exceptionId,

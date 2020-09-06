@@ -19,21 +19,21 @@ public class RepetitionService {
     @Autowired
     private ExceptionRepository exceptionRepository;
 
-    public Long addRepetition(Repetition repetition) {
+    public Integer addRepetition(Repetition repetition) {
         return repetitionRepository.add(repetition);
     }
 
-    public Long addException(Long repetitionId, LocalDate exceptionDate) {
+    public Integer addException(Integer repetitionId, LocalDate exceptionDate) {
         Exception exception = new Exception(exceptionDate, repetitionId);
 
         return exceptionRepository.add(exception);
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Long exceptionId) {
+    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exceptionId) {
         return this.repetitionRepository.getRepetitionByEventIdOrExceptionId(eventId, exceptionId);
     }
 
-    public List<LocalDate> getEventDates(long eventId, int month, int year) {
+    public List<LocalDate> getEventDates(int eventId, int month, int year) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
@@ -51,7 +51,7 @@ public class RepetitionService {
                 .collect(Collectors.toList());
     }
 
-    public boolean checkDate(long eventId, LocalDate date) {
+    public boolean checkDate(int eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
         if(repetition == null) {
             return false;

@@ -3,9 +3,9 @@ package com.example.vavaplanit.model;
 import java.time.LocalDate;
 
 public class Exception {
-    private long exceptionId;
+    private int exceptionId;
     private LocalDate date;
-    private long repetitionId;
+    private int repetitionId;
 
     public Exception() {
     }
@@ -14,22 +14,22 @@ public class Exception {
         this.date = date;
     }
 
-    public Exception(LocalDate date, long repetitionId) {
+    public Exception(LocalDate date, int repetitionId) {
         this.date = date;
         this.repetitionId = repetitionId;
     }
 
-    public Exception(long exceptionId, LocalDate date, long repetitionId) {
+    public Exception(int exceptionId, LocalDate date, int repetitionId) {
         this.exceptionId = exceptionId;
         this.date = date;
         this.repetitionId = repetitionId;
     }
 
-    public long getExceptionId() {
+    public int getExceptionId() {
         return exceptionId;
     }
 
-    public void setExceptionId(long exceptionId) {
+    public void setExceptionId(int exceptionId) {
         this.exceptionId = exceptionId;
     }
 
@@ -41,11 +41,11 @@ public class Exception {
         this.date = date;
     }
 
-    public long getRepetitionId() {
+    public int getRepetitionId() {
         return repetitionId;
     }
 
-    public void setRepetitionId(long repetitionId) {
+    public void setRepetitionId(int repetitionId) {
         this.repetitionId = repetitionId;
     }
 }

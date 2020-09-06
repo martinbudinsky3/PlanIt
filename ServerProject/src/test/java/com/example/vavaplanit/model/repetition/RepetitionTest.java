@@ -22,7 +22,7 @@ public class RepetitionTest {
             List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(2, 8, 2020, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 9, 1));
 
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 8, 31), 2, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -33,7 +33,7 @@ public class RepetitionTest {
             List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(1, 8, 2020, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 9, 1));
 
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 9, 30), 1, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -44,7 +44,7 @@ public class RepetitionTest {
             List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(1, 8, 2020, LocalDate.of(2020, 8, 15),
                     LocalDate.of(2020, 9, 1));
 
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 15),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 8, 15),
                     LocalDate.of(2020, 9, 30), 1, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -54,7 +54,7 @@ public class RepetitionTest {
         public void dailyRepetitionFirstHalfOfMonthEveryThirdDay() {
             List<LocalDate> expectedDates = getEveryNdateInMonthAndYear(3, 8, 2020, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 8, 15));
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 8, 1),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 8, 1),
                     LocalDate.of(2020, 8, 15), 3, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -70,7 +70,7 @@ public class RepetitionTest {
                 }
             };
 
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 7, 1),
                     LocalDate.of(2020, 12, 31), 10, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -80,7 +80,7 @@ public class RepetitionTest {
         public void dailyRepetitionWithoutOccurenceInAugust2020() {
             List<LocalDate> expectedDates = new ArrayList<>();
 
-            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1L, LocalDate.of(2020, 7, 1),
+            List<LocalDate> actualDates = createDailyRepetitionAndGetDates(1, LocalDate.of(2020, 7, 1),
                     LocalDate.of(2020, 12, 31), 100, 8, 2020);
 
             assertEquals(expectedDates, actualDates);
@@ -106,7 +106,7 @@ public class RepetitionTest {
             return dates;
         }
 
-        private List<LocalDate> createDailyRepetitionAndGetDates(Long eventId, LocalDate start, LocalDate end,
+        private List<LocalDate> createDailyRepetitionAndGetDates(Integer eventId, LocalDate start, LocalDate end,
                                                                  int repetitionInterval, int month, int year) {
             Repetition repetition = new Repetition(eventId, start, end, repetitionInterval);
             return repetition.figureOutDates(month, year);
@@ -120,7 +120,7 @@ public class RepetitionTest {
         public void dateBeforeRepetitionStartReturnsFalse() {
             boolean expected = false;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 1, LocalDate.of(2020, 9, 1));
 
             assertEquals(expected, actual);
@@ -130,7 +130,7 @@ public class RepetitionTest {
         public void dateAfterRepetitionEndReturnsFalse() {
             boolean expected = false;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 1, LocalDate.of(2020, 12, 16));
 
             assertEquals(expected, actual);
@@ -140,7 +140,7 @@ public class RepetitionTest {
         public void dateBetweenTwoRepetitionDatesReturnsFalse() {
             boolean expected = false;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 2, LocalDate.of(2020, 9, 16));
 
             assertEquals(expected, actual);
@@ -150,7 +150,7 @@ public class RepetitionTest {
         public void dateInRepetitionDateReturnsTrue() {
             boolean expected = true;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 3, LocalDate.of(2020, 9, 21));
 
             assertEquals(expected, actual);
@@ -160,7 +160,7 @@ public class RepetitionTest {
         public void dateWithYearOverlapInRepetitionDateReturnsTrue() {
             boolean expected = true;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 12, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 12, 15),
                     LocalDate.of(2021, 1, 15), 3, LocalDate.of(2021, 1, 2));
 
             assertEquals(expected, actual);
@@ -170,7 +170,7 @@ public class RepetitionTest {
         public void dateInRepetitionStartDateReturnsTrue() {
             boolean expected = true;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 3, LocalDate.of(2020, 9, 15));
 
             assertEquals(expected, actual);
@@ -180,13 +180,13 @@ public class RepetitionTest {
         public void dateInRepetitionEndDateReturnsTrue() {
             boolean expected = true;
 
-            boolean actual = createDailyRepetitionAndCheckDate(1L, LocalDate.of(2020, 9, 15),
+            boolean actual = createDailyRepetitionAndCheckDate(1, LocalDate.of(2020, 9, 15),
                     LocalDate.of(2020, 12, 15), 1, LocalDate.of(2020, 12, 15));
 
             assertEquals(expected, actual);
         }
 
-        private boolean createDailyRepetitionAndCheckDate(Long eventId, LocalDate start, LocalDate end,
+        private boolean createDailyRepetitionAndCheckDate(Integer eventId, LocalDate start, LocalDate end,
                                                           int repetitionInterval, LocalDate date) {
             Repetition repetition = new Repetition(eventId, start, end, repetitionInterval);
             return repetition.checkDate(date);

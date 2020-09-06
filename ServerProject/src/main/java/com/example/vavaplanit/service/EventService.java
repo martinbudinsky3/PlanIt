@@ -31,8 +31,8 @@ public class EventService {
      * @param idUser ID of user
      * @return ID of inserted event*/
     @Transactional
-    public Long add(Event event, long idUser) {
-        Long idEvent = eventRepository.add(event);
+    public Integer add(Event event, int idUser) {
+        Integer idEvent = eventRepository.add(event);
         this.eventRepository.addEventUser(idUser, idEvent);
 
         if(event.getRepetition() != null) {
@@ -43,7 +43,7 @@ public class EventService {
         return idEvent;
     }
 
-    public List<Event> getEventsByDate(long idUser, String dateString) {
+    public List<Event> getEventsByDate(int idUser, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
         List<Event> events = this.eventRepository.getEventsByDate(idUser, date);
 
@@ -59,7 +59,7 @@ public class EventService {
      * @param month selected month
      * @return list of events
      */
-    public List<Event> getEventsByMonthAndUserId(long idUser, int year, int month){
+    public List<Event> getEventsByMonthAndUserId(int idUser, int year, int month){
         LocalDate minDate = LocalDate.of(year, month, 1);
         LocalDate maxDate = minDate.plusMonths(1);
 
@@ -80,21 +80,21 @@ public class EventService {
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
-    public Event getEvent(long idUser, long idEvent){
+    public Event getEvent(int idUser, int idEvent){
         return this.eventRepository.getEvent(idUser, idEvent);
     }
 
     /**
      * Getting event by it's ID
      * @param idEvent ID of the event*/
-    public Event getEventWithRepetition(long idUser, long idEvent){
+    public Event getEventWithRepetition(int idUser, int idEvent){
         Event event = this.eventRepository.getEvent(idUser, idEvent);
         event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
 
         return event;
     }
 
-    public Event getEvent(long idUser, long idEvent, String dateString){
+    public Event getEvent(int idUser, int idEvent, String dateString){
         LocalDate date = LocalDate.parse(dateString);
         Event event = this.eventRepository.getEvent(idUser, idEvent);
 
@@ -112,7 +112,7 @@ public class EventService {
      * Getting all events of user that have notifications set for current time and date
      * @param idUser ID of user*/
     // TODO new alert logic
-    public List<Event> getEventsToAlert(long idUser, String currentTimeString){
+    public List<Event> getEventsToAlert(int idUser, String currentTimeString){
         LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -129,11 +129,11 @@ public class EventService {
      * @param event event object which is going to be updated
      * @param id id of Event which is going to be updated*/
     @Transactional
-    public void update(long id, Event event, Long exceptionId){
+    public void update(int id, Event event, Integer exceptionId){
         if(event.getRepetition() == null || exceptionId != null) {
             this.eventRepository.update(id, event);
         } else {
-            Long newExceptionId = repetitionService.addException(id, event.getDate());
+            Integer newExceptionId = repetitionService.addException(id, event.getDate());
             if(newExceptionId != null) {
                 event.setExceptionId(newExceptionId);
                 this.eventRepository.add(event);
@@ -154,11 +154,11 @@ public class EventService {
     /**
      * Delete event by event's id
      * @param idEvent ID of Event which is going to be deleted */
-    public void delete(long idEvent) {
+    public void delete(int idEvent) {
         this.eventRepository.delete(idEvent);
     }
 
-    public void deleteFromRepetition(long idEvent, String dateString, Long exceptionId) {
+    public void deleteFromRepetition(int idEvent, String dateString, Integer exceptionId) {
         LocalDate date = LocalDate.parse(dateString);
 
         if(exceptionId == null) {

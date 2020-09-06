@@ -2,6 +2,7 @@ package com.example.vavaplanit.model;
 
 
 import com.example.vavaplanit.model.repetition.Repetition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -46,9 +47,10 @@ public class Event implements Serializable {
         }
     }
 
-    private long idEvent;
-    private long idUser;
-    private Long exceptionId;
+    private int idEvent;
+    private int idUser;
+    @JsonIgnore
+    private Integer exceptionId;
     private String title;
     private String location;
     private Type type;
@@ -64,7 +66,7 @@ public class Event implements Serializable {
 
     public Event() {};
 
-    public Event(long idEvent, String title, Type type, LocalDate date, LocalTime starts) {
+    public Event(int idEvent, String title, Type type, LocalDate date, LocalTime starts) {
         this.idEvent = idEvent;
         this.title = title;
         this.type = type;
@@ -72,7 +74,7 @@ public class Event implements Serializable {
         this.starts = starts;
     }
 
-    public Event(long idEvent, Long exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
+    public Event(int idEvent, Integer exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
         this.exceptionId = exceptionId;
@@ -88,27 +90,27 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
-    public long getIdEvent() {
+    public int getIdEvent() {
         return idEvent;
     }
 
-    public void setIdEvent(long idEvent) {
+    public void setIdEvent(int idEvent) {
         this.idEvent = idEvent;
     }
 
-    public long getIdUser() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(long idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 
-    public Long getExceptionId() {
+    public Integer getExceptionId() {
         return exceptionId;
     }
 
-    public void setExceptionId(Long exceptionId) {
+    public void setExceptionId(Integer exceptionId) {
         this.exceptionId = exceptionId;
     }
 

@@ -32,7 +32,7 @@ public class EventRepository {
      *
      * @param event event object
      */
-    public Long add(Event event) {
+    public Integer add(Event event) {
         final String sql = "insert into planitschema.event (title, location, type, description, date, starts, ends_date, ends," +
                 " alert_date, alert) values (?,?,?,?,?,?,?,?,?,?)";
 
@@ -66,7 +66,7 @@ public class EventRepository {
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Long) keyHolder.getKeys().get("idevent");
+            return (Integer) keyHolder.getKeys().get("idevent");
         } else {
             return null;
         }
@@ -78,7 +78,7 @@ public class EventRepository {
      * @param idUser  ID of user
      * @param idEvent ID of Event
      */
-    public void addEventUser(long idUser, long idEvent) {
+    public void addEventUser(int idUser, int idEvent) {
         final String sql = "insert into planitschema.userevent (iduser, idevent) values (?,?)";
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
@@ -92,7 +92,7 @@ public class EventRepository {
         });
     }
 
-    public List<Event> getEventsByDate(long idUser, LocalDate date) {
+    public List<Event> getEventsByDate(int idUser, LocalDate date) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue " +
                 "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
                 "AND e.date <= '" + date + "' ORDER BY e.starts;";
@@ -102,7 +102,7 @@ public class EventRepository {
     /**
      * Getting all events that belong to user and starts dates of these events are in given range.
      */
-    public List<Event> getEventsByMonthAndUserId(long idUser, LocalDate minDate, LocalDate maxDate) {
+    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue JOIN planitschema.event e " +
                 "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date < '" + maxDate +
                 "' ORDER BY e.starts;";
@@ -115,11 +115,11 @@ public class EventRepository {
      * @param idUser  ID of the user
      * @param idEvent ID of the event
      */
-    public Event getEvent(long idUser, long idEvent) {
+    public Event getEvent(int idUser, int idEvent) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "';";
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+                " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "' LIMIT 1;";
 
+        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }
 
     /**
@@ -129,7 +129,7 @@ public class EventRepository {
      * @param date   selected date
      * @param time   selected time
      */
-    public List<Event> getEventsToAlert(long idUser, String date, String time) {
+    public List<Event> getEventsToAlert(int idUser, String date, String time) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
                 " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
         return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
@@ -141,7 +141,7 @@ public class EventRepository {
      * @param event event object with updated attributes
      * @param id    id of Event which is going to be updated
      */
-    public void update(long id, Event event) {
+    public void update(int id, Event event) {
         String sql = "UPDATE planitschema.event SET title = ?, location = ?, type = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
                 " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
         jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getType().toString(), event.getDate(),
@@ -153,10 +153,8 @@ public class EventRepository {
      *
      * @param id ID of Event which is going to be deleted
      */
-    public void delete(long id) {
+    public void delete(int id) {
         String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
         jdbcTemplate.update(sql, id);
     }
-
-
 }

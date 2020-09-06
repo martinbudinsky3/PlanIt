@@ -36,7 +36,7 @@ CREATE DOMAIN repetition_type VARCHAR
    CHECK (VALUE IN ('Daily', 'Weekly', 'Monthly', 'Yearly'));
 
 CREATE TABLE planitschema.repetition (
-    event_id bigint NOT NULL primary key references planitschema.event(idevent),
+    event_id integer NOT NULL primary key references planitschema.event(idevent),
     starts date NOT NULL,
     ends date NOT NULL,
     repeat_interval integer NOT NULL,
@@ -51,8 +51,8 @@ CREATE TABLE planitschema.repetition (
 CREATE TABLE planitschema.exception (
     exception_id serial PRIMARY KEY,
     date date NOT NULL,
-    repetition_id bigint NOT NULL REFERENCES planitschema.repetition(event_id),
-	updated_event_id bigint REFERENCES planitschema.event(idevent)
+    repetition_id integer NOT NULL REFERENCES planitschema.repetition(event_id),
+	updated_event_id integer REFERENCES planitschema.event(idevent)
 );
 
 ------------------------31.8.2020--------------------------------
@@ -73,7 +73,7 @@ ADD CONSTRAINT userevent_idevent_fkey
 ------------------------1.9.2020--------------------------------
 ALTER TABLE planitschema.exception DROP COLUMN updated_event_id;
 
-ALTER TABLE planitschema.event ADD COLUMN exception_id bigint REFERENCES planitschema.exception(exception_id) ON DELETE CASCADE;
+ALTER TABLE planitschema.event ADD COLUMN exception_id integer REFERENCES planitschema.exception(exception_id) ON DELETE CASCADE;
 
 ALTER TABLE planitschema.exception
 DROP CONSTRAINT exception_repetition_id_fkey,

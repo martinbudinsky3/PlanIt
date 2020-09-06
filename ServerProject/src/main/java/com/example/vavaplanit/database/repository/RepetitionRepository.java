@@ -4,6 +4,7 @@ import com.example.vavaplanit.database.mappers.RepetitionMapper;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.repetition.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,7 +23,7 @@ public class RepetitionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Long add(Repetition repetition) {
+    public Integer add(Repetition repetition) {
         final String sql = "insert into planitschema.repetition (starts, ends, repeat_interval, days_of_week, " +
                 "day_of_month, repeat_ordinal, month, type, event_id) values (?,?,?,?,?,?,?,?,?)";
 
@@ -30,23 +31,31 @@ public class RepetitionRepository {
         jdbcTemplate.update(getPreparedStatementCreator(repetition, sql), keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Long) keyHolder.getKeys().get("event_id");
+            return (Integer) keyHolder.getKeys().get("event_id");
         } else {
             return null;
         }
     }
 
-    public Repetition getRepetitionByEventId(long eventId) /*throws EmptyResultDataAccessException*/ {
-        String sql = "SELECT r.* FROM planitschema.repetition WHERE event_id = " + eventId + ";";
+    public Repetition getRepetitionByEventId(int eventId) {
+        String sql = "SELECT planitschema.repetition.* FROM planitschema.repetition WHERE event_id = " + eventId + " LIMIT 1;";
 
-        return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
+        try {
+            return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
+        } catch (IncorrectResultSizeDataAccessException exception){
+            return null;
+        }
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Long exception_id) /*throws EmptyResultDataAccessException*/ {
-        String sql = "SELECT r.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
-                " OR e.exception_id = " + exception_id + ";";
+    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exception_id) /*throws EmptyResultDataAccessException*/ {
+        String sql = "SELECT planitschema.repetition.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
+                " OR e.exception_id = " + exception_id + " LIMIT 1;";
 
-        return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
+        try {
+            return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
+        } catch(IncorrectResultSizeDataAccessException exception) {
+            return null;
+        }
     }
 
     public void update(Repetition repetition) {

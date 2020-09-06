@@ -20,7 +20,7 @@ public class ExceptionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Long add(Exception exception) {
+    public Integer add(Exception exception) {
         final String sql = "insert into planitschema.exception (date, repetition_id) values (?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -36,19 +36,15 @@ public class ExceptionRepository {
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Long) keyHolder.getKeys().get("event_id");
+            return (Integer) keyHolder.getKeys().get("event_id");
         } else {
             return null;
         }
     }
 
-    public List<Exception> getExceptionsDates(long repetitionId) {
+    public List<Exception> getExceptionsDates(int repetitionId) {
         String sql = "SELECT date FROM planitschema.exception WHERE repetition_id = " + repetitionId + ";";
 
         return jdbcTemplate.query(sql, exceptionDateMapper);
-    }
-
-    public void delete(long exceptionId) {
-        // TODO delete exception from db
     }
 }

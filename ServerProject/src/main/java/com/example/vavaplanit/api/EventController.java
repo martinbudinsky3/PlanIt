@@ -29,7 +29,7 @@ public class EventController {
     public ResponseEntity addEvent(@RequestBody Event event) {
         logger.info("Inserting new Event. Title: " + event.getTitle());
 
-        Long id = eventService.add(event, event.getIdUser());
+        Integer id = eventService.add(event, event.getIdUser());
         if(id != null) {
             logger.info("Event successfully inserted. It's ID is: " + id);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
@@ -40,7 +40,7 @@ public class EventController {
     }
 
     @GetMapping(value = "{idUser}")
-    public ResponseEntity getEventsByDate(@PathVariable("idUser") long idUser, @RequestParam(value="date") String date) {
+    public ResponseEntity getEventsByDate(@PathVariable("idUser") int idUser, @RequestParam(value="date") String date) {
         logger.info("Getting events by user's id: " + idUser + ", date: " + date);
         List<Event> eventList = eventService.getEventsByDate(idUser, date);
         logger.info("Events from date " + date + " successfully found. Returning " + eventList.size() + " events.");
@@ -53,7 +53,7 @@ public class EventController {
      * @param year selected year
      * @return list of all events that belong to user and starts dates of these events are in selected year and month. */
     @GetMapping(value = "{idUser}/{year}/{month}")
-    public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") long idUser, @PathVariable("year") int year,
+    public ResponseEntity getEventsByMonthAndUserId(@PathVariable("idUser") int idUser, @PathVariable("year") int year,
                                                     @PathVariable("month") int month) {
         logger.info("Getting events by user's id: " + idUser + ", year: " + year + " and month: " + month);
         List<Event> eventList = eventService.getEventsByMonthAndUserId(idUser, year, month);
@@ -65,9 +65,9 @@ public class EventController {
      * @param idUser ID of user
      * @param idEvent ID of event
      * @return event with entered ID */
-    @GetMapping(value = "{idUser}/{idEvent}/{date}")
-    public ResponseEntity getEvent(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent,
-                                   @PathVariable("date") String date) {
+    @GetMapping(value = "{idUser}/{idEvent}")
+    public ResponseEntity getEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent,
+                                   @RequestParam("date") String date) {
         logger.info("Getting user's [" + idUser + "] event [" + idEvent + "]");
         Event event = eventService.getEvent(idUser, idEvent, date);
 
@@ -78,14 +78,13 @@ public class EventController {
 
         logger.error("Error. Event not found. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-
     }
 
     /**
      * @param idUser ID of user
      * @return list of events with alert time in current minute. */
     @GetMapping(value="alert/{idUser}/{currentTime}")
-    public ResponseEntity getEventsToAlert(@PathVariable("idUser") long idUser,
+    public ResponseEntity getEventsToAlert(@PathVariable("idUser") int idUser,
                                            @PathVariable("currentTime") String currentTime) {
         logger.info("Getting events to alert by user's id: " + idUser);
         List<Event> events = eventService.getEventsToAlert(idUser, currentTime);
@@ -100,7 +99,7 @@ public class EventController {
      * @param idEvent ID of event that is going to be updated
      * @param event Event with updated attributes */
     @PutMapping("{idUser}/{idEvent}")
-    public ResponseEntity updateEvent(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent,
+    public ResponseEntity updateEvent(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent,
                                       @RequestBody Event event) {
         logger.info("Updating event. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEvent(idUser, idEvent);
@@ -139,7 +138,7 @@ public class EventController {
      * @param idEvent ID of event
      * */
     @DeleteMapping("{idUser}/{idEvent}")
-    public ResponseEntity delete(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent) {
+    public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent) {
         logger.info("Deleting event. Event's ID: " + idEvent);
         if(eventService.getEvent(idUser, idEvent) != null){
             eventService.delete(idEvent);
@@ -154,7 +153,7 @@ public class EventController {
     }
 
     @DeleteMapping("/repetition/{idUser}/{idEvent}/{date}")
-    public ResponseEntity deleteFromRepetition(@PathVariable("idUser") long idUser, @PathVariable("idEvent") long idEvent,
+    public ResponseEntity deleteFromRepetition(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent,
                                                @PathVariable("date") String date) {
         logger.info("Deleting event from repetition. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEventWithRepetition(idUser, idEvent);
