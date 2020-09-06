@@ -51,20 +51,4 @@ public class DailyWeather {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DailyWeather that = (DailyWeather) o;
-        return Double.compare(that.minTemperature, minTemperature) == 0 &&
-                Double.compare(that.maxTemperature, maxTemperature) == 0 &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(weather, that.weather);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, minTemperature, maxTemperature, weather);
-    }
 }
