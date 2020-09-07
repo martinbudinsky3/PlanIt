@@ -1,6 +1,8 @@
 package com.example.gui.controllers;
 
 import com.example.utils.UTF8Control;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,7 +37,6 @@ enum Language {
 
 /** Controller for "LanguageSelector.fxml" */
 public class LanguageSelectorController implements Initializable {
-
     @FXML
     private AnchorPane ap;
 
@@ -86,7 +87,7 @@ public class LanguageSelectorController implements Initializable {
             }
         });
 
-        ap.getChildren().clear();
+//        ap.getChildren().clear();
         ap.getChildren().add(listView);
     }
 

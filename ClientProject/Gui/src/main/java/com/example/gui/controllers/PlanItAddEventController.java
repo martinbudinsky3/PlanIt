@@ -2,6 +2,9 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
+import com.example.gui.data_items.EventTypeItem;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -17,10 +20,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Controller for "PlanItAddEvent.fxml"
@@ -98,7 +98,7 @@ public class PlanItAddEventController implements Initializable {
     private TextArea descriptionField;
 
     @FXML
-    private ChoiceBox<String> typeSelector;
+    private ChoiceBox<EventTypeItem> typeSelector;
 
     @FXML
     private DatePicker startsDateField;
@@ -199,12 +199,11 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void initializeTypeSelector() {
-        typeSelector.getItems().add(Event.Type.FREE_TIME.toString());
-        typeSelector.getItems().add(Event.Type.WORK.toString());
-        typeSelector.getItems().add(Event.Type.SCHOOL.toString());
-        typeSelector.getItems().add(Event.Type.OTHERS.toString());
+        for(Event.Type type : Event.Type.values()) {
+            typeSelector.getItems().add(new EventTypeItem(type, resourceBundle));
+        }
 
-        typeSelector.setValue(Event.Type.FREE_TIME.toString());
+        typeSelector.getSelectionModel().selectFirst();
     }
 
     /**
@@ -213,7 +212,7 @@ public class PlanItAddEventController implements Initializable {
     public void showDetail() {
         titleField.setText(event.getTitle());
         locationField.setText(event.getLocation());
-        typeSelector.setValue(event.getType().toString());
+        typeSelector.setValue(new EventTypeItem(event.getType(), resourceBundle));
         startsDateField.setValue(event.getDate());
         startsField.setText(String.valueOf(event.getStarts()));
         endsDateField.setValue(event.getEndsDate());
@@ -311,7 +310,7 @@ public class PlanItAddEventController implements Initializable {
 
         String title = titleField.getText();
         String location = locationField.getText();
-        Event.Type type = Event.Type.fromString(typeSelector.getValue());
+        Event.Type type = typeSelector.getValue().getType(); // TODO fix this to be multilanguage
         LocalDate date = startsDateField.getValue();
         LocalTime starts = null;
         LocalDate endsDate = endsDateField.getValue();

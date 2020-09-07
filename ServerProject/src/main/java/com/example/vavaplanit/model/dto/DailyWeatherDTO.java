@@ -12,7 +12,7 @@ public class DailyWeatherDTO {
     private LocalDate date;
     private int minTemperature;
     private int maxTemperature;
-    private List<Weather> weather = null;
+    private List<Weather> weather;
 
     public DailyWeatherDTO() {
     }

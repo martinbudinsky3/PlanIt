@@ -160,6 +160,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      */
     @Override
     public void reload(ResourceBundle bundle) {
+        threadFlag = false;
         windowsCreator.reload(ap, bundle, "fxml/PlanItMainWindow.fxml", this);
     }
 
@@ -236,14 +237,13 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void runWeatherTask() {
-        while (threadActive) {
+        while(threadActive) {
             try {
                 Platform.runLater(() -> {
                     addWeatherToCalendar();
                 });
 
                 int seconds = SECONDS_IN_DAY - LocalTime.now().toSecondOfDay();  // so alert comes at the beginning of the minute
-                logger.debug("LocalTime.now().toSecondOfDay() = " + LocalTime.now().toSecondOfDay());
                 Thread.sleep(seconds * MILLIS_IN_SECOND);
             } catch (InterruptedException ex) {
                 logger.error("Error in thread that gets weather forecast", ex);

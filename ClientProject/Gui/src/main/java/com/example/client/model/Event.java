@@ -20,16 +20,16 @@ public class Event implements Serializable {
         public String toString() {
             switch (this) {
                 case FREE_TIME:
-                    return "Free time";
+                    return "freeTime";
 
                 case WORK:
-                    return "Work";
+                    return "work";
 
                 case SCHOOL:
-                    return "School";
+                    return "school";
 
                 case OTHERS:
-                    return "Others";
+                    return "others";
 
                 default:
                     return "";
