@@ -212,7 +212,7 @@ public class PlanItAddEventController implements Initializable {
     public void showDetail() {
         titleField.setText(event.getTitle());
         locationField.setText(event.getLocation());
-        typeSelector.setValue(new EventTypeItem(event.getType(), resourceBundle));
+        typeSelector.getSelectionModel().select(getEventTypeItem(event.getType()));
         startsDateField.setValue(event.getDate());
         startsField.setText(String.valueOf(event.getStarts()));
         endsDateField.setValue(event.getEndsDate());
@@ -220,6 +220,16 @@ public class PlanItAddEventController implements Initializable {
         alertDateField.setValue(event.getAlertDate());
         alertField.setText(String.valueOf(event.getAlert()));
         descriptionField.setText(event.getDescription());
+    }
+
+    private EventTypeItem getEventTypeItem(Event.Type type) {
+        for(EventTypeItem eventTypeItem : typeSelector.getItems()) {
+            if(eventTypeItem.getType().equals(type)) {
+                return eventTypeItem;
+            }
+        }
+
+        return null;
     }
 
     /**
