@@ -112,6 +112,9 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private VBox repetitionBox;
 
+    @FXML
+    private Button repetitionButton;
+
     private LocalDate initDate;
     private ResourceBundle resourceBundle;
     private Event event;
@@ -167,6 +170,9 @@ public class PlanItAddEventController implements Initializable {
             endsDateField.setValue(endsDate);
             alertDateField.setValue(alertDate);
         } else { // show detail of already created event
+            if(event.getRepetition() != null) {
+                repetitionButton.setText("Edit repetition");
+            }
             showDetail();
         }
 
@@ -187,6 +193,7 @@ public class PlanItAddEventController implements Initializable {
         }
 
         // add handlers to buttons
+        repetitionButton.setOnAction(e -> repetitionBox.setVisible(!repetitionBox.isVisible()));
         saveButton.setOnAction(e -> save(e));
         deleteButton.setOnAction(e -> delete(e));
     }

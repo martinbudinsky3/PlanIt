@@ -180,7 +180,7 @@
                      </VBox.margin></HBox>
                     </children>
                 </VBox>
-                <VBox fx:id="repetitionBox" prefHeight="559.0" prefWidth="660.0">
+                <VBox fx:id="repetitionBox" prefHeight="559.0" prefWidth="660.0" visible="false">
                <children>
                   <HBox prefHeight="30.0" prefWidth="200.0">
                      <children>
@@ -265,5 +265,10 @@
                 </Button>
             </children>
         </HBox>
+      <Button fx:id="repetitionButton" layoutX="840.0" layoutY="619.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" styleClass="control-button" text="Repeat">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>
