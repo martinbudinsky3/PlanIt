@@ -1,5 +1,7 @@
 package com.example.vavaplanit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 
 public class User implements Serializable {
@@ -7,6 +9,7 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private String userName;
+    @JsonIgnore
     private String userPassword;
 
     public User(int idUser, String firstName, String lastName, String userName, String userPassword) {
