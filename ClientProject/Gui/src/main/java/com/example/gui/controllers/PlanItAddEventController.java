@@ -2,7 +2,10 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
+import com.example.client.model.repetition.RepetitionType;
+import com.example.gui.components.DailyRepetitionComponent;
 import com.example.gui.data_items.EventTypeItem;
+import com.example.gui.data_items.RepetitionTypeItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,7 +38,7 @@ public class PlanItAddEventController implements Initializable {
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
 
-    private List<HBox> errorBoxes = new ArrayList<HBox>();
+    private final List<HBox> errorBoxes = new ArrayList<HBox>();
 
     @FXML
     private AnchorPane ap;
@@ -113,11 +116,20 @@ public class PlanItAddEventController implements Initializable {
     private VBox repetitionBox;
 
     @FXML
+    private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
+
+    private VBox dailyRepetitionComponent = new DailyRepetitionComponent().get();
+    private VBox weeklyRepetitionComponent;
+    private VBox monthlyRepetitionComponent;
+    private VBox yearlyRepetitionComponent;
+
+    @FXML
     private Button repetitionButton;
 
     private LocalDate initDate;
     private ResourceBundle resourceBundle;
     private Event event;
+    private long repetitionButtonClickCount = 0;
 
     public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
@@ -141,7 +153,9 @@ public class PlanItAddEventController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+        repetitionBox.setVisible(false);
         initializeTypeSelector();
+        initializeRepetitionTypeSelector();
 
         if (event == null) { // add event
             // set init times to time fields
@@ -179,6 +193,22 @@ public class PlanItAddEventController implements Initializable {
         addHandlers();
     }
 
+    private void initializeTypeSelector() {
+        for(Event.Type type : Event.Type.values()) {
+            typeSelector.getItems().add(new EventTypeItem(type, resourceBundle));
+        }
+
+        typeSelector.getSelectionModel().selectFirst();
+    }
+
+    private void initializeRepetitionTypeSelector() {
+        for(RepetitionType repetitionType : RepetitionType.values()) {
+            repetitionTypeSelector.getItems().add(new RepetitionTypeItem(repetitionType, resourceBundle));
+        }
+
+        repetitionTypeSelector.getSelectionModel().selectFirst();
+    }
+
     private void addHandlers() {
         // add handlers to increment decrement buttons of time text fields
         final int size = 3;  // constant size of arrays
@@ -193,17 +223,25 @@ public class PlanItAddEventController implements Initializable {
         }
 
         // add handlers to buttons
-        repetitionButton.setOnAction(e -> repetitionBox.setVisible(!repetitionBox.isVisible()));
+        repetitionButton.setOnAction(e -> repetitionButtonClickedHandler());
         saveButton.setOnAction(e -> save(e));
         deleteButton.setOnAction(e -> delete(e));
     }
 
-    private void initializeTypeSelector() {
-        for(Event.Type type : Event.Type.values()) {
-            typeSelector.getItems().add(new EventTypeItem(type, resourceBundle));
-        }
+    private void repetitionButtonClickedHandler() {
+        repetitionBox.setVisible(!repetitionBox.isVisible());
 
-        typeSelector.getSelectionModel().selectFirst();
+        if(repetitionButtonClickCount == 0) {
+            if(event != null && event.getRepetition() != null) {
+                showRepetitionDetail();
+            } else {
+                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+            }
+        }
+    }
+
+    private void showRepetitionDetail() {
+        // TODO
     }
 
     /**
@@ -226,6 +264,16 @@ public class PlanItAddEventController implements Initializable {
         for(EventTypeItem eventTypeItem : typeSelector.getItems()) {
             if(eventTypeItem.getType().equals(type)) {
                 return eventTypeItem;
+            }
+        }
+
+        return null;
+    }
+
+    private RepetitionTypeItem getRepetitionTypeItem(Event.Type type) {
+        for(RepetitionTypeItem repetitionTypeItem : repetitionTypeSelector.getItems()) {
+            if(repetitionTypeItem.getType().equals(type)) {
+                return repetitionTypeItem;
             }
         }
 

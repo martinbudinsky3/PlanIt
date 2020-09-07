@@ -180,7 +180,7 @@
                      </VBox.margin></HBox>
                     </children>
                 </VBox>
-                <VBox fx:id="repetitionBox" prefHeight="559.0" prefWidth="660.0" visible="false">
+                <VBox fx:id="repetitionBox" prefHeight="559.0" prefWidth="660.0" spacing="20.0">
                <children>
                   <HBox prefHeight="30.0" prefWidth="200.0">
                      <children>
@@ -218,7 +218,7 @@
                         </HBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                   <HBox prefHeight="30.0" prefWidth="200.0">
@@ -239,7 +239,7 @@
                         </HBox>
                      </children>
                      <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                </children></VBox>

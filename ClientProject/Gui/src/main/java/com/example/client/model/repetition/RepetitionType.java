@@ -7,16 +7,16 @@ public enum RepetitionType {
     public String toString() {
         switch (this) {
             case DAILY:
-                return "Daily";
+                return "daily";
 
             case WEEKLY:
-                return "Weekly";
+                return "weekly";
 
             case MONTHLY:
-                return "Monthly";
+                return "monthly";
 
             case YEARLY:
-                return "Yearly";
+                return "yearly";
 
             default:
                 return "";
