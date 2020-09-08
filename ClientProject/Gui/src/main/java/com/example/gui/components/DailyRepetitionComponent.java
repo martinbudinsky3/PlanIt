@@ -7,20 +7,39 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-// TODO multilanguage
+import java.util.ResourceBundle;
+
 public class DailyRepetitionComponent extends VBox{
     private final Integer LEFT_MARGIN = 130;
+    private final ResourceBundle resourceBundle;
 
-    private HBox repetitionIntervalField = new HBox();
-    private HBox repetitionIntervalErrorField = new HBox();
-    private final Label firstLabel = new Label("Every");
-    private ComboBox<Integer> repetitionIntervalSelector = new ComboBox<>();
-    private final Label secondLabel = new Label("days");
+    private final HBox repetitionIntervalField = new HBox();
+    private final HBox repetitionIntervalErrorField = new HBox();
+    private final Label firstLabel = new Label();
+    private final ComboBox<Integer> repetitionIntervalSelector = new ComboBox<>();
+    private final Label secondLabel = new Label();
 
+    public DailyRepetitionComponent(ResourceBundle resourceBundle) {
+        this.resourceBundle = resourceBundle;
 
-
-    public DailyRepetitionComponent() {
+        firstLabel.setText(resourceBundle.getString("repetitionIntervalFirstLabel"));
+        setCaptions();
         initRepetitionIntervalField();
+
+        // add everything into root
+        getChildren().add(repetitionIntervalField);
+    }
+
+    protected void setCaptions() {
+        secondLabel.setText(resourceBundle.getString("repetitionIntervalDayLabel"));
+    }
+
+    protected void initRepetitionIntervalField() {
+        initRepetitionIntervalSelector();
+
+        repetitionIntervalField.getChildren().addAll(firstLabel, repetitionIntervalSelector, secondLabel);
+
+        setRepetitionIntervalFieldStyles();
     }
 
     /**
@@ -47,23 +66,11 @@ public class DailyRepetitionComponent extends VBox{
     private void clearErrorLabel() {
         repetitionIntervalErrorField.getChildren().clear();
         getChildren().remove(repetitionIntervalErrorField);
-
     }
 
-    protected void initRepetitionIntervalField() {
-        initRepetitionIntervalSelector();
-
-        repetitionIntervalField.getChildren().addAll(firstLabel, repetitionIntervalSelector, secondLabel);
-
-        // add everything into root
-        getChildren().add(repetitionIntervalField);
-
-        setRepetitionIntervalFieldStyles();
-    }
-
-    protected void setRepetitionIntervalFieldStyles() {
-        firstLabel.setFont(Font.font(20));
-        secondLabel.setFont(Font.font(20));
+    private void setRepetitionIntervalFieldStyles() {
+        firstLabel.setFont(Font.font(18));
+        secondLabel.setFont(Font.font(18));
 
         HBox.setMargin(firstLabel, new Insets(0, 15, 0, 0));
         HBox.setMargin(secondLabel, new Insets(0, 0, 0, 10));
@@ -72,7 +79,7 @@ public class DailyRepetitionComponent extends VBox{
     }
 
     private void createRepetitionIntervalErrorLabel() {
-        Label errorLabel = new Label("Insert please number from range 1 to 999");
+        Label errorLabel = new Label(resourceBundle.getString("repetitionIntervalErrorLabel"));
         errorLabel.getStyleClass().add("error-label");
         repetitionIntervalErrorField.getChildren().add(errorLabel);
 
@@ -83,5 +90,13 @@ public class DailyRepetitionComponent extends VBox{
 
     public ComboBox<Integer> getRepetitionIntervalSelector() {
         return repetitionIntervalSelector;
+    }
+
+    public Label getSecondLabel() {
+        return secondLabel;
+    }
+
+    public ResourceBundle getResourceBundle() {
+        return resourceBundle;
     }
 }

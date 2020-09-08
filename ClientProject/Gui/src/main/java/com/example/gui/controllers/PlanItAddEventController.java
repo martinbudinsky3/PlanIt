@@ -4,6 +4,7 @@ import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
 import com.example.client.model.repetition.RepetitionType;
 import com.example.gui.components.DailyRepetitionComponent;
+import com.example.gui.components.WeeklyRepetitionComponent;
 import com.example.gui.data_items.EventTypeItem;
 import com.example.gui.data_items.RepetitionTypeItem;
 import javafx.collections.FXCollections;
@@ -118,7 +119,7 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
 
-    private DailyRepetitionComponent dailyRepetitionComponent = new DailyRepetitionComponent();
+    private DailyRepetitionComponent dailyRepetitionComponent;
     private VBox weeklyRepetitionComponent;
     private VBox monthlyRepetitionComponent;
     private VBox yearlyRepetitionComponent;
@@ -152,6 +153,9 @@ public class PlanItAddEventController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+
+        dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
+        weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
 
         repetitionBox.setVisible(false);
 
@@ -236,9 +240,12 @@ public class PlanItAddEventController implements Initializable {
             if(event != null && event.getRepetition() != null) {
                 showRepetitionDetail();
             } else {
-                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+//                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+                repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
             }
         }
+
+        repetitionButtonClickCount++;
     }
 
     private void showRepetitionDetail() {
