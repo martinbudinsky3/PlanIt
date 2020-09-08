@@ -118,7 +118,7 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
 
-    private VBox dailyRepetitionComponent = new DailyRepetitionComponent().get();
+    private DailyRepetitionComponent dailyRepetitionComponent = new DailyRepetitionComponent();
     private VBox weeklyRepetitionComponent;
     private VBox monthlyRepetitionComponent;
     private VBox yearlyRepetitionComponent;
@@ -145,7 +145,6 @@ public class PlanItAddEventController implements Initializable {
         this.planItMainWindowController = planItMainWindowController;
     }
 
-
     /**
      * Setting all pre-prepared times (date and time when new event starts, ends and when the event should be notified).
      * User enters data as title, location, description of the event and also changes dates and times of the event.
@@ -153,7 +152,9 @@ public class PlanItAddEventController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
+
         repetitionBox.setVisible(false);
+
         initializeTypeSelector();
         initializeRepetitionTypeSelector();
 
