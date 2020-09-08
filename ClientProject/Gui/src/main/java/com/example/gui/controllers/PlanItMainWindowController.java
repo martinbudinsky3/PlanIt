@@ -83,8 +83,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @FXML
     private ListView<String> monthsList;
 
-    private boolean threadFlag;
-    private boolean threadActive;
+//    private boolean threadFlag = false;
+    private boolean threadActive = false;
     private Integer selectedYear;
     private Integer selectedMonth;
     private Node[][] gridPaneNodes;
@@ -97,9 +97,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         this.weatherClient = weatherClient;
         this.user = user;
         this.windowsCreator = windowsCreator;
-
-        threadFlag = false;
-        threadActive = true;
     }
 
     public AnchorPane getAnchorPane() {
@@ -148,8 +145,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         initializeMonthsAndYear();
         initializeCalendar();
         showEventsInCalendar();
-        if (!threadFlag) { // if thread isn't created yet
-            threadFlag = true;
+        if (!threadActive) { // if thread isn't created yet
+            threadActive = true;
             startAlertTask();
             startWeatherTask();
         }
@@ -160,7 +157,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      */
     @Override
     public void reload(ResourceBundle bundle) {
-        threadFlag = false;
+        threadActive = false;
         windowsCreator.reload(ap, bundle, "fxml/PlanItMainWindow.fxml", this);
     }
 
