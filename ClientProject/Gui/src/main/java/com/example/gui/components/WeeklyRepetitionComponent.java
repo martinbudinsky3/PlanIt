@@ -24,8 +24,6 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
     public WeeklyRepetitionComponent(ResourceBundle resourceBundle) {
         super(resourceBundle);
 
-//        setCaptions();
-
         initDaysOfWeekField();
 
         getChildren().add(daysOfWeekField);

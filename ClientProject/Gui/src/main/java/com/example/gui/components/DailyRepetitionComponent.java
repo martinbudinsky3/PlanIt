@@ -30,7 +30,7 @@ public class DailyRepetitionComponent extends VBox{
         getChildren().add(repetitionIntervalField);
     }
 
-    protected void setCaptions() {
+    private void setCaptions() {
         secondLabel.setText(resourceBundle.getString("repetitionIntervalDayLabel"));
     }
 
@@ -48,7 +48,6 @@ public class DailyRepetitionComponent extends VBox{
     private void initRepetitionIntervalSelector() {
         repetitionIntervalSelector.getItems().addAll(1, 2, 3, 4, 5);
         repetitionIntervalSelector.setEditable(true);
-        repetitionIntervalSelector.setMaxWidth(80);
         repetitionIntervalSelector.setValue(1);
         repetitionIntervalSelector.getEditor().textProperty().addListener((obs, oldText, newText) -> {
             try {
@@ -66,6 +65,8 @@ public class DailyRepetitionComponent extends VBox{
     private void setRepetitionIntervalFieldStyles() {
         firstLabel.setFont(Font.font(18));
         secondLabel.setFont(Font.font(18));
+
+        repetitionIntervalSelector.setMaxWidth(80);
 
         HBox.setMargin(firstLabel, new Insets(0, 15, 0, 0));
         HBox.setMargin(secondLabel, new Insets(0, 0, 0, 10));
