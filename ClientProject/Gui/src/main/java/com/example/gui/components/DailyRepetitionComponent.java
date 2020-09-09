@@ -34,7 +34,7 @@ public class DailyRepetitionComponent extends VBox{
         secondLabel.setText(resourceBundle.getString("repetitionIntervalDayLabel"));
     }
 
-    protected void initRepetitionIntervalField() {
+    private void initRepetitionIntervalField() {
         initRepetitionIntervalSelector();
 
         repetitionIntervalField.getChildren().addAll(firstLabel, repetitionIntervalSelector, secondLabel);
@@ -45,27 +45,22 @@ public class DailyRepetitionComponent extends VBox{
     /**
      * Create choice box for selection of repetition interval
      */
-    protected void initRepetitionIntervalSelector() {
+    private void initRepetitionIntervalSelector() {
         repetitionIntervalSelector.getItems().addAll(1, 2, 3, 4, 5);
         repetitionIntervalSelector.setEditable(true);
         repetitionIntervalSelector.setMaxWidth(80);
         repetitionIntervalSelector.setValue(1);
         repetitionIntervalSelector.getEditor().textProperty().addListener((obs, oldText, newText) -> {
             try {
-                clearErrorLabel();
+                clearErrorLabel(repetitionIntervalErrorField);
                 repetitionIntervalSelector.setValue(Integer.parseInt(newText));
                 if(Integer.parseInt(newText) < 1 || Integer.parseInt(newText) > 999) {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                createRepetitionIntervalErrorLabel();
+                createErrorLabel(repetitionIntervalErrorField, repetitionIntervalField, "repetitionIntervalErrorLabel");
             }
         });
-    }
-
-    private void clearErrorLabel() {
-        repetitionIntervalErrorField.getChildren().clear();
-        getChildren().remove(repetitionIntervalErrorField);
     }
 
     private void setRepetitionIntervalFieldStyles() {
@@ -78,14 +73,19 @@ public class DailyRepetitionComponent extends VBox{
         VBox.setMargin(repetitionIntervalField, new Insets(0, 0, 0, LEFT_MARGIN));
     }
 
-    private void createRepetitionIntervalErrorLabel() {
-        Label errorLabel = new Label(resourceBundle.getString("repetitionIntervalErrorLabel"));
-        errorLabel.getStyleClass().add("error-label");
-        repetitionIntervalErrorField.getChildren().add(errorLabel);
+    protected void clearErrorLabel(HBox errorField) {
+        errorField.getChildren().clear();
+        getChildren().remove(errorField);
+    }
 
-        VBox.setMargin(repetitionIntervalErrorField, new Insets(0, 0, 0, LEFT_MARGIN));
-        int index = getChildren().indexOf(repetitionIntervalField);
-        getChildren().add(index+1, repetitionIntervalErrorField);
+    protected void createErrorLabel(HBox errorField, HBox field, String key) {
+        Label errorLabel = new Label(resourceBundle.getString(key));
+        errorLabel.getStyleClass().add("error-label");
+        errorField.getChildren().add(errorLabel);
+
+        VBox.setMargin(errorField, new Insets(0, 0, 0, LEFT_MARGIN));
+        int index = getChildren().indexOf(field);
+        getChildren().add(index+1, errorField);
     }
 
     public ComboBox<Integer> getRepetitionIntervalSelector() {

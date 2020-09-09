@@ -87,7 +87,6 @@ public class LanguageSelectorController implements Initializable {
             }
         });
 
-//        ap.getChildren().clear();
         ap.getChildren().add(listView);
     }
 
