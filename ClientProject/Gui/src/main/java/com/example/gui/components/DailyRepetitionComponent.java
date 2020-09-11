@@ -23,14 +23,14 @@ public class DailyRepetitionComponent extends VBox{
         this.resourceBundle = resourceBundle;
 
         firstLabel.setText(resourceBundle.getString("repetitionIntervalFirstLabel"));
-        setCaptions();
+        setRepetitionIntervalCaption();
         initRepetitionIntervalField();
 
         // add everything into root
         getChildren().add(repetitionIntervalField);
     }
 
-    private void setCaptions() {
+    protected void setRepetitionIntervalCaption() {
         secondLabel.setText(resourceBundle.getString("repetitionIntervalDayLabel"));
     }
 

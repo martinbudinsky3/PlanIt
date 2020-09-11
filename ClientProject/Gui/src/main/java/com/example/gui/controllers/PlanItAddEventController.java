@@ -6,6 +6,7 @@ import com.example.client.model.repetition.RepetitionType;
 import com.example.gui.components.DailyRepetitionComponent;
 import com.example.gui.components.MonthlyRepetitionComponent;
 import com.example.gui.components.WeeklyRepetitionComponent;
+import com.example.gui.components.YearlyRepetitionComponent;
 import com.example.gui.data_items.EventTypeItem;
 import com.example.gui.data_items.RepetitionTypeItem;
 import javafx.collections.FXCollections;
@@ -158,6 +159,8 @@ public class PlanItAddEventController implements Initializable {
         dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
         weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
         monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle, initDate);
+        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle, initDate);
+
 
         repetitionBox.setVisible(false);
 
@@ -242,9 +245,10 @@ public class PlanItAddEventController implements Initializable {
             if(event != null && event.getRepetition() != null) {
                 showRepetitionDetail();
             } else {
-//                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
 //                repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
-                repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
+//                repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
+//                repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
             }
         }
 

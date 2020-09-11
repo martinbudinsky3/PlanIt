@@ -36,13 +36,14 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         super(resourceBundle);
         this.initDate = initDate;
 
-        setCaptions();
+        setMonthlyRepetitionCaptions();
 
         initializeDayOfMonthOption();
 
         initializeDayOfWeekWithOrdinalOption();
 
         monthlyRepetitionOptions.getToggles().addAll(dayOfMonthOption, dayOfWeekWithOrdinalOption);
+        monthlyRepetitionOptions.selectToggle(dayOfMonthOption);
 
         getChildren().addAll(dayOfMonthOption, dayOfWeekWithOrdinalOption);
     }
@@ -52,6 +53,7 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         initializeDayOfMonthSelector();
         dayOfMonthOptionBox.getChildren().addAll(dayOfMonthLabel, dayOfMonthSelector);
         dayOfMonthOption.setGraphic(dayOfMonthOptionBox);
+
         setDayOfMonthFieldStyles();
     }
 
@@ -111,10 +113,13 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         return ordinal;
     }
 
-    protected void setCaptions() {
-        getSecondLabel().setText(getResourceBundle().getString("repetitionIntervalMonthLabel"));
+    private void setMonthlyRepetitionCaptions() {
         dayOfMonthLabel.setText(getResourceBundle().getString("dayOfMonthLabel"));
         dayOfWeekWithOrdinalLabel.setText(getResourceBundle().getString("dayOfWeekWithOrdinalLabel"));
+    }
+
+    protected void setRepetitionIntervalCaption() {
+        getSecondLabel().setText(getResourceBundle().getString("repetitionIntervalMonthLabel"));
     }
 
     private void setDayOfMonthFieldStyles() {
@@ -128,6 +133,10 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         HBox.setMargin(dayOfWeekWithOrdinalLabel, new Insets(0, 15, 0, 0));
         HBox.setMargin(ordinalSelector, new Insets(0, 10, 0, 0));
         VBox.setMargin(dayOfWeekWithOrdinalOption, new Insets(20, 0, 0, LEFT_MARGIN));
+    }
+
+    public LocalDate getInitDate() {
+        return initDate;
     }
 
     public ToggleGroup getMonthlyRepetitionOptions() {

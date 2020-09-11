@@ -23,7 +23,8 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
 
     public WeeklyRepetitionComponent(ResourceBundle resourceBundle) {
         super(resourceBundle);
-
+        setRepetitionIntervalCaption();
+        
         initDaysOfWeekField();
 
         getChildren().add(daysOfWeekField);
@@ -61,7 +62,7 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
         dayOfWeekCheckBoxes.get(0).selectedProperty().setValue(true);
     }
 
-    protected void setCaptions() {
+    protected void setRepetitionIntervalCaption() {
         getSecondLabel().setText(getResourceBundle().getString("repetitionIntervalWeekLabel"));
     }
 
