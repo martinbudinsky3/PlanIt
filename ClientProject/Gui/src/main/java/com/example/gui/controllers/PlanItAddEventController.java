@@ -245,10 +245,10 @@ public class PlanItAddEventController implements Initializable {
             if(event != null && event.getRepetition() != null) {
                 showRepetitionDetail();
             } else {
-                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+//                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
 //                repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
 //                repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
-//                repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
+                repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
             }
         }
 
