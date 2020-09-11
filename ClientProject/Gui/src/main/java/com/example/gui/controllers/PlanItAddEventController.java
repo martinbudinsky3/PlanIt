@@ -9,8 +9,6 @@ import com.example.gui.components.WeeklyRepetitionComponent;
 import com.example.gui.components.YearlyRepetitionComponent;
 import com.example.gui.data_items.EventTypeItem;
 import com.example.gui.data_items.RepetitionTypeItem;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -121,10 +119,15 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
 
+    @FXML
+    private DatePicker repetitionEndField;
+
+
+    private DailyRepetitionComponent selectedRepetitionComponent;
     private DailyRepetitionComponent dailyRepetitionComponent;
-    private VBox weeklyRepetitionComponent;
-    private VBox monthlyRepetitionComponent;
-    private VBox yearlyRepetitionComponent;
+    private WeeklyRepetitionComponent weeklyRepetitionComponent;
+    private MonthlyRepetitionComponent monthlyRepetitionComponent;
+    private YearlyRepetitionComponent yearlyRepetitionComponent;
 
     @FXML
     private Button repetitionButton;
@@ -164,7 +167,7 @@ public class PlanItAddEventController implements Initializable {
 
         repetitionBox.setVisible(false);
 
-        initializeTypeSelector();
+        initializeEventTypeSelector();
         initializeRepetitionTypeSelector();
 
         if (event == null) { // add event
@@ -194,7 +197,7 @@ public class PlanItAddEventController implements Initializable {
             endsDateField.setValue(endsDate);
             alertDateField.setValue(alertDate);
         } else { // show detail of already created event
-            if(event.getRepetition() != null) {
+            if (event.getRepetition() != null) {
                 repetitionButton.setText("Edit repetition");
             }
             showDetail();
@@ -203,8 +206,8 @@ public class PlanItAddEventController implements Initializable {
         addHandlers();
     }
 
-    private void initializeTypeSelector() {
-        for(Event.Type type : Event.Type.values()) {
+    private void initializeEventTypeSelector() {
+        for (Event.Type type : Event.Type.values()) {
             typeSelector.getItems().add(new EventTypeItem(type, resourceBundle));
         }
 
@@ -212,11 +215,38 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void initializeRepetitionTypeSelector() {
-        for(RepetitionType repetitionType : RepetitionType.values()) {
+        for (RepetitionType repetitionType : RepetitionType.values()) {
             repetitionTypeSelector.getItems().add(new RepetitionTypeItem(repetitionType, resourceBundle));
         }
 
-        repetitionTypeSelector.getSelectionModel().selectFirst();
+
+        repetitionTypeSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            RepetitionType newType = newValue.getType();
+            if (repetitionBox.getChildren().size() > 3) {
+                repetitionBox.getChildren().remove(2);
+            }
+
+            switch (newType) {
+                case DAILY:
+                    repetitionBox.getChildren().add(2, dailyRepetitionComponent);
+                    selectedRepetitionComponent = dailyRepetitionComponent;
+                    break;
+                case WEEKLY:
+                    repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
+                    selectedRepetitionComponent = weeklyRepetitionComponent;
+                    break;
+                case MONTHLY:
+                    repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
+                    selectedRepetitionComponent = monthlyRepetitionComponent;
+                    break;
+                case YEARLY:
+                    repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
+                    selectedRepetitionComponent = yearlyRepetitionComponent;
+                    break;
+            }
+        });
+
+        repetitionTypeSelector.getSelectionModel().select(1);
     }
 
     private void addHandlers() {
@@ -241,15 +271,8 @@ public class PlanItAddEventController implements Initializable {
     private void repetitionButtonClickedHandler() {
         repetitionBox.setVisible(!repetitionBox.isVisible());
 
-        if(repetitionButtonClickCount == 0) {
-            if(event != null && event.getRepetition() != null) {
-                showRepetitionDetail();
-            } else {
-//                repetitionBox.getChildren().add(2, dailyRepetitionComponent);
-//                repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
-//                repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
-                repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
-            }
+        if (event != null && event.getRepetition() != null) {
+            showRepetitionDetail();
         }
 
         repetitionButtonClickCount++;
@@ -276,8 +299,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private EventTypeItem getEventTypeItem(Event.Type type) {
-        for(EventTypeItem eventTypeItem : typeSelector.getItems()) {
-            if(eventTypeItem.getType().equals(type)) {
+        for (EventTypeItem eventTypeItem : typeSelector.getItems()) {
+            if (eventTypeItem.getType().equals(type)) {
                 return eventTypeItem;
             }
         }
@@ -286,8 +309,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private RepetitionTypeItem getRepetitionTypeItem(Event.Type type) {
-        for(RepetitionTypeItem repetitionTypeItem : repetitionTypeSelector.getItems()) {
-            if(repetitionTypeItem.getType().equals(type)) {
+        for (RepetitionTypeItem repetitionTypeItem : repetitionTypeSelector.getItems()) {
+            if (repetitionTypeItem.getType().equals(type)) {
                 return repetitionTypeItem;
             }
         }
@@ -383,7 +406,7 @@ public class PlanItAddEventController implements Initializable {
 
         String title = titleField.getText();
         String location = locationField.getText();
-        Event.Type type = typeSelector.getValue().getType(); // TODO fix this to be multilanguage
+        Event.Type type = typeSelector.getValue().getType();
         LocalDate date = startsDateField.getValue();
         LocalTime starts = null;
         LocalDate endsDate = endsDateField.getValue();
@@ -399,11 +422,11 @@ public class PlanItAddEventController implements Initializable {
         } catch (DateTimeException dte) {
             timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
             int index = detailBox.getChildren().indexOf(startsRow);
-            detailBox.getChildren().add(index+1, timeErrorHBox);
+            detailBox.getChildren().add(index + 1, timeErrorHBox);
             checkFlag = false;
         }
 
-        if(!validateDate(date, timeErrorHBox)) {
+        if (!validateDate(date, timeErrorHBox)) {
             checkFlag = false;
         }
 
@@ -413,11 +436,11 @@ public class PlanItAddEventController implements Initializable {
         } catch (DateTimeException dte) {
             timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
             int index = detailBox.getChildren().indexOf(endsRow);
-            detailBox.getChildren().add(index+1, timeErrorHBox);
+            detailBox.getChildren().add(index + 1, timeErrorHBox);
             checkFlag = false;
         }
 
-        if(!validateDate(endsDate, timeErrorHBox)) {
+        if (!validateDate(endsDate, timeErrorHBox)) {
             checkFlag = false;
         }
 
@@ -427,11 +450,11 @@ public class PlanItAddEventController implements Initializable {
         } catch (DateTimeException dte) {
             timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
             int index = detailBox.getChildren().indexOf(alertRow);
-            detailBox.getChildren().add(index+1, timeErrorHBox);
+            detailBox.getChildren().add(index + 1, timeErrorHBox);
             checkFlag = false;
         }
 
-        if(!validateDate(alertDate, timeErrorHBox)) {
+        if (!validateDate(alertDate, timeErrorHBox)) {
             checkFlag = false;
         }
 
@@ -448,7 +471,7 @@ public class PlanItAddEventController implements Initializable {
         if (title.equals("")) {
             HBox titleErrorHBox = createErrorHBox("titleErrorLabel", ERROR_FIRST_HBOX_WIDTH);
             int index = detailBox.getChildren().indexOf(titleRow);
-            detailBox.getChildren().add(index+1, titleErrorHBox);
+            detailBox.getChildren().add(index + 1, titleErrorHBox);
             return false;
         }
 
@@ -456,8 +479,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private boolean validateDate(LocalDate date, HBox errorHBox) {
-        if(date == null) {
-            if(errorHBox == null) {
+        if (date == null) {
+            if (errorHBox == null) {
                 errorHBox = createErrorHBox("dateErrorLabel", DATE_ERROR_FIRST_HBOX_WIDTH);
                 int index = detailBox.getChildren().indexOf(startsRow);
                 detailBox.getChildren().add(index + 1, errorHBox);
@@ -466,12 +489,11 @@ public class PlanItAddEventController implements Initializable {
                 dateErrorLabel.getStyleClass().add("error-label");
                 errorHBox.getChildren().add(dateErrorLabel);
             }
-           return false;
+            return false;
         }
 
         return true;
     }
-
 
 
     /**

@@ -11,8 +11,6 @@ import javafx.scene.text.Font;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class YearlyRepetitionComponent extends MonthlyRepetitionComponent{
