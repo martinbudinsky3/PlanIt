@@ -11,6 +11,10 @@ public class Repetition {
     public Repetition() {
     }
 
+    public Repetition(int repetitionInterval) {
+        this.repetitionInterval = repetitionInterval;
+    }
+
     public Repetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval) {
         this.eventId = eventId;
         this.start = start;
