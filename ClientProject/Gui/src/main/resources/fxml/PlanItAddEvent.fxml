@@ -90,7 +90,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></TextField>
                                         <Button fx:id="startsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-                                        <DatePicker fx:id="startsDateField" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                        <DatePicker fx:id="startsDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin></DatePicker>
@@ -119,7 +119,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></TextField>
                                         <Button fx:id="endsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-                                        <DatePicker fx:id="endsDateField" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                        <DatePicker fx:id="endsDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin></DatePicker>
@@ -148,7 +148,7 @@
                                     <Insets left="5.0" right="5.0" />
                                  </HBox.margin></TextField>
                                         <Button fx:id="alertsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-                                        <DatePicker fx:id="alertDateField" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                        <DatePicker fx:id="alertDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
                                  <HBox.margin>
                                     <Insets left="20.0" />
                                  </HBox.margin></DatePicker>
@@ -195,7 +195,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="450.0">
                            <children>
-                              <DatePicker fx:id="repetitionStartField" />
+                              <DatePicker fx:id="repetitionStartField" editable="false" />
                            </children>
                         </HBox>
                      </children>
@@ -234,7 +234,7 @@
                         </HBox>
                         <HBox prefHeight="100.0" prefWidth="450.0">
                            <children>
-                              <DatePicker fx:id="repetitionEndField" />
+                              <DatePicker fx:id="repetitionEndField" editable="false" />
                            </children>
                         </HBox>
                      </children>

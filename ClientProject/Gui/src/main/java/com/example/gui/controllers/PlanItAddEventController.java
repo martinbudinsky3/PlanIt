@@ -12,8 +12,13 @@ import com.example.gui.data_items.RepetitionTypeItem;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 
 /**
  * Controller for "PlanItAddEvent.fxml"
@@ -33,7 +39,7 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_HBOX_WIDTH = 476;
     private final Integer ERROR_HBOX_HEIGTH = 30;
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
-    private final Integer DATE_ERROR_FIRST_HBOX_WIDTH = 445;
+    private final Integer ERROR_SECOND_HBOX_WIDTH = 230;
 
     private final Integer idUser;
     private final EventsClient eventsClient;
@@ -122,20 +128,27 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private DatePicker repetitionEndField;
 
+    @FXML
+    private Button repetitionButton;
 
+    // error fields
+    private HBox titleErrorField = new HBox();
+    private HBox startErrorField = new HBox();
+    private HBox endErrorField = new HBox();
+    private HBox alertErrorField = new HBox();
+    private HBox repetitionStartErrorField = new HBox();
+    private HBox repetitionEndErrorField = new HBox();
+
+    // repetition components
     private DailyRepetitionComponent selectedRepetitionComponent;
     private DailyRepetitionComponent dailyRepetitionComponent;
     private WeeklyRepetitionComponent weeklyRepetitionComponent;
     private MonthlyRepetitionComponent monthlyRepetitionComponent;
     private YearlyRepetitionComponent yearlyRepetitionComponent;
 
-    @FXML
-    private Button repetitionButton;
-
     private LocalDate initDate;
     private ResourceBundle resourceBundle;
     private Event event;
-    private long repetitionButtonClickCount = 0;
 
     public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
@@ -161,14 +174,18 @@ public class PlanItAddEventController implements Initializable {
 
         dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
         weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
-        monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle, initDate);
-        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle, initDate);
-
+        // TODO call constructor with initDate only if event is null
+//        monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle, initDate);
+//        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle, initDate);
 
         repetitionBox.setVisible(false);
 
+        initErrorFields();
+
         initializeEventTypeSelector();
         initializeRepetitionTypeSelector();
+
+        addListenersOnFields();
 
         if (event == null) { // add event
             // set init times to time fields
@@ -198,12 +215,78 @@ public class PlanItAddEventController implements Initializable {
             alertDateField.setValue(alertDate);
         } else { // show detail of already created event
             if (event.getRepetition() != null) {
-                repetitionButton.setText("Edit repetition");
+                repetitionButton.setText("Edit repetition"); // TODO multilanguage
             }
             showDetail();
         }
 
         addHandlers();
+    }
+
+    private void addListenersOnFields() {
+        titleField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if("".equals(newValue)) {
+                createErrorMessage(titleRow, titleErrorField, "titleErrorLabel");
+            } else {
+                removeErrorMessage(titleErrorField);
+            }
+        });
+
+        startsField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+               LocalTime.parse(newValue);
+               removeErrorMessage(startErrorField);
+            } catch (DateTimeException e) {
+                createErrorMessage(startsRow, startErrorField, "timeErrorLabel");
+            }
+        });
+
+        endsField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                LocalTime.parse(newValue);
+                removeErrorMessage(endErrorField);
+            } catch (DateTimeException e) {
+                createErrorMessage(endsRow, endErrorField, "timeErrorLabel");
+            }
+        });
+
+        alertField.textProperty().addListener((observable, oldValue, newValue) -> {
+            try {
+                LocalTime.parse(newValue);
+                removeErrorMessage(alertErrorField);
+            } catch (DateTimeException e) {
+                createErrorMessage(alertRow, alertErrorField, "timeErrorLabel");
+            }
+        });
+
+        startsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue == null) {
+                createErrorMessage(startsRow, startErrorField, "dateErrorLabel");
+            } else {
+                removeErrorMessage(startErrorField);
+            }
+        });
+
+        endsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue == null) {
+                createErrorMessage(endsRow, endErrorField, "dateErrorLabel");
+            } else {
+                removeErrorMessage(endErrorField);
+            }
+        });
+
+        alertDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue == null) {
+                createErrorMessage(alertRow, alertErrorField, "dateErrorLabel");
+            } else {
+                removeErrorMessage(alertErrorField);
+            }
+        });
+    }
+
+    private void removeErrorMessage(HBox errorField) {
+        errorField.getChildren().clear();
+        detailBox.getChildren().remove(errorField);
     }
 
     private void initializeEventTypeSelector() {
@@ -274,8 +357,6 @@ public class PlanItAddEventController implements Initializable {
         if (event != null && event.getRepetition() != null) {
             showRepetitionDetail();
         }
-
-        repetitionButtonClickCount++;
     }
 
     private void showRepetitionDetail() {
@@ -402,63 +483,18 @@ public class PlanItAddEventController implements Initializable {
      * If not all required values are entered or values are in wrong format, the user is notified
      */
     public void save(ActionEvent ev) {
-        hideErrorLabels();
+        if (checkInput()) {
+            String title = titleField.getText();
+            String location = locationField.getText();
+            Event.Type type = typeSelector.getValue().getType();
+            LocalDate date = startsDateField.getValue();
+            LocalTime starts = LocalTime.parse(startsField.getText());
+            LocalDate endsDate = endsDateField.getValue();
+            LocalTime ends = LocalTime.parse(endsField.getText());
+            LocalDate alertDate = alertDateField.getValue();
+            LocalTime alert = LocalTime.parse(alertField.getText());
+            String description = descriptionField.getText();
 
-        String title = titleField.getText();
-        String location = locationField.getText();
-        Event.Type type = typeSelector.getValue().getType();
-        LocalDate date = startsDateField.getValue();
-        LocalTime starts = null;
-        LocalDate endsDate = endsDateField.getValue();
-        LocalTime ends = null;
-        LocalDate alertDate = alertDateField.getValue();
-        LocalTime alert = null;
-        String description = descriptionField.getText();
-
-        boolean checkFlag = validateTitle(title);
-        HBox timeErrorHBox = null;
-        try {
-            starts = LocalTime.parse(startsField.getText());
-        } catch (DateTimeException dte) {
-            timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
-            int index = detailBox.getChildren().indexOf(startsRow);
-            detailBox.getChildren().add(index + 1, timeErrorHBox);
-            checkFlag = false;
-        }
-
-        if (!validateDate(date, timeErrorHBox)) {
-            checkFlag = false;
-        }
-
-        timeErrorHBox = null;
-        try {
-            ends = LocalTime.parse(endsField.getText());
-        } catch (DateTimeException dte) {
-            timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
-            int index = detailBox.getChildren().indexOf(endsRow);
-            detailBox.getChildren().add(index + 1, timeErrorHBox);
-            checkFlag = false;
-        }
-
-        if (!validateDate(endsDate, timeErrorHBox)) {
-            checkFlag = false;
-        }
-
-        timeErrorHBox = null;
-        try {
-            alert = LocalTime.parse(alertField.getText());
-        } catch (DateTimeException dte) {
-            timeErrorHBox = createErrorHBox("timeErrorLabel", ERROR_FIRST_HBOX_WIDTH);
-            int index = detailBox.getChildren().indexOf(alertRow);
-            detailBox.getChildren().add(index + 1, timeErrorHBox);
-            checkFlag = false;
-        }
-
-        if (!validateDate(alertDate, timeErrorHBox)) {
-            checkFlag = false;
-        }
-
-        if (checkFlag) {
             if (event == null) {
                 addEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
             } else {
@@ -467,34 +503,25 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    private boolean validateTitle(String title) {
-        if (title.equals("")) {
-            HBox titleErrorHBox = createErrorHBox("titleErrorLabel", ERROR_FIRST_HBOX_WIDTH);
-            int index = detailBox.getChildren().indexOf(titleRow);
-            detailBox.getChildren().add(index + 1, titleErrorHBox);
+    private boolean checkInput() {
+        if (!titleErrorField.getChildren().isEmpty()) {
+            return false;
+        }
+
+        if (!startErrorField.getChildren().isEmpty()) {
+            return false;
+        }
+
+        if (!endErrorField.getChildren().isEmpty()) {
+            return false;
+        }
+
+        if (!alertErrorField.getChildren().isEmpty()) {
             return false;
         }
 
         return true;
     }
-
-    private boolean validateDate(LocalDate date, HBox errorHBox) {
-        if (date == null) {
-            if (errorHBox == null) {
-                errorHBox = createErrorHBox("dateErrorLabel", DATE_ERROR_FIRST_HBOX_WIDTH);
-                int index = detailBox.getChildren().indexOf(startsRow);
-                detailBox.getChildren().add(index + 1, errorHBox);
-            } else {
-                Label dateErrorLabel = new Label(resourceBundle.getString("dateErrorLabel"));
-                dateErrorLabel.getStyleClass().add("error-label");
-                errorHBox.getChildren().add(dateErrorLabel);
-            }
-            return false;
-        }
-
-        return true;
-    }
-
 
     /**
      * Adding new event. (When event does not have ID yet.)
@@ -526,7 +553,7 @@ public class PlanItAddEventController implements Initializable {
                             LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
 
         Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
-        boolean success = eventsClient.updateEvent(event, this.event.getIdEvent(), resourceBundle);
+        boolean success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
 
         if (!success) {
             return;
@@ -534,6 +561,7 @@ public class PlanItAddEventController implements Initializable {
 
         if (!newEventLabelIsEqualWithOld(event)) {
             if (newDateIsInCalendarDisplay(date)) {
+                event.setIdEvent(this.event.getIdEvent());
                 planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
             } else {
                 updateCalendarDisplay(date);
@@ -569,13 +597,6 @@ public class PlanItAddEventController implements Initializable {
     }
 
     /**
-     * At the beginning of saving event, all error labels are hidden.
-     */
-    public void hideErrorLabels() {
-        detailBox.getChildren().removeAll(errorBoxes);
-    }
-
-    /**
      * The functionality of the delete button.
      */
     private void delete(ActionEvent ev) {
@@ -599,23 +620,25 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    private HBox createErrorHBox(String label, double width) {
-        HBox errorHBox = new HBox();
-        errorHBox.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+    private void createErrorMessage(HBox field, HBox errorField, String label) {
+        if(errorField.getChildren().isEmpty()) {
+            Label errorLabel = new Label(resourceBundle.getString(label));
+            errorLabel.getStyleClass().add("error-label");
 
-        HBox firstHBox = new HBox();
-        firstHBox.setPrefWidth(width);
+            HBox.setMargin(errorLabel, new Insets(0, 0, 0, ERROR_FIRST_HBOX_WIDTH));
+            errorField.getChildren().add(errorLabel);
 
-        HBox secondHBox = new HBox();
-        secondHBox.setPrefWidth(DATE_ERROR_FIRST_HBOX_WIDTH - ERROR_FIRST_HBOX_WIDTH);
+            int index = detailBox.getChildren().indexOf(field);
+            detailBox.getChildren().add(index + 1, errorField);
+        }
+    }
 
-        Label errorLabel = new Label(resourceBundle.getString(label));
-        errorLabel.getStyleClass().add("error-label");
-        secondHBox.getChildren().add(errorLabel);
-
-        errorHBox.getChildren().addAll(firstHBox, secondHBox);
-        errorBoxes.add(errorHBox);
-
-        return errorHBox;
+    private void initErrorFields() {
+        titleErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+        startErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+        endErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+        alertErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+        repetitionStartErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+        repetitionEndErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
     }
 }

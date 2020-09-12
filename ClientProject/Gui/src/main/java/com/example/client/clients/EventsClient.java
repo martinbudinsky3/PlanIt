@@ -228,20 +228,21 @@ public class EventsClient {
      * Method needed when user wants to change some data in given event.
      *
      * @param event Event object with updated attributes,
-     * @param id    id of that event
+     * @param eventId    id of that event
      */
-    public boolean updateEvent(Event event, long id, ResourceBundle resourceBundle) {
-        logger.info("Updating event [" + id + "]");
+    public boolean updateEvent(Event event, int userId, int eventId, ResourceBundle resourceBundle) {
+        logger.info("Updating event [" + eventId + "]");
         final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
-        Map<String, Long> params = new HashMap<String, Long>();
-        params.put("idEvent", id);
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
 
         boolean success = false;
         try {
             restTemplate.put(uri, event, params);
             success = true;
-            logger.info("Event [" + id + "] successffully updated.");
+            logger.info("Event [" + eventId + "] successffully updated.");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             if (ex instanceof ResourceAccessException) {
