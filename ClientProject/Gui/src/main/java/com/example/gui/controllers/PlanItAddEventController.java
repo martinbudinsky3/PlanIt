@@ -258,30 +258,6 @@ public class PlanItAddEventController implements Initializable {
                 createErrorMessage(alertRow, alertErrorField, "timeErrorLabel");
             }
         });
-
-        startsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null) {
-                createErrorMessage(startsRow, startErrorField, "dateErrorLabel");
-            } else {
-                removeErrorMessage(startErrorField);
-            }
-        });
-
-        endsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null) {
-                createErrorMessage(endsRow, endErrorField, "dateErrorLabel");
-            } else {
-                removeErrorMessage(endErrorField);
-            }
-        });
-
-        alertDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue == null) {
-                createErrorMessage(alertRow, alertErrorField, "dateErrorLabel");
-            } else {
-                removeErrorMessage(alertErrorField);
-            }
-        });
     }
 
     private void removeErrorMessage(HBox errorField) {
@@ -504,7 +480,8 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private boolean checkInput() {
-        if (!titleErrorField.getChildren().isEmpty()) {
+        if ("".equals(titleField.getText())) {
+            createErrorMessage(titleRow, titleErrorField, "titleErrorLabel");
             return false;
         }
 
