@@ -1,5 +1,6 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.Repetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -7,6 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class DailyRepetitionComponent extends VBox{
@@ -48,7 +50,6 @@ public class DailyRepetitionComponent extends VBox{
     private void initRepetitionIntervalSelector() {
         repetitionIntervalSelector.getItems().addAll(1, 2, 3, 4, 5);
         repetitionIntervalSelector.setEditable(true);
-        repetitionIntervalSelector.setValue(1);
         repetitionIntervalSelector.getEditor().textProperty().addListener((obs, oldText, newText) -> {
             try {
                 clearErrorLabel(repetitionIntervalErrorField);
@@ -87,6 +88,14 @@ public class DailyRepetitionComponent extends VBox{
         VBox.setMargin(errorField, new Insets(0, 0, 0, LEFT_MARGIN));
         int index = getChildren().indexOf(field);
         getChildren().add(index+1, errorField);
+    }
+
+    public void setInitValues(LocalDate initDate) {
+        repetitionIntervalSelector.setValue(1);
+    }
+
+    public void showRepetitionDetail(Repetition repetition) {
+        repetitionIntervalSelector.setValue(repetition.getRepetitionInterval());
     }
 
     public ComboBox<Integer> getRepetitionIntervalSelector() {

@@ -1,5 +1,7 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.MonthlyRepetition;
+import com.example.client.model.repetition.WeeklyRepetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -17,7 +19,6 @@ import java.util.ResourceBundle;
 
 public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
     private final Integer LEFT_MARGIN = 130;
-    private LocalDate initDate;
 
     private final ToggleGroup monthlyRepetitionOptions = new ToggleGroup();
     private RadioButton dayOfMonthOption = new RadioButton();
@@ -32,9 +33,8 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
     private ChoiceBox<Object> ordinalSelector = new ChoiceBox<Object>();
     private ChoiceBox<String> dayOfWeekSelector = new ChoiceBox<String>();
 
-    public MonthlyRepetitionComponent(ResourceBundle resourceBundle, LocalDate initDate) {
+    public MonthlyRepetitionComponent(ResourceBundle resourceBundle) {
         super(resourceBundle);
-        this.initDate = initDate;
 
         setMonthlyRepetitionCaptions();
 
@@ -65,7 +65,6 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
         dayOfMonthSelector.getItems().addAll(daysOfMonthNumbers);
         dayOfMonthSelector.setMaxWidth(80);
-        dayOfMonthSelector.setValue(initDate.getDayOfMonth());
     }
 
     private void initializeDayOfWeekWithOrdinalOption() {
@@ -79,28 +78,23 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
     private void initializeOrdinalSelector() {
         ordinalSelector.getItems().addAll(1, 2, 3, 4, getResourceBundle().getString("lastLabel"));
-        Integer ordinal = countOrdinalOfDay();
-        if(ordinal == 5) {
-            ordinalSelector.getSelectionModel().selectLast();
-        } else {
-            ordinalSelector.getSelectionModel().select(ordinal);
-        }
     }
 
     private void initializeDayOfWeekSelector() {
+        dayOfWeekSelector.getItems().addAll(getDayNames());
+    }
+
+    private List<String> getDayNames() {
         DateFormatSymbols symbols = new DateFormatSymbols(getResourceBundle().getLocale());
         List<String> dayNamesWrongOrder = Arrays.asList(symbols.getWeekdays());
 
         List<String> dayNames = new ArrayList<String>(dayNamesWrongOrder.subList(2, dayNamesWrongOrder.size()));
         dayNames.add(dayNamesWrongOrder.get(1));
 
-        dayOfWeekSelector.getItems().addAll(dayNames);
-        int initDayOfWeekCode = initDate.getDayOfWeek().getValue();
-        String initDayName = dayNames.get(initDayOfWeekCode-1);
-        dayOfWeekSelector.setValue(initDayName);
+        return dayNames;
     }
 
-    private Integer countOrdinalOfDay() {
+    private Integer countOrdinalOfDay(LocalDate initDate) {
         DayOfWeek dayOfWeek = initDate.getDayOfWeek();
         // last day of previous month
         LocalDate date = LocalDate.of(initDate.getYear(), initDate.getMonthValue(), 1).minusDays(1);
@@ -135,8 +129,40 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         VBox.setMargin(dayOfWeekWithOrdinalOption, new Insets(20, 0, 0, LEFT_MARGIN));
     }
 
-    public LocalDate getInitDate() {
-        return initDate;
+    public void setInitValues(LocalDate initDate) {
+        super.setInitValues(initDate);
+
+        // set init value for dayOfMonthSelector
+        dayOfMonthSelector.setValue(initDate.getDayOfMonth());
+
+        setInitDayOfWeekAndOrdinalValue(initDate);
+    }
+
+    private void setInitDayOfWeekAndOrdinalValue(LocalDate initDate) {
+        // set init value for dayOfWeekSelector
+        Integer ordinal = countOrdinalOfDay(initDate);
+        if(ordinal == 5) {
+            ordinalSelector.getSelectionModel().selectLast();
+        } else {
+            ordinalSelector.getSelectionModel().select(ordinal);
+        }
+
+        // set init value for dayOfWeekSelector
+        int initDayOfWeekCode = initDate.getDayOfWeek().getValue();
+        String initDayName = getDayNames().get(initDayOfWeekCode-1);
+        dayOfWeekSelector.setValue(initDayName);
+    }
+
+    public void showRepetitionDetail(MonthlyRepetition repetition) {
+        super.showRepetitionDetail(repetition);
+
+        if(repetition.getDayOfMonth() != null) {
+            dayOfMonthSelector.setValue(repetition.getDayOfMonth());
+            setInitDayOfWeekAndOrdinalValue(repetition.getStart());
+        } else if(repetition.getOrdinal() != null && repetition.getDaysOfWeek() != null){
+            setInitDayOfWeekAndOrdinalValue(repetition.getStart());
+            dayOfMonthSelector.setValue(repetition.getDayOfMonth());
+        }
     }
 
     public ToggleGroup getMonthlyRepetitionOptions() {

@@ -1,5 +1,6 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.WeeklyRepetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
@@ -7,6 +8,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.text.DateFormatSymbols;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,5 +73,18 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
         dayOfWeekCheckBoxes.forEach(checkBox -> checkBox.setFont(Font.font(16)));
         daysOfWeekField.setSpacing(10);
         VBox.setMargin(daysOfWeekField, new Insets(20, 0, 0, LEFT_MARGIN));
+    }
+
+    public void setInitValues(LocalDate initDate) {
+        super.setInitValues(initDate);
+        DayOfWeek initDayOfWeek = initDate.getDayOfWeek();
+        dayOfWeekCheckBoxes.get(initDayOfWeek.getValue()-1).selectedProperty().setValue(true);
+    }
+
+    public void showRepetitionDetail(WeeklyRepetition repetition) {
+        super.showRepetitionDetail(repetition);
+        for(DayOfWeek dayOfWeek : repetition.getDaysOfWeek()) {
+            dayOfWeekCheckBoxes.get(dayOfWeek.getValue()-1).selectedProperty().setValue(true);
+        }
     }
 }

@@ -1,8 +1,8 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.YearlyRepetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,8 +21,8 @@ public class YearlyRepetitionComponent extends MonthlyRepetitionComponent{
     private final Label monthLabel = new Label();
     private final ChoiceBox<String> monthSelector = new ChoiceBox<String>();
 
-    public YearlyRepetitionComponent(ResourceBundle resourceBundle, LocalDate initDate) {
-        super(resourceBundle, initDate);
+    public YearlyRepetitionComponent(ResourceBundle resourceBundle) {
+        super(resourceBundle);
 
         setYearlyRepetitionCaptions();
 
@@ -64,14 +64,25 @@ public class YearlyRepetitionComponent extends MonthlyRepetitionComponent{
 
             getDayOfMonthSelector().setValue(selectedDayOfMonth);
         }));
-
-        int initMonthValue = getInitDate().getMonth().getValue();
-        monthSelector.setValue(monthSelector.getItems().get(initMonthValue-1));
     }
 
     private void setMonthFieldStyles() {
         monthLabel.setFont(Font.font(18));
         HBox.setMargin(monthLabel, new Insets(0, 15, 0, 0));
         VBox.setMargin(monthField, new Insets(20, 0, 0, LEFT_MARGIN));
+    }
+
+    public void setInitValues(LocalDate initDate) {
+        super.setInitValues(initDate);
+
+        int initMonthValue = initDate.getMonth().getValue();
+        monthSelector.setValue(monthSelector.getItems().get(initMonthValue-1));
+    }
+
+    public void showRepetitionDetail(YearlyRepetition repetition) {
+        super.showRepetitionDetail(repetition);
+
+        int repetitionMonthValue = repetition.getMonth();
+        monthSelector.setValue(monthSelector.getItems().get(repetitionMonthValue-1));
     }
 }

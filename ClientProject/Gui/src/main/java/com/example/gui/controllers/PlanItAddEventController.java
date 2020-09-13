@@ -2,7 +2,7 @@ package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
 import com.example.client.model.Event;
-import com.example.client.model.repetition.RepetitionType;
+import com.example.client.model.repetition.*;
 import com.example.gui.components.DailyRepetitionComponent;
 import com.example.gui.components.MonthlyRepetitionComponent;
 import com.example.gui.components.WeeklyRepetitionComponent;
@@ -123,10 +123,13 @@ public class PlanItAddEventController implements Initializable {
     private VBox repetitionBox;
 
     @FXML
-    private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
+    private DatePicker repetitionStartField;
 
     @FXML
     private DatePicker repetitionEndField;
+
+    @FXML
+    private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
 
     @FXML
     private Button repetitionButton;
@@ -174,53 +177,68 @@ public class PlanItAddEventController implements Initializable {
 
         dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
         weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
-        // TODO call constructor with initDate only if event is null
-//        monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle, initDate);
-//        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle, initDate);
+        monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle);
+        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle);
 
         repetitionBox.setVisible(false);
 
         initErrorFields();
+        addListenersOnFields();
 
         initializeEventTypeSelector();
         initializeRepetitionTypeSelector();
 
-        addListenersOnFields();
-
         if (event == null) { // add event
-            // set init times to time fields
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-            LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
-            LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
-            LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
-
-            LocalDate endsDate;
-            if (endsInitTime.isBefore(nextHalfHour)) { // if ends time oversteps midnight and starts time don't, update ends date to next day
-                endsDate = initDate.plusDays(1);
-            } else {
-                endsDate = initDate;
-            }
-            LocalDate alertDate;
-            if (nextHalfHour.isBefore(alertInitTime)) {
-                alertDate = initDate.minusDays(1);
-            } else {
-                alertDate = initDate;
-            }
-
-            startsField.setText(nextHalfHour.format(dtf));
-            endsField.setText(endsInitTime.format(dtf));
-            alertField.setText(alertInitTime.format(dtf));
-            startsDateField.setValue(initDate);
-            endsDateField.setValue(endsDate);
-            alertDateField.setValue(alertDate);
+            setInitValues();
         } else { // show detail of already created event
             if (event.getRepetition() != null) {
-                repetitionButton.setText("Edit repetition"); // TODO multilanguage
+                repetitionButton.setText(resourceBundle.getString("editRepetitionButton"));
             }
             showDetail();
         }
 
         addHandlers();
+    }
+
+    private void setInitValues() {
+        setTimeAndDateValues();
+        typeSelector.getSelectionModel().selectFirst();
+        repetitionTypeSelector.getSelectionModel().select(1);
+        setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent,
+                yearlyRepetitionComponent);
+    }
+
+    private void setRepetitionComponentsInitValues(DailyRepetitionComponent ...components) {
+        for(DailyRepetitionComponent component : components) {
+            component.setInitValues(initDate);
+        }
+    }
+
+    private void setTimeAndDateValues() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime nextHalfHour = countNextHourUnit(LocalTime.now(), 30);
+        LocalTime endsInitTime = nextHalfHour.plusMinutes(30);
+        LocalTime alertInitTime = nextHalfHour.minusMinutes(15);
+
+        LocalDate endsDate;
+        if (endsInitTime.isBefore(nextHalfHour)) { // if ends time oversteps midnight and starts time don't, update ends date to next day
+            endsDate = initDate.plusDays(1);
+        } else {
+            endsDate = initDate;
+        }
+        LocalDate alertDate;
+        if (nextHalfHour.isBefore(alertInitTime)) {
+            alertDate = initDate.minusDays(1);
+        } else {
+            alertDate = initDate;
+        }
+
+        startsField.setText(nextHalfHour.format(dtf));
+        endsField.setText(endsInitTime.format(dtf));
+        alertField.setText(alertInitTime.format(dtf));
+        startsDateField.setValue(initDate);
+        endsDateField.setValue(endsDate);
+        alertDateField.setValue(alertDate);
     }
 
     private void addListenersOnFields() {
@@ -232,6 +250,7 @@ public class PlanItAddEventController implements Initializable {
             }
         });
 
+        // TODO refactoring - extract to method
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
                LocalTime.parse(newValue);
@@ -269,16 +288,13 @@ public class PlanItAddEventController implements Initializable {
         for (Event.Type type : Event.Type.values()) {
             typeSelector.getItems().add(new EventTypeItem(type, resourceBundle));
         }
-
-        typeSelector.getSelectionModel().selectFirst();
     }
 
     private void initializeRepetitionTypeSelector() {
         for (RepetitionType repetitionType : RepetitionType.values()) {
             repetitionTypeSelector.getItems().add(new RepetitionTypeItem(repetitionType, resourceBundle));
         }
-
-
+        
         repetitionTypeSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             RepetitionType newType = newValue.getType();
             if (repetitionBox.getChildren().size() > 3) {
@@ -304,8 +320,6 @@ public class PlanItAddEventController implements Initializable {
                     break;
             }
         });
-
-        repetitionTypeSelector.getSelectionModel().select(1);
     }
 
     private void addHandlers() {
@@ -329,14 +343,25 @@ public class PlanItAddEventController implements Initializable {
 
     private void repetitionButtonClickedHandler() {
         repetitionBox.setVisible(!repetitionBox.isVisible());
-
-        if (event != null && event.getRepetition() != null) {
-            showRepetitionDetail();
-        }
     }
 
-    private void showRepetitionDetail() {
-        // TODO
+    private void showRepetitionDetail(Repetition repetition) {
+        repetitionStartField.setValue(repetition.getStart());
+        repetitionEndField.setValue(repetition.getEnd());
+
+        if(repetition instanceof YearlyRepetition) {
+            yearlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent);
+        } else if(repetition instanceof MonthlyRepetition) {
+            monthlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, yearlyRepetitionComponent);
+        } else if(repetition instanceof WeeklyRepetition) {
+            weeklyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            setRepetitionComponentsInitValues(dailyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
+        } else {
+            dailyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            setRepetitionComponentsInitValues(weeklyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
+        }
     }
 
     /**
@@ -353,6 +378,10 @@ public class PlanItAddEventController implements Initializable {
         alertDateField.setValue(event.getAlertDate());
         alertField.setText(String.valueOf(event.getAlert()));
         descriptionField.setText(event.getDescription());
+
+        if(event.getRepetition() != null) {
+            showRepetitionDetail(event.getRepetition());
+        }
     }
 
     private EventTypeItem getEventTypeItem(Event.Type type) {
