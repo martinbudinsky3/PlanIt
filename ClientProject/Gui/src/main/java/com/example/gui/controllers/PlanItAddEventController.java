@@ -277,6 +277,10 @@ public class PlanItAddEventController implements Initializable {
                 createErrorMessage(alertRow, alertErrorField, "timeErrorLabel");
             }
         });
+
+//        startsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
+//            repetitionStartField.setValue(newValue);
+//        });
     }
 
     private void removeErrorMessage(HBox errorField) {
@@ -294,7 +298,7 @@ public class PlanItAddEventController implements Initializable {
         for (RepetitionType repetitionType : RepetitionType.values()) {
             repetitionTypeSelector.getItems().add(new RepetitionTypeItem(repetitionType, resourceBundle));
         }
-        
+
         repetitionTypeSelector.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             RepetitionType newType = newValue.getType();
             if (repetitionBox.getChildren().size() > 3) {
@@ -350,15 +354,19 @@ public class PlanItAddEventController implements Initializable {
         repetitionEndField.setValue(repetition.getEnd());
 
         if(repetition instanceof YearlyRepetition) {
+            repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(3));
             yearlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent);
         } else if(repetition instanceof MonthlyRepetition) {
+            repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(2));
             monthlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, yearlyRepetitionComponent);
         } else if(repetition instanceof WeeklyRepetition) {
+            repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(1));
             weeklyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
         } else {
+            repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(0));
             dailyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(weeklyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
         }
@@ -381,6 +389,9 @@ public class PlanItAddEventController implements Initializable {
 
         if(event.getRepetition() != null) {
             showRepetitionDetail(event.getRepetition());
+        } else {
+            // TODO init other repetition fields with values based on date in event start field
+            repetitionTypeSelector.getSelectionModel().select(1); // init by Weekly
         }
     }
 

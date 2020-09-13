@@ -61,8 +61,6 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
             });
             dayOfWeekCheckBoxes.add(dayCheckBox);
         }
-
-        dayOfWeekCheckBoxes.get(0).selectedProperty().setValue(true);
     }
 
     protected void setRepetitionIntervalCaption() {
