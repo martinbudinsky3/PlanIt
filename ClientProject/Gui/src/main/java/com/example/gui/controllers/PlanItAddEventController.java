@@ -200,8 +200,8 @@ public class PlanItAddEventController implements Initializable {
         typeSelector.getSelectionModel().selectFirst();
     }
 
-    private void setRepetitionComponentsInitValues(DailyRepetitionComponent ...components) {
-        for(DailyRepetitionComponent component : components) {
+    private void setRepetitionComponentsInitValues(DailyRepetitionComponent... components) {
+        for (DailyRepetitionComponent component : components) {
             component.setInitValues(initDate);
         }
     }
@@ -235,7 +235,7 @@ public class PlanItAddEventController implements Initializable {
 
     private void addListenersOnFields() {
         titleField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if("".equals(newValue)) {
+            if ("".equals(newValue)) {
                 createErrorMessage(titleRow, titleErrorField, "titleErrorLabel");
             } else {
                 removeErrorMessage(titleErrorField);
@@ -245,8 +245,8 @@ public class PlanItAddEventController implements Initializable {
         // TODO refactoring - extract to method
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
             try {
-               LocalTime.parse(newValue);
-               removeErrorMessage(startErrorField);
+                LocalTime.parse(newValue);
+                removeErrorMessage(startErrorField);
             } catch (DateTimeException e) {
                 createErrorMessage(startsRow, startErrorField, "timeErrorLabel");
             }
@@ -333,19 +333,19 @@ public class PlanItAddEventController implements Initializable {
 
         // add handlers to buttons
         repetitionButton.setOnAction(e -> repetitionButtonClickedHandler());
-        saveButton.setOnAction(e -> save(e));
-        deleteButton.setOnAction(e -> delete(e));
+        saveButton.setOnAction(e -> save());
+        deleteButton.setOnAction(e -> delete());
     }
 
     private void repetitionButtonClickedHandler() {
-        // initialization of repetitiommn fields after first click on button
-        if(!repetitionButtonClicked) {
+        // initialization of repetition fields after first click on button
+        if (!repetitionButtonClicked) {
             dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
             weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
             monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle);
             yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle);
 
-            if(event != null && event.getRepetition() != null) {
+            if (event != null && event.getRepetition() != null) {
                 showRepetitionDetail(event.getRepetition());
             } else {
                 initDate = startsDateField.getValue();
@@ -357,8 +357,8 @@ public class PlanItAddEventController implements Initializable {
             repetitionButtonClicked = true;
         }
 
-        if(!repetitionBox.isVisible()) {
-            if(event != null && event.getRepetition() != null && !event.getDate().equals(startsDateField.getValue())) {
+        if (!repetitionBox.isVisible()) {
+            if (event != null && event.getRepetition() != null && !event.getDate().equals(startsDateField.getValue())) {
                 startsDateField.setValue(event.getDate());
             }
 
@@ -378,15 +378,15 @@ public class PlanItAddEventController implements Initializable {
         repetitionStartField.setValue(repetition.getStart());
         repetitionEndField.setValue(repetition.getEnd());
 
-        if(repetition instanceof YearlyRepetition) {
+        if (repetition instanceof YearlyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(3));
             yearlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent);
-        } else if(repetition instanceof MonthlyRepetition) {
+        } else if (repetition instanceof MonthlyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(2));
             monthlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, yearlyRepetitionComponent);
-        } else if(repetition instanceof WeeklyRepetition) {
+        } else if (repetition instanceof WeeklyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(1));
             weeklyRepetitionComponent.showRepetitionDetail(event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
@@ -516,25 +516,46 @@ public class PlanItAddEventController implements Initializable {
      * This method get and validate all entered items.
      * If not all required values are entered or values are in wrong format, the user is notified
      */
-    public void save(ActionEvent ev) {
+    public void save() {
         if (checkInput()) {
-            String title = titleField.getText();
-            String location = locationField.getText();
-            Event.Type type = typeSelector.getValue().getType();
-            LocalDate date = startsDateField.getValue();
-            LocalTime starts = LocalTime.parse(startsField.getText());
-            LocalDate endsDate = endsDateField.getValue();
-            LocalTime ends = LocalTime.parse(endsField.getText());
-            LocalDate alertDate = alertDateField.getValue();
-            LocalTime alert = LocalTime.parse(alertField.getText());
-            String description = descriptionField.getText();
+            Event event = readEventInput();
+            if (repetitionBox.isVisible()) { // save repetition too
+                Repetition repetition = selectedRepetitionComponent.readInput();
 
-            if (event == null) {
-                addEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
+                if (repetition != null) {
+                    LocalDate repetitionStart = repetitionStartField.getValue();
+                    LocalDate repetitionEnd = repetitionEndField.getValue();
+
+                    repetition.setStart(repetitionStart);
+                    repetition.setEnd(repetitionEnd);
+
+                    event.setRepetition(repetition);
+                } else {
+                    return;
+                }
+            }
+
+            if (this.event == null) {
+                addEvent(event);
             } else {
-                updateEvent(ev, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
+                updateEvent(event);
             }
         }
+    }
+
+    private Event readEventInput() {
+        String title = titleField.getText();
+        String location = locationField.getText();
+        Event.Type type = typeSelector.getValue().getType();
+        LocalDate date = startsDateField.getValue();
+        LocalTime starts = LocalTime.parse(startsField.getText());
+        LocalDate endsDate = endsDateField.getValue();
+        LocalTime ends = LocalTime.parse(endsField.getText());
+        LocalDate alertDate = alertDateField.getValue();
+        LocalTime alert = LocalTime.parse(alertField.getText());
+        String description = descriptionField.getText();
+
+       return new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
     }
 
     private boolean checkInput() {
@@ -562,20 +583,17 @@ public class PlanItAddEventController implements Initializable {
      * Adding new event. (When event does not have ID yet.)
      * After succesful insert modal window is closed and calendar is displayed with just cretaed event
      */
-    public void addEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
-                         LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
-
-        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+    public void addEvent(Event event) {
         Long id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
-            if (newDateIsInCalendarDisplay(date)) {
-                planItMainWindowController.createEventInCalendar(date);
+            if (newDateIsInCalendarDisplay(event.getDate())) {
+                planItMainWindowController.createEventInCalendar(event.getDate());
             } else {
-                updateCalendarDisplay(date);
+                updateCalendarDisplay(event.getDate());
             }
 
-            Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
         }
     }
@@ -584,26 +602,29 @@ public class PlanItAddEventController implements Initializable {
      * Updating existing event. (When ID of the event already exists.)
      * After successful update modal window is closed and calendar is displayed with just created event
      */
-    public void updateEvent(ActionEvent ev, String title, String location, Event.Type type, String description, LocalDate date,
-                            LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
-
-        Event event = new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
-        boolean success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
+    public void updateEvent(Event event) {
+        boolean success ;
+        if(event.getRepetition() == null) {
+            success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
+        } else {
+            // TODO call api endpoint that updates repetition too
+            success = true;
+        }
 
         if (!success) {
             return;
         }
 
         if (!newEventLabelIsEqualWithOld(event)) {
-            if (newDateIsInCalendarDisplay(date)) {
+            if (newDateIsInCalendarDisplay(event.getDate())) {
                 event.setIdEvent(this.event.getIdEvent());
                 planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
             } else {
-                updateCalendarDisplay(date);
+                updateCalendarDisplay(event.getDate());
             }
         }
 
-        Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ap.getScene().getWindow();
         stage.close();
     }
 
@@ -634,7 +655,7 @@ public class PlanItAddEventController implements Initializable {
     /**
      * The functionality of the delete button.
      */
-    private void delete(ActionEvent ev) {
+    private void delete() {
         if (event != null) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(resourceBundle.getString("deleteConfirmationTitle"));
@@ -646,7 +667,7 @@ public class PlanItAddEventController implements Initializable {
                 boolean success = eventsClient.deleteEvent(idUser, this.event.getIdEvent(), resourceBundle);
                 if (success) {
                     planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
-                    Stage stage = (Stage) ((Node) ev.getSource()).getScene().getWindow();
+                    Stage stage = (Stage) ap.getScene().getWindow();
                     stage.close();
                 }
             } else {
@@ -656,7 +677,7 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void createErrorMessage(HBox field, HBox errorField, String label) {
-        if(errorField.getChildren().isEmpty()) {
+        if (errorField.getChildren().isEmpty()) {
             Label errorLabel = new Label(resourceBundle.getString(label));
             errorLabel.getStyleClass().add("error-label");
 

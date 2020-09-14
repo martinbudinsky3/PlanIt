@@ -83,7 +83,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     @FXML
     private ListView<String> monthsList;
 
-//    private boolean threadFlag = false;
     private boolean threadActive = false;
     private Integer selectedYear;
     private Integer selectedMonth;
@@ -199,7 +198,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
 
-                    // TODO for eachtes
+                    // TODO for each
                     // show alert for every event that is returned
                     for (int i = 0; i < events.size(); i++) {
                         Event event = events.get(i);
