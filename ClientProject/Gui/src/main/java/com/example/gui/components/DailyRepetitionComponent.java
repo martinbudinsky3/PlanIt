@@ -98,6 +98,18 @@ public class DailyRepetitionComponent extends VBox{
         repetitionIntervalSelector.setValue(repetition.getRepetitionInterval());
     }
 
+    public Repetition readInput() {
+        if(repetitionIntervalErrorField.getChildren().isEmpty()) { // input is ok
+            int repetitionInterval = repetitionIntervalSelector.getValue();
+            Repetition repetition = new Repetition(repetitionInterval);
+
+            return repetition;
+        }
+
+        // there's an error in input
+        return null;
+    }
+
     public ComboBox<Integer> getRepetitionIntervalSelector() {
         return repetitionIntervalSelector;
     }

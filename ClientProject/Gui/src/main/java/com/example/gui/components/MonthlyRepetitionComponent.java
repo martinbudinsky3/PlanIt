@@ -1,14 +1,13 @@
 package com.example.gui.components;
 
 import com.example.client.model.repetition.MonthlyRepetition;
-import com.example.client.model.repetition.WeeklyRepetition;
+import com.example.utils.Utils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -64,7 +63,6 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         }
 
         dayOfMonthSelector.getItems().addAll(daysOfMonthNumbers);
-        dayOfMonthSelector.setMaxWidth(80);
     }
 
     private void initializeDayOfWeekWithOrdinalOption() {
@@ -81,18 +79,9 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
     }
 
     private void initializeDayOfWeekSelector() {
-        dayOfWeekSelector.getItems().addAll(getDayNames());
+        dayOfWeekSelector.getItems().addAll(Utils.getDayNames(getResourceBundle()));
     }
 
-    private List<String> getDayNames() {
-        DateFormatSymbols symbols = new DateFormatSymbols(getResourceBundle().getLocale());
-        List<String> dayNamesWrongOrder = Arrays.asList(symbols.getWeekdays());
-
-        List<String> dayNames = new ArrayList<String>(dayNamesWrongOrder.subList(2, dayNamesWrongOrder.size()));
-        dayNames.add(dayNamesWrongOrder.get(1));
-
-        return dayNames;
-    }
 
     private Integer countOrdinalOfDay(LocalDate initDate) {
         DayOfWeek dayOfWeek = initDate.getDayOfWeek();
@@ -118,6 +107,7 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
     private void setDayOfMonthFieldStyles() {
         dayOfMonthLabel.setFont(Font.font(18));
+        dayOfMonthSelector.setMaxWidth(80);
         HBox.setMargin(dayOfMonthLabel, new Insets(0, 15, 0, 0));
         VBox.setMargin(dayOfMonthOption, new Insets(20, 0, 0, LEFT_MARGIN));
     }
@@ -149,7 +139,7 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
         // set init value for dayOfWeekSelector
         int initDayOfWeekCode = initDate.getDayOfWeek().getValue();
-        String initDayName = getDayNames().get(initDayOfWeekCode-1);
+        String initDayName = Utils.getDayNames(getResourceBundle()).get(initDayOfWeekCode-1);
         dayOfWeekSelector.setValue(initDayName);
     }
 
@@ -163,6 +153,29 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
             setInitDayOfWeekAndOrdinalValue(repetition.getStart());
             dayOfMonthSelector.setValue(repetition.getDayOfMonth());
         }
+    }
+
+    public MonthlyRepetition readInput() {
+        MonthlyRepetition repetition = (MonthlyRepetition) super.readInput();
+
+        if(repetition == null) {
+            return null;
+        }
+
+        RadioButton selectedOption = (RadioButton) monthlyRepetitionOptions.getSelectedToggle();
+        if(selectedOption.equals(dayOfMonthOption)) {
+            int dayOfMonth = dayOfMonthSelector.getValue();
+            repetition.setDayOfMonth(dayOfMonth);
+        } else {
+            int ordinal = ordinalSelector.getSelectionModel().getSelectedIndex() + 1;
+            int index = dayOfWeekSelector.getSelectionModel().getSelectedIndex();
+            DayOfWeek dayOfWeek = DayOfWeek.of(index+1) ;
+
+            repetition.setOrdinal(ordinal);
+            repetition.setDaysOfWeek(Arrays.asList(dayOfWeek));
+        }
+
+        return repetition;
     }
 
     public ToggleGroup getMonthlyRepetitionOptions() {

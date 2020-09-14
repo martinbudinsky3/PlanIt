@@ -1,7 +1,7 @@
 package com.example.utils;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.text.DateFormatSymbols;
+import java.util.*;
 
 public class Utils {
     private static int countFirstDayOfMonth(int selectedYear, int selectedMonth) {
@@ -24,5 +24,15 @@ public class Utils {
         int firstDayOfMonth = countFirstDayOfMonth(selectedYear, selectedMonth);
 
         return (day - 1 + firstDayOfMonth - 1) % 7;
+    }
+
+    public static List<String> getDayNames(ResourceBundle resourceBundle) {
+        DateFormatSymbols symbols = new DateFormatSymbols(resourceBundle.getLocale());
+        List<String> dayNamesWrongOrder = Arrays.asList(symbols.getWeekdays());
+
+        List<String> dayNames = new ArrayList<String>(dayNamesWrongOrder.subList(2, dayNamesWrongOrder.size()));
+        dayNames.add(dayNamesWrongOrder.get(1));
+
+        return dayNames;
     }
 }

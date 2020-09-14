@@ -85,4 +85,18 @@ public class YearlyRepetitionComponent extends MonthlyRepetitionComponent{
         int repetitionMonthValue = repetition.getMonth();
         monthSelector.setValue(monthSelector.getItems().get(repetitionMonthValue-1));
     }
+
+    public YearlyRepetition readInput() {
+        YearlyRepetition repetition = (YearlyRepetition) super.readInput();
+
+        if(repetition != null) {
+            int month = monthSelector.getSelectionModel().getSelectedIndex() + 1;
+
+            repetition.setMonth(month);
+
+            return repetition;
+        }
+
+        return null;
+    }
 }

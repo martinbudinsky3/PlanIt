@@ -1,17 +1,17 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.Repetition;
 import com.example.client.model.repetition.WeeklyRepetition;
+import com.example.utils.Utils;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import java.text.DateFormatSymbols;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -40,11 +40,7 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
     }
 
     private void initDaysOfWeekBoxes() {
-        DateFormatSymbols symbols = new DateFormatSymbols(getResourceBundle().getLocale());
-        List<String> dayNamesWrongOrder = Arrays.asList(symbols.getShortWeekdays());
-
-        List<String> dayNames = new ArrayList<String>(dayNamesWrongOrder.subList(2, dayNamesWrongOrder.size()));
-        dayNames.add(dayNamesWrongOrder.get(1));
+        List<String> dayNames = Utils.getDayNames(getResourceBundle());
 
         for (String dayName : dayNames) {
             CheckBox dayCheckBox = new CheckBox(dayName);
@@ -84,5 +80,24 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
         for(DayOfWeek dayOfWeek : repetition.getDaysOfWeek()) {
             dayOfWeekCheckBoxes.get(dayOfWeek.getValue()-1).selectedProperty().setValue(true);
         }
+    }
+
+    public WeeklyRepetition readInput() {
+        WeeklyRepetition repetition = (WeeklyRepetition) super.readInput();
+
+        List<DayOfWeek> daysOfWeek = new ArrayList<>();
+        if(daysOfWeekErrorField.getChildren().isEmpty() && repetition != null) {
+            for(CheckBox checkBox : selectedDaysOfWeek) {
+                int index = dayOfWeekCheckBoxes.indexOf(checkBox);
+                DayOfWeek dayOfWeek = DayOfWeek.of(index+1);
+                daysOfWeek.add(dayOfWeek);
+            }
+
+            repetition.setDaysOfWeek(daysOfWeek);
+
+            return repetition;
+        }
+
+        return null;
     }
 }
