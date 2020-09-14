@@ -39,13 +39,10 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_HBOX_WIDTH = 476;
     private final Integer ERROR_HBOX_HEIGTH = 30;
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
-    private final Integer ERROR_SECOND_HBOX_WIDTH = 230;
 
     private final Integer idUser;
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
-
-    private final List<HBox> errorBoxes = new ArrayList<HBox>();
 
     @FXML
     private AnchorPane ap;
@@ -134,6 +131,8 @@ public class PlanItAddEventController implements Initializable {
     @FXML
     private Button repetitionButton;
 
+    private boolean repetitionButtonClicked = false;
+
     // error fields
     private HBox titleErrorField = new HBox();
     private HBox startErrorField = new HBox();
@@ -175,18 +174,13 @@ public class PlanItAddEventController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.resourceBundle = resourceBundle;
 
-        dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
-        weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
-        monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle);
-        yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle);
-
         repetitionBox.setVisible(false);
-
-        initErrorFields();
-        addListenersOnFields();
 
         initializeEventTypeSelector();
         initializeRepetitionTypeSelector();
+
+        initErrorFields();
+        addListenersOnFields();
 
         if (event == null) { // add event
             setInitValues();
@@ -194,6 +188,7 @@ public class PlanItAddEventController implements Initializable {
             if (event.getRepetition() != null) {
                 repetitionButton.setText(resourceBundle.getString("editRepetitionButton"));
             }
+
             showDetail();
         }
 
@@ -203,9 +198,6 @@ public class PlanItAddEventController implements Initializable {
     private void setInitValues() {
         setTimeAndDateValues();
         typeSelector.getSelectionModel().selectFirst();
-        repetitionTypeSelector.getSelectionModel().select(1);
-        setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent,
-                yearlyRepetitionComponent);
     }
 
     private void setRepetitionComponentsInitValues(DailyRepetitionComponent ...components) {
@@ -346,6 +338,39 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void repetitionButtonClickedHandler() {
+        // initialization of repetitiommn fields after first click on button
+        if(!repetitionButtonClicked) {
+            dailyRepetitionComponent = new DailyRepetitionComponent(resourceBundle);
+            weeklyRepetitionComponent = new WeeklyRepetitionComponent(resourceBundle);
+            monthlyRepetitionComponent = new MonthlyRepetitionComponent(resourceBundle);
+            yearlyRepetitionComponent = new YearlyRepetitionComponent(resourceBundle);
+
+            if(event != null && event.getRepetition() != null) {
+                showRepetitionDetail(event.getRepetition());
+            } else {
+                initDate = startsDateField.getValue();
+                setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent,
+                        yearlyRepetitionComponent);
+                repetitionTypeSelector.getSelectionModel().select(1);
+            }
+
+            repetitionButtonClicked = true;
+        }
+
+        if(!repetitionBox.isVisible()) {
+            if(event != null && event.getRepetition() != null && !event.getDate().equals(startsDateField.getValue())) {
+                startsDateField.setValue(event.getDate());
+            }
+
+            startsDateField.setDisable(true);
+            saveButton.setText(resourceBundle.getString("saveAllButton"));
+            deleteButton.setText(resourceBundle.getString("deleteAllButton"));
+        } else {
+            startsDateField.setDisable(false);
+            saveButton.setText(resourceBundle.getString("saveButton"));
+            deleteButton.setText(resourceBundle.getString("deleteButton"));
+        }
+
         repetitionBox.setVisible(!repetitionBox.isVisible());
     }
 
@@ -386,13 +411,6 @@ public class PlanItAddEventController implements Initializable {
         alertDateField.setValue(event.getAlertDate());
         alertField.setText(String.valueOf(event.getAlert()));
         descriptionField.setText(event.getDescription());
-
-        if(event.getRepetition() != null) {
-            showRepetitionDetail(event.getRepetition());
-        } else {
-            // TODO init other repetition fields with values based on date in event start field
-            repetitionTypeSelector.getSelectionModel().select(1); // init by Weekly
-        }
     }
 
     private EventTypeItem getEventTypeItem(Event.Type type) {

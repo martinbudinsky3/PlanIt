@@ -245,9 +245,9 @@
                </children></VBox>
             </children>
         </HBox>
-        <HBox layoutX="268.0" layoutY="617.0" prefHeight="30.0" prefWidth="309.0">
+        <HBox layoutX="248.0" layoutY="617.0" prefHeight="30.0" prefWidth="470.0">
             <children>
-                <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" styleClass="control-button" text="%saveButton">
+                <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" styleClass="control-button" text="%saveButton">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -255,7 +255,7 @@
                         <Insets left="40.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" styleClass="control-button" text="%deleteButton">
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" styleClass="control-button" text="%deleteButton">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -265,7 +265,7 @@
                 </Button>
             </children>
         </HBox>
-      <Button fx:id="repetitionButton" layoutX="840.0" layoutY="619.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="220.0" styleClass="control-button" text="%repetitionButton">
+      <Button fx:id="repetitionButton" layoutX="839.0" layoutY="617.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" styleClass="control-button" text="%repetitionButton">
          <font>
             <Font size="14.0" />
          </font>
