@@ -174,7 +174,6 @@ public class EventsClient {
             });
             logger.info("Returning all user's [" + idUser + "] events to alert.");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-//            windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
             if (ex instanceof JsonProcessingException) {
                 logger.error("Error. Something went wrong while finding all user's [" + idUser + "] events to alert", ex);
             } else if (ex instanceof ResourceAccessException) {
@@ -232,8 +231,8 @@ public class EventsClient {
      */
     public boolean updateEvent(Event event, int userId, int eventId, ResourceBundle resourceBundle) {
         logger.info("Updating event [" + eventId + "]");
-        final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
-        final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
+        final String UPDATE_EVENT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_EVENT_ENDPOINT;
         Map<String, Integer> params = new HashMap<String, Integer>();
         params.put("idUser", userId);
         params.put("idEvent", eventId);
@@ -249,6 +248,32 @@ public class EventsClient {
                 logger.error("Error while connecting to server", ex);
             } else {
                 logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return success;
+    }
+
+    public boolean updateRepetition(Event event, int userId, int eventId, ResourceBundle resourceBundle) {
+        logger.info("Updating repetition [" + event.getRepetition().getEventId() + "]");
+        final String UPDATE_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("update-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_REPETITION_ENDPOINT;
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
+
+        boolean success = false;
+        try {
+            restTemplate.put(uri, event, params);
+            success = true;
+            logger.info("Repetition [" + eventId + "] successffully updated.");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while updating repetition." + event.getRepetition().getEventId() + " HTTP status: "
                         + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
             }
         }

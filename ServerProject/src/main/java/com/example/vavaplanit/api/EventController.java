@@ -122,13 +122,17 @@ public class EventController {
         Event eventFromDb = eventService.getEventWithRepetition(idUser, idEvent);
         if(eventFromDb != null && eventFromDb.getRepetition() != null){
             eventService.updateRepetition(idEvent, event);
-            logger.info("Repetition [" + idEvent + "] successfully updated.");
+            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully updated.");
             return ResponseEntity.ok().build();
+        } else if(eventFromDb != null && eventFromDb.getRepetition() == null) {
+            Integer id = eventService.updateEventAndAddRepetition(event);
+            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully added.");
+            return new ResponseEntity<>(id, HttpStatus.OK);
         } else {
-            logger.error("Error. Repetition with id: " + idEvent + " does not exist.");
+            logger.error("Error. Event with id: " + event.getIdEvent() + " does not exist.");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
-                    body("Repetition with id: " + idEvent + " does not exist");
+                    body("Event with id: " + event.getIdEvent() + " does not exist");
         }
     }
 

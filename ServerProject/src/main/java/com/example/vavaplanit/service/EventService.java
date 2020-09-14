@@ -2,6 +2,7 @@ package com.example.vavaplanit.service;
 
 import com.example.vavaplanit.database.repository.EventRepository;
 import com.example.vavaplanit.model.Event;
+import com.example.vavaplanit.model.repetition.Repetition;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +122,20 @@ public class EventService {
         String date = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth())
                 .format(dtfDate);
 
-        return this.eventRepository.getEventsToAlert(idUser, date, time);
+        List<Event> eventsToAlert = this.eventRepository.getEventsToAlert(idUser, date, time);
+        eventsToAlert.forEach(event -> {
+            Repetition repetition = this.repetitionService.getRepetitionByEventIdOrExceptionId(event.getIdEvent(), event.getExceptionId());
+            event.setRepetition(repetition);
+        });
+
+        return eventsToAlert;
+    }
+
+    @Transactional
+    public Integer updateEventAndAddRepetition(Event event) {
+        this.eventRepository.update(event.getIdEvent(), event);
+
+        return this.repetitionService.addRepetition(event.getRepetition());
     }
 
     /**
