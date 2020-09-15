@@ -165,7 +165,6 @@ public class EventsClient {
         logger.debug("Current time is:" + LocalDateTime.now());
 
         List<Event> events = new ArrayList<Event>();
-        ;
 
         try {
             String eventsJSon = restTemplate.getForObject(uri, String.class, params);
@@ -202,8 +201,10 @@ public class EventsClient {
         final String uri = BASE_EVENTS_URI;
 
         logger.debug("Event [" + event.getIdEvent() + "] alert time " + event.getAlert());
+
         Long idEvent = null;
         try {
+            logger.debug("Event JSon: " + objectMapper.writeValueAsString(event));
             String id = restTemplate.postForObject(uri, event, String.class);
             idEvent = objectMapper.readValue(id, Long.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");

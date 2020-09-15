@@ -1,10 +1,14 @@
 package com.example.vavaplanit.service;
 
+import com.example.vavaplanit.api.EventController;
 import com.example.vavaplanit.database.repository.EventRepository;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.repetition.Repetition;
+import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
+    Logger logger = LoggerFactory.getLogger(EventService.class);
+
     @Autowired
     private RepetitionService repetitionService;
     @Autowired
@@ -35,6 +41,9 @@ public class EventService {
     public Integer add(Event event, int idUser) {
         Integer idEvent = eventRepository.add(event);
         this.eventRepository.addEventUser(idUser, idEvent);
+
+        logger.debug("Repetition instance type: " + event.getRepetition().getClass());
+        logger.debug("WeeklyRepetition.daysOfWeek = " + ((WeeklyRepetition) event.getRepetition()).getDaysOfWeek().size());
 
         if(event.getRepetition() != null) {
             event.getRepetition().setEventId(idEvent);
@@ -131,13 +140,6 @@ public class EventService {
         return eventsToAlert;
     }
 
-    @Transactional
-    public Integer updateEventAndAddRepetition(Event event) {
-        this.eventRepository.update(event.getIdEvent(), event);
-
-        return this.repetitionService.addRepetition(event.getRepetition());
-    }
-
     /**
      * Update event
      * @param event event object which is going to be updated
@@ -163,6 +165,13 @@ public class EventService {
         }
 
         this.eventRepository.update(event.getRepetition().getEventId(), event);
+    }
+
+    @Transactional
+    public Integer updateEventAndAddRepetition(Event event) {
+        this.eventRepository.update(event.getIdEvent(), event);
+
+        return this.repetitionService.addRepetition(event.getRepetition());
     }
 
     /**

@@ -83,7 +83,7 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
     }
 
     public WeeklyRepetition readInput() {
-        WeeklyRepetition repetition = (WeeklyRepetition) super.readInput();
+        Repetition repetition = super.readInput();
 
         List<DayOfWeek> daysOfWeek = new ArrayList<>();
         if(daysOfWeekErrorField.getChildren().isEmpty() && repetition != null) {
@@ -93,9 +93,9 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
                 daysOfWeek.add(dayOfWeek);
             }
 
-            repetition.setDaysOfWeek(daysOfWeek);
+            WeeklyRepetition weeklyRepetition = new WeeklyRepetition(repetition.getRepetitionInterval(), daysOfWeek);
 
-            return repetition;
+            return weeklyRepetition;
         }
 
         return null;

@@ -47,9 +47,9 @@ public class RepetitionRepository {
         }
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exception_id) /*throws EmptyResultDataAccessException*/ {
-        String sql = "SELECT planitschema.repetition.* FROM planitschema.repetition r JOIN planitschema.exception e WHERE r.event_id = " + eventId +
-                " OR e.exception_id = " + exception_id + " LIMIT 1;";
+    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exception_id) {
+        String sql = "SELECT r.* FROM planitschema.repetition r JOIN planitschema.exception e " +
+                "ON r.event_id = e.repetition_id WHERE r.event_id = " + eventId + " OR e.exception_id = " + exception_id + " LIMIT 1;";
 
         try {
             return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);

@@ -125,9 +125,9 @@ public class EventController {
             logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully updated.");
             return ResponseEntity.ok().build();
         } else if(eventFromDb != null && eventFromDb.getRepetition() == null) {
-            Integer id = eventService.updateEventAndAddRepetition(event);
+            eventService.updateEventAndAddRepetition(event);
             logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully added.");
-            return new ResponseEntity<>(id, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             logger.error("Error. Event with id: " + event.getIdEvent() + " does not exist.");
             return ResponseEntity.status(HttpStatus.

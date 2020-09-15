@@ -269,10 +269,6 @@ public class PlanItAddEventController implements Initializable {
                 createErrorMessage(alertRow, alertErrorField, "timeErrorLabel");
             }
         });
-
-//        startsDateField.valueProperty().addListener((observable, oldValue, newValue) -> {
-//            repetitionStartField.setValue(newValue);
-//        });
     }
 
     private void removeErrorMessage(HBox errorField) {
@@ -363,8 +359,10 @@ public class PlanItAddEventController implements Initializable {
             }
 
             startsDateField.setDisable(true);
-            saveButton.setText(resourceBundle.getString("saveAllButton"));
-            deleteButton.setText(resourceBundle.getString("deleteAllButton"));
+            if(event != null && event.getRepetition() != null) {
+                saveButton.setText(resourceBundle.getString("saveAllButton"));
+                deleteButton.setText(resourceBundle.getString("deleteAllButton"));
+            }
         } else {
             startsDateField.setDisable(false);
             saveButton.setText(resourceBundle.getString("saveButton"));
@@ -607,8 +605,7 @@ public class PlanItAddEventController implements Initializable {
         if(event.getRepetition() == null) {
             success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
         } else {
-            // TODO call api endpoint that updates repetition too
-            success = true;
+            success = eventsClient.updateRepetition(event, idUser, event.getIdEvent(), resourceBundle);
         }
 
         if (!success) {
@@ -616,11 +613,11 @@ public class PlanItAddEventController implements Initializable {
         }
 
         if (!newEventLabelIsEqualWithOld(event)) {
-            if (newDateIsInCalendarDisplay(event.getDate())) {
+            if(event.getRepetition() != null || !newDateIsInCalendarDisplay(event.getRepetition().getStart())) {
+                updateCalendarDisplay(event.getRepetition().getStart());
+            } else {
                 event.setIdEvent(this.event.getIdEvent());
                 planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
-            } else {
-                updateCalendarDisplay(event.getDate());
             }
         }
 

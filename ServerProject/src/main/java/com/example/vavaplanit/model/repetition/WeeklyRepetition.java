@@ -1,6 +1,7 @@
 package com.example.vavaplanit.model.repetition;
 
 import com.example.vavaplanit.model.Exception;
+import com.fasterxml.jackson.annotation.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Weeks;
@@ -12,6 +13,11 @@ import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = MonthlyRepetition.class, name = "MonthlyRepetition")
+})
 public class WeeklyRepetition extends Repetition {
     private final int DAYS_OF_WEEK_NUMBER = 7;
     private final Map<Integer, DayOfWeek> intToDayOfWeekMap = new HashMap<Integer, DayOfWeek>(){
@@ -51,6 +57,13 @@ public class WeeklyRepetition extends Repetition {
         }
 
         return daysOfWeekInt;
+    }
+
+    @JsonSetter("daysOfWeek")
+    public void setDaysOfWeekFromStrings(List<String> daysOfWeek) {
+        for(String dayOfWeekName : daysOfWeek) {
+            this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeekName));
+        }
     }
 
     public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {

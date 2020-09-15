@@ -1,6 +1,9 @@
 package com.example.vavaplanit.model.repetition;
 
 import com.example.vavaplanit.model.Exception;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
@@ -8,6 +11,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = WeeklyRepetition.class, name = "WeeklyRepetition")
+})
 public class Repetition {
     private Integer eventId;
     private LocalDate start;

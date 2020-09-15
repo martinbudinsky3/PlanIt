@@ -1,7 +1,16 @@
 package com.example.client.model.repetition;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.time.LocalDate;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = WeeklyRepetition.class, name = "WeeklyRepetition")
+})
 public class Repetition {
     private Integer eventId;
     private LocalDate start;
