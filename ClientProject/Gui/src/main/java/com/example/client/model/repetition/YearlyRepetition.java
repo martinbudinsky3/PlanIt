@@ -10,13 +10,7 @@ public class YearlyRepetition extends MonthlyRepetition {
     public YearlyRepetition() {
     }
 
-    public YearlyRepetition(int repetitionInterval, List<DayOfWeek> daysOfWeek, Integer dayOfMonth, int month) {
-        super(repetitionInterval, daysOfWeek, dayOfMonth);
-        this.month = month;
-    }
-
-    public YearlyRepetition(int repetitionInterval, Integer ordinal, List<DayOfWeek> daysOfWeek, int month) {
-        super(repetitionInterval, ordinal, daysOfWeek);
+    public YearlyRepetition(int month) {
         this.month = month;
     }
 

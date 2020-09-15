@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -59,6 +60,20 @@ public class DailyRepetitionComponent extends VBox{
                 }
             } catch (NumberFormatException e) {
                 createErrorLabel(repetitionIntervalErrorField, repetitionIntervalField, "repetitionIntervalErrorLabel");
+            }
+        });
+
+        repetitionIntervalSelector.setConverter(new StringConverter<Integer>() {
+
+            @Override
+            public String toString(Integer object) {
+                if (object == null) return null;
+                return object.toString();
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return Integer.parseInt(string);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.example.gui.components;
 
+import com.example.client.model.repetition.MonthlyRepetition;
 import com.example.client.model.repetition.YearlyRepetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.ChoiceBox;
@@ -87,14 +88,18 @@ public class YearlyRepetitionComponent extends MonthlyRepetitionComponent{
     }
 
     public YearlyRepetition readInput() {
-        YearlyRepetition repetition = (YearlyRepetition) super.readInput();
+        MonthlyRepetition repetition = super.readInput();
 
         if(repetition != null) {
             int month = monthSelector.getSelectionModel().getSelectedIndex() + 1;
 
-            repetition.setMonth(month);
+            YearlyRepetition yearlyRepetition = new YearlyRepetition(month);
+            yearlyRepetition.setRepetitionInterval(repetition.getRepetitionInterval());
+            yearlyRepetition.setDayOfMonth(repetition.getDayOfMonth());
+            yearlyRepetition.setOrdinal(repetition.getOrdinal());
+            yearlyRepetition.setDaysOfWeek(repetition.getDaysOfWeek());
 
-            return repetition;
+            return yearlyRepetition;
         }
 
         return null;

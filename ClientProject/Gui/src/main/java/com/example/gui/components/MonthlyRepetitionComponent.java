@@ -1,6 +1,8 @@
 package com.example.gui.components;
 
 import com.example.client.model.repetition.MonthlyRepetition;
+import com.example.client.model.repetition.Repetition;
+import com.example.client.model.repetition.WeeklyRepetition;
 import com.example.utils.Utils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -156,26 +158,28 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
     }
 
     public MonthlyRepetition readInput() {
-        MonthlyRepetition repetition = (MonthlyRepetition) super.readInput();
+        Repetition repetition = super.readInput();
 
         if(repetition == null) {
             return null;
         }
 
+        MonthlyRepetition monthlyRepetition;
         RadioButton selectedOption = (RadioButton) monthlyRepetitionOptions.getSelectedToggle();
         if(selectedOption.equals(dayOfMonthOption)) {
             int dayOfMonth = dayOfMonthSelector.getValue();
-            repetition.setDayOfMonth(dayOfMonth);
+            monthlyRepetition = new MonthlyRepetition(dayOfMonth);
         } else {
             int ordinal = ordinalSelector.getSelectionModel().getSelectedIndex() + 1;
             int index = dayOfWeekSelector.getSelectionModel().getSelectedIndex();
             DayOfWeek dayOfWeek = DayOfWeek.of(index+1) ;
 
-            repetition.setOrdinal(ordinal);
-            repetition.setDaysOfWeek(Arrays.asList(dayOfWeek));
+            monthlyRepetition = new MonthlyRepetition(ordinal, Arrays.asList(dayOfWeek));
         }
 
-        return repetition;
+        monthlyRepetition.setRepetitionInterval(repetition.getRepetitionInterval());
+
+        return monthlyRepetition;
     }
 
     public ToggleGroup getMonthlyRepetitionOptions() {

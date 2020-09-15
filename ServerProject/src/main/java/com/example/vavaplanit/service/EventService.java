@@ -43,7 +43,6 @@ public class EventService {
         this.eventRepository.addEventUser(idUser, idEvent);
 
         logger.debug("Repetition instance type: " + event.getRepetition().getClass());
-        logger.debug("WeeklyRepetition.daysOfWeek = " + ((WeeklyRepetition) event.getRepetition()).getDaysOfWeek().size());
 
         if(event.getRepetition() != null) {
             event.getRepetition().setEventId(idEvent);

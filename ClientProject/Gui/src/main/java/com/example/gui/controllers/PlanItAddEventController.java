@@ -297,18 +297,22 @@ public class PlanItAddEventController implements Initializable {
                 case DAILY:
                     repetitionBox.getChildren().add(2, dailyRepetitionComponent);
                     selectedRepetitionComponent = dailyRepetitionComponent;
+                    repetitionEndField.setValue(repetitionStartField.getValue().plusMonths(3));
                     break;
                 case WEEKLY:
                     repetitionBox.getChildren().add(2, weeklyRepetitionComponent);
                     selectedRepetitionComponent = weeklyRepetitionComponent;
+                    repetitionEndField.setValue(repetitionStartField.getValue().plusWeeks(24));
                     break;
                 case MONTHLY:
                     repetitionBox.getChildren().add(2, monthlyRepetitionComponent);
                     selectedRepetitionComponent = monthlyRepetitionComponent;
+                    repetitionEndField.setValue(repetitionStartField.getValue().plusYears(1));
                     break;
                 case YEARLY:
                     repetitionBox.getChildren().add(2, yearlyRepetitionComponent);
                     selectedRepetitionComponent = yearlyRepetitionComponent;
+                    repetitionEndField.setValue(repetitionStartField.getValue().plusYears(20));
                     break;
             }
         });
@@ -345,6 +349,7 @@ public class PlanItAddEventController implements Initializable {
                 showRepetitionDetail(event.getRepetition());
             } else {
                 initDate = startsDateField.getValue();
+                repetitionStartField.setValue(initDate);
                 setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent,
                         yearlyRepetitionComponent);
                 repetitionTypeSelector.getSelectionModel().select(1);

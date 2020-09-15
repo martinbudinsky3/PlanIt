@@ -17,6 +17,10 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
+    public WeeklyRepetition(List<DayOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
+    }
+
     public WeeklyRepetition(int repetitionInterval, List<DayOfWeek> daysOfWeek) {
         super(repetitionInterval);
         this.daysOfWeek = daysOfWeek;

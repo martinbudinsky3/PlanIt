@@ -20,13 +20,12 @@ public class MonthlyRepetition extends WeeklyRepetition {
     public MonthlyRepetition() {
     }
 
-    public MonthlyRepetition(int repetitionInterval, List<DayOfWeek> daysOfWeek, Integer dayOfMonth) {
-        super(repetitionInterval, daysOfWeek);
+    public MonthlyRepetition(Integer dayOfMonth) {
         this.dayOfMonth = dayOfMonth;
     }
 
-    public MonthlyRepetition(int repetitionInterval, Integer ordinal, List<DayOfWeek> daysOfWeek) {
-        super(repetitionInterval, daysOfWeek);
+    public MonthlyRepetition(Integer ordinal, List<DayOfWeek> daysOfWeek) {
+        super(daysOfWeek);
         this.ordinal = ordinal;
     }
 
