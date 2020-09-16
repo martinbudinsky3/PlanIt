@@ -127,7 +127,7 @@ public class EventsClient {
      * @param idEvent event's ID.
      * @return chosen Event object.
      */
-    public Event getEvent(long idUser, long idEvent) throws JsonProcessingException, ResourceAccessException,
+    public Event getEvent(long idUser, long idEvent, LocalDate date) throws JsonProcessingException, ResourceAccessException,
             HttpStatusCodeException {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String EVENT_ENDPOINT = uriPropertiesReader.getProperty("event-endpoint");
@@ -135,7 +135,7 @@ public class EventsClient {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
-        params.put("date", LocalDate.now());
+        params.put("date", date);
 
         Event event = null;
 

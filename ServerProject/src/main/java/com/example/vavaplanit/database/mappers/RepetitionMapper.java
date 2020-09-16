@@ -1,6 +1,8 @@
 package com.example.vavaplanit.database.mappers;
 
 import com.example.vavaplanit.model.repetition.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -8,6 +10,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class RepetitionMapper implements RowMapper<Repetition> {
+    Logger logger = LoggerFactory.getLogger(RepetitionMapper.class);
+
     @Override
     public Repetition mapRow(ResultSet resultSet, int i) throws SQLException {
         int eventId = resultSet.getInt("event_id");
@@ -29,11 +33,11 @@ public class RepetitionMapper implements RowMapper<Repetition> {
         }
 
         if (type == RepetitionType.MONTHLY) {
-            return new MonthlyRepetition(eventId, start, end, repeatInterval, dayOfMonth, daysOfWeek, repeatOrdinal);
+            return new MonthlyRepetition(eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal);
         }
 
         if (type == RepetitionType.YEARLY) {
-            return new YearlyRepetition(eventId, start, end, repeatInterval, dayOfMonth, daysOfWeek, repeatOrdinal, month);
+            return new YearlyRepetition(eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal, month);
         }
 
         return null;

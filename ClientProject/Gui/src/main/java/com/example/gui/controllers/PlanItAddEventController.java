@@ -186,6 +186,7 @@ public class PlanItAddEventController implements Initializable {
             setInitValues();
         } else { // show detail of already created event
             if (event.getRepetition() != null) {
+                initDate = event.getRepetition().getStart();
                 repetitionButton.setText(resourceBundle.getString("editRepetitionButton"));
             }
 
@@ -383,15 +384,15 @@ public class PlanItAddEventController implements Initializable {
 
         if (repetition instanceof YearlyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(3));
-            yearlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            yearlyRepetitionComponent.showRepetitionDetail((YearlyRepetition) event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent);
         } else if (repetition instanceof MonthlyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(2));
-            monthlyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            monthlyRepetitionComponent.showRepetitionDetail((MonthlyRepetition) event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, yearlyRepetitionComponent);
         } else if (repetition instanceof WeeklyRepetition) {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(1));
-            weeklyRepetitionComponent.showRepetitionDetail(event.getRepetition());
+            weeklyRepetitionComponent.showRepetitionDetail((WeeklyRepetition) event.getRepetition());
             setRepetitionComponentsInitValues(dailyRepetitionComponent, monthlyRepetitionComponent, yearlyRepetitionComponent);
         } else {
             repetitionTypeSelector.setValue(repetitionTypeSelector.getItems().get(0));

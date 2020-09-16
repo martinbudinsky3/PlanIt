@@ -2,6 +2,7 @@ package com.example.vavaplanit.model.repetition;
 
 import com.example.vavaplanit.api.EventController;
 import com.example.vavaplanit.model.Exception;
+import com.example.vavaplanit.service.RepetitionService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +26,8 @@ import java.util.List;
         @JsonSubTypes.Type(value = YearlyRepetition.class, name = "YearlyRepetition")
 })
 public class MonthlyRepetition extends WeeklyRepetition {
+    Logger logger = LoggerFactory.getLogger(MonthlyRepetition.class);
+
     private Integer dayOfMonth;
     private Integer ordinal;
 
@@ -60,9 +63,10 @@ public class MonthlyRepetition extends WeeklyRepetition {
             return false;
         }
 
-        if(dayOfMonth != null) {
+        if(dayOfMonth != null && dayOfMonth != 0) {
+            logger.debug("Parameter date - day of month: " + date.getDayOfMonth() + ", repetition's day of month: " + dayOfMonth);
             return checkDateByDayOfMonth(date);
-        } else if(ordinal != null && getDaysOfWeek() != null) {
+        } else if(ordinal != null && ordinal != 0 && getDaysOfWeek() != null) {
             return checkDateByOrdinalAndDayOfWeek(date);
         }
 
@@ -75,6 +79,7 @@ public class MonthlyRepetition extends WeeklyRepetition {
         if(dayOfMonth > lastDayOfMonth.getDayOfMonth()) {
             return date.equals(lastDayOfMonth);
         } else {
+            logger.debug("Parameter date - day of month: " + date.getDayOfMonth() + ", repetition's day of month: " + dayOfMonth);
             return date.getDayOfMonth() == dayOfMonth;
         }
     }
@@ -93,9 +98,10 @@ public class MonthlyRepetition extends WeeklyRepetition {
             return new ArrayList<>();
         }
 
-        if(dayOfMonth != null) {
+        if(dayOfMonth != null && dayOfMonth != 0) {
             return figureOutDatesFromDayOfMonth(month, year);
-        } else if(ordinal != null && getDaysOfWeek() != null) {
+        } else if(ordinal != null && ordinal != 0 && getDaysOfWeek() != null) {
+            logger.debug("ordinal: " + ordinal + ", daysOfWeek" + getDaysOfWeek());
             return figureOutDatesFromOrdinalAndDayOfWeek(month, year);
         }
 

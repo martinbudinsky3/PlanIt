@@ -145,15 +145,31 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
         dayOfWeekSelector.setValue(initDayName);
     }
 
+    private void setInitDayOfWeekAndOrdinalValue(Integer ordinal, DayOfWeek dayOfWeek) {
+        // set init value for dayOfWeekSelector
+        if(ordinal == 5) {
+            ordinalSelector.getSelectionModel().selectLast();
+        } else {
+            ordinalSelector.getSelectionModel().select(ordinal);
+        }
+
+        // set init value for dayOfWeekSelector
+        int initDayOfWeekCode = dayOfWeek.getValue();
+        String initDayName = Utils.getDayNames(getResourceBundle()).get(initDayOfWeekCode-1);
+        dayOfWeekSelector.setValue(initDayName);
+    }
+
     public void showRepetitionDetail(MonthlyRepetition repetition) {
         super.showRepetitionDetail(repetition);
 
-        if(repetition.getDayOfMonth() != null) {
+        if(repetition.getDayOfMonth() != null && repetition.getDayOfMonth() != 0) {
             dayOfMonthSelector.setValue(repetition.getDayOfMonth());
             setInitDayOfWeekAndOrdinalValue(repetition.getStart());
-        } else if(repetition.getOrdinal() != null && repetition.getDaysOfWeek() != null){
-            setInitDayOfWeekAndOrdinalValue(repetition.getStart());
-            dayOfMonthSelector.setValue(repetition.getDayOfMonth());
+            monthlyRepetitionOptions.selectToggle(dayOfMonthOption);
+        } else if(repetition.getOrdinal() != null && repetition.getOrdinal() != 0 && repetition.getDaysOfWeek() != null){
+            setInitDayOfWeekAndOrdinalValue(repetition.getOrdinal(), repetition.getDaysOfWeek().get(0));
+            dayOfMonthSelector.setValue(repetition.getStart().getDayOfMonth());
+            monthlyRepetitionOptions.selectToggle(dayOfWeekWithOrdinalOption);
         }
     }
 

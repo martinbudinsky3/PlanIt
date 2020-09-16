@@ -3,7 +3,10 @@ package com.example.vavaplanit.service;
 import com.example.vavaplanit.database.repository.ExceptionRepository;
 import com.example.vavaplanit.database.repository.RepetitionRepository;
 import com.example.vavaplanit.model.Exception;
+import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class RepetitionService {
+    Logger logger = LoggerFactory.getLogger(MonthlyRepetition.class);
+
     @Autowired
     private RepetitionRepository repetitionRepository;
     @Autowired

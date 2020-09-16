@@ -443,6 +443,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                 if (fieldCounter >= firstDayOfMonth) {  // this VBoxes will be day boxes in current month
                     VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    dayVBox.setId(Integer.toString(dayCounter)); // set day of month as id
 
                     Label dayLabel = new Label(Integer.toString(dayCounter));
                     HBox dayHeader = new HBox();
@@ -451,7 +452,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     dayVBox.getChildren().add(dayHeader);
                     dayVBox.getStyleClass().clear();
                     dayVBox.getStyleClass().add("day");
-                    HBox.setMargin(dayLabel, new Insets(5, 0, 2, 5));
+                    HBox.setMargin(dayLabel, new Insets(8, 0, 2, 8));
                     dayCounter++;
                     fieldCounter++;
                 }
@@ -603,7 +604,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
     private void eventLabelClickedHandler(Label eventLabel) {
         try {
-            Event event = eventsClient.getEvent(user.getIdUser(), Integer.parseInt(eventLabel.getId()));
+            VBox dayOfMonthBox = (VBox) eventLabel.getParent();
+            int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
+            Event event = eventsClient.getEvent(user.getIdUser(), Integer.parseInt(eventLabel.getId()),
+                    LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
                     user, eventsClient, this, resourceBundle);
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {

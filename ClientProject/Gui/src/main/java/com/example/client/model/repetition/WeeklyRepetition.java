@@ -37,8 +37,10 @@ public class WeeklyRepetition extends Repetition {
 
     @JsonSetter("daysOfWeek")
     public void setDaysOfWeekFromStrings(List<String> daysOfWeek) {
-        for(String dayOfWeekName : daysOfWeek) {
-            this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeekName));
+        if(daysOfWeek != null) {
+            for (String dayOfWeekName : daysOfWeek) {
+                this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeekName));
+            }
         }
     }
 

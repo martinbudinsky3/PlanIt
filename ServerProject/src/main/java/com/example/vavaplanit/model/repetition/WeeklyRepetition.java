@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Weeks;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -19,6 +21,8 @@ import java.util.*;
         @JsonSubTypes.Type(value = MonthlyRepetition.class, name = "MonthlyRepetition")
 })
 public class WeeklyRepetition extends Repetition {
+    Logger logger = LoggerFactory.getLogger(WeeklyRepetition.class);
+
     private final int DAYS_OF_WEEK_NUMBER = 7;
     private final Map<Integer, DayOfWeek> intToDayOfWeekMap = new HashMap<Integer, DayOfWeek>(){
         {
@@ -32,7 +36,7 @@ public class WeeklyRepetition extends Repetition {
         }
     };
 
-    private List<DayOfWeek> daysOfWeek = new ArrayList<DayOfWeek>();
+    private List<DayOfWeek> daysOfWeek;
 
     public WeeklyRepetition() {
     }
@@ -47,6 +51,7 @@ public class WeeklyRepetition extends Repetition {
         return daysOfWeek;
     }
 
+    @JsonIgnore
     public Integer getDaysOfWeekInt() {
         Integer daysOfWeekInt = 0;
         for(DayOfWeek dayOfWeek : daysOfWeek) {
@@ -61,6 +66,7 @@ public class WeeklyRepetition extends Repetition {
 
     @JsonSetter("daysOfWeek")
     public void setDaysOfWeekFromStrings(List<String> daysOfWeek) {
+        this.daysOfWeek = new ArrayList<>();
         for(String dayOfWeekName : daysOfWeek) {
             this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeekName));
         }
@@ -71,7 +77,9 @@ public class WeeklyRepetition extends Repetition {
     }
 
     public void setDaysOfWeek(Integer daysOfWeek) {
-        if(daysOfWeek != null) {
+        if(daysOfWeek != null && daysOfWeek != 0) {
+            this.daysOfWeek = new ArrayList<DayOfWeek>();
+
             for(int i = 0; i < DAYS_OF_WEEK_NUMBER; i++) {
                 if(((daysOfWeek >> i) & 1) == 1) {
                     this.daysOfWeek.add(intToDayOfWeekMap.get(i));

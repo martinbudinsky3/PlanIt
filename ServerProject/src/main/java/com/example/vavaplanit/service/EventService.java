@@ -42,9 +42,9 @@ public class EventService {
         Integer idEvent = eventRepository.add(event);
         this.eventRepository.addEventUser(idUser, idEvent);
 
-        logger.debug("Repetition instance type: " + event.getRepetition().getClass());
-
         if(event.getRepetition() != null) {
+            logger.debug("Repetition instance type: " + event.getRepetition().getClass());
+
             event.getRepetition().setEventId(idEvent);
             this.repetitionService.addRepetition(event.getRepetition());
         }
@@ -108,6 +108,7 @@ public class EventService {
         Event event = this.eventRepository.getEvent(idUser, idEvent);
 
         if(this.repetitionService.checkDate(idEvent, date)) {
+            logger.debug("Event's date check was succesfull");
             event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
             event.setDate(date);
             event.setEndsDate(countEndDate(event.getDate(), event.getEndsDate(), date));
