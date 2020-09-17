@@ -9,11 +9,9 @@ import com.example.gui.components.WeeklyRepetitionComponent;
 import com.example.gui.components.YearlyRepetitionComponent;
 import com.example.gui.data_items.EventTypeItem;
 import com.example.gui.data_items.RepetitionTypeItem;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -365,7 +363,7 @@ public class PlanItAddEventController implements Initializable {
             }
 
 //            startsDateField.setDisable(true);
-            if(event != null && event.getRepetition() != null) {
+            if (event != null && event.getRepetition() != null) {
                 saveButton.setText(resourceBundle.getString("saveAllButton"));
                 deleteButton.setText(resourceBundle.getString("deleteAllButton"));
             }
@@ -559,7 +557,7 @@ public class PlanItAddEventController implements Initializable {
         LocalTime alert = LocalTime.parse(alertField.getText());
         String description = descriptionField.getText();
 
-       return new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
+        return new Event(title, location, type, description, date, starts, endsDate, ends, alertDate, alert, idUser);
     }
 
     private boolean checkInput() {
@@ -607,8 +605,8 @@ public class PlanItAddEventController implements Initializable {
      * After successful update modal window is closed and calendar is displayed with just created event
      */
     public void updateEvent(Event event) {
-        boolean success ;
-        if(event.getRepetition() == null) {
+        boolean success;
+        if (event.getRepetition() == null) {
             success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
         } else {
             success = eventsClient.updateRepetition(event, idUser, event.getIdEvent(), resourceBundle);
@@ -618,10 +616,10 @@ public class PlanItAddEventController implements Initializable {
             return;
         }
 
-        if(event.getRepetition() != null) {
+        if (event.getRepetition() != null) {
             updateCalendarDisplay();
         } else if (!newEventLabelIsEqualWithOld(event)) {
-            if(!newDateIsInCalendarDisplay(event.getDate())) {
+            if (!newDateIsInCalendarDisplay(event.getDate())) {
                 updateCalendarDisplay(event.getRepetition().getStart());
             } else {
                 event.setIdEvent(this.event.getIdEvent());
@@ -668,21 +666,18 @@ public class PlanItAddEventController implements Initializable {
      */
     private void delete() {
         if (event != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(resourceBundle.getString("deleteConfirmationTitle"));
-            alert.setHeaderText(resourceBundle.getString("deleteConfirmationHeaderText") + event.getTitle());
-            alert.setContentText(resourceBundle.getString("deleteConfirmationQuestion"));
+            Alert alert = createDeleteAlertWindow();
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == ButtonType.OK) {
-                boolean success = eventsClient.deleteEvent(idUser, this.event.getIdEvent(), resourceBundle);
-                if (success) {
-                    if(event.getRepetition() == null) {
-                        planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
-                    } else {
-                        updateCalendarDisplay();
-                    }
+                boolean success;
+                if (event.getRepetition() != null && !repetitionBox.isVisible()) {
+                    success = deleteEventFromRepetition();
+                } else {
+                    success = deleteEvent();
+                }
 
+                if(success) {
                     Stage stage = (Stage) ap.getScene().getWindow();
                     stage.close();
                 }
@@ -690,6 +685,44 @@ public class PlanItAddEventController implements Initializable {
                 alert.close();
             }
         }
+    }
+
+    /** delete only this event from repetition */
+    private boolean deleteEventFromRepetition() {
+        boolean success = eventsClient.deleteFromRepetition(idUser, this.event.getIdEvent(), event.getDate(), resourceBundle);
+        if (success) {
+            planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());;
+        }
+
+        return success;
+    }
+
+    /** deleting event without repetition or all events from repetition if it's repetead event */
+    private boolean deleteEvent() {
+        boolean success = eventsClient.deleteEvent(idUser, this.event.getIdEvent(), resourceBundle);
+        if (success) {
+            if (event.getRepetition() == null) {
+                planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
+            } else {
+                updateCalendarDisplay();
+            }
+        }
+
+        return success;
+    }
+
+    private Alert createDeleteAlertWindow() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(resourceBundle.getString("deleteConfirmationTitle"));
+        if (event.getRepetition() == null || event.getRepetition() != null && !repetitionBox.isVisible()) {
+            alert.setHeaderText(resourceBundle.getString("deleteConfirmationHeaderText") + event.getTitle());
+            alert.setContentText(resourceBundle.getString("deleteConfirmationQuestion"));
+        } else {
+            alert.setHeaderText(resourceBundle.getString("deleteAllConfirmationHeaderText") + event.getTitle());
+            alert.setContentText(resourceBundle.getString("deleteAllConfirmationQuestion"));
+        }
+
+        return alert;
     }
 
     private void createErrorMessage(HBox field, HBox errorField, String label) {

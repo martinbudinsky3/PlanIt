@@ -313,4 +313,31 @@ public class EventsClient {
 
         return success;
     }
+
+    public boolean deleteFromRepetition(long idUser, long idEvent, LocalDate date, ResourceBundle resourceBundle) {
+        logger.info("Deleting event [" + idEvent + "] from repetition");
+        final String DELETE_FROM_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("delete-from-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + DELETE_FROM_REPETITION_ENDPOINT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("idUser", idUser);
+        params.put("idEvent", idEvent);
+        params.put("date", date);
+
+        boolean success = false;
+        try {
+            restTemplate.delete(uri, params);
+            success = true;
+            logger.info("Event [" + idEvent + "] successsffully deleted from repetition");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while deleting event." + idEvent + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return success;
+    }
 }

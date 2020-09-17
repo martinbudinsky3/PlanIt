@@ -610,7 +610,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         });
 
         dayVBox.getChildren().add(eventLabel);
-        VBox.setMargin(eventLabel, new Insets(0, 0, 0, 5));
+        VBox.setMargin(eventLabel, new Insets(0, 0, 0, 8));
     }
 
     private void eventLabelClickedHandler(Label eventLabel) {

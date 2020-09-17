@@ -196,7 +196,7 @@ public class EventService {
     public void deleteFromRepetition(int idEvent, String dateString, Integer exceptionId) {
         LocalDate date = LocalDate.parse(dateString);
 
-        if(exceptionId == null) {
+        if(exceptionId == null || exceptionId == 0) {
             this.repetitionService.addException(idEvent, date);
         } else {
             delete(idEvent);
