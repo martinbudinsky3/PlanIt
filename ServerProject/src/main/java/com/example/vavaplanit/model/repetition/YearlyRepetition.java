@@ -19,6 +19,44 @@ public class YearlyRepetition extends MonthlyRepetition {
         this.month = month;
     }
 
+    public void validateStart() {
+        if(getDayOfMonth() != null && getDayOfMonth() != 0) {
+            if(getStart().getDayOfMonth() != getDayOfMonth() || getStart().getMonthValue() != month) {
+                findNextValidDateForDayOfMonth();
+            }
+        } else if(getOrdinal() != null && getOrdinal() != 0 && getDaysOfWeek() != null) {
+            findNextValidDateForOrdinalAndDayOfWeek();
+        }
+    }
+
+    private void findNextValidDateForDayOfMonth() {
+        LocalDate newStart = LocalDate.of(getStart().getYear(), month, getDayOfMonth());
+        if(getStart().isAfter(newStart)) {
+            newStart = newStart.plusYears(1);
+        }
+
+        setStart(newStart);
+    }
+
+    private void findNextValidDateForOrdinalAndDayOfWeek() {
+        LocalDate newStart;
+        if(getOrdinal() == 5) {
+            newStart = getDateOfLastWeekdayInMonth(month, getStart().getYear());
+        } else {
+            newStart = getDateOfNthWeekdayInMonth(month, getStart().getYear());
+        }
+
+        if(getStart().isAfter(newStart)) {
+            if(getOrdinal() == 5) {
+                newStart = getDateOfLastWeekdayInMonth(month, getStart().plusYears(1).getYear());
+            } else {
+                newStart = getDateOfNthWeekdayInMonth(month, getStart().plusYears(1).getYear());
+            }
+        }
+
+        setStart(newStart);
+    }
+
     public int getMonth() {
         return month;
     }

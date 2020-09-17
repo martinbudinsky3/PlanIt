@@ -16,7 +16,7 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MonthlyRepetition.class, name = "MonthlyRepetition")
 })

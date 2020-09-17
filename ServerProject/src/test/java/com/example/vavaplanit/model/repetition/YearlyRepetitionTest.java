@@ -234,4 +234,61 @@ public class YearlyRepetitionTest {
             return repetition.checkDate(date);
         }
     }
+
+    @Nested
+    @DisplayName("Tests for start date validation - finding next valid start date")
+    class StartDateValidationTests {
+        @Test
+        public void repetitionWithDayOfMonthStartsLaterInGivenYear() {
+            LocalDate expected = LocalDate.of(2020, 10, 17);
+
+            LocalDate actual = createYearlyRepetitionAndValidateStartDate(1, LocalDate.of(2020, 9, 12),
+                    LocalDate.of(2040, 10, 17), 1, null, 17, null,
+                    10);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void repetitionWithDayOfMonthStartsNextYear() {
+            LocalDate expected = LocalDate.of(2021, 10, 15);
+
+            LocalDate actual = createYearlyRepetitionAndValidateStartDate(1, LocalDate.of(2020, 10, 16),
+                    LocalDate.of(2040, 10, 16), 1, null, 15, null, 10);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void repetitionWithOrdinalAndDayOfWeekStartsLaterInGivenYear() {
+            LocalDate expected = LocalDate.of(2020, 9, 9);
+
+            LocalDate actual = createYearlyRepetitionAndValidateStartDate(1, LocalDate.of(2020, 8, 1),
+                    LocalDate.of(2021, 9, 15), 1, 4, null, 2, 9);
+
+            assertEquals(expected, actual);
+        }
+
+        @Test
+        public void repetitionWithOrdinalAndDayOfWeekStartsNextYear() {
+            LocalDate expected = LocalDate.of(2021, 9, 8);
+
+            LocalDate actual = createYearlyRepetitionAndValidateStartDate(1, LocalDate.of(2020, 9, 10),
+                    LocalDate.of(2021, 9, 16), 1, 4, null, 2, 9);
+
+            assertEquals(expected, actual);
+        }
+
+        private LocalDate createYearlyRepetitionAndValidateStartDate(Integer eventId, LocalDate start, LocalDate end,
+                                                           int repetitionInterval, Integer daysOfWeek, Integer dayOfMonth,
+                                                           Integer ordinal, int repeatMonth) {
+
+            YearlyRepetition repetition = new YearlyRepetition(eventId, start, end, repetitionInterval, daysOfWeek,
+                    dayOfMonth, ordinal, repeatMonth);
+
+            repetition.validateStart();
+
+            return repetition.getStart();
+        }
+    }
 }

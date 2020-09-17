@@ -468,12 +468,23 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
         for (Event event : events) {
+            if(event.getDates() == null) {
+                int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+                int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
-            int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-            int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+                VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                addEventToCalendar(event, dayVBox);
 
-            VBox dayVBox = (VBox) gridPaneNodes[j][i];
-            addEventToCalendar(event, dayVBox);
+                continue;
+            }
+
+            for(LocalDate date : event.getDates()) {
+                int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+                int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+
+                VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                addEventToCalendar(event, dayVBox);
+            }
         }
     }
 

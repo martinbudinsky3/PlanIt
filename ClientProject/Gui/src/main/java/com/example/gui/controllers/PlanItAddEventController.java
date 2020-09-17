@@ -591,7 +591,7 @@ public class PlanItAddEventController implements Initializable {
         Long id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
-            if (newDateIsInCalendarDisplay(event.getDate())) {
+            if (newDateIsInCalendarDisplay(event.getDate()) && event.getRepetition() != null) {
                 planItMainWindowController.createEventInCalendar(event.getDate());
             } else {
                 updateCalendarDisplay(event.getDate());

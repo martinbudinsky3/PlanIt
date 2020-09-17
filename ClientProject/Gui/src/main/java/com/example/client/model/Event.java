@@ -54,7 +54,7 @@ public class Event implements Serializable {
     private Type type;
     private String description;
     private LocalDate date;
-    private List<LocalDate> dates = new ArrayList<>();
+    private List<LocalDate> dates;
     private LocalTime starts;
     private LocalDate endsDate;
     private LocalTime ends;

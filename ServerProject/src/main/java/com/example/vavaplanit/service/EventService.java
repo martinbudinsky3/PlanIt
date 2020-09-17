@@ -108,11 +108,18 @@ public class EventService {
         Event event = this.eventRepository.getEvent(idUser, idEvent);
 
         if(this.repetitionService.checkDate(idEvent, date)) {
-            logger.debug("Event's date check was succesfull");
+            logger.debug("Event's [" + idEvent + "] date check was succesfull");
             event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+            LocalDate start = event.getDate();
+            LocalDate end = event.getEndsDate();
+            LocalDate alert = event.getAlertDate();
             event.setDate(date);
-            event.setEndsDate(countEndDate(event.getDate(), event.getEndsDate(), date));
-            event.setAlertDate(countAlertDate(event.getDate(), event.getAlertDate(), date));
+            event.setEndsDate(countEndDate(start, end, date));
+            event.setAlertDate(countAlertDate(start, alert, date));
+
+            logger.debug("Event's [" + idEvent + "] date " + date);
+            logger.debug("Event's [" + idEvent + "] end date " + event.getEndsDate());
+            logger.debug("Event's [" + idEvent + "] alert date " + event.getAlertDate());
         }
 
         return event;
@@ -193,19 +200,22 @@ public class EventService {
 
     private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {
         int dayDiff = getDayDiff(defaultStart, defaultEnd);
-
+        logger.debug("Counting end date - day diff = " + dayDiff);
         return date.plusDays(dayDiff);
     }
 
     private LocalDate countAlertDate(LocalDate defaultStart, LocalDate defaultAlert, LocalDate date) {
-        int dayDiff = getDayDiff(defaultStart, defaultAlert);
-
+        int dayDiff = getDayDiff(defaultAlert, defaultStart);
+        logger.debug("Counting alert date - day diff = " + dayDiff);
         return date.minusDays(dayDiff);
     }
 
     private int getDayDiff(LocalDate date1, LocalDate date2) {
         DateTime dateTime1 = new DateTime().withDate(date1.getYear(), date1.getMonthValue(), date1.getDayOfMonth());
         DateTime dateTime2 = new DateTime().withDate(date2.getYear(), date2.getMonthValue(), date2.getDayOfMonth());
+
+        logger.debug("Date 1 in getDayDiff = " + date1);
+        logger.debug("Date 2 in getDayDiff = " + date2);
 
         return Days.daysBetween(dateTime1, dateTime2).getDays();
     }
