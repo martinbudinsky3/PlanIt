@@ -364,13 +364,13 @@ public class PlanItAddEventController implements Initializable {
                 startsDateField.setValue(event.getDate());
             }
 
-            startsDateField.setDisable(true);
+//            startsDateField.setDisable(true);
             if(event != null && event.getRepetition() != null) {
                 saveButton.setText(resourceBundle.getString("saveAllButton"));
                 deleteButton.setText(resourceBundle.getString("deleteAllButton"));
             }
         } else {
-            startsDateField.setDisable(false);
+//            startsDateField.setDisable(false);
             saveButton.setText(resourceBundle.getString("saveButton"));
             deleteButton.setText(resourceBundle.getString("deleteButton"));
         }
@@ -591,7 +591,7 @@ public class PlanItAddEventController implements Initializable {
         Long id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
-            if (newDateIsInCalendarDisplay(event.getDate()) && event.getRepetition() != null) {
+            if (newDateIsInCalendarDisplay(event.getDate()) && event.getRepetition() == null) {
                 planItMainWindowController.createEventInCalendar(event.getDate());
             } else {
                 updateCalendarDisplay(event.getDate());
@@ -618,8 +618,10 @@ public class PlanItAddEventController implements Initializable {
             return;
         }
 
-        if (!newEventLabelIsEqualWithOld(event)) {
-            if(event.getRepetition() != null || !newDateIsInCalendarDisplay(event.getRepetition().getStart())) {
+        if(event.getRepetition() != null) {
+            updateCalendarDisplay();
+        } else if (!newEventLabelIsEqualWithOld(event)) {
+            if(!newDateIsInCalendarDisplay(event.getDate())) {
                 updateCalendarDisplay(event.getRepetition().getStart());
             } else {
                 event.setIdEvent(this.event.getIdEvent());
@@ -655,6 +657,12 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.addWeatherToCalendar();
     }
 
+    public void updateCalendarDisplay() {
+        planItMainWindowController.initializeCalendar();
+        planItMainWindowController.showEventsInCalendar();
+        planItMainWindowController.addWeatherToCalendar();
+    }
+
     /**
      * The functionality of the delete button.
      */
@@ -669,7 +677,12 @@ public class PlanItAddEventController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 boolean success = eventsClient.deleteEvent(idUser, this.event.getIdEvent(), resourceBundle);
                 if (success) {
-                    planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
+                    if(event.getRepetition() == null) {
+                        planItMainWindowController.deleteEventFromCalendar(event.getIdEvent(), event.getDate());
+                    } else {
+                        updateCalendarDisplay();
+                    }
+
                     Stage stage = (Stage) ap.getScene().getWindow();
                     stage.close();
                 }

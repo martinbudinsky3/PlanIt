@@ -468,7 +468,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
 
         for (Event event : events) {
-            if(event.getDates() == null) {
+            if(event.getDates() == null || event.getDates().isEmpty()) {
                 int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
                 int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 

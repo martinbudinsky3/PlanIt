@@ -39,6 +39,11 @@ public class EventService {
      * @return ID of inserted event*/
     @Transactional
     public Integer add(Event event, int idUser) {
+        if(event.getRepetition() != null) {
+            LocalDate startDate = this.repetitionService.validateStart(event.getRepetition());
+            event.setDate(startDate);
+        }
+
         Integer idEvent = eventRepository.add(event);
         this.eventRepository.addEventUser(idUser, idEvent);
 

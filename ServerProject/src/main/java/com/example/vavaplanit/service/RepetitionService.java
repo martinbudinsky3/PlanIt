@@ -56,6 +56,10 @@ public class RepetitionService {
                 .collect(Collectors.toList());
     }
 
+    public void update(Repetition repetition) {
+        this.repetitionRepository.update(repetition);
+    }
+
     public boolean checkDate(int eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
         if(repetition == null) {
@@ -65,7 +69,11 @@ public class RepetitionService {
         return repetition.checkDate(date);
     }
 
-    public void update(Repetition repetition) {
-        this.repetitionRepository.update(repetition);
+    public LocalDate validateStart(Repetition repetition) {
+        if(repetition instanceof MonthlyRepetition) {
+            ((MonthlyRepetition) repetition).validateStart();
+        }
+
+        return repetition.getStart();
     }
 }
