@@ -545,6 +545,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void updateEventInCalendar(Event event, LocalDate oldDate, LocalTime oldTime) {
+        // TODO set event id to label
         int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
         int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
@@ -617,6 +618,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         try {
             VBox dayOfMonthBox = (VBox) eventLabel.getParent();
             int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
+            // TODO move API call to event detail window controller
             Event event = eventsClient.getEvent(user.getIdUser(), Integer.parseInt(eventLabel.getId()),
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),

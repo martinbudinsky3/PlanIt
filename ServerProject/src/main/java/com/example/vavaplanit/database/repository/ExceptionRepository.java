@@ -36,7 +36,7 @@ public class ExceptionRepository {
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("event_id");
+            return (Integer) keyHolder.getKeys().get("exception_id");
         } else {
             return null;
         }

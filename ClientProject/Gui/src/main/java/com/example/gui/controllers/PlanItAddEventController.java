@@ -28,7 +28,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.List;
 
 /**
  * Controller for "PlanItAddEvent.fxml"
@@ -146,12 +145,14 @@ public class PlanItAddEventController implements Initializable {
     private MonthlyRepetitionComponent monthlyRepetitionComponent;
     private YearlyRepetitionComponent yearlyRepetitionComponent;
 
+    private LocalDate initRepetitionDate;
     private LocalDate initDate;
     private ResourceBundle resourceBundle;
     private Event event;
 
     public PlanItAddEventController(int idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
+        this.initRepetitionDate = initDate;
         this.initDate = initDate;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
@@ -160,6 +161,7 @@ public class PlanItAddEventController implements Initializable {
     public PlanItAddEventController(int idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.idUser = idUser;
         this.event = event;
+        this.initDate = event.getDate();
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
@@ -184,7 +186,7 @@ public class PlanItAddEventController implements Initializable {
             setInitValues();
         } else { // show detail of already created event
             if (event.getRepetition() != null) {
-                initDate = event.getRepetition().getStart();
+                initRepetitionDate = event.getRepetition().getStart();
                 repetitionButton.setText(resourceBundle.getString("editRepetitionButton"));
             }
 
@@ -201,7 +203,7 @@ public class PlanItAddEventController implements Initializable {
 
     private void setRepetitionComponentsInitValues(DailyRepetitionComponent... components) {
         for (DailyRepetitionComponent component : components) {
-            component.setInitValues(initDate);
+            component.setInitValues(initRepetitionDate);
         }
     }
 
@@ -213,21 +215,21 @@ public class PlanItAddEventController implements Initializable {
 
         LocalDate endsDate;
         if (endsInitTime.isBefore(nextHalfHour)) { // if ends time oversteps midnight and starts time don't, update ends date to next day
-            endsDate = initDate.plusDays(1);
+            endsDate = initRepetitionDate.plusDays(1);
         } else {
-            endsDate = initDate;
+            endsDate = initRepetitionDate;
         }
         LocalDate alertDate;
         if (nextHalfHour.isBefore(alertInitTime)) {
-            alertDate = initDate.minusDays(1);
+            alertDate = initRepetitionDate.minusDays(1);
         } else {
-            alertDate = initDate;
+            alertDate = initRepetitionDate;
         }
 
         startsField.setText(nextHalfHour.format(dtf));
         endsField.setText(endsInitTime.format(dtf));
         alertField.setText(alertInitTime.format(dtf));
-        startsDateField.setValue(initDate);
+        startsDateField.setValue(initRepetitionDate);
         endsDateField.setValue(endsDate);
         alertDateField.setValue(alertDate);
     }
@@ -347,8 +349,8 @@ public class PlanItAddEventController implements Initializable {
             if (event != null && event.getRepetition() != null) {
                 showRepetitionDetail(event.getRepetition());
             } else {
-                initDate = startsDateField.getValue();
-                repetitionStartField.setValue(initDate);
+                initRepetitionDate = startsDateField.getValue();
+                repetitionStartField.setValue(initRepetitionDate);
                 setRepetitionComponentsInitValues(dailyRepetitionComponent, weeklyRepetitionComponent, monthlyRepetitionComponent,
                         yearlyRepetitionComponent);
                 repetitionTypeSelector.getSelectionModel().select(1);
@@ -540,7 +542,15 @@ public class PlanItAddEventController implements Initializable {
             if (this.event == null) {
                 addEvent(event);
             } else {
-                updateEvent(event);
+                if(repetitionBox.isVisible()) {
+                    if(event.getRepetition() != null) {
+                        event.getRepetition().setEventId(this.event.getIdEvent());
+                    }
+                    updateRepetition(event);
+                } else {
+                    event.setRepetition(this.event.getRepetition());
+                    updateSingleEvent(event);
+                }
             }
         }
     }
@@ -583,7 +593,7 @@ public class PlanItAddEventController implements Initializable {
 
     /**
      * Adding new event. (When event does not have ID yet.)
-     * After succesful insert modal window is closed and calendar is displayed with just cretaed event
+     * After successful insert modal window is closed and calendar is displayed with just cretaed event
      */
     public void addEvent(Event event) {
         Long id = eventsClient.addEvent(event, resourceBundle);
@@ -592,7 +602,7 @@ public class PlanItAddEventController implements Initializable {
             if (newDateIsInCalendarDisplay(event.getDate()) && event.getRepetition() == null) {
                 planItMainWindowController.createEventInCalendar(event.getDate());
             } else {
-                updateCalendarDisplay(event.getDate());
+                updateCalendarDisplay(initDate);
             }
 
             Stage stage = (Stage) ap.getScene().getWindow();
@@ -601,26 +611,34 @@ public class PlanItAddEventController implements Initializable {
     }
 
     /**
-     * Updating existing event. (When ID of the event already exists.)
+     * Updating existing event with repetition or adding repetition to existing event, that hasn't got repetition yet.
      * After successful update modal window is closed and calendar is displayed with just created event
      */
-    public void updateEvent(Event event) {
-        boolean success;
-        if (event.getRepetition() == null) {
-            success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
-        } else {
-            success = eventsClient.updateRepetition(event, idUser, event.getIdEvent(), resourceBundle);
+    private void updateRepetition(Event event) {
+        boolean success = eventsClient.updateRepetition(event, idUser, this.event.getIdEvent(), resourceBundle);
+
+        if (success) {
+            updateCalendarDisplay(initDate);
         }
+
+        Stage stage = (Stage) ap.getScene().getWindow();
+        stage.close();
+    }
+
+    /**
+     * Updating existing single event with or without repetition. (When ID of the event already exists.)
+     * After successful update modal window is closed and calendar is displayed with just created event
+     */
+    private void updateSingleEvent(Event event) {
+        boolean success = eventsClient.updateEvent(event, idUser, this.event.getIdEvent(), resourceBundle);
 
         if (!success) {
             return;
         }
 
-        if (event.getRepetition() != null) {
-            updateCalendarDisplay();
-        } else if (!newEventLabelIsEqualWithOld(event)) {
+        if (!newEventLabelIsEqualWithOld(event)) {
             if (!newDateIsInCalendarDisplay(event.getDate())) {
-                updateCalendarDisplay(event.getRepetition().getStart());
+                updateCalendarDisplay(event.getDate());
             } else {
                 event.setIdEvent(this.event.getIdEvent());
                 planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());

@@ -1,10 +1,8 @@
 package com.example.vavaplanit.service;
 
-import com.example.vavaplanit.api.EventController;
 import com.example.vavaplanit.database.repository.EventRepository;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.repetition.Repetition;
-import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.slf4j.Logger;
@@ -40,8 +38,8 @@ public class EventService {
     @Transactional
     public Integer add(Event event, int idUser) {
         if(event.getRepetition() != null) {
-            LocalDate startDate = this.repetitionService.validateStart(event.getRepetition());
-            event.setDate(startDate);
+            LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
+            setEventsDates(event, newStartDate);
         }
 
         Integer idEvent = eventRepository.add(event);
@@ -82,9 +80,13 @@ public class EventService {
 
         for(Event event : events) {
             List<LocalDate> dates = this.repetitionService.getEventDates(event.getIdEvent(), month, year);
-            if(!dates.isEmpty() || !event.getDate().isBefore(minDate)) {
+            if(!dates.isEmpty()) {
                 event.setDates(dates);
                 eventsInMonth.add(event);
+//                logger.debug("Repeated event in month" + month + " and year " + year + " with id " + event.getIdEvent());
+            } else if(!event.getDate().isBefore(minDate)) {
+                eventsInMonth.add(event);
+//                logger.debug("Event in month" + month + " and year " + year + " with id " + event.getIdEvent());
             }
         }
 
@@ -115,12 +117,7 @@ public class EventService {
         if(this.repetitionService.checkDate(idEvent, date)) {
             logger.debug("Event's [" + idEvent + "] date check was succesfull");
             event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
-            LocalDate start = event.getDate();
-            LocalDate end = event.getEndsDate();
-            LocalDate alert = event.getAlertDate();
-            event.setDate(date);
-            event.setEndsDate(countEndDate(start, end, date));
-            event.setAlertDate(countAlertDate(start, alert, date));
+            setEventsDates(event, date);
 
             logger.debug("Event's [" + idEvent + "] date " + date);
             logger.debug("Event's [" + idEvent + "] end date " + event.getEndsDate());
@@ -155,16 +152,20 @@ public class EventService {
     /**
      * Update event
      * @param event event object which is going to be updated
-     * @param id id of Event which is going to be updated*/
+     * @param eventId id of Event which is going to be updated*/
     @Transactional
-    public void update(int id, Event event, Integer exceptionId){
-        if(event.getRepetition() == null || exceptionId != null) {
-            this.eventRepository.update(id, event);
-        } else {
-            Integer newExceptionId = repetitionService.addException(id, event.getDate());
-            if(newExceptionId != null) {
+    public void update(int userId, int eventId, Event event, Integer exceptionId){
+        if(event.getRepetition() == null || exceptionId != 0) {  // update single event
+            this.eventRepository.update(eventId, event);
+        } else {  // update event in repetition
+            Integer newExceptionId = repetitionService.addException(eventId, event.getDate());
+            if(newExceptionId != 0) {
                 event.setExceptionId(newExceptionId);
-                this.eventRepository.add(event);
+                Integer updatedEventId = this.eventRepository.add(event);
+
+                if(updatedEventId != null) {
+                    this.eventRepository.addEventUser(userId, updatedEventId);
+                }
             }
         }
     }
@@ -181,6 +182,9 @@ public class EventService {
 
     @Transactional
     public Integer updateEventAndAddRepetition(Event event) {
+        LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
+        setEventsDates(event, newStartDate);
+
         this.eventRepository.update(event.getIdEvent(), event);
 
         return this.repetitionService.addRepetition(event.getRepetition());
@@ -201,6 +205,16 @@ public class EventService {
         } else {
             delete(idEvent);
         }
+    }
+
+    private void setEventsDates(Event event, LocalDate newStart) {
+        LocalDate start = event.getDate();
+        LocalDate end = event.getEndsDate();
+        LocalDate alert = event.getAlertDate();
+
+        event.setDate(newStart);
+        event.setEndsDate(countEndDate(start, end, newStart));
+        event.setAlertDate(countAlertDate(start, alert, newStart));
     }
 
     private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {

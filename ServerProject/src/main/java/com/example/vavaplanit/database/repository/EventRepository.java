@@ -34,7 +34,7 @@ public class EventRepository {
      */
     public Integer add(Event event) {
         final String sql = "insert into planitschema.event (title, location, type, description, date, starts, ends_date, ends," +
-                " alert_date, alert) values (?,?,?,?,?,?,?,?,?,?)";
+                " alert_date, alert, exception_id) values (?,?,?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -61,6 +61,13 @@ public class EventRepository {
                 ps.setTime(8, Time.valueOf(event.getEnds()));
                 ps.setDate(9, Date.valueOf(event.getAlertDate()));
                 ps.setTime(10, Time.valueOf(event.getAlert()));
+
+                if(event.getExceptionId() != null && event.getExceptionId() != 0) {
+                    ps.setInt(11, event.getExceptionId());
+                } else {
+                    ps.setNull(11, Types.INTEGER);
+                }
+
                 return ps;
             }
         }, keyHolder);
@@ -117,7 +124,7 @@ public class EventRepository {
      */
     public Event getEvent(int idUser, int idEvent) {
         String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE ue.iduser = '" + idUser + "' AND ue.idevent = '" + idEvent + "' LIMIT 1;";
+                " WHERE ue.iduser = " + idUser + " AND ue.idevent = " + idEvent + " LIMIT 1;";
 
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }

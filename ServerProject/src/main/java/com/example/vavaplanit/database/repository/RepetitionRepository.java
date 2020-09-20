@@ -62,8 +62,7 @@ public class RepetitionRepository {
         String sql = "UPDATE planitschema.repetition SET starts = ?, ends = ?, repeat_interval = ?, days_of_week = ?, " +
                 "day_of_month = ?, repeat_ordinal = ?, month = ?, type = ? WHERE event_id = ?";
 
-        jdbcTemplate.update(sql, jdbcTemplate.update(getPreparedStatementCreator(repetition, sql))
-        );
+        jdbcTemplate.update(getPreparedStatementCreator(repetition, sql));
     }
 
     private PreparedStatementCreator getPreparedStatementCreator(Repetition repetition, String sql) {
