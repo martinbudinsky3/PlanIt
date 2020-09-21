@@ -63,9 +63,9 @@ public class RepetitionService {
 
     public boolean checkDate(int eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
-//        if(repetition == null) {
-//            return false;
-//        }
+        if(repetition == null) {
+            return false;
+        }
 
         return repetition.checkDate(date);
     }

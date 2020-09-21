@@ -534,22 +534,26 @@ public class PlanItAddEventController implements Initializable {
                     repetition.setEnd(repetitionEnd);
 
                     event.setRepetition(repetition);
-                } else {
+                } else { // error in repetition in repetition component
                     return;
                 }
             }
 
-            if (this.event == null) {
+            if (this.event == null) { // window is used for creating new event
                 addEvent(event);
-            } else {
-                if(repetitionBox.isVisible()) {
+            } else {  // window is used for updating existing event
+                if(repetitionBox.isVisible()) {  // update repetition
                     if(event.getRepetition() != null) {
                         event.getRepetition().setEventId(this.event.getIdEvent());
                     }
                     updateRepetition(event);
-                } else {
+                } else {  // update only this event
                     event.setRepetition(this.event.getRepetition());
-                    updateSingleEvent(event);
+                    if(event.getRepetition() == null) { // event isn't in repetition
+                        updateSingleEvent(event);
+                    } else {  // event is in repetition
+                        updateEventInRepetition(event);
+                    }
                 }
             }
         }
@@ -596,7 +600,7 @@ public class PlanItAddEventController implements Initializable {
      * After successful insert modal window is closed and calendar is displayed with just cretaed event
      */
     public void addEvent(Event event) {
-        Long id = eventsClient.addEvent(event, resourceBundle);
+        Integer id = eventsClient.addEvent(event, resourceBundle);
 
         if (id != null) {
             if (newDateIsInCalendarDisplay(event.getDate()) && event.getRepetition() == null) {
@@ -619,6 +623,24 @@ public class PlanItAddEventController implements Initializable {
 
         if (success) {
             updateCalendarDisplay(initDate);
+        }
+
+        Stage stage = (Stage) ap.getScene().getWindow();
+        stage.close();
+    }
+
+    private void updateEventInRepetition(Event event) {
+        Integer id = eventsClient.updateEventInRepetition(event, idUser, this.event.getIdEvent(), initDate, resourceBundle);
+
+        if (id != null) {
+            if (!newEventLabelIsEqualWithOld(event)) {
+                if (!newDateIsInCalendarDisplay(event.getDate())) {
+                    updateCalendarDisplay(event.getDate());
+                } else {
+                    event.setIdEvent(id);
+                    planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
+                }
+            }
         }
 
         Stage stage = (Stage) ap.getScene().getWindow();
@@ -679,6 +701,7 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.addWeatherToCalendar();
     }
 
+    // TODO can't delete repetition from exception event
     /**
      * The functionality of the delete button.
      */

@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -196,17 +199,17 @@ public class EventsClient {
      * @param event object Event that should be inserted in to calendar.
      * @return ID (integer) of the inserted event.
      */
-    public Long addEvent(Event event, ResourceBundle resourceBundle) {
+    public Integer addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
         final String uri = BASE_EVENTS_URI;
 
         logger.debug("Event [" + event.getIdEvent() + "] alert time " + event.getAlert());
 
-        Long idEvent = null;
+        Integer idEvent = null;
         try {
             logger.debug("Event JSon: " + objectMapper.writeValueAsString(event));
             String id = restTemplate.postForObject(uri, event, String.class);
-            idEvent = objectMapper.readValue(id, Long.class);
+            idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
@@ -254,6 +257,35 @@ public class EventsClient {
         }
 
         return success;
+    }
+
+    public Integer updateEventInRepetition(Event event, int userId, int eventId, LocalDate date, ResourceBundle resourceBundle) {
+        logger.info("Updating event [" + eventId + "] in repetition");
+        final String UPDATE_EVENT_IN_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("update-event-in-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_EVENT_IN_REPETITION_ENDPOINT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
+        params.put("date", date);
+
+        HttpEntity<Event> request = new HttpEntity<>(event);
+
+        Integer id = null;
+        try {
+            ResponseEntity<Integer> response = restTemplate.exchange(uri, HttpMethod.PUT, request, Integer.class, params);
+            id = response.getBody();
+            logger.info("Event [" + eventId + "] successffully updated in repetition.");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return id;
     }
 
     public boolean updateRepetition(Event event, int userId, int eventId, ResourceBundle resourceBundle) {

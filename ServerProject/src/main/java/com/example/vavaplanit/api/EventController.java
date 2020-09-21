@@ -103,7 +103,6 @@ public class EventController {
                                       @RequestBody Event event) {
         logger.info("Updating event. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEvent(idUser, idEvent);
-        logger.debug("Updated event with id: " + idEvent + " repetition: " + event.getRepetition());
         if(eventFromDb != null){
             eventService.update(idUser, idEvent, event, eventFromDb.getExceptionId());
             logger.info("Event [" + idEvent + "] successfully updated.");
@@ -113,6 +112,23 @@ public class EventController {
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
                     body("Event with id: " + idEvent + " does not exist");
+        }
+    }
+
+    @PutMapping("{idUser}/{idEvent}/{date}")
+    public ResponseEntity updateEventInRepetition(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent,
+                                      @PathVariable String date, @RequestBody Event event) {
+        logger.info("Updating event in repetition. Event's ID: " + idEvent);
+        Event eventFromDb = eventService.getEventWithRepetition(idUser, idEvent);
+        if(eventFromDb != null && eventFromDb.getRepetition() != null){
+            Integer id = eventService.updateEventInRepetition(idUser, event, date);
+            logger.info("Event [" + idEvent + "] successfully updated in repetition.");
+            return new ResponseEntity<>(id, HttpStatus.CREATED);
+        } else {
+            logger.error("Error. Event or repetition with id: " + idEvent + " does not exist.");
+            return ResponseEntity.status(HttpStatus.
+                    PRECONDITION_FAILED).
+                    body("Event or repetition with id: " + idEvent + " does not exist");
         }
     }
 

@@ -545,7 +545,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void updateEventInCalendar(Event event, LocalDate oldDate, LocalTime oldTime) {
-        // TODO set event id to label
         int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
         int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
 
@@ -555,14 +554,24 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         if(oldDate.equals(event.getDate()) && oldTime.equals(event.getStarts())) {
             for(int n = 1; n < nodes.size(); n++) {
                 Label eventLabel = (Label) nodes.get(n);
-                if(Integer.parseInt(eventLabel.getId()) == event.getIdEvent()) {
+                Integer labelId = Integer.parseInt(eventLabel.getId());
+                if(labelId == event.getIdEvent() ||
+                        event.getRepetition() != null && event.getRepetition().getEventId() == labelId) {  // event label found
+
                     String eventLabelText = event.getStarts() + " " + event.getTitle();
                     eventLabel.setText(eventLabelText);
                     break;
                 }
             }
         } else {
-            deleteEventFromCalendar(event.getIdEvent(), oldDate);
+            Integer labelId;
+            if(event.getRepetition() != null) {
+                labelId = event.getRepetition().getEventId();
+            } else {
+                labelId = event.getIdEvent();
+            }
+
+            deleteEventFromCalendar(labelId, oldDate);
 
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
