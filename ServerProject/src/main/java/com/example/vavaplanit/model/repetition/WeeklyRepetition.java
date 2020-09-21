@@ -1,17 +1,13 @@
 package com.example.vavaplanit.model.repetition;
 
-import com.example.vavaplanit.model.Exception;
 import com.fasterxml.jackson.annotation.*;
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 import org.joda.time.Weeks;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
@@ -45,6 +41,34 @@ public class WeeklyRepetition extends Repetition {
                             Integer daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);
+    }
+
+    public void validateStart() {
+        DayOfWeek startDateDayOfWeek = getStart().getDayOfWeek();
+        int index = daysOfWeek.indexOf(startDateDayOfWeek);
+
+        if(index == -1) {
+            findTheEarliestDayOfWeek();
+        }
+    }
+
+    private void findTheEarliestDayOfWeek() {
+        LocalDate minDate = null;
+
+        for(DayOfWeek dayOfWeek : daysOfWeek) {
+            LocalDate date = getNextDayOfWeek(dayOfWeek);
+            if(minDate == null || date.isBefore(minDate)) {
+                minDate = date;
+            }
+        }
+
+        setStart(minDate);
+    }
+
+    private LocalDate getNextDayOfWeek(DayOfWeek dayOfWeek) {
+        return getStart().with(
+                TemporalAdjusters.next(dayOfWeek)
+        );
     }
 
     public List<DayOfWeek> getDaysOfWeek() {

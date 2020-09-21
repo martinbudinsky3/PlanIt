@@ -114,9 +114,12 @@ public class EventService {
         LocalDate date = LocalDate.parse(dateString);
         Event event = this.eventRepository.getEvent(idUser, idEvent);
 
-        if(this.repetitionService.checkDate(idEvent, date)) {
+        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+
+        // if event is repeated and if event isn't exception in repetition count new event's dates
+        if(event.getRepetition() != null && event.getIdEvent() == event.getRepetition().getEventId() && this.repetitionService.checkDate(idEvent, date)) {
             logger.debug("Event's [" + idEvent + "] date check was succesfull");
-            event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+
             setEventsDates(event, date);
 
             logger.debug("Event's [" + idEvent + "] date " + date);

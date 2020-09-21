@@ -5,6 +5,7 @@ import com.example.vavaplanit.database.repository.RepetitionRepository;
 import com.example.vavaplanit.model.Exception;
 import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
+import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,16 +63,16 @@ public class RepetitionService {
 
     public boolean checkDate(int eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
-        if(repetition == null) {
-            return false;
-        }
+//        if(repetition == null) {
+//            return false;
+//        }
 
         return repetition.checkDate(date);
     }
 
     public LocalDate validateStart(Repetition repetition) {
-        if(repetition instanceof MonthlyRepetition) {
-            ((MonthlyRepetition) repetition).validateStart();
+        if(repetition instanceof WeeklyRepetition) {
+            ((WeeklyRepetition) repetition).validateStart();
         }
 
         return repetition.getStart();
