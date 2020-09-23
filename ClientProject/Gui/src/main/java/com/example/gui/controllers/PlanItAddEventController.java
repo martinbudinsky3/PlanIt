@@ -21,12 +21,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.Minutes;
 
 import java.net.URL;
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**
@@ -244,24 +246,172 @@ public class PlanItAddEventController implements Initializable {
         });
 
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
-            validateTime(startsRow, startErrorField, newValue);
+            boolean valid = validateTime(startsRow, startErrorField, newValue);
+            if(valid && startsDateField.getValue() != null) { validateDatesAfterStartTimeChange(newValue, oldValue); }
         });
 
         endsField.textProperty().addListener((observable, oldValue, newValue) -> {
-            validateTime(endsRow, endErrorField, newValue);
+            boolean valid = validateTime(endsRow, endErrorField, newValue);
+            if(valid && startsDateField.getValue() != null) { validateDatesAfterEndTimeChange(newValue, oldValue); }
         });
 
         alertField.textProperty().addListener((observable, oldValue, newValue) -> {
             validateTime(alertRow, alertErrorField, newValue);
         });
+
+        startsDateField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            if(endsDateField.getValue() != null) {
+                validateDatesAfterStartChange(newValue, oldValue);
+            }
+        }));
+
+        endsDateField.valueProperty().addListener(((observable, oldValue, newValue) -> {
+            validateDatesAfterEndChange(newValue, oldValue);
+        }));
     }
 
-    private void validateTime(HBox row, HBox errorField, String newValue) {
+    private boolean validateTime(HBox row, HBox errorField, String newValue) {
         try {
             LocalTime.parse(newValue);
             removeErrorMessage(errorField);
+            return true;
         } catch (DateTimeException e) {
             createErrorMessage(row, errorField, "timeErrorLabel");
+            return false;
+        }
+    }
+
+    private void validateDatesAfterStartChange(LocalDate newValue, LocalDate oldValue) {
+        LocalDate endDate = endsDateField.getValue();
+        LocalTime startTime;
+        LocalTime endTime;
+
+        try {
+            startTime = LocalTime.parse(startsField.getText());
+        } catch(DateTimeException e) {
+            startTime = LocalTime.of(0,0);
+        }
+
+        try {
+            endTime = LocalTime.parse(endsField.getText());
+        } catch(DateTimeException e) {
+            endTime = LocalTime.of(23, 59);
+        }
+
+        LocalDateTime start = LocalDateTime.of(newValue, startTime);
+        LocalDateTime end = LocalDateTime.of(endDate, endTime);
+
+        if(!start.isBefore(end)) {
+            int dayDiff = getDayDiff(oldValue, newValue);
+            endsDateField.setValue(endDate.plusDays(dayDiff));
+        }
+    }
+
+    private void validateDatesAfterEndChange(LocalDate newValue, LocalDate oldValue) {
+        LocalDate startDate = startsDateField.getValue();
+        LocalTime startTime;
+        LocalTime endTime;
+
+        try {
+            startTime = LocalTime.parse(startsField.getText());
+        } catch(DateTimeException e) {
+            startTime = LocalTime.of(0,0);
+        }
+
+        try {
+            endTime = LocalTime.parse(endsField.getText());
+        } catch(DateTimeException e) {
+            endTime = LocalTime.of(23, 59);
+        }
+
+        LocalDateTime start = LocalDateTime.of(startDate, startTime);
+        LocalDateTime end = LocalDateTime.of(newValue, endTime);
+
+        if(!start.isBefore(end)) {
+            int dayDiff = getDayDiff(oldValue, newValue);
+            startsDateField.setValue(startDate.plusDays(dayDiff));
+        }
+    }
+
+    private void validateDatesAfterStartTimeChange(String newValue, String oldValue) {
+        LocalTime startTime = LocalTime.parse(newValue);
+        LocalDateTime start = LocalDateTime.of(startsDateField.getValue(), startTime);
+
+        LocalTime oldStartTime = getOldTime(oldValue);
+
+        LocalTime endTime;
+        try {
+            endTime = LocalTime.parse(endsField.getText());
+            LocalDateTime end = LocalDateTime.of(endsDateField.getValue(), endTime);
+
+            if(!start.isBefore(end)) {
+                if(oldStartTime != null) {
+                    LocalDateTime oldStart = LocalDateTime.of(startsDateField.getValue(), oldStartTime);
+                    int diff = getMinuteDiff(oldStart, start);
+                    end = end.plusMinutes(diff);
+                } else {
+                    end = start.plusMinutes(30);
+                }
+
+                endsDateField.setValue(end.toLocalDate());
+                endsField.setText(end.toLocalTime().toString());
+            }
+
+        } catch(DateTimeException e) {
+            endTime = startTime.plusMinutes(30);
+            LocalDateTime end = LocalDateTime.of(endsDateField.getValue(), endTime);
+
+            if(!start.isBefore(end)) {
+                end = end.plusDays(1);
+            }
+
+            endsDateField.setValue(end.toLocalDate());
+            endsField.setText(endTime.toString());
+        }
+    }
+
+    private void validateDatesAfterEndTimeChange(String newValue, String oldValue) {
+        LocalTime endTime = LocalTime.parse(newValue);
+        LocalDateTime end = LocalDateTime.of(endsDateField.getValue(), endTime);
+
+        LocalTime oldEndTime = getOldTime(oldValue);
+
+        LocalTime startTime;
+        try {
+            startTime = LocalTime.parse(startsField.getText());
+            LocalDateTime start = LocalDateTime.of(startsDateField.getValue(), startTime);
+
+            if(!start.isBefore(end)) {
+                if(oldEndTime != null) {
+                    LocalDateTime oldEnd = LocalDateTime.of(startsDateField.getValue(), oldEndTime);
+                    int diff = getMinuteDiff(oldEnd, end);
+                    start = start.plusMinutes(diff);
+                } else {
+                    start = end.minusMinutes(30);
+                }
+
+                startsDateField.setValue(start.toLocalDate());
+                startsField.setText(start.toLocalTime().toString());
+            }
+
+        } catch(DateTimeException e) {
+            startTime = endTime.minusMinutes(30);
+            LocalDateTime start = LocalDateTime.of(startsDateField.getValue(), startTime);
+
+            if(!start.isBefore(end)) {
+                start = start.minusDays(1);
+            }
+
+            startsDateField.setValue(start.toLocalDate());
+            startsField.setText(startTime.toString());
+        }
+    }
+
+    private LocalTime getOldTime(String oldValue) {
+        try{
+            return LocalTime.parse(oldValue);
+        } catch(DateTimeException e) {
+            return null;
         }
     }
 
@@ -778,5 +928,21 @@ public class PlanItAddEventController implements Initializable {
         alertErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
         repetitionStartErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
         repetitionEndErrorField.setPrefSize(ERROR_HBOX_WIDTH, ERROR_HBOX_HEIGTH);
+    }
+
+    private int getDayDiff(LocalDate date1, LocalDate date2) {
+        DateTime dateTime1 = new DateTime().withDate(date1.getYear(), date1.getMonthValue(), date1.getDayOfMonth());
+        DateTime dateTime2 = new DateTime().withDate(date2.getYear(), date2.getMonthValue(), date2.getDayOfMonth());
+
+        return Days.daysBetween(dateTime1, dateTime2).getDays();
+    }
+
+    private int getMinuteDiff(LocalDateTime dateTimeI, LocalDateTime dateTimeII) {
+        DateTime dateTime1 = new DateTime(dateTimeI.getYear(), dateTimeI.getMonthValue(), dateTimeI.getDayOfMonth(),
+                dateTimeI.getHour(), dateTimeI.getMinute());
+        DateTime dateTime2 = new DateTime(dateTimeII.getYear(), dateTimeII.getMonthValue(), dateTimeII.getDayOfMonth(),
+                dateTimeII.getHour(), dateTimeII.getMinute());
+
+        return Minutes.minutesBetween(dateTime1, dateTime2).getMinutes();
     }
 }
