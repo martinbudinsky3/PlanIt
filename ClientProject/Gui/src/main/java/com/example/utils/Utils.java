@@ -26,9 +26,14 @@ public class Utils {
         return (day - 1 + firstDayOfMonth - 1) % 7;
     }
 
-    public static List<String> getDayNames(ResourceBundle resourceBundle) {
+    public static List<String> getDayNames(boolean shortNames, ResourceBundle resourceBundle) {
         DateFormatSymbols symbols = new DateFormatSymbols(resourceBundle.getLocale());
-        List<String> dayNamesWrongOrder = Arrays.asList(symbols.getWeekdays());
+        List<String> dayNamesWrongOrder;
+        if(shortNames) {
+            dayNamesWrongOrder = Arrays.asList(symbols.getShortWeekdays());
+        } else {
+            dayNamesWrongOrder = Arrays.asList(symbols.getWeekdays());
+        }
 
         List<String> dayNames = new ArrayList<String>(dayNamesWrongOrder.subList(2, dayNamesWrongOrder.size()));
         dayNames.add(dayNamesWrongOrder.get(1));

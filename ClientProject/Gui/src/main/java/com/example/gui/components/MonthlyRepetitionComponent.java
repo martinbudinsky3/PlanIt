@@ -81,7 +81,7 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
     }
 
     private void initializeDayOfWeekSelector() {
-        dayOfWeekSelector.getItems().addAll(Utils.getDayNames(getResourceBundle()));
+        dayOfWeekSelector.getItems().addAll(Utils.getDayNames(false, getResourceBundle()));
     }
 
 
@@ -141,12 +141,12 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
         // set init value for dayOfWeekSelector
         int initDayOfWeekCode = initDate.getDayOfWeek().getValue();
-        String initDayName = Utils.getDayNames(getResourceBundle()).get(initDayOfWeekCode-1);
+        String initDayName = Utils.getDayNames(false, getResourceBundle()).get(initDayOfWeekCode-1);
         dayOfWeekSelector.setValue(initDayName);
     }
 
     private void setInitDayOfWeekAndOrdinalValue(Integer ordinal, DayOfWeek dayOfWeek) {
-        // set init value for dayOfWeekSelector
+        // set init value for ordinalSelector
         if(ordinal == 5) {
             ordinalSelector.getSelectionModel().selectLast();
         } else {
@@ -155,7 +155,7 @@ public class MonthlyRepetitionComponent extends DailyRepetitionComponent{
 
         // set init value for dayOfWeekSelector
         int initDayOfWeekCode = dayOfWeek.getValue();
-        String initDayName = Utils.getDayNames(getResourceBundle()).get(initDayOfWeekCode-1);
+        String initDayName = Utils.getDayNames(false, getResourceBundle()).get(initDayOfWeekCode-1);
         dayOfWeekSelector.setValue(initDayName);
     }
 

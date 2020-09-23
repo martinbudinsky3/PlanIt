@@ -243,33 +243,26 @@ public class PlanItAddEventController implements Initializable {
             }
         });
 
-        // TODO refactoring - extract to method
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                LocalTime.parse(newValue);
-                removeErrorMessage(startErrorField);
-            } catch (DateTimeException e) {
-                createErrorMessage(startsRow, startErrorField, "timeErrorLabel");
-            }
+            validateTime(startsRow, startErrorField, newValue);
         });
 
         endsField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                LocalTime.parse(newValue);
-                removeErrorMessage(endErrorField);
-            } catch (DateTimeException e) {
-                createErrorMessage(endsRow, endErrorField, "timeErrorLabel");
-            }
+            validateTime(endsRow, endErrorField, newValue);
         });
 
         alertField.textProperty().addListener((observable, oldValue, newValue) -> {
-            try {
-                LocalTime.parse(newValue);
-                removeErrorMessage(alertErrorField);
-            } catch (DateTimeException e) {
-                createErrorMessage(alertRow, alertErrorField, "timeErrorLabel");
-            }
+            validateTime(alertRow, alertErrorField, newValue);
         });
+    }
+
+    private void validateTime(HBox row, HBox errorField, String newValue) {
+        try {
+            LocalTime.parse(newValue);
+            removeErrorMessage(errorField);
+        } catch (DateTimeException e) {
+            createErrorMessage(row, errorField, "timeErrorLabel");
+        }
     }
 
     private void removeErrorMessage(HBox errorField) {
@@ -701,7 +694,6 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.addWeatherToCalendar();
     }
 
-    // TODO can't delete repetition from exception event
     /**
      * The functionality of the delete button.
      */

@@ -40,7 +40,7 @@ public class WeeklyRepetitionComponent extends DailyRepetitionComponent {
     }
 
     private void initDaysOfWeekBoxes() {
-        List<String> dayNames = Utils.getDayNames(getResourceBundle());
+        List<String> dayNames = Utils.getDayNames(true, getResourceBundle());
 
         for (String dayName : dayNames) {
             CheckBox dayCheckBox = new CheckBox(dayName);

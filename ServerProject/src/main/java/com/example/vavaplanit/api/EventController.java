@@ -104,7 +104,7 @@ public class EventController {
         logger.info("Updating event. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEvent(idUser, idEvent);
         if(eventFromDb != null){
-            eventService.update(idUser, idEvent, event, eventFromDb.getExceptionId());
+            eventService.update(idEvent, event);
             logger.info("Event [" + idEvent + "] successfully updated.");
             return ResponseEntity.ok().build();
         } else {
@@ -161,8 +161,9 @@ public class EventController {
     @DeleteMapping("{idUser}/{idEvent}")
     public ResponseEntity delete(@PathVariable("idUser") int idUser, @PathVariable("idEvent") int idEvent) {
         logger.info("Deleting event. Event's ID: " + idEvent);
-        if(eventService.getEvent(idUser, idEvent) != null){
-            eventService.delete(idEvent);
+        Event event = eventService.getEventWithRepetition(idUser, idEvent);
+        if(event != null){
+            eventService.delete(event);
             logger.info("Event [" + idEvent + "] successfully deleted.");
             return ResponseEntity.ok().build();
         } else {

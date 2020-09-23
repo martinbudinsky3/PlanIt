@@ -167,21 +167,8 @@ public class EventService {
      * @param event   event object which is going to be updated
      * @param eventId id of Event which is going to be updated
      */
-    @Transactional
-    public void update(int userId, int eventId, Event event, Integer exceptionId) {
-//        if (event.getRepetition() == null || exceptionId != 0) {  // update single event
-            this.eventRepository.update(eventId, event);
-//        } else {  // update event in repetition
-//            Integer newExceptionId = repetitionService.addException(eventId, event.getDate());
-//            if (newExceptionId != 0) {
-//                event.setExceptionId(newExceptionId);
-//                Integer updatedEventId = this.eventRepository.add(event);
-//
-//                if (updatedEventId != null) {
-//                    this.eventRepository.addEventUser(userId, updatedEventId);
-//                }
-//            }
-//        }
+    public void update(int eventId, Event event) {
+        this.eventRepository.update(eventId, event);
     }
 
     @Transactional
@@ -232,12 +219,20 @@ public class EventService {
         this.eventRepository.delete(idEvent);
     }
 
+    public void delete(Event event) {
+        delete(event.getIdEvent());
+
+        if(event.getRepetition() != null) {
+            delete(event.getRepetition().getEventId());
+        }
+    }
+
     public void deleteFromRepetition(int idEvent, String dateString, Integer exceptionId) {
         LocalDate date = LocalDate.parse(dateString);
 
-        if (exceptionId == null || exceptionId == 0) {
+        if (exceptionId == null || exceptionId == 0) { // if event isn't exception in repetition add exception
             this.repetitionService.addException(idEvent, date);
-        } else {
+        } else {  // if event already is exception, just delete it
             delete(idEvent);
         }
     }

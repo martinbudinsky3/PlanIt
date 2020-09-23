@@ -127,7 +127,7 @@ public class AlertWindowController implements Initializable {
         }
 
         // updating event - new alert time
-        boolean success = eventsClient.updateEvent(event, event.getIdEvent(), user.getIdUser(), resourceBundle);
+        boolean success = eventsClient.updateEvent(event, user.getIdUser(), event.getIdEvent(), resourceBundle);
         if(success){
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
