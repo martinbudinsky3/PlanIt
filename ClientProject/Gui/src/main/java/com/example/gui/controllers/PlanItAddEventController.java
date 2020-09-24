@@ -691,9 +691,7 @@ public class PlanItAddEventController implements Initializable {
                 addEvent(event);
             } else {  // window is used for updating existing event
                 if(userWantsToWorkWithRepetition()) {  // update repetition
-//                    if(userWantsToWorkWithRepetition(event)) {
                     event.getRepetition().setEventId(this.event.getRepetition().getEventId());
-//                    }
                     updateRepetition(event);
                 } else {  // update only this event
                     event.setRepetition(this.event.getRepetition());
@@ -709,10 +707,6 @@ public class PlanItAddEventController implements Initializable {
 
     private boolean userWantsToWorkWithRepetition() {
         return repetitionBox.isVisible();
-    }
-
-    private boolean userWantsToWorkWithRepetition(Event event) {
-        return event.getRepetition() != null;
     }
 
     private boolean userUseWindowToCreateEvent() {
@@ -799,18 +793,9 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void updateEventInRepetition(Event event) {
-        Integer id = eventsClient.updateEventInRepetition(event, idUser, this.event.getIdEvent(), initDate, resourceBundle);
+        eventsClient.updateEventInRepetition(event, idUser, this.event.getIdEvent(), initDate, resourceBundle);
 
-        if (id != null) {
-            if (!newEventLabelIsEqualWithOld(event)) {
-                if (!newDateIsInCalendarDisplay(event.getDate())) {
-                    updateCalendarDisplay(event.getDate());
-                } else {
-                    event.setIdEvent(id);
-                    planItMainWindowController.updateEventInCalendar(event, this.event.getDate(), this.event.getStarts());
-                }
-            }
-        }
+        updateCalendarDisplay(event.getDate());
 
         Stage stage = (Stage) ap.getScene().getWindow();
         stage.close();

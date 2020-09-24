@@ -173,22 +173,23 @@ public class EventService {
     }
 
     @Transactional
-    public Integer updateEventInRepetition(int userId, Event event, String dateString) {
+    public void updateEventInRepetition(int userId, int eventId, Event event, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
-        Integer newExceptionId = repetitionService.addException(event.getRepetition().getEventId(), date);
 
-        if (newExceptionId != 0) {
-            event.setExceptionId(newExceptionId);
-            Integer updatedEventId = this.eventRepository.add(event);
+        if(event.getExceptionId() == 0) {
+            Integer newExceptionId = repetitionService.addException(event.getRepetition().getEventId(), date);
 
-            if (updatedEventId != null) {
-                this.eventRepository.addEventUser(userId, updatedEventId);
+            if (newExceptionId != 0) {
+                event.setExceptionId(newExceptionId);
+                Integer updatedEventId = this.eventRepository.add(event);
+
+                if (updatedEventId != null) {
+                    this.eventRepository.addEventUser(userId, updatedEventId);
+                }
             }
-
-            return updatedEventId;
+        } else {
+            update(eventId, event);
         }
-
-        return null;
     }
 
     @Transactional

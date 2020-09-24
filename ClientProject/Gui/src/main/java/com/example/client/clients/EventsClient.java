@@ -259,7 +259,7 @@ public class EventsClient {
         return success;
     }
 
-    public Integer updateEventInRepetition(Event event, int userId, int eventId, LocalDate date, ResourceBundle resourceBundle) {
+    public boolean updateEventInRepetition(Event event, int userId, int eventId, LocalDate date, ResourceBundle resourceBundle) {
         logger.info("Updating event [" + eventId + "] in repetition");
         final String UPDATE_EVENT_IN_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("update-event-in-repetition-endpoint");
         final String uri = BASE_EVENTS_URI + UPDATE_EVENT_IN_REPETITION_ENDPOINT;
@@ -268,12 +268,11 @@ public class EventsClient {
         params.put("idEvent", eventId);
         params.put("date", date);
 
-        HttpEntity<Event> request = new HttpEntity<>(event);
+        boolean success = false;
 
-        Integer id = null;
         try {
-            ResponseEntity<Integer> response = restTemplate.exchange(uri, HttpMethod.PUT, request, Integer.class, params);
-            id = response.getBody();
+            restTemplate.put(uri, event, params);
+            success = true;
             logger.info("Event [" + eventId + "] successffully updated in repetition.");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
@@ -285,7 +284,7 @@ public class EventsClient {
             }
         }
 
-        return id;
+        return success;
     }
 
     public boolean updateRepetition(Event event, int userId, int eventId, ResourceBundle resourceBundle) {

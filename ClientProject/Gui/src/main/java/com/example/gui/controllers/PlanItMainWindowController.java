@@ -555,23 +555,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             for(int n = 1; n < nodes.size(); n++) {
                 Label eventLabel = (Label) nodes.get(n);
                 Integer labelId = Integer.parseInt(eventLabel.getId());
-                if(labelId == event.getIdEvent() ||
-                        event.getRepetition() != null && event.getRepetition().getEventId() == labelId) {  // event label found
-
+                if(labelId == event.getIdEvent()) {  // event label found
                     String eventLabelText = event.getStarts() + " " + event.getTitle();
                     eventLabel.setText(eventLabelText);
                     break;
                 }
             }
         } else {
-            Integer labelId;
-            if(event.getRepetition() != null) {
-                labelId = event.getRepetition().getEventId();
-            } else {
-                labelId = event.getIdEvent();
-            }
-
-            deleteEventFromCalendar(labelId, oldDate);
+            deleteEventFromCalendar(event.getIdEvent(), oldDate);
 
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 

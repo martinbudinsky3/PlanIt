@@ -121,9 +121,10 @@ public class EventController {
         logger.info("Updating event in repetition. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEventWithRepetition(idUser, idEvent);
         if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            Integer id = eventService.updateEventInRepetition(idUser, event, date);
+            event.setExceptionId(eventFromDb.getExceptionId());
+            eventService.updateEventInRepetition(idUser, idEvent, event, date);
             logger.info("Event [" + idEvent + "] successfully updated in repetition.");
-            return new ResponseEntity<>(id, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED); // TODO condition on response entity
         } else {
             logger.error("Error. Event or repetition with id: " + idEvent + " does not exist.");
             return ResponseEntity.status(HttpStatus.
