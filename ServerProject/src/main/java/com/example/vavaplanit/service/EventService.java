@@ -42,14 +42,15 @@ public class EventService {
         if (event.getRepetition() != null) {
             LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
             setEventsDates(event, newStartDate);
+
+            logger.debug("Adding event: { date: " + event.getDate() + ", endDate:" + event.getEndsDate() + ", alertDate: "
+                    + event.getAlertDate() + "}");
         }
 
         Integer idEvent = eventRepository.add(event);
         this.eventRepository.addEventUser(idUser, idEvent);
 
         if (event.getRepetition() != null) {
-            logger.debug("Repetition instance type: " + event.getRepetition().getClass());
-
             event.getRepetition().setEventId(idEvent);
             this.repetitionService.addRepetition(event.getRepetition());
         }
@@ -191,11 +192,19 @@ public class EventService {
     }
 
     @Transactional
-    public void updateRepetition(int id, Event event) {
-        this.repetitionService.update(event.getRepetition());
-        if (event.getRepetition().getEventId() != id) {
-            delete(id);
+    public void updateRepetition(int id, Event event, Repetition repetition) {
+        // if repetition object is updated, delete exceptions from old repetition
+        if(!event.getRepetition().equals(repetition)) {
+            this.repetitionService.deleteExceptionsByRepetitionId(repetition.getEventId());
+            this.repetitionService.update(event.getRepetition());
+
+            logger.debug("Old repetition" + repetition.toString());
+            logger.debug("Updated repetition" + event.getRepetition().toString());
         }
+
+        // set new valid dates to event
+        LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
+        setEventsDates(event, newStartDate);
 
         this.eventRepository.update(event.getRepetition().getEventId(), event);
     }
@@ -237,7 +246,7 @@ public class EventService {
         }
     }
 
-    private void setEventsDates(Event event, LocalDate newStart) {
+    private Event setEventsDates(Event event, LocalDate newStart) {
         LocalDate start = event.getDate();
         LocalDate end = event.getEndsDate();
         LocalDate alert = event.getAlertDate();
@@ -245,6 +254,8 @@ public class EventService {
         event.setDate(newStart);
         event.setEndsDate(countEndDate(start, end, newStart));
         event.setAlertDate(countAlertDate(start, alert, newStart));
+
+        return event;
     }
 
     private LocalDate countEndDate(LocalDate defaultStart, LocalDate defaultEnd, LocalDate date) {

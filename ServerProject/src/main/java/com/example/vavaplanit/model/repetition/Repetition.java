@@ -10,6 +10,7 @@ import org.joda.time.Days;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
@@ -96,5 +97,31 @@ public class Repetition {
         DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 
         return Days.daysBetween(startDateTime, dateTime).getDays();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Repetition that = (Repetition) o;
+        return repetitionInterval == that.repetitionInterval &&
+                Objects.equals(eventId, that.eventId) &&
+                Objects.equals(start, that.start) &&
+                Objects.equals(end, that.end);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventId, start, end, repetitionInterval);
+    }
+
+    @Override
+    public String toString() {
+        return "Repetition{" +
+                "eventId=" + eventId +
+                ", start=" + start +
+                ", end=" + end +
+                ", repetitionInterval=" + repetitionInterval +
+                '}';
     }
 }

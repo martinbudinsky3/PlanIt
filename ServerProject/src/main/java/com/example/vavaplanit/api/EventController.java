@@ -138,7 +138,7 @@ public class EventController {
         logger.info("Updating repetition. Event's ID: " + idEvent);
         Event eventFromDb = eventService.getEventWithRepetition(idUser, idEvent);
         if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            eventService.updateRepetition(idEvent, event);
+            eventService.updateRepetition(idEvent, event, eventFromDb.getRepetition());
             logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully updated.");
             return ResponseEntity.ok().build();
         } else if(eventFromDb != null && eventFromDb.getRepetition() == null) {

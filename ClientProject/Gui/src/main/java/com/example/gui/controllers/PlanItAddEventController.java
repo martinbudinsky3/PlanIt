@@ -247,12 +247,16 @@ public class PlanItAddEventController implements Initializable {
 
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean valid = validateTime(startsRow, startErrorField, newValue);
-            if(valid && startsDateField.getValue() != null) { validateDatesAfterStartTimeChange(newValue, oldValue); }
+            if(valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
+                validateDatesAfterStartTimeChange(newValue, oldValue);
+            }
         });
 
         endsField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean valid = validateTime(endsRow, endErrorField, newValue);
-            if(valid && startsDateField.getValue() != null) { validateDatesAfterEndTimeChange(newValue, oldValue); }
+            if(valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
+                validateDatesAfterEndTimeChange(newValue, oldValue);
+            }
         });
 
         alertField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -666,10 +670,11 @@ public class PlanItAddEventController implements Initializable {
     public void save() {
         if (checkInput()) {
             Event event = readEventInput();
-            if (repetitionBox.isVisible()) { // save repetition too
-                Repetition repetition = selectedRepetitionComponent.readInput();
+            if (userWantsToWorkWithRepetition()) { // save repetition too
+                Repetition repetition = selectedRepetitionComponent.readInput(); // read specific repetition fields
 
-                if (repetition != null) {
+                if (repetitionInputIsOk(repetition)) {
+                    // read others repetition fields
                     LocalDate repetitionStart = repetitionStartField.getValue();
                     LocalDate repetitionEnd = repetitionEndField.getValue();
 
@@ -677,22 +682,22 @@ public class PlanItAddEventController implements Initializable {
                     repetition.setEnd(repetitionEnd);
 
                     event.setRepetition(repetition);
-                } else { // error in repetition in repetition component
+                } else { // input error in repetition component
                     return;
                 }
             }
 
-            if (this.event == null) { // window is used for creating new event
+            if (userUseWindowToCreateEvent()) { // window is used for creating new event
                 addEvent(event);
             } else {  // window is used for updating existing event
-                if(repetitionBox.isVisible()) {  // update repetition
-                    if(event.getRepetition() != null) {
-                        event.getRepetition().setEventId(this.event.getIdEvent());
-                    }
+                if(userWantsToWorkWithRepetition()) {  // update repetition
+//                    if(userWantsToWorkWithRepetition(event)) {
+                    event.getRepetition().setEventId(this.event.getRepetition().getEventId());
+//                    }
                     updateRepetition(event);
                 } else {  // update only this event
                     event.setRepetition(this.event.getRepetition());
-                    if(event.getRepetition() == null) { // event isn't in repetition
+                    if(eventIsNotInRepetition(event)) { // event isn't in repetition
                         updateSingleEvent(event);
                     } else {  // event is in repetition
                         updateEventInRepetition(event);
@@ -701,6 +706,27 @@ public class PlanItAddEventController implements Initializable {
             }
         }
     }
+
+    private boolean userWantsToWorkWithRepetition() {
+        return repetitionBox.isVisible();
+    }
+
+    private boolean userWantsToWorkWithRepetition(Event event) {
+        return event.getRepetition() != null;
+    }
+
+    private boolean userUseWindowToCreateEvent() {
+        return event == null;
+    }
+
+    private boolean repetitionInputIsOk(Repetition repetition) {
+        return repetition != null;
+    }
+
+    private boolean eventIsNotInRepetition(Event event) {
+        return event.getRepetition() == null;
+    }
+
 
     private Event readEventInput() {
         String title = titleField.getText();
@@ -934,7 +960,7 @@ public class PlanItAddEventController implements Initializable {
         DateTime dateTime1 = new DateTime().withDate(date1.getYear(), date1.getMonthValue(), date1.getDayOfMonth());
         DateTime dateTime2 = new DateTime().withDate(date2.getYear(), date2.getMonthValue(), date2.getDayOfMonth());
 
-        return Days.daysBetween(dateTime1, dateTime2).getDays();
+        return Days.daysBetween(dateTime1, dateTime2).getDays() /*+ 1*/;
     }
 
     private int getMinuteDiff(LocalDateTime dateTimeI, LocalDateTime dateTimeII) {

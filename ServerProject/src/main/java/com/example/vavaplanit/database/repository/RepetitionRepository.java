@@ -65,6 +65,12 @@ public class RepetitionRepository {
         jdbcTemplate.update(getPreparedStatementCreator(repetition, sql));
     }
 
+    public void deleteExceptionsByRepetitionId(int repetitionId) {
+        String sql = "DELETE FROM planitschema.exception WHERE repetition_id = ?";
+
+        jdbcTemplate.update(sql, repetitionId);
+    }
+
     private PreparedStatementCreator getPreparedStatementCreator(Repetition repetition, String sql) {
         return connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);

@@ -39,6 +39,10 @@ public class RepetitionService {
         return this.repetitionRepository.getRepetitionByEventIdOrExceptionId(eventId, exceptionId);
     }
 
+    public void deleteExceptionsByRepetitionId(int repetitionId) {
+        this.repetitionRepository.deleteExceptionsByRepetitionId(repetitionId);
+    }
+
     public List<LocalDate> getEventDates(int eventId, int month, int year) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
 

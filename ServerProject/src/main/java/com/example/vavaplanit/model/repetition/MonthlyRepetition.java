@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
@@ -190,5 +191,34 @@ public class MonthlyRepetition extends WeeklyRepetition {
         DateTime dateTime = new DateTime().withDate(date.getYear(), date.getMonthValue(), date.getDayOfMonth());
 
         return Months.monthsBetween(startDateTime, dateTime).getMonths();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MonthlyRepetition that = (MonthlyRepetition) o;
+        return Objects.equals(logger, that.logger) &&
+                Objects.equals(dayOfMonth, that.dayOfMonth) &&
+                Objects.equals(ordinal, that.ordinal);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), logger, dayOfMonth, ordinal);
+    }
+
+    @Override
+    public String toString() {
+        return "MonthlyRepetition{" +
+                "eventId=" + getEventId() +
+                ", start=" + getStart() +
+                ", end=" + getEnd() +
+                ", repetitionInterval=" + getRepetitionInterval() +
+                ", daysOfWeek=" + getDaysOfWeek() +
+                ", dayOfMonth=" + dayOfMonth +
+                ", ordinal=" + ordinal +
+                '}';
     }
 }
