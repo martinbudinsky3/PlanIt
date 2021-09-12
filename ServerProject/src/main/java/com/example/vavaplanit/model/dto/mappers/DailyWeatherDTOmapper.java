@@ -1,4 +1,4 @@
-package com.example.vavaplanit.service.mappers;
+package com.example.vavaplanit.model.dto.mappers;
 
 import com.example.vavaplanit.model.dto.DailyWeatherDTO;
 import com.example.vavaplanit.model.weather.DailyWeather;

@@ -1,9 +1,11 @@
 package com.example.vavaplanit.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import com.example.vavaplanit.database.repository.UserRepository;
 import com.example.vavaplanit.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +13,7 @@ public class UserService {
 
     @Autowired //so it is not needed to use "new UserDao"
     private UserRepository userRepository;
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Inserting new user. Used in registration.
@@ -19,7 +22,8 @@ public class UserService {
      */
     public Integer add(User user) {
         String plainPassword = user.getPassword();
-        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+//        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
 
         return userRepository.add(user);
     }
@@ -49,6 +53,6 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.getUserByUsername(username);
+        return userRepository.findUserByUsername(username);
     }
 }

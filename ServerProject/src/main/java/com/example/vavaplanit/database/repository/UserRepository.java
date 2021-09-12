@@ -50,7 +50,7 @@ public class UserRepository {
         }
     }
 
-    public User getUserByUsername(String username){
+    public User findUserByUsername(String username){
         try {
             String sql = "SELECT * FROM planitschema.user " +
                     " where username = '" + username + "';";

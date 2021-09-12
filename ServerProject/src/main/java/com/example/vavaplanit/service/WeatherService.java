@@ -3,7 +3,7 @@ package com.example.vavaplanit.service;
 import com.example.vavaplanit.model.GeoLocation;
 import com.example.vavaplanit.model.dto.DailyWeatherDTO;
 import com.example.vavaplanit.model.weather.WeatherForecast;
-import com.example.vavaplanit.service.mappers.DailyWeatherDTOmapper;
+import com.example.vavaplanit.model.dto.mappers.DailyWeatherDTOmapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 // TODO uri's to config file
-
 @Service
 @PropertySource("classpath:uri.properties")
 public class WeatherService {
