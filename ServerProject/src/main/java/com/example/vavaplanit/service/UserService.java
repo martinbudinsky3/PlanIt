@@ -18,8 +18,8 @@ public class UserService {
      * @param user User object which is going to be inserted
      */
     public Integer add(User user) {
-        String plainPassword = user.getUserPassword();
-        user.setUserPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
+        String plainPassword = user.getPassword();
+        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
 
         return userRepository.add(user);
     }
@@ -37,11 +37,11 @@ public class UserService {
         }
 
         if (!userRepository.getHashed(username)) {
-            user.setUserPassword(BCrypt.hashpw(user.getUserPassword(), BCrypt.gensalt(10)));
-            userRepository.updateHashed(username, user.getUserPassword());
+            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
+            userRepository.updateHashed(username, user.getPassword());
         }
 
-        if (BCrypt.checkpw(password, user.getUserPassword())) {
+        if (BCrypt.checkpw(password, user.getPassword())) {
             return user;
         }
 

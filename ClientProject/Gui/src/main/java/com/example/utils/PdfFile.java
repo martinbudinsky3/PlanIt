@@ -180,8 +180,9 @@ public class PdfFile {
     }
 
     private void showEventsInCalendar(PdfPTable table, Font font) {
-        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
+        List<Event> events = eventsClient.getUserEventsByMonth(user.getId(), selectedYear, selectedMonth, resourceBundle);
 
+        // TODO handle repeated events
         for(Event event : events) {
             int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
             int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);

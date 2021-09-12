@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -38,7 +41,7 @@ public class EventsClient {
      * @param date   date that represents calendar field.
      * @return List of objects Event.  Method that returns all events for a given date. (Only events belonging to the logged in user)
      */
-    public List<Event> getUserEventsByDate(int userId, LocalDate date, ResourceBundle resourceBundle) {
+    public List<Event> getUserEventsByDate(long userId, LocalDate date, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events from date: [" + date + "]");
 
         final String EVENTS_BY_DATE_ENDPOINT = uriPropertiesReader.getProperty("events-by-date-endpoint");
@@ -83,12 +86,12 @@ public class EventsClient {
      * @param year   chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user)
      */
-    public List<Event> getUserEventsByMonth(int userId, int year, int month, ResourceBundle resourceBundle) {
+    public List<Event> getUserEventsByMonth(long userId, int year, int month, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + userId + "] events in year and month: [" + year + ", " + month + "]");
 
         final String EVENTS_BY_MONTH_ENDPOINT = uriPropertiesReader.getProperty("events-by-month-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_BY_MONTH_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("userId", userId);
         params.put("year", year);
         params.put("month", month);
@@ -127,14 +130,15 @@ public class EventsClient {
      * @param idEvent event's ID.
      * @return chosen Event object.
      */
-    public Event getEvent(int idUser, int idEvent) throws JsonProcessingException, ResourceAccessException,
+    public Event getEvent(long idUser, long idEvent, LocalDate date) throws JsonProcessingException, ResourceAccessException,
             HttpStatusCodeException {
         logger.info("Getting event by user's [" + idUser + "] and event's [" + idEvent + "] ID");
         final String EVENT_ENDPOINT = uriPropertiesReader.getProperty("event-endpoint");
         final String uri = BASE_EVENTS_URI + EVENT_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
+        params.put("date", date);
 
         Event event = null;
 
@@ -153,7 +157,7 @@ public class EventsClient {
      * @param idUser user's ID,
      * @return list of events that have alert time in current minute
      */
-    public List<Event> getEventsToAlert(int idUser, ResourceBundle resourceBundle) {
+    public List<Event> getEventsToAlert(long idUser, ResourceBundle resourceBundle) {
         logger.info("Getting all user's [" + idUser + "] events to alert.");
         final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("events-alert-endpoint");
         final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
@@ -164,7 +168,6 @@ public class EventsClient {
         logger.debug("Current time is:" + LocalDateTime.now());
 
         List<Event> events = new ArrayList<Event>();
-        ;
 
         try {
             String eventsJSon = restTemplate.getForObject(uri, String.class, params);
@@ -199,9 +202,12 @@ public class EventsClient {
     public Integer addEvent(Event event, ResourceBundle resourceBundle) {
         logger.info("Inserting event " + event.getTitle());
         final String uri = BASE_EVENTS_URI;
-        Integer idEvent = null;
 
+        logger.debug("Event [" + event.getIdEvent() + "] alert time " + event.getAlert());
+
+        Integer idEvent = null;
         try {
+            logger.debug("Event JSon: " + objectMapper.writeValueAsString(event));
             String id = restTemplate.postForObject(uri, event, String.class);
             idEvent = objectMapper.readValue(id, Integer.class);
             logger.info("Event " + event.getTitle() + " successfully inserted");
@@ -225,20 +231,21 @@ public class EventsClient {
      * Method needed when user wants to change some data in given event.
      *
      * @param event Event object with updated attributes,
-     * @param id    id of that event
+     * @param eventId    id of that event
      */
-    public boolean updateEvent(Event event, int id, ResourceBundle resourceBundle) {
-        logger.info("Updating event [" + id + "]");
-        final String EVENTS_ALERT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
-        final String uri = BASE_EVENTS_URI + EVENTS_ALERT_ENDPOINT;
+    public boolean updateEvent(Event event, int userId, int eventId, ResourceBundle resourceBundle) {
+        logger.info("Updating event [" + eventId + "]");
+        final String UPDATE_EVENT_ENDPOINT = uriPropertiesReader.getProperty("update-event-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_EVENT_ENDPOINT;
         Map<String, Integer> params = new HashMap<String, Integer>();
-        params.put("idEvent", id);
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
 
         boolean success = false;
         try {
             restTemplate.put(uri, event, params);
             success = true;
-            logger.info("Event [" + id + "] successffully updated.");
+            logger.info("Event [" + eventId + "] successffully updated.");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             if (ex instanceof ResourceAccessException) {
@@ -252,17 +259,71 @@ public class EventsClient {
         return success;
     }
 
+    public boolean updateEventInRepetition(Event event, int userId, int eventId, LocalDate date, ResourceBundle resourceBundle) {
+        logger.info("Updating event [" + eventId + "] in repetition");
+        final String UPDATE_EVENT_IN_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("update-event-in-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_EVENT_IN_REPETITION_ENDPOINT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
+        params.put("date", date);
+
+        boolean success = false;
+
+        try {
+            restTemplate.put(uri, event, params);
+            success = true;
+            logger.info("Event [" + eventId + "] successffully updated in repetition.");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return success;
+    }
+
+    public boolean updateRepetition(Event event, int userId, int eventId, ResourceBundle resourceBundle) {
+        logger.info("Updating repetition [" + event.getRepetition().getEventId() + "]");
+        final String UPDATE_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("update-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + UPDATE_REPETITION_ENDPOINT;
+        Map<String, Integer> params = new HashMap<String, Integer>();
+        params.put("idUser", userId);
+        params.put("idEvent", eventId);
+
+        boolean success = false;
+        try {
+            restTemplate.put(uri, event, params);
+            success = true;
+            logger.info("Repetition [" + eventId + "] successffully updated.");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while updating repetition." + event.getRepetition().getEventId() + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return success;
+    }
+
     /**
      * Method used to mediate the deletion of given event.
      *
      * @param idUser  ID of the user to whom the event belongs,
      * @param idEvent ID of event that is going to be deleted.
      */
-    public boolean deleteEvent(int idUser, int idEvent, ResourceBundle resourceBundle) {
+    public boolean deleteEvent(long idUser, long idEvent, ResourceBundle resourceBundle) {
         logger.info("Deleting event [" + idEvent + "]");
         final String DELETE_EVENT_ENDPOINT = uriPropertiesReader.getProperty("delete-event-endpoint");
         final String uri = BASE_EVENTS_URI + DELETE_EVENT_ENDPOINT;
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Long> params = new HashMap<String, Long>();
         params.put("idUser", idUser);
         params.put("idEvent", idEvent);
 
@@ -271,6 +332,33 @@ public class EventsClient {
             restTemplate.delete(uri, params);
             success = true;
             logger.info("Event [" + idEvent + "] successsffully deleted");
+        } catch (ResourceAccessException | HttpStatusCodeException ex) {
+            windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+            if (ex instanceof ResourceAccessException) {
+                logger.error("Error while connecting to server", ex);
+            } else {
+                logger.error("Error while deleting event." + idEvent + " HTTP status: "
+                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            }
+        }
+
+        return success;
+    }
+
+    public boolean deleteFromRepetition(long idUser, long idEvent, LocalDate date, ResourceBundle resourceBundle) {
+        logger.info("Deleting event [" + idEvent + "] from repetition");
+        final String DELETE_FROM_REPETITION_ENDPOINT = uriPropertiesReader.getProperty("delete-from-repetition-endpoint");
+        final String uri = BASE_EVENTS_URI + DELETE_FROM_REPETITION_ENDPOINT;
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("idUser", idUser);
+        params.put("idEvent", idEvent);
+        params.put("date", date);
+
+        boolean success = false;
+        try {
+            restTemplate.delete(uri, params);
+            success = true;
+            logger.info("Event [" + idEvent + "] successsffully deleted from repetition");
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
             if (ex instanceof ResourceAccessException) {

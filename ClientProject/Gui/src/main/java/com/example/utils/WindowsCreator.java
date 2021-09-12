@@ -35,7 +35,7 @@ public class WindowsCreator {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(),
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getId(),
                     event, eventsClient, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
@@ -67,7 +67,7 @@ public class WindowsCreator {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getIdUser(), initDate,
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getId(), initDate,
                     eventsClient, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -98,12 +97,12 @@ public class PlanItRegistrationController implements Initializable {
 
             try {
                 Integer id = usersClient.addUser(user);
-                user.setIdUser(id);
+                user.setId(id);
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 if(ex instanceof JsonProcessingException) {
                     windowsCreator.showErrorAlert(resourceBundle);
-                    logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
+                    logger.error("Error inserting new user.Username: " + user.getUsername() + " First name: " + user.getFirstName() +
                             ", last name: " + user.getLastName(), ex);
                 } else if(ex instanceof ResourceAccessException) {
                     windowsCreator.showErrorAlert(resourceBundle);
@@ -114,7 +113,7 @@ public class PlanItRegistrationController implements Initializable {
                                 resourceBundle.getString("registrationExistsAlertContent"));
                     } else {
                         windowsCreator.showErrorAlert(resourceBundle);
-                        logger.error("Error inserting new user.Username: " + user.getUserName() + " First name: " + user.getFirstName() +
+                        logger.error("Error inserting new user.Username: " + user.getUsername() + " First name: " + user.getFirstName() +
                                 ", last name: " + user.getLastName() + ". HTTP Status: " + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
                     }
                 }

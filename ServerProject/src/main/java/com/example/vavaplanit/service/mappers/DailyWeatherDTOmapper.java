@@ -5,11 +5,9 @@ import com.example.vavaplanit.model.weather.DailyWeather;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
-import org.mapstruct.factory.Mappers;
 
-@Mapper(imports = DailyWeather.class)
+@Mapper(componentModel = "spring")
 public interface DailyWeatherDTOmapper {
-    DailyWeatherDTOmapper INSTANCE = Mappers.getMapper(DailyWeatherDTOmapper.class);
 
     @Mappings({
             @Mapping(target = "date", source = "dt"),

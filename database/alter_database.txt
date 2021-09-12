@@ -30,3 +30,54 @@ update planitschema.event set type = 'Others';
 
 alter table planitschema.user add column hashed boolean default true;
 update planitschema.user set hashed = false; 
+
+------------------------25.8.2020--------------------------------
+CREATE DOMAIN repetition_type VARCHAR
+   CHECK (VALUE IN ('Daily', 'Weekly', 'Monthly', 'Yearly'));
+
+CREATE TABLE planitschema.repetition (
+    event_id integer NOT NULL primary key references planitschema.event(idevent),
+    starts date NOT NULL,
+    ends date NOT NULL,
+    repeat_interval integer NOT NULL,
+    days_of_week integer,
+    day_of_month integer,
+    repeat_ordinal integer,
+    month integer,
+    type repetition_type NOT NULL
+);
+
+------------------------29.8.2020--------------------------------
+CREATE TABLE planitschema.exception (
+    exception_id serial PRIMARY KEY,
+    date date NOT NULL,
+    repetition_id integer NOT NULL REFERENCES planitschema.repetition(event_id),
+	updated_event_id integer REFERENCES planitschema.event(idevent)
+);
+
+------------------------31.8.2020--------------------------------
+ALTER TABLE planitschema.repetition
+DROP CONSTRAINT repetition_event_id_fkey,
+ADD CONSTRAINT repetition_event_id_fkey
+   FOREIGN KEY (event_id)
+   REFERENCES planitschema.event(idevent)
+   ON DELETE CASCADE;
+   
+ALTER TABLE planitschema.userevent
+DROP CONSTRAINT userevent_idevent_fkey,
+ADD CONSTRAINT userevent_idevent_fkey
+   FOREIGN KEY (idevent)
+   REFERENCES planitschema.event(idevent)
+   ON DELETE CASCADE;
+
+------------------------1.9.2020--------------------------------
+ALTER TABLE planitschema.exception DROP COLUMN updated_event_id;
+
+ALTER TABLE planitschema.event ADD COLUMN exception_id integer REFERENCES planitschema.exception(exception_id) ON DELETE CASCADE;
+
+ALTER TABLE planitschema.exception
+DROP CONSTRAINT exception_repetition_id_fkey,
+ADD CONSTRAINT exception_repetition_id_fkey
+   FOREIGN KEY (repetition_id)
+   REFERENCES planitschema.repetition(event_id)
+   ON DELETE CASCADE;

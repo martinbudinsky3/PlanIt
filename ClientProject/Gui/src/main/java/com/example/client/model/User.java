@@ -2,53 +2,52 @@ package com.example.client.model;
 
 import java.io.Serializable;
 
-/** Class User with attributes, constructors, getters and setters. */
 public class User implements Serializable {
-    private int idUser;
+    private int id;
     private String firstName;
     private String lastName;
-    private String userName;
-    private String userPassword;
+    private String username;
+    private String password;
 
-    public User(int idUser, String firstName, String lastName, String userName, String userPassword) {
-        this.idUser = idUser;
+    public User(int id, String firstName, String lastName, String userName, String password) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userName = userName;
-        this.userPassword = userPassword;
+        this.username = userName;
+        this.password = password;
     }
 
     public User(String firstName, String lastName, String userName, String userPassword) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userName = userName;
-        this.userPassword = userPassword;
+        this.username = userName;
+        this.password = userPassword;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getUserPassword() {
-        return userPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public User(){}
 
-    public int getIdUser() {
-        return idUser;
+    public int getId() {
+        return id;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {

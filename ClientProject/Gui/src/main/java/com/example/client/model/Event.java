@@ -1,8 +1,13 @@
 package com.example.client.model;
 
+import com.example.client.model.repetition.Repetition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -15,16 +20,16 @@ public class Event implements Serializable {
         public String toString() {
             switch (this) {
                 case FREE_TIME:
-                    return "Free time";
+                    return "freeTime";
 
                 case WORK:
-                    return "Work";
+                    return "work";
 
                 case SCHOOL:
-                    return "School";
+                    return "school";
 
                 case OTHERS:
-                    return "Others";
+                    return "others";
 
                 default:
                     return "";
@@ -49,32 +54,18 @@ public class Event implements Serializable {
     private Type type;
     private String description;
     private LocalDate date;
+    private List<LocalDate> dates;
     private LocalTime starts;
     private LocalDate endsDate;
     private LocalTime ends;
     private LocalDate alertDate;
     private LocalTime alert;
+    private Repetition repetition;
 
     public Event() {};
 
     public Event(String title, String location, Type type, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
                  LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
-        this.title = title;
-        this.location = location;
-        this.type = type;
-        this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
-        this.alertDate = alertDate;
-        this.alert = alert;
-        this.idUser = idUser;
-    }
-
-    public Event(int idEvent, String title, String location, Type type, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
-                 LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
-        this.idEvent = idEvent;
         this.title = title;
         this.location = location;
         this.type = type;
@@ -100,6 +91,25 @@ public class Event implements Serializable {
         this.ends = ends;
         this.alertDate = alertDate;
         this.alert = alert;
+    }
+
+    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
+                 List<LocalDate> dates, LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate,
+                 LocalTime alert, Repetition repetition) {
+        this.idEvent = idEvent;
+        this.idUser = idUser;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.date = date;
+        this.dates = dates;
+        this.starts = starts;
+        this.endsDate = endsDate;
+        this.ends = ends;
+        this.alertDate = alertDate;
+        this.alert = alert;
+        this.repetition = repetition;
     }
 
     public int getIdEvent() {
@@ -198,27 +208,19 @@ public class Event implements Serializable {
         this.alert = alert;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Event event = (Event) o;
-        return idEvent == event.idEvent &&
-                idUser == event.idUser &&
-                Objects.equals(title, event.title) &&
-                Objects.equals(location, event.location) &&
-                type == event.type &&
-                Objects.equals(description, event.description) &&
-                Objects.equals(date, event.date) &&
-                Objects.equals(starts, event.starts) &&
-                Objects.equals(endsDate, event.endsDate) &&
-                Objects.equals(ends, event.ends) &&
-                Objects.equals(alertDate, event.alertDate) &&
-                Objects.equals(alert, event.alert);
+    public List<LocalDate> getDates() {
+        return dates;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(idEvent, idUser, title, location, type, description, date, starts, endsDate, ends, alertDate, alert);
+    public void setDates(List<LocalDate> dates) {
+        this.dates = dates;
+    }
+
+    public Repetition getRepetition() {
+        return repetition;
+    }
+
+    public void setRepetition(Repetition repetition) {
+        this.repetition = repetition;
     }
 }

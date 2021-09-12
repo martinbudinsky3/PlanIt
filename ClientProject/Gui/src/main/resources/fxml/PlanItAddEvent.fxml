@@ -1,73 +1,274 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="661.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1483.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label layoutX="38.0" layoutY="47.0" text="%titleLabel">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="38.0" layoutY="212.0" text="%locationLabel">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="38.0" layoutY="259.0" text="%startsLabel">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="41.0" layoutY="304.0" text="%endsLabel">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-        <Label layoutX="42.0" layoutY="350.0" text="%alertLabel">
-            <font>
-                <Font size="20.0" />
-            </font>
-        </Label>
-      <Label layoutX="42.0" layoutY="395.0" text="%descriptionLabel">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <TextField fx:id="alertField" layoutX="302.0" layoutY="351.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextField fx:id="endsField" layoutX="303.0" layoutY="306.0" prefHeight="26.0" prefWidth="119.0" />
-      <TextField fx:id="startsField" layoutX="303.0" layoutY="261.0" prefHeight="26.0" prefWidth="119.0" />
-      <DatePicker fx:id="startsDateField" layoutX="490.0" layoutY="261.0" prefHeight="26.0" prefWidth="178.0" />
-      <TextField fx:id="locationField" layoutX="258.0" layoutY="214.0" prefHeight="26.0" prefWidth="443.0" />
-      <Button fx:id="startsDecrement" alignment="CENTER" contentDisplay="CENTER" layoutX="259.0" layoutY="261.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
-      <Button fx:id="startsIncrement" alignment="CENTER" contentDisplay="CENTER" layoutX="428.0" layoutY="261.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-      <Button fx:id="endsDecrement" alignment="CENTER" contentDisplay="CENTER" layoutX="258.0" layoutY="306.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
-      <Button fx:id="endsIncrement" alignment="CENTER" contentDisplay="CENTER" layoutX="428.0" layoutY="306.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-      <Button fx:id="alertsDecrement" alignment="CENTER" contentDisplay="CENTER" layoutX="258.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
-      <Button fx:id="alertsIncrement" alignment="CENTER" contentDisplay="CENTER" layoutX="427.0" layoutY="352.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
-      <Label fx:id="startsError" layoutX="301.0" layoutY="288.0" text="%timeErrorLabel" textFill="RED" visible="false" />
-      <Label fx:id="endsError" layoutX="302.0" layoutY="333.0" text="%timeErrorLabel" textFill="RED" visible="false" />
-      <Label fx:id="alertsError" layoutX="302.0" layoutY="380.0" text="%timeErrorLabel" textFill="RED" visible="false" />
-      <Label fx:id="titleError" layoutX="259.0" layoutY="143.0" text="%titleErrorLabel" textFill="RED" visible="false" />
-      <TextArea fx:id="titleField" layoutX="258.0" layoutY="47.0" prefHeight="96.0" prefWidth="443.0" wrapText="true" />
-      <TextArea fx:id="descriptionField" layoutX="258.0" layoutY="395.0" prefHeight="167.0" prefWidth="443.0" wrapText="true" />
-      <DatePicker fx:id="endsDateField" layoutX="490.0" layoutY="306.0" prefHeight="26.0" prefWidth="178.0" />
-      <DatePicker fx:id="alertDateField" layoutX="489.0" layoutY="351.0" prefHeight="26.0" prefWidth="178.0" />
-      <Button fx:id="saveButton" layoutX="278.0" layoutY="582.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" styleClass="control-button" text="%saveButton">
+        <HBox layoutX="33.0" layoutY="32.0" prefHeight="559.0" prefWidth="1436.0">
+            <children>
+                <VBox fx:id="detailBox" prefHeight="559.0" prefWidth="830.0">
+                    <children>
+                        <HBox fx:id="titleRow" prefHeight="100.0" prefWidth="746.0">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%titleLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                        <HBox prefHeight="100.0" prefWidth="450.0">
+                           <children>
+                                        <TextArea fx:id="titleField" prefHeight="100.0" prefWidth="450.0" wrapText="true" />
+                           </children>
+                        </HBox>
+                            </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="746.0">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%typeLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="450.0">
+                                    <children>
+                                        <ChoiceBox fx:id="typeSelector" prefWidth="150.0" />
+                                    </children>
+                                </HBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="25.0" />
+                            </VBox.margin>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="746.0" styleClass="detail-row">
+                            <children>
+                                <HBox prefHeight="87.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%locationLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="450.0">
+                                    <children>
+                                        <TextField fx:id="locationField" prefHeight="26.0" prefWidth="450.0" />
+                                    </children>
+                                </HBox>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="startsRow" prefHeight="30.0" prefWidth="200.0" styleClass="detail-row">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%startsLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="94.0" prefWidth="450.0">
+                                    <children>
+                                        <Button fx:id="startsDecrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
+                                        <TextField fx:id="startsField" prefHeight="26.0" prefWidth="119.0" styleClass="time-field">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></TextField>
+                                        <Button fx:id="startsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
+                                        <DatePicker fx:id="startsDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin></DatePicker>
+                                    </children>
+                                </HBox>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin></HBox>
+                        <HBox fx:id="endsRow" prefHeight="30.0" prefWidth="200.0" styleClass="detail-row">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%endsLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="450.0">
+                                    <children>
+                                        <Button fx:id="endsDecrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
+                                        <TextField fx:id="endsField" prefHeight="26.0" prefWidth="119.0" styleClass="time-field">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></TextField>
+                                        <Button fx:id="endsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
+                                        <DatePicker fx:id="endsDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin></DatePicker>
+                                    </children>
+                                </HBox>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin></HBox>
+                        <HBox fx:id="alertRow" prefHeight="30.0" prefWidth="200.0" styleClass="detail-row">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%alertLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="450.0">
+                                    <children>
+                                        <Button fx:id="alertsDecrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="-" />
+                                        <TextField fx:id="alertField" prefHeight="26.0" prefWidth="119.0" styleClass="time-field">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin></TextField>
+                                        <Button fx:id="alertsIncrement" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="40.0" text="+" />
+                                        <DatePicker fx:id="alertDateField" editable="false" prefHeight="26.0" prefWidth="178.0" styleClass="date-field">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin></DatePicker>
+                                    </children>
+                                </HBox>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin></HBox>
+                        <HBox prefHeight="150.0" prefWidth="200.0" styleClass="detail-row">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="215.0">
+                                    <children>
+                                        <Label text="%descriptionLabel">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                                <HBox prefHeight="100.0" prefWidth="450.0">
+                                    <children>
+                                        <TextArea fx:id="descriptionField" prefHeight="150.0" prefWidth="450.0" wrapText="true" />
+                                    </children>
+                                </HBox>
+                            </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin></HBox>
+                    </children>
+                </VBox>
+                <VBox fx:id="repetitionBox" prefHeight="559.0" prefWidth="660.0" spacing="20.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="130.0">
+                           <children>
+                              <Label text="Start">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="450.0">
+                           <children>
+                              <DatePicker fx:id="repetitionStartField" editable="false" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="130.0">
+                           <children>
+                              <Label text="Type">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="450.0">
+                           <children>
+                              <ChoiceBox fx:id="repetitionTypeSelector" prefHeight="26.0" prefWidth="175.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox prefHeight="30.0" prefWidth="200.0">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="130.0">
+                           <children>
+                              <Label text="End">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="450.0">
+                           <children>
+                              <DatePicker fx:id="repetitionEndField" editable="false" />
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children></VBox>
+            </children>
+        </HBox>
+        <HBox layoutX="248.0" layoutY="617.0" prefHeight="30.0" prefWidth="470.0">
+            <children>
+                <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" styleClass="control-button" text="%saveButton">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="40.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="deleteButton" mnemonicParsing="false" prefHeight="30.0" prefWidth="170.0" styleClass="control-button" text="%deleteButton">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="40.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+      <Button fx:id="repetitionButton" layoutX="839.0" layoutY="617.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" styleClass="control-button" text="%repetitionButton">
          <font>
             <Font size="14.0" />
-         </font></Button>
-      <Button fx:id="deleteButton" layoutX="412.0" layoutY="582.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="110.0" styleClass="control-button" text="%deleteButton">
-         <font>
-            <Font size="14.0" />
-         </font></Button>
-      <Label layoutX="35.0" layoutY="162.0" text="%typeLabel">
-         <font>
-            <Font size="20.0" />
          </font>
-      </Label>
-      <ChoiceBox fx:id="typeSelector" layoutX="258.0" layoutY="165.0" prefWidth="150.0" />
+      </Button>
     </children>
 </AnchorPane>

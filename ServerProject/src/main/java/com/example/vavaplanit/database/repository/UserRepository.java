@@ -2,6 +2,7 @@ package com.example.vavaplanit.database.repository;
 
 import com.example.vavaplanit.database.mappers.UserMapper;
 import com.example.vavaplanit.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -17,13 +18,14 @@ public class UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final UserMapper userMappers = new UserMapper();
 
+    @Autowired
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
      * Inserting new user into DB
-     * @param  user User objedct which is going to be inserted*/
+     * @param  user User object which is going to be inserted*/
     public Integer add(User user) {
 
         final String sql = "INSERT INTO planitschema.user (firstName, lastName, userName, userPassword) " +
@@ -35,8 +37,8 @@ public class UserRepository {
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
-            ps.setString(3, user.getUserName());
-            ps.setString(4, user.getUserPassword());
+            ps.setString(3, user.getUsername());
+            ps.setString(4, user.getPassword());
 
             return ps;
         }, keyHolder);
@@ -47,20 +49,6 @@ public class UserRepository {
             return null;
         }
     }
-
-//    /**
-//     * Used to login
-//     * @param username username of user
-//     * @param password password of user*/
-//    public User getUserByUsernameAndPassword(String username, String password){
-//        try {
-//            String sql = "SELECT * FROM planitschema.user " +
-//                    " where username = '" + username + "' and userpassword = '" + password + "';";
-//            return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
-//        } catch (EmptyResultDataAccessException e) {
-//            return null;
-//        }
-//    }
 
     public User getUserByUsername(String username){
         try {

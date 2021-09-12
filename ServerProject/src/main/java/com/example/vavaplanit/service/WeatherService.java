@@ -65,7 +65,6 @@ public class WeatherService {
     }
 
     public List<DailyWeatherDTO> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
-        // TODO constants to configuration file
         final String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
                 "&appid={api-key}&units=metric";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -78,9 +77,7 @@ public class WeatherService {
         });
 
         weatherForecast.getDaily().
-                stream().
                 forEach(dailyWeather -> dailyWeather.getWeather().
-                    stream().
                     forEach(weather -> weather.setIconImage(getImage(weather.getIcon()))));
 
         return weatherForecast.getDaily().
