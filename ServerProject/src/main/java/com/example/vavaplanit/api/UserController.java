@@ -1,7 +1,9 @@
 package com.example.vavaplanit.api;
 
 import com.example.vavaplanit.model.User;
+import com.example.vavaplanit.model.dto.UserCreateDTO;
 import com.example.vavaplanit.service.UserService;
+import com.example.vavaplanit.service.mappers.UserDTOmapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,24 +17,27 @@ public class UserController {
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @Autowired //so it is not needed to use "new UserService"
+    @Autowired
     private UserService userService;
+    @Autowired
+    private UserDTOmapper userDTOmapper;
 
     /**
      * Inserting new user
-     * @param user new user
+     * @param userCreateDTO new user
      * @return id of new user*/
     @PostMapping
-    public ResponseEntity addUser(@RequestBody User user) {
-        logger.info("Inserting new User. Username: " + user.getUserName() + "First name: " + user.getFirstName() + ", last name: " + user.getLastName());
-        User userFromDB = userService.getUserByUsername(user.getUserName());
+    public ResponseEntity addUser(@RequestBody UserCreateDTO userCreateDTO) {
+        logger.info("Inserting new User. Username: " + userCreateDTO.getUsername() + "First name: " + userCreateDTO.getFirstName() + ", last name: " + userCreateDTO.getLastName());
 
+        User userFromDB = userService.getUserByUsername(userCreateDTO.getUsername());
         if(userFromDB != null) {
-            logger.info("User with username [" + user.getUserName() + "] already exists.");
+            logger.info("User with username [" + userCreateDTO.getUsername() + "] already exists.");
 
             return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
         }
 
+        User user = userDTOmapper.userCreateDTOToUser(userCreateDTO);
         Integer id = userService.add(user);
         if(id != null) {
             logger.info("User successfully inserted with id [" + id + "].");
@@ -40,8 +45,8 @@ public class UserController {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
-        logger.error("Error inserting new user. Username: " + user.getUserName() + "First name: " + user.getFirstName() +
-                ", last name: " + user.getLastName() + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.error("Error inserting new user. Username: " + userCreateDTO.getUsername() + "First name: " + userCreateDTO.getFirstName() +
+                ", last name: " + userCreateDTO.getLastName() + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
 
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
@@ -57,7 +62,7 @@ public class UserController {
         User user =  userService.getUserByUsernameAndPassword(userName, userPassword);
 
         if (user != null){
-            logger.info("User " + user.getUserName() + "successfully logged in");
+            logger.info("User " + user.getUsername() + "successfully logged in");
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
 

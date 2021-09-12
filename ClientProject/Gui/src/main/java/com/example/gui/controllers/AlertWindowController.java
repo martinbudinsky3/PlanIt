@@ -6,7 +6,6 @@ import com.example.client.model.User;
 import com.example.utils.WindowsCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -127,7 +126,7 @@ public class AlertWindowController implements Initializable {
         }
 
         // updating event - new alert time
-        boolean success = eventsClient.updateEvent(event, user.getIdUser(), event.getIdEvent(), resourceBundle);
+        boolean success = eventsClient.updateEvent(event, user.getId(), event.getIdEvent(), resourceBundle);
         if(success){
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();

@@ -7,8 +7,8 @@ import com.example.gui.components.DailyRepetitionComponent;
 import com.example.gui.components.MonthlyRepetitionComponent;
 import com.example.gui.components.WeeklyRepetitionComponent;
 import com.example.gui.components.YearlyRepetitionComponent;
-import com.example.gui.data_items.EventTypeItem;
-import com.example.gui.data_items.RepetitionTypeItem;
+import com.example.gui.DataItems.EventTypeItem;
+import com.example.gui.DataItems.RepetitionTypeItem;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -28,7 +28,6 @@ import org.joda.time.Minutes;
 import java.net.URL;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 
 /**

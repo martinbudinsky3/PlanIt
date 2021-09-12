@@ -55,6 +55,7 @@ public class YearlyRepetition extends MonthlyRepetition {
             }
         }
 
+        logger.debug("YearlyRepetition - new start: " + newStart);
         setStart(newStart);
     }
 

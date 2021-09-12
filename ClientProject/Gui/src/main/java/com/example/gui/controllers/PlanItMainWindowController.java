@@ -11,12 +11,10 @@ import com.example.utils.Utils;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -196,7 +194,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             try {
                 Platform.runLater(() -> {
 
-                    List<Event> events = eventsClient.getEventsToAlert(user.getIdUser(), resourceBundle);
+                    List<Event> events = eventsClient.getEventsToAlert(user.getId(), resourceBundle);
 
                     // TODO for each
                     // show alert for every event that is returned
@@ -465,7 +463,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is possible to click on each event to show the detail.
      */
     public void showEventsInCalendar() {
-        List<Event> events = eventsClient.getUserEventsByMonth(user.getIdUser(), selectedYear, selectedMonth, resourceBundle);
+        List<Event> events = eventsClient.getUserEventsByMonth(user.getId(), selectedYear, selectedMonth, resourceBundle);
 
         for (Event event : events) {
             if(event.getDates() == null || event.getDates().isEmpty()) {
@@ -566,7 +564,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-            List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), event.getDate(), resourceBundle);
+            List<Event> events = eventsClient.getUserEventsByDate(user.getId(), event.getDate(), resourceBundle);
 
             for (Event ev : events) {
                 addEventToCalendar(ev, dayVBox);
@@ -583,7 +581,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Node> nodes = dayVBox.getChildren();
         nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        List<Event> events = eventsClient.getUserEventsByDate(user.getIdUser(), date, resourceBundle);
+        List<Event> events = eventsClient.getUserEventsByDate(user.getId(), date, resourceBundle);
 
         for (Event ev : events) {
             addEventToCalendar(ev, dayVBox);
@@ -619,19 +617,19 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             VBox dayOfMonthBox = (VBox) eventLabel.getParent();
             int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
             // TODO move API call to event detail window controller
-            Event event = eventsClient.getEvent(user.getIdUser(), Integer.parseInt(eventLabel.getId()),
+            Event event = eventsClient.getEvent(user.getId(), Integer.parseInt(eventLabel.getId()),
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
                     user, eventsClient, this, resourceBundle);
         } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
             windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
             if (ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong while finding event by user's [" + user.getIdUser() + "] " +
+                logger.error("Error. Something went wrong while finding event by user's [" + user.getId() + "] " +
                         "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID", ex);
             } else if (ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error. Something went wrong while finding event by user's [" + user.getIdUser() + "] " +
+                logger.error("Error. Something went wrong while finding event by user's [" + user.getId() + "] " +
                         "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID." +
                         " HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
             }

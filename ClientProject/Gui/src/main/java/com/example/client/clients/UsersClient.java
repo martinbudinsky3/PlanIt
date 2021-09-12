@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -52,7 +50,7 @@ public class UsersClient {
         String userJSon = restTemplate.getForObject(uri, String.class, params);
         objectMapper.registerModule(new JavaTimeModule());
         User user = objectMapper.readValue(userJSon, new TypeReference<User>() {});
-        logger.info("User " + user.getUserName() + "successfully logged in");
+        logger.info("User " + user.getUsername() + "successfully logged in");
 
         return user;
     }
@@ -65,14 +63,14 @@ public class UsersClient {
      */
     public Integer addUser(User user)
             throws JsonProcessingException, HttpStatusCodeException {
-        logger.info("Inserting new User. Username: " + user.getUserName() + " First name: " + user.getFirstName() +
+        logger.info("Inserting new User. Username: " + user.getUsername() + " First name: " + user.getFirstName() +
                 ", last name: " + user.getLastName());
 
         final String uri = BASE_USERS_URI;
 
         String id = restTemplate.postForObject(uri, user, String.class);
         Integer idUser = objectMapper.readValue(id, Integer.class);
-        logger.info("User " + user.getUserName() + " successfully inserted");
+        logger.info("User " + user.getUsername() + " successfully inserted");
 
         return idUser;
     }

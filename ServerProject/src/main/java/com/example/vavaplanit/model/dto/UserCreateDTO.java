@@ -1,19 +1,15 @@
-package com.example.vavaplanit.model;
+package com.example.vavaplanit.model.dto;
 
-import java.io.Serializable;
-
-public class User implements Serializable {
-    private int id;
+public class UserCreateDTO {
     private String firstName;
     private String lastName;
     private String username;
     private String password;
 
-    public User() {
+    public UserCreateDTO() {
     }
 
-    public User(int id, String firstName, String lastName, String username, String password) {
-        this.id = id;
+    public UserCreateDTO(String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -34,14 +30,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
