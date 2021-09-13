@@ -50,7 +50,7 @@ public class UserRepository {
         }
     }
 
-    public User findUserByUsername(String username){
+    public User getUserByUsername(String username){
         try {
             String sql = "SELECT * FROM planitschema.user " +
                     " where username = '" + username + "';";
@@ -58,17 +58,5 @@ public class UserRepository {
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-    }
-
-    public boolean getHashed(String username) {
-        String sql = "SELECT hashed FROM planitschema.user " +
-                " where username = '" + username + "';";
-        return jdbcTemplate.queryForObject(sql, Boolean.class);
-    }
-
-    public void updateHashed(String username, String hashedPassword) {
-        String sql = "UPDATE planitschema.user set hashed = ?, userpassword = ?" +
-                " where username = ?;";
-        jdbcTemplate.update(sql, true, hashedPassword, username);
     }
 }

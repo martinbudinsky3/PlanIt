@@ -119,12 +119,10 @@ public class EventRepository {
     /**
      * Getting event by it's ID and user's ID
      *
-     * @param idUser  ID of the user
      * @param idEvent ID of the event
      */
-    public Event getEvent(int idUser, int idEvent) {
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE ue.iduser = " + idUser + " AND ue.idevent = " + idEvent + " LIMIT 1;";
+    public Event getEvent(int idEvent) {
+        String sql = "SELECT * FROM planitschema.event WHERE id = " + idEvent;
 
         return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
     }

@@ -2,7 +2,6 @@ package com.example.vavaplanit.security.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.example.vavaplanit.api.UserController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +61,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .sign(algorithm);
 
         logger.debug("Access token: {}, Refresh token: {}", accessToken, refreshToken);
-//        response.setHeader("access_token", accessToken);
-//        response.setHeader("refresh_token", refreshToken);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("access_token", accessToken);

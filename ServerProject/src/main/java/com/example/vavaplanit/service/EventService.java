@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO more detail error handling - with own exceptions thrown from service layer and caught in controllers
+// TODO more detailed error handling - with own exceptions thrown from service layer and caught in controllers
 
 @Service
 public class EventService {
@@ -87,10 +87,8 @@ public class EventService {
             if (!dates.isEmpty()) {
                 event.setDates(dates);
                 eventsInMonth.add(event);
-//                logger.debug("Repeated event in month" + month + " and year " + year + " with id " + event.getIdEvent());
             } else if (!event.getDate().isBefore(minDate)) {
                 eventsInMonth.add(event);
-//                logger.debug("Event in month" + month + " and year " + year + " with id " + event.getIdEvent());
             }
         }
 
@@ -102,8 +100,8 @@ public class EventService {
      *
      * @param idEvent ID of the event
      */
-    public Event getEvent(int idUser, int idEvent) {
-        return this.eventRepository.getEvent(idUser, idEvent);
+    public Event getEvent(int idEvent) {
+        return this.eventRepository.getEvent(idEvent);
     }
 
     /**
@@ -111,28 +109,23 @@ public class EventService {
      *
      * @param idEvent ID of the event
      */
-    public Event getEventWithRepetition(int idUser, int idEvent) {
-        Event event = this.eventRepository.getEvent(idUser, idEvent);
+    public Event getEventWithRepetition(int idEvent) {
+        Event event = this.eventRepository.getEvent(idEvent);
         event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
 
         return event;
     }
 
-    public Event getEvent(int idUser, int idEvent, String dateString) {
+    public Event getEvent(int eventId, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
-        Event event = this.eventRepository.getEvent(idUser, idEvent);
+        Event event = this.eventRepository.getEvent(eventId);
 
-        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(idEvent, event.getExceptionId()));
+        event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(eventId, event.getExceptionId()));
 
         // if event is repeated and if event isn't exception in repetition count new event's dates
-        if (event.getRepetition() != null && event.getIdEvent() == event.getRepetition().getEventId() && this.repetitionService.checkDate(idEvent, date)) {
-            logger.debug("Event's [" + idEvent + "] date check was succesfull");
-
-            setEventsDates(event, date);
-
-            logger.debug("Event's [" + idEvent + "] date " + date);
-            logger.debug("Event's [" + idEvent + "] end date " + event.getEndsDate());
-            logger.debug("Event's [" + idEvent + "] alert date " + event.getAlertDate());
+        if (event.getRepetition() != null && event.getIdEvent() == event.getRepetition().getEventId()
+                && this.repetitionService.checkDate(eventId, date)) {
+            event = setEventsDates(event, date);
         }
 
         return event;
@@ -143,7 +136,6 @@ public class EventService {
      *
      * @param idUser ID of user
      */
-    // TODO new alert logic
     public List<Event> getEventsToAlert(int idUser, String currentTimeString) {
         LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");

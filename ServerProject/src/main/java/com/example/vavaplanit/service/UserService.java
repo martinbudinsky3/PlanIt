@@ -1,18 +1,17 @@
 package com.example.vavaplanit.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import com.example.vavaplanit.database.repository.UserRepository;
 import com.example.vavaplanit.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    @Autowired //so it is not needed to use "new UserDao"
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     /**
@@ -22,37 +21,12 @@ public class UserService {
      */
     public Integer add(User user) {
         String plainPassword = user.getPassword();
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-//        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt(10)));
+        user.setPassword(passwordEncoder.encode(plainPassword));
 
         return userRepository.add(user);
     }
 
-    /**
-     * Used to login
-     *
-     * @param username username of user
-     * @param password password of user
-     */
-    public User getUserByUsernameAndPassword(String username, String password) {
-        User user = getUserByUsername(username);
-        if(user == null) {
-            return null;
-        }
-
-        if (!userRepository.getHashed(username)) {
-            user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(10)));
-            userRepository.updateHashed(username, user.getPassword());
-        }
-
-        if (BCrypt.checkpw(password, user.getPassword())) {
-            return user;
-        }
-
-        return null;
-    }
-
     public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        return userRepository.getUserByUsername(username);
     }
 }
