@@ -1,5 +1,6 @@
 package com.example.vavaplanit.security;
 
+import com.example.vavaplanit.security.filters.CustomAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/login").permitAll();
         http.authorizeRequests().anyRequest().authenticated();
-//        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
 //        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 

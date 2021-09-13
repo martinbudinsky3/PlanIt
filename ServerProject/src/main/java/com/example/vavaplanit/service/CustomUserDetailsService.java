@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
+
 public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
@@ -25,6 +27,6 @@ public class CustomUserDetailsService implements UserDetailsService {
             logger.info("User found in database: {}", username);
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), null);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
     }
 }
