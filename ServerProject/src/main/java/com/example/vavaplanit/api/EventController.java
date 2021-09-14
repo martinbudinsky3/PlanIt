@@ -17,10 +17,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("users/profile/events")
+@RequestMapping("events")
 public class EventController {
 
-    Logger logger = LoggerFactory.getLogger(EventController.class);
+    private Logger logger = LoggerFactory.getLogger(EventController.class);
 
     @Autowired
     private EventService eventService;
@@ -45,38 +45,12 @@ public class EventController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @GetMapping(params = "date")
-    public ResponseEntity getEventsByDate(Principal principal, @RequestParam("date") String date) {
-        String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events of user: " + username + " at date: " + date);
-        List<Event> eventList = eventService.getEventsByDate(userId, date);
-        logger.info("Events from date " + date + " successfully found. Returning " + eventList.size() + " events.");
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
-    }
-
-    /**
-     * @param month selected month
-     * @param year selected year
-     * @return list of all events that belong to user and starts dates of these events are in selected year and month. */
-    @GetMapping(params = {"year", "month"})
-    public ResponseEntity getEventsByMonthAndUserId(Principal principal, @RequestParam("year") int year,
-                                                    @RequestParam("month") int month) {
-        String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events of user: " + username + "in year: " + year + " and month: " + month);
-        List<Event> eventList = eventService.getEventsByMonthAndUserId(userId, year, month);
-        logger.info("Events from year " + year + " and month " + month + " successfully found. Returning " + eventList.size() + " events.");
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
-    }
-
     /**
      * @param eventId ID of event
      * @return event with entered ID */
-    // TODO authorize
     @GetMapping(value = "{eventId}")
     public ResponseEntity getEvent(@PathVariable("eventId") int eventId,
-                                   @RequestParam("date") String date) {
+                                   @RequestParam(value = "date", required = false) String date) {
         logger.info("Getting event with id " + eventId);
         Event event = eventService.getEvent(eventId, date);
 
@@ -90,24 +64,9 @@ public class EventController {
     }
 
     /**
-     * @return list of events with alert time in current minute. */
-    @GetMapping("alert")
-    public ResponseEntity getEventsToAlert(Principal principal, @RequestParam("currentTime") String currentTime) {
-        String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events to alert of user " + username);
-        List<Event> events = eventService.getEventsToAlert(userId, currentTime);
-
-        logger.info("Returning " + events.size() + " events to alert of user " + username);
-
-        return new ResponseEntity<>(events, HttpStatus.OK);
-    }
-
-    /**
      * Updating event
      * @param eventId ID of event that is going to be updated
      * @param event Event with updated attributes */
-    // TODO authorize
     @PutMapping(value = "{eventId}")
     public ResponseEntity updateEvent(@PathVariable("eventId") int eventId,
                                       @RequestBody Event event) {
@@ -125,79 +84,17 @@ public class EventController {
         }
     }
 
-    @PutMapping(value = "{eventId}", params = "date")
-    // TODO authorization
-    public ResponseEntity updateEventInRepetition(Principal principal, @PathVariable("eventId") int eventId,
-                                      @RequestParam("date") String date, @RequestBody Event event) {
-        String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
-        logger.info("Updating event with id " + eventId + "in repetition");
-        Event eventFromDb = eventService.getEventWithRepetition(eventId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            event.setExceptionId(eventFromDb.getExceptionId());
-            eventService.updateEventInRepetition(userId, eventId, event, date);
-            logger.info("Event with id " + eventId + " successfully updated in repetition.");
-            return new ResponseEntity<>(HttpStatus.OK); // TODO condition on response entity
-        } else {
-            logger.error("Error. Event or repetition with id: " + eventId + " does not exist.");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event or repetition with id: " + eventId + " does not exist");
-        }
-    }
-
-    @PutMapping("{eventId/repetition}")
-    // TODO authorization
-    public ResponseEntity updateRepetition(@PathVariable("eventId") int eventId,
-                                           @RequestBody Event event) {
-        logger.info("Updating repetition with id " + eventId);
-        Event eventFromDb = eventService.getEventWithRepetition(eventId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            eventService.updateRepetition(eventId, event, eventFromDb.getRepetition());
-            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully updated.");
-            return ResponseEntity.ok().build();
-        } else if(eventFromDb != null && eventFromDb.getRepetition() == null) {
-            eventService.updateEventAndAddRepetition(event);
-            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully added.");
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            logger.error("Error. Event with id " + event.getIdEvent() + " does not exist.");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event with id " + event.getIdEvent() + " does not exist");
-        }
-    }
-
     /**
      * Deleting event from calendar
      * @param eventId ID of event
      * */
     @DeleteMapping("{eventId}")
-    // TODO authorization
     public ResponseEntity delete(@PathVariable("eventId") int eventId) {
         logger.info("Deleting event with id " + eventId);
         Event event = eventService.getEventWithRepetition(eventId);
         if(event != null){
             eventService.delete(event);
             logger.info("Event with id " + eventId + " successfully deleted.");
-            return ResponseEntity.ok().build();
-        } else {
-            logger.error("Error. Event with id " + eventId + " does not exist ");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event with id " + eventId + " does not exist");
-        }
-    }
-
-    @DeleteMapping("{eventId}/repetition")
-    // TODO authorization
-    public ResponseEntity deleteFromRepetition(@PathVariable("eventId") int eventId,
-                                               @RequestParam("date") String date) {
-        logger.info("Deleting event with id " + eventId + " from repetition ");
-        Event eventFromDb = eventService.getEventWithRepetition(eventId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            eventService.deleteFromRepetition(eventId, date, eventFromDb.getExceptionId());
-            logger.info("Event with id " + eventId + " successfully deleted from repetition.");
             return ResponseEntity.ok().build();
         } else {
             logger.error("Error. Event with id " + eventId + " does not exist ");

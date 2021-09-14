@@ -122,9 +122,12 @@ public class EventRepository {
      * @param idEvent ID of the event
      */
     public Event getEvent(int idEvent) {
-        String sql = "SELECT * FROM planitschema.event WHERE id = " + idEvent;
-
-        return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        try {
+            String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent WHERE e.idevent = " + idEvent;
+            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
     }
 
     /**

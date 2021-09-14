@@ -117,15 +117,17 @@ public class EventService {
     }
 
     public Event getEvent(int eventId, String dateString) {
-        LocalDate date = LocalDate.parse(dateString);
         Event event = this.eventRepository.getEvent(eventId);
 
         event.setRepetition(this.repetitionService.getRepetitionByEventIdOrExceptionId(eventId, event.getExceptionId()));
 
-        // if event is repeated and if event isn't exception in repetition count new event's dates
-        if (event.getRepetition() != null && event.getIdEvent() == event.getRepetition().getEventId()
-                && this.repetitionService.checkDate(eventId, date)) {
-            event = setEventsDates(event, date);
+        if(dateString != null) {
+            LocalDate date = LocalDate.parse(dateString);
+            // if event is repeated and if event isn't exception in repetition count new event's dates
+            if (event.getRepetition() != null && event.getIdEvent() == event.getRepetition().getEventId()
+                    && this.repetitionService.checkDate(eventId, date)) {
+                event = setEventsDates(event, date);
+            }
         }
 
         return event;

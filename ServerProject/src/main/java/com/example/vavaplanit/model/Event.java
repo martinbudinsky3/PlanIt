@@ -74,9 +74,10 @@ public class Event implements Serializable {
         this.starts = starts;
     }
 
-    public Event(int idEvent, Integer exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
+    public Event(int idEvent, int userId, Integer exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
                  LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
         this.idEvent = idEvent;
+        this.idUser = userId;
         this.exceptionId = exceptionId;
         this.title = title;
         this.location = location;

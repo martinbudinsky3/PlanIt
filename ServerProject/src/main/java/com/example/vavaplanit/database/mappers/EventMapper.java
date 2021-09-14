@@ -12,6 +12,7 @@ public class EventMapper {
     public RowMapper<Event> mapEventFromDb() {
         return (resultSet, i) -> {
             int idEvent = resultSet.getInt("idevent");
+            int userId = resultSet.getInt("iduser");
             String title = resultSet.getString("title");
             String location = resultSet.getString("location");
             Event.Type type = Event.Type.fromString(resultSet.getString("type"));
@@ -25,6 +26,7 @@ public class EventMapper {
             Integer exceptionId = resultSet.getInt("exception_id");
             return new Event(
                     idEvent,
+                    userId,
                     exceptionId,
                     title,
                     location,
