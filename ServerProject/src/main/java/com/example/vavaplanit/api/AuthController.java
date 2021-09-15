@@ -38,7 +38,7 @@ public class AuthController {
         }
 
         User user = userDTOmapper.userCreateDTOToUser(userCreateDTO);
-        Integer id = userService.add(user);
+        Long id = userService.add(user);
         if(id != null) {
             logger.info("User successfully inserted with id " + id);
 

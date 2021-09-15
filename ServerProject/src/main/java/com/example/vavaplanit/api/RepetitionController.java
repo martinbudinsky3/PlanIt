@@ -1,7 +1,9 @@
 package com.example.vavaplanit.api;
 
 import com.example.vavaplanit.model.Event;
+import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.service.EventService;
+import com.example.vavaplanit.service.RepetitionService;
 import com.example.vavaplanit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,67 +21,63 @@ public class RepetitionController {
     @Autowired
     private EventService eventService;
     @Autowired
+    private RepetitionService repetitionService;
+    @Autowired
     private UserService userService;
 
 
     @PutMapping(value = "{repetitionId}/events", params = "date")
-    // TODO authorization
-    public ResponseEntity updateEventInRepetition(Principal principal, @PathVariable("repetitionId") int eventId,
+    public ResponseEntity updateEventInRepetition(Principal principal, @PathVariable("repetitionId") long repetitionId,
                                                   @RequestParam("date") String date, @RequestBody Event event) {
         String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
-        logger.info("Updating event with id " + eventId + "in repetition");
-        Event eventFromDb = eventService.getEventWithRepetition(eventId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            event.setExceptionId(eventFromDb.getExceptionId());
-            eventService.updateEventInRepetition(userId, eventId, event, date);
-            logger.info("Event with id " + eventId + " successfully updated in repetition.");
-            return new ResponseEntity<>(HttpStatus.OK); // TODO condition on response entity
+        long userId = userService.getUserByUsername(username).getId();
+        logger.info("Updating event with id " + repetitionId + "in repetition");
+
+        Repetition repetition = repetitionService.getRepetitionWithEvent(repetitionId);
+        if(repetition != null) {
+            eventService.updateEventInRepetition(userId, repetitionId, event, date);
+            logger.info("Event at date " + date + " successfully updated in repetition with id " + repetitionId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            logger.error("Error. Event or repetition with id: " + eventId + " does not exist.");
+            logger.error("Repetition with id " + repetitionId + " does not exist.");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
-                    body("Event or repetition with id: " + eventId + " does not exist");
+                    body("Repetition with id: " + repetitionId + " does not exist");
         }
     }
 
+    // TODO on frontend split functionality
     @PutMapping("{repetitionId}")
-    // TODO authorization
     public ResponseEntity updateRepetition(@PathVariable("repetitionId") int repetitionId,
                                            @RequestBody Event event) {
         logger.info("Updating repetition with id " + repetitionId);
-        Event eventFromDb = eventService.getEventWithRepetition(repetitionId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            eventService.updateRepetition(repetitionId, event, eventFromDb.getRepetition());
-            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully updated.");
+        Repetition repetition = repetitionService.getRepetitionById(repetitionId);
+        if(repetition != null && repetition.getEventId() == event.getId()) {
+            eventService.updateRepetition(repetitionId, event, repetition);
+            logger.info("Repetition with id " + repetition.getId() + " successfully updated.");
             return ResponseEntity.ok().build();
-        } else if(eventFromDb != null && eventFromDb.getRepetition() == null) {
-            eventService.updateEventAndAddRepetition(event);
-            logger.info("Repetition [" + event.getRepetition().getEventId() + "] successfully added.");
-            return new ResponseEntity<>(HttpStatus.OK);
         } else {
-            logger.error("Error. Event with id " + event.getIdEvent() + " does not exist.");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event with id " + event.getIdEvent() + " does not exist");
+            eventService.updateEventAndAddRepetition(event);
+            logger.info("Event with id " + event.getId() + " successfully updated.");
+            logger.info("Repetition with id " + repetition.getId() + " successfully added.");
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
     @DeleteMapping("{repetitionId}/events")
-    // TODO authorization
-    public ResponseEntity deleteFromRepetition(@PathVariable("repetitionId") int eventId,
+    public ResponseEntity deleteFromRepetition(@PathVariable("repetitionId") int repetitionId,
                                                @RequestParam("date") String date) {
-        logger.info("Deleting event with id " + eventId + " from repetition ");
-        Event eventFromDb = eventService.getEventWithRepetition(eventId);
-        if(eventFromDb != null && eventFromDb.getRepetition() != null){
-            eventService.deleteFromRepetition(eventId, date, eventFromDb.getExceptionId());
-            logger.info("Event with id " + eventId + " successfully deleted from repetition.");
+        logger.info("Deleting event at date " + date + " from repetition with id " + repetitionId);
+        Repetition repetition = repetitionService.getRepetitionWithEvent(repetitionId);
+        if(repetition != null) {
+            eventService.deleteFromRepetition(repetitionId, date);
+            logger.info("Event with id " + repetitionId + " successfully deleted from repetition.");
             return ResponseEntity.ok().build();
         } else {
-            logger.error("Error. Event with id " + eventId + " does not exist ");
+            logger.error("Repetition with id " + repetitionId + " does not exist ");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
-                    body("Event with id " + eventId + " does not exist");
+                    body("Repetition with id " + repetitionId + " does not exist");
         }
     }
 }

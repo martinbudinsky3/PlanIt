@@ -1,7 +1,6 @@
 package com.example.vavaplanit.database.repository;
 
 import com.example.vavaplanit.database.mappers.RepetitionMapper;
-import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.repetition.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -23,22 +22,23 @@ public class RepetitionRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public Integer add(Repetition repetition) {
-        final String sql = "insert into planitschema.repetition (starts, ends, repeat_interval, days_of_week, " +
+    public Long add(Repetition repetition) {
+        final String sql = "insert into repetitions (start, end, repeat_interval, days_of_week, " +
                 "day_of_month, repeat_ordinal, month, type, event_id) values (?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(getPreparedStatementCreator(repetition, sql), keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("event_id");
+            return (Long) keyHolder.getKeys().get("event_id");
         } else {
             return null;
         }
     }
 
-    public Repetition getRepetitionByEventId(int eventId) {
-        String sql = "SELECT planitschema.repetition.* FROM planitschema.repetition WHERE event_id = " + eventId + " LIMIT 1;";
+    public Repetition getRepetitionByEventId(long eventId) {
+        // TODO join with events table
+        String sql = "SELECT * FROM repetitions WHERE event_id = " + eventId;
 
         try {
             return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
@@ -47,7 +47,7 @@ public class RepetitionRepository {
         }
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exception_id) {
+    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Integer exception_id) {
         String sql = "SELECT r.* FROM planitschema.repetition r LEFT JOIN planitschema.exception e " +
                 "ON r.event_id = e.repetition_id WHERE r.event_id = " + eventId + " OR e.exception_id = " + exception_id + " LIMIT 1;";
 
@@ -59,14 +59,14 @@ public class RepetitionRepository {
     }
 
     public void update(Repetition repetition) {
-        String sql = "UPDATE planitschema.repetition SET starts = ?, ends = ?, repeat_interval = ?, days_of_week = ?, " +
-                "day_of_month = ?, repeat_ordinal = ?, month = ?, type = ? WHERE event_id = ?";
+        String sql = "UPDATE repetitions SET start = ?, end = ?, repeat_interval = ?, days_of_week = ?, " +
+                "day_of_month = ?, repeat_ordinal = ?, month = ?, type = ? WHERE id = ?";
 
         jdbcTemplate.update(getPreparedStatementCreator(repetition, sql));
     }
 
-    public void deleteExceptionsByRepetitionId(int repetitionId) {
-        String sql = "DELETE FROM planitschema.exception WHERE repetition_id = ?";
+    public void deleteExceptionsByRepetitionId(long repetitionId) {
+        String sql = "DELETE FROM exceptions WHERE repetition_id = ?";
 
         jdbcTemplate.update(sql, repetitionId);
     }
@@ -115,5 +115,10 @@ public class RepetitionRepository {
 
             return ps;
         };
+    }
+
+    public Repetition getRepetitionWithEvent(long repetitionId) {
+        // TODO make appropriate mapper method
+        return null;
     }
 }

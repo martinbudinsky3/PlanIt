@@ -29,7 +29,7 @@ public class UserProfileEventController {
     @GetMapping(params = "date")
     public ResponseEntity getEventsByDate(Principal principal, @RequestParam("date") String date) {
         String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
+        long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events of user: " + username + " at date: " + date);
         List<Event> eventList = eventService.getEventsByDate(userId, date);
         logger.info("Events from date " + date + " successfully found. Returning " + eventList.size() + " events.");
@@ -44,7 +44,7 @@ public class UserProfileEventController {
     public ResponseEntity getEventsByMonthAndUserId(Principal principal, @RequestParam("year") int year,
                                                     @RequestParam("month") int month) {
         String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
+        long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events of user: " + username + "in year: " + year + " and month: " + month);
         List<Event> eventList = eventService.getEventsByMonthAndUserId(userId, year, month);
         logger.info("Events from year " + year + " and month " + month + " successfully found. Returning " + eventList.size() + " events.");
@@ -56,7 +56,7 @@ public class UserProfileEventController {
     @GetMapping("alert")
     public ResponseEntity getEventsToAlert(Principal principal, @RequestParam("currentTime") String currentTime) {
         String username = principal.getName();
-        int userId = userService.getUserByUsername(username).getId();
+        long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events to alert of user " + username);
         List<Event> events = eventService.getEventsToAlert(userId, currentTime);
 

@@ -26,9 +26,9 @@ public class UserRepository {
     /**
      * Inserting new user into DB
      * @param  user User object which is going to be inserted*/
-    public Integer add(User user) {
+    public Long add(User user) {
 
-        final String sql = "INSERT INTO planitschema.user (firstName, lastName, userName, userPassword) " +
+        final String sql = "INSERT INTO users (firstname, lastname, username, password) " +
                     "values (?,?,?,?);";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -44,7 +44,7 @@ public class UserRepository {
         }, keyHolder);
 
         if(keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("iduser");
+            return (Long) keyHolder.getKeys().get("id");
         } else {
             return null;
         }
@@ -52,7 +52,7 @@ public class UserRepository {
 
     public User getUserByUsername(String username){
         try {
-            String sql = "SELECT * FROM planitschema.user " +
+            String sql = "SELECT * FROM users " +
                     " where username = '" + username + "';";
             return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
         } catch (EmptyResultDataAccessException e) {

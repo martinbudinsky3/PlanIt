@@ -19,7 +19,7 @@ public class UserService {
      *
      * @param user User object which is going to be inserted
      */
-    public Integer add(User user) {
+    public Long add(User user) {
         String plainPassword = user.getPassword();
         user.setPassword(passwordEncoder.encode(plainPassword));
 

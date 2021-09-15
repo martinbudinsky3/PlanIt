@@ -3,9 +3,10 @@ package com.example.vavaplanit.model;
 import java.time.LocalDate;
 
 public class Exception {
-    private int exceptionId;
+    private long id;
     private LocalDate date;
-    private int repetitionId;
+    private long repetitionId;
+    private Long eventId;
 
     public Exception() {
     }
@@ -14,23 +15,29 @@ public class Exception {
         this.date = date;
     }
 
-    public Exception(LocalDate date, int repetitionId) {
+    public Exception(LocalDate date, long repetitionId, Long eventId) {
+        this.date = date;
+        this.repetitionId = repetitionId;
+        this.eventId = eventId;
+    }
+
+    public Exception(long id, LocalDate date, long repetitionId) {
+        this.id = id;
         this.date = date;
         this.repetitionId = repetitionId;
     }
 
-    public Exception(int exceptionId, LocalDate date, int repetitionId) {
-        this.exceptionId = exceptionId;
+    public Exception(LocalDate date, long repetitionId) {
         this.date = date;
         this.repetitionId = repetitionId;
     }
 
-    public int getExceptionId() {
-        return exceptionId;
+    public long getId() {
+        return id;
     }
 
-    public void setExceptionId(int exceptionId) {
-        this.exceptionId = exceptionId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {
@@ -41,11 +48,19 @@ public class Exception {
         this.date = date;
     }
 
-    public int getRepetitionId() {
+    public long getRepetitionId() {
         return repetitionId;
     }
 
-    public void setRepetitionId(int repetitionId) {
+    public void setRepetitionId(long repetitionId) {
         this.repetitionId = repetitionId;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 }

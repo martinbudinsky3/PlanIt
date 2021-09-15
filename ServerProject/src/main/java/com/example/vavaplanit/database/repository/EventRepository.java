@@ -32,9 +32,9 @@ public class EventRepository {
      *
      * @param event event object
      */
-    public Integer add(Event event) {
-        final String sql = "insert into planitschema.event (title, location, type, description, date, starts, ends_date, ends," +
-                " alert_date, alert, exception_id) values (?,?,?,?,?,?,?,?,?,?,?)";
+    public Long add(Event event, long userId) {
+        final String sql = "insert into events (title, location, type, description, start_date, start_time, end_date, end_time," +
+                " alert_date, alert_time, author_id) values (?,?,?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
@@ -55,75 +55,49 @@ public class EventRepository {
                 } else {
                     ps.setNull(4, Types.VARCHAR);
                 }
-                ps.setDate(5, Date.valueOf(event.getDate()));
-                ps.setTime(6, Time.valueOf(event.getStarts()));
-                ps.setDate(7, Date.valueOf(event.getEndsDate()));
-                ps.setTime(8, Time.valueOf(event.getEnds()));
+                ps.setDate(5, Date.valueOf(event.getStartDate()));
+                ps.setTime(6, Time.valueOf(event.getStartTime()));
+                ps.setDate(7, Date.valueOf(event.getEndDate()));
+                ps.setTime(8, Time.valueOf(event.getEndTime()));
                 ps.setDate(9, Date.valueOf(event.getAlertDate()));
-                ps.setTime(10, Time.valueOf(event.getAlert()));
-
-                if(event.getExceptionId() != null && event.getExceptionId() != 0) {
-                    ps.setInt(11, event.getExceptionId());
-                } else {
-                    ps.setNull(11, Types.INTEGER);
-                }
+                ps.setTime(10, Time.valueOf(event.getAlertTime()));
+                ps.setLong(11, userId);
 
                 return ps;
             }
         }, keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Integer) keyHolder.getKeys().get("idevent");
+            return (Long) keyHolder.getKeys().get("id");
         } else {
             return null;
         }
     }
 
-    /**
-     * Assigning an event to a user
-     *
-     * @param idUser  ID of user
-     * @param idEvent ID of Event
-     */
-    public void addEventUser(int idUser, int idEvent) {
-        final String sql = "insert into planitschema.userevent (iduser, idevent) values (?,?)";
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setLong(1, idUser);
-                ps.setLong(2, idEvent);
-
-                return ps;
-            }
-        });
-    }
-
-    public List<Event> getEventsByDate(int idUser, LocalDate date) {
-        String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue " +
-                "JOIN planitschema.event e ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " " +
-                "AND e.date <= '" + date + "' ORDER BY e.starts;";
+    public List<Event> getEventsByDate(long idUser, LocalDate date) {
+        String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + idUser + " " +
+                "AND start_date <= '" + date + "' ORDER BY start_time ASC;";
         return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
     }
 
     /**
      * Getting all events that belong to user and starts dates of these events are in given range.
      */
-    public List<Event> getEventsByMonthAndUserId(int idUser, LocalDate minDate, LocalDate maxDate) {
-        String sql = "SELECT e.idevent, e.title, e.type, e.date, e.starts FROM planitschema.userevent ue JOIN planitschema.event e " +
-                "ON ue.idevent = e.idevent WHERE ue.iduser = " + idUser + " AND e.date < '" + maxDate +
-                "' ORDER BY e.starts;";
+    public List<Event> getEventsByMonthAndUserId(long userId, LocalDate minDate, LocalDate maxDate) {
+        String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + userId + " AND start_date < '" + maxDate +
+                "' ORDER BY start_time;";
         return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
     }
 
     /**
      * Getting event by it's ID and user's ID
      *
-     * @param idEvent ID of the event
+     * @param eventId ID of the event
      */
-    public Event getEvent(int idEvent) {
+    public Event getEvent(long eventId) {
+        // TODO throw EmptyResultDataAccessException
         try {
-            String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent WHERE e.idevent = " + idEvent;
+            String sql = "SELECT * FROM events WHERE id = " + eventId;
             return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
         } catch (EmptyResultDataAccessException exception) {
             return null;
@@ -133,13 +107,13 @@ public class EventRepository {
     /**
      * Getting all events of user that have notifications set for a given time and date
      *
-     * @param idUser ID of user
-     * @param date   selected date
-     * @param time   selected time
+     * @param userId ID of user
+     * @param currentDate   selected date
+     * @param currentTime   selected time
      */
-    public List<Event> getEventsToAlert(int idUser, String date, String time) {
-        String sql = "SELECT * FROM planitschema.userevent ue JOIN planitschema.event e ON ue.idevent = e.idevent" +
-                " WHERE e.alert_date = '" + date + "' AND e.alert = '" + time + "' AND ue.iduser = " + idUser + ";";
+    public List<Event> getEventsToAlert(long userId, String currentDate, String currentTime) {
+        String sql = "SELECT * FROM events WHERE alert_date = '" + currentDate + "' AND alert_time = '" + currentTime +
+                "' AND author_id = " + userId + ";";
         return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
     }
 
@@ -149,11 +123,11 @@ public class EventRepository {
      * @param event event object with updated attributes
      * @param id    id of Event which is going to be updated
      */
-    public void update(int id, Event event) {
-        String sql = "UPDATE planitschema.event SET title = ?, location = ?, type = ?, date = ?, starts = ?, ends_date = ?, ends = ?," +
-                " alert_date = ?, alert = ?, description = ? WHERE idevent = ?";
-        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getType().toString(), event.getDate(),
-                event.getStarts(), event.getEndsDate(), event.getEnds(), event.getAlertDate(), event.getAlert(), event.getDescription(), id);
+    public void update(long id, Event event) {
+        String sql = "UPDATE events SET title = ?, location = ?, type = ?, start_date = ?, start_time = ?, end_date = ?, end_time = ?," +
+                " alert_date = ?, alert_time = ?, description = ? WHERE id = ?";
+        jdbcTemplate.update(sql, event.getTitle(), event.getLocation(), event.getType().toString(), event.getStartDate(),
+                event.getStartTime(), event.getEndDate(), event.getEndTime(), event.getAlertDate(), event.getAlertTime(), event.getDescription(), id);
     }
 
     /**
@@ -161,8 +135,8 @@ public class EventRepository {
      *
      * @param id ID of Event which is going to be deleted
      */
-    public void delete(int id) {
-        String sql = "DELETE FROM planitschema.event WHERE idevent = ?";
+    public void delete(long id) {
+        String sql = "DELETE FROM events WHERE id = ?";
         jdbcTemplate.update(sql, id);
     }
 }

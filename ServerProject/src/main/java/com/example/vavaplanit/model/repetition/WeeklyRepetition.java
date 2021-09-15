@@ -37,7 +37,7 @@ public class WeeklyRepetition extends Repetition {
     public WeeklyRepetition() {
     }
 
-    public WeeklyRepetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval,
+    public WeeklyRepetition(long eventId, LocalDate start, LocalDate end, int repetitionInterval,
                             Integer daysOfWeek) {
         super(eventId, start, end, repetitionInterval);
         setDaysOfWeek(daysOfWeek);

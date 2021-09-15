@@ -25,25 +25,45 @@ public class RepetitionService {
     @Autowired
     private ExceptionRepository exceptionRepository;
 
-    public Integer addRepetition(Repetition repetition) {
+    public Long addRepetition(Repetition repetition) {
         return repetitionRepository.add(repetition);
     }
 
-    public Integer addException(Integer repetitionId, LocalDate exceptionDate) {
+    public Long addException(long repetitionId, LocalDate exceptionDate) {
         Exception exception = new Exception(exceptionDate, repetitionId);
 
         return exceptionRepository.add(exception);
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(int eventId, Integer exceptionId) {
+    public Long addException(long repetitionId, long eventId, LocalDate exceptionDate) {
+        Exception exception = new Exception(exceptionDate, repetitionId, eventId);
+
+        return exceptionRepository.add(exception);
+    }
+
+    public Exception getExceptionByEventId(long eventId) {
+        return null;
+    }
+
+    public Repetition getRepetitionById(int repetitionId) {
+        return null;
+    }
+
+    public Repetition getRepetitionWithEvent(long repetitionId) {
+        Repetition repetition = this.repetitionRepository.getRepetitionWithEvent(repetitionId);
+
+        return repetition;
+    }
+
+    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Integer exceptionId) {
         return this.repetitionRepository.getRepetitionByEventIdOrExceptionId(eventId, exceptionId);
     }
 
-    public void deleteExceptionsByRepetitionId(int repetitionId) {
+    public void deleteExceptionsByRepetitionId(long repetitionId) {
         this.repetitionRepository.deleteExceptionsByRepetitionId(repetitionId);
     }
 
-    public List<LocalDate> getEventDates(int eventId, int month, int year) {
+    public List<LocalDate> getEventDates(long eventId, int month, int year) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
 
         LocalDate minDate = LocalDate.of(year, month, 1);
@@ -65,7 +85,7 @@ public class RepetitionService {
         this.repetitionRepository.update(repetition);
     }
 
-    public boolean checkDate(int eventId, LocalDate date) {
+    public boolean checkDate(long eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
         if(repetition == null) {
             return false;
@@ -80,5 +100,9 @@ public class RepetitionService {
         }
 
         return repetition.getStart();
+    }
+
+    public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
+        return null;
     }
 }

@@ -2,12 +2,10 @@ package com.example.vavaplanit.model;
 
 
 import com.example.vavaplanit.model.repetition.Repetition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,72 +45,61 @@ public class Event implements Serializable {
         }
     }
 
-    private int idEvent;
-    private int idUser;
-    @JsonIgnore
-    private Integer exceptionId;
+    private long id;
+    private long authorId;
     private String title;
     private String location;
     private Type type;
     private String description;
-    private LocalDate date;
+    private LocalDate startDate;
     private List<LocalDate> dates;
-    private LocalTime starts;
-    private LocalDate endsDate;
-    private LocalTime ends;
+    private LocalTime startTime;
+    private LocalDate endDate;
+    private LocalTime endTime;
     private LocalDate alertDate;
-    private LocalTime alert;
+    private LocalTime alertTime;
     private Repetition repetition;
 
     public Event() {};
 
-    public Event(int idEvent, String title, Type type, LocalDate date, LocalTime starts) {
-        this.idEvent = idEvent;
+    public Event(int id, String title, Type type, LocalDate startDate, LocalTime startTime) {
+        this.id = id;
         this.title = title;
         this.type = type;
-        this.date = date;
-        this.starts = starts;
+        this.startDate = startDate;
+        this.startTime = startTime;
     }
 
-    public Event(int idEvent, int userId, Integer exceptionId, String title, String location, Type type, String description, LocalDate date, LocalTime starts,
-                 LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
-        this.idEvent = idEvent;
-        this.idUser = userId;
-        this.exceptionId = exceptionId;
+    public Event(int id, int authorId, String title, String location, Type type, String description, LocalDate startDate, LocalTime startTime,
+                 LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
+        this.id = id;
+        this.authorId = authorId;
         this.title = title;
         this.location = location;
         this.type = type;
         this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.alertDate = alertDate;
-        this.alert = alert;
+        this.alertTime = alertTime;
     }
 
-    public int getIdEvent() {
-        return idEvent;
+    public long getId() {
+        return id;
     }
 
-    public void setIdEvent(int idEvent) {
-        this.idEvent = idEvent;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public int getIdUser() {
-        return idUser;
+    public long getAuthorId() {
+        return authorId;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-
-    public Integer getExceptionId() {
-        return exceptionId;
-    }
-
-    public void setExceptionId(Integer exceptionId) {
-        this.exceptionId = exceptionId;
+    public void setAuthorId(long authorId) {
+        this.authorId = authorId;
     }
 
     public String getTitle() {
@@ -147,36 +134,36 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalTime getStarts() {
-        return starts;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStarts(LocalTime starts) {
-        this.starts = starts;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDate getEndsDate() {
-        return endsDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEndsDate(LocalDate endsDate) {
-        this.endsDate = endsDate;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public LocalTime getEnds() {
-        return ends;
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnds(LocalTime ends) {
-        this.ends = ends;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public LocalDate getAlertDate() {
@@ -187,12 +174,12 @@ public class Event implements Serializable {
         this.alertDate = alertDate;
     }
 
-    public LocalTime getAlert() {
-        return alert;
+    public LocalTime getAlertTime() {
+        return alertTime;
     }
 
-    public void setAlert(LocalTime alert) {
-        this.alert = alert;
+    public void setAlertTime(LocalTime alertTime) {
+        this.alertTime = alertTime;
     }
 
     public Repetition getRepetition() {
@@ -216,26 +203,25 @@ public class Event implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Event event = (Event) o;
-        return idEvent == event.idEvent &&
-                idUser == event.idUser &&
-                Objects.equals(exceptionId, event.exceptionId) &&
+        return id == event.id &&
+                authorId == event.authorId &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
                 type == event.type &&
                 Objects.equals(description, event.description) &&
-                Objects.equals(date, event.date) &&
+                Objects.equals(startDate, event.startDate) &&
                 Objects.equals(dates, event.dates) &&
-                Objects.equals(starts, event.starts) &&
-                Objects.equals(endsDate, event.endsDate) &&
-                Objects.equals(ends, event.ends) &&
+                Objects.equals(startTime, event.startTime) &&
+                Objects.equals(endDate, event.endDate) &&
+                Objects.equals(endTime, event.endTime) &&
                 Objects.equals(alertDate, event.alertDate) &&
-                Objects.equals(alert, event.alert) &&
+                Objects.equals(alertTime, event.alertTime) &&
                 Objects.equals(repetition, event.repetition);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(idEvent, idUser, exceptionId, title, location, type, description, date, dates, starts, endsDate,
-                ends, alertDate, alert, repetition);
+        return Objects.hash(id, authorId, title, location, type, description, startDate, dates, startTime, endDate,
+                endTime, alertDate, alertTime, repetition);
     }
 }

@@ -1,6 +1,6 @@
 package com.example.vavaplanit.model.repetition;
 
-import com.example.vavaplanit.model.Exception;
+import com.example.vavaplanit.model.Event;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,7 +18,9 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = WeeklyRepetition.class, name = "WeeklyRepetition")
 })
 public class Repetition {
-    private Integer eventId;
+    private long id;
+    private long eventId;
+    private Event event;
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
@@ -26,11 +28,26 @@ public class Repetition {
     public Repetition() {
     }
 
-    public Repetition(Integer eventId, LocalDate start, LocalDate end, int repetitionInterval) {
+    public Repetition(long eventId, LocalDate start, LocalDate end, int repetitionInterval) {
         this.eventId = eventId;
         this.start = start;
         this.end = end;
         this.repetitionInterval = repetitionInterval;
+    }
+
+    public Repetition(Event event, LocalDate start, LocalDate end, int repetitionInterval) {
+        this.eventId = eventId;
+        this.start = start;
+        this.end = end;
+        this.repetitionInterval = repetitionInterval;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public LocalDate getStart() {
@@ -57,12 +74,20 @@ public class Repetition {
         this.repetitionInterval = repetitionInterval;
     }
 
-    public Integer getEventId() {
+    public long getEventId() {
         return eventId;
     }
 
-    public void setEventId(Integer eventId) {
+    public void setEventId(long eventId) {
         this.eventId = eventId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public boolean checkDate(LocalDate date) {
@@ -104,21 +129,23 @@ public class Repetition {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Repetition that = (Repetition) o;
-        return repetitionInterval == that.repetitionInterval &&
-                Objects.equals(eventId, that.eventId) &&
-                Objects.equals(start, that.start) &&
-                Objects.equals(end, that.end);
+        return eventId == that.eventId &&
+                repetitionInterval == that.repetitionInterval &&
+                event.equals(that.event) &&
+                start.equals(that.start) &&
+                end.equals(that.end);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, start, end, repetitionInterval);
+        return Objects.hash(eventId, event, start, end, repetitionInterval);
     }
 
     @Override
     public String toString() {
         return "Repetition{" +
                 "eventId=" + eventId +
+                ", event=" + event +
                 ", start=" + start +
                 ", end=" + end +
                 ", repetitionInterval=" + repetitionInterval +

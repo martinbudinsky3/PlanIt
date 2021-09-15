@@ -1,6 +1,5 @@
 package com.example.vavaplanit.security.policies;
 
-import com.example.vavaplanit.api.EventController;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.User;
 import com.example.vavaplanit.service.EventService;
@@ -10,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.security.Principal;
 
 @Component
 public class EventPolicy {
@@ -28,8 +25,8 @@ public class EventPolicy {
         Event event = eventService.getEvent(eventId);
 
         logger.debug("Logged in user id: {}",loggedInUser.getId());
-        logger.debug("Event id: {}", event.getIdUser());
+        logger.debug("Event id: {}", event.getAuthorId());
 
-        return loggedInUser.getId() == event.getIdUser();
+        return loggedInUser.getId() == event.getAuthorId();
     }
 }

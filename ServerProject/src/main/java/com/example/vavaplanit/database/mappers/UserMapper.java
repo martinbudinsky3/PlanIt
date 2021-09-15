@@ -3,20 +3,19 @@ package com.example.vavaplanit.database.mappers;
 import com.example.vavaplanit.model.User;
 import org.springframework.jdbc.core.RowMapper;
 
-// TODO without anonymous methods
 /** Class for mapping User object. */
 public class UserMapper {
 
     public RowMapper<User> mapUserFomDb() {
         return (resultSet, i) -> {
-            int idUser = resultSet.getInt("idUser");
-            String firstName = resultSet.getString("firstName");
-            String lastName = resultSet.getString("lastName");
-            String userName = resultSet.getString("userName");
-            String userPassword = resultSet.getString("userPassword");
+            long id = resultSet.getLong("id");
+            String firstName = resultSet.getString("firstname");
+            String lastName = resultSet.getString("lastname");
+            String userName = resultSet.getString("username");
+            String userPassword = resultSet.getString("password");
 
             return new User(
-                    idUser,
+                    id,
                     firstName,
                     lastName,
                     userName,

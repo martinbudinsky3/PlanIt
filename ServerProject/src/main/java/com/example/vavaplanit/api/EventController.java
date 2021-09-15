@@ -1,6 +1,5 @@
 package com.example.vavaplanit.api;
 
-import com.example.vavaplanit.model.User;
 import com.example.vavaplanit.service.EventService;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.service.UserService;
@@ -9,12 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("events")
@@ -24,8 +18,6 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
-    @Autowired
-    private UserService userService;
 
     /**
      * Inserting new event
@@ -35,7 +27,7 @@ public class EventController {
     public ResponseEntity addEvent(@RequestBody Event event) {
         logger.info("Inserting new event with title: " + event.getTitle());
 
-        Integer id = eventService.add(event, event.getIdUser());
+        Long id = eventService.add(event, event.getAuthorId());
         if(id != null) {
             logger.info("Event successfully inserted with id " + id);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
@@ -48,6 +40,7 @@ public class EventController {
     /**
      * @param eventId ID of event
      * @return event with entered ID */
+    // TODO find out when date param is used on frontend
     @GetMapping(value = "{eventId}")
     public ResponseEntity getEvent(@PathVariable("eventId") int eventId,
                                    @RequestParam(value = "date", required = false) String date) {
@@ -55,7 +48,7 @@ public class EventController {
         Event event = eventService.getEvent(eventId, date);
 
         if (event != null){
-            logger.info("Event successfully found. Returning event with id " + event.getIdEvent());
+            logger.info("Event successfully found. Returning event with id " + event.getId());
             return new ResponseEntity<>(event, HttpStatus.OK);
         }
 
@@ -84,20 +77,16 @@ public class EventController {
         }
     }
 
-    /**
-     * Deleting event from calendar
-     * @param eventId ID of event
-     * */
     @DeleteMapping("{eventId}")
     public ResponseEntity delete(@PathVariable("eventId") int eventId) {
         logger.info("Deleting event with id " + eventId);
-        Event event = eventService.getEventWithRepetition(eventId);
+        Event event = eventService.getEvent(eventId);
         if(event != null){
-            eventService.delete(event);
+            eventService.delete(eventId);
             logger.info("Event with id " + eventId + " successfully deleted.");
             return ResponseEntity.ok().build();
         } else {
-            logger.error("Error. Event with id " + eventId + " does not exist ");
+            logger.error("Event with id " + eventId + " does not exist ");
             return ResponseEntity.status(HttpStatus.
                     PRECONDITION_FAILED).
                     body("Event with id " + eventId + " does not exist");

@@ -14,9 +14,9 @@ public class RepetitionMapper implements RowMapper<Repetition> {
 
     @Override
     public Repetition mapRow(ResultSet resultSet, int i) throws SQLException {
-        int eventId = resultSet.getInt("event_id");
-        LocalDate start = resultSet.getObject("starts", LocalDate.class);
-        LocalDate end = resultSet.getObject("ends", LocalDate.class);
+        long eventId = resultSet.getLong("event_id");
+        LocalDate start = resultSet.getObject("start", LocalDate.class);
+        LocalDate end = resultSet.getObject("end", LocalDate.class);
         int repeatInterval = resultSet.getInt("repeat_interval");
         int daysOfWeek = resultSet.getInt("days_of_week");
         int dayOfMonth = resultSet.getInt("day_of_month");
