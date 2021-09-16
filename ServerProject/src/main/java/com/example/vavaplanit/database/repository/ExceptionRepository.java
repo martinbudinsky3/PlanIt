@@ -1,7 +1,9 @@
 package com.example.vavaplanit.database.repository;
 
-import com.example.vavaplanit.database.mappers.ExceptionDateMapper;
+import com.example.vavaplanit.database.mappers.ExceptionMapper;
 import com.example.vavaplanit.model.Exception;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -9,15 +11,18 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public class ExceptionRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final ExceptionDateMapper exceptionDateMapper = new ExceptionDateMapper();
+    private final ExceptionMapper exceptionMapper;
 
-    public ExceptionRepository(JdbcTemplate jdbcTemplate) {
+    @Autowired
+    public ExceptionRepository(JdbcTemplate jdbcTemplate, ExceptionMapper exceptionMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.exceptionMapper = exceptionMapper;
     }
 
     public Long add(Exception exception) {
@@ -43,8 +48,18 @@ public class ExceptionRepository {
     }
 
     public List<Exception> getExceptionsDates(long repetitionId) {
-        String sql = "SELECT date FROM exceptions WHERE repetition_id = " + repetitionId + ";";
+        String sql = "SELECT date FROM exceptions WHERE repetition_id = ?;";
 
-        return jdbcTemplate.query(sql, exceptionDateMapper);
+        return jdbcTemplate.query(sql, new Object[]{repetitionId}, exceptionMapper.mapDate());
+    }
+
+    public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
+        String sql = "SELECT * FROM exceptions WHERE repetition_id = ? AND date = ?;";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[]{repetitionId, date}, exceptionMapper.mapException());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
     }
 }

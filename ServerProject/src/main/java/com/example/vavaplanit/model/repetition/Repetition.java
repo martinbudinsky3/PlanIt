@@ -129,7 +129,8 @@ public class Repetition {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Repetition that = (Repetition) o;
-        return eventId == that.eventId &&
+        return id == that.id &&
+                eventId == that.eventId &&
                 repetitionInterval == that.repetitionInterval &&
                 event.equals(that.event) &&
                 start.equals(that.start) &&
@@ -138,17 +139,6 @@ public class Repetition {
 
     @Override
     public int hashCode() {
-        return Objects.hash(eventId, event, start, end, repetitionInterval);
-    }
-
-    @Override
-    public String toString() {
-        return "Repetition{" +
-                "eventId=" + eventId +
-                ", event=" + event +
-                ", start=" + start +
-                ", end=" + end +
-                ", repetitionInterval=" + repetitionInterval +
-                '}';
+        return Objects.hash(id, eventId, event, start, end, repetitionInterval);
     }
 }

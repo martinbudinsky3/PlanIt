@@ -105,11 +105,10 @@ public class EventService {
     }
 
     public Event getEvent(int eventId, String dateString) {
-        Event event = this.eventRepository.getEvent(eventId);
+        Event event = this.getEvent(eventId);
 
         if(dateString != null) {
             LocalDate date = LocalDate.parse(dateString);
-            // if event is repeated and if event isn't exception in repetition count new event's dates
             if (event.getRepetition() != null && this.repetitionService.checkDate(eventId, date)) {
                 event = setEventsDates(event, date);
             }
@@ -156,10 +155,7 @@ public class EventService {
         // if updated event isn't already an exception add new exception and event
         if(exception == null) {
             Long newEventId = this.eventRepository.add(event, userId);
-
-            if (newEventId != 0) {
-                repetitionService.addException(repetitionId, newEventId, date);
-            }
+            repetitionService.addException(repetitionId, newEventId, date);
         }
 
         // if updated event is already an exception simply update it,
@@ -202,6 +198,7 @@ public class EventService {
 
 
     public void deleteFromRepetition(long repetitionId, String dateString) {
+        // TODO check if date is valid in repetition
         LocalDate date = LocalDate.parse(dateString);
         Exception exception = repetitionService.getExceptionByRepetitionIdAndDate(repetitionId, date);
 

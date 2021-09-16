@@ -14,24 +14,20 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Communication with database. (queries relating to the Event object)
- */
+
 @Repository
 public class EventRepository {
+
     private final JdbcTemplate jdbcTemplate;
-    private final EventMapper eventMappers = new EventMapper();
+    private final EventMapper eventMapper;
 
     @Autowired
-    public EventRepository(JdbcTemplate jdbcTemplate) {
+    public EventRepository(JdbcTemplate jdbcTemplate, EventMapper eventMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.eventMapper = eventMapper;
     }
 
-    /**
-     * Inserting new event into DB
-     *
-     * @param event event object
-     */
+
     public Long add(Event event, long userId) {
         final String sql = "insert into events (title, location, type, description, start_date, start_time, end_date, end_time," +
                 " alert_date, alert_time, author_id) values (?,?,?,?,?,?,?,?,?,?,?)";
@@ -77,28 +73,19 @@ public class EventRepository {
     public List<Event> getEventsByDate(long idUser, LocalDate date) {
         String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + idUser + " " +
                 "AND start_date <= '" + date + "' ORDER BY start_time ASC;";
-        return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
+        return jdbcTemplate.query(sql, eventMapper.mapBasicEventInfoFromDb());
     }
 
-    /**
-     * Getting all events that belong to user and starts dates of these events are in given range.
-     */
     public List<Event> getEventsByMonthAndUserId(long userId, LocalDate minDate, LocalDate maxDate) {
         String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + userId + " AND start_date < '" + maxDate +
                 "' ORDER BY start_time;";
-        return jdbcTemplate.query(sql, eventMappers.mapBasicEventInfoFromDb());
+        return jdbcTemplate.query(sql, eventMapper.mapBasicEventInfoFromDb());
     }
 
-    /**
-     * Getting event by it's ID and user's ID
-     *
-     * @param eventId ID of the event
-     */
     public Event getEvent(long eventId) {
-        // TODO throw EmptyResultDataAccessException
         try {
             String sql = "SELECT * FROM events WHERE id = " + eventId;
-            return jdbcTemplate.queryForObject(sql, eventMappers.mapEventFromDb());
+            return jdbcTemplate.queryForObject(sql, eventMapper.mapEventFromDb());
         } catch (EmptyResultDataAccessException exception) {
             return null;
         }
@@ -114,7 +101,7 @@ public class EventRepository {
     public List<Event> getEventsToAlert(long userId, String currentDate, String currentTime) {
         String sql = "SELECT * FROM events WHERE alert_date = '" + currentDate + "' AND alert_time = '" + currentTime +
                 "' AND author_id = " + userId + ";";
-        return jdbcTemplate.query(sql, eventMappers.mapEventFromDb());
+        return jdbcTemplate.query(sql, eventMapper.mapEventFromDb());
     }
 
     /**

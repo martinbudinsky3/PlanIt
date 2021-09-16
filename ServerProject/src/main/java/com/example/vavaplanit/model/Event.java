@@ -62,7 +62,7 @@ public class Event implements Serializable {
 
     public Event() {};
 
-    public Event(int id, String title, Type type, LocalDate startDate, LocalTime startTime) {
+    public Event(long id, String title, Type type, LocalDate startDate, LocalTime startTime) {
         this.id = id;
         this.title = title;
         this.type = type;
@@ -70,7 +70,7 @@ public class Event implements Serializable {
         this.startTime = startTime;
     }
 
-    public Event(int id, int authorId, String title, String location, Type type, String description, LocalDate startDate, LocalTime startTime,
+    public Event(long id, long authorId, String title, String location, Type type, String description, LocalDate startDate, LocalTime startTime,
                  LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
         this.id = id;
         this.authorId = authorId;

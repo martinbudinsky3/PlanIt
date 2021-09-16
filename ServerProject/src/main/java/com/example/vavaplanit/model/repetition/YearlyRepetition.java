@@ -85,18 +85,4 @@ public class YearlyRepetition extends MonthlyRepetition {
     public int hashCode() {
         return Objects.hash(super.hashCode(), month);
     }
-
-    @Override
-    public String toString() {
-        return "YearlyRepetition{" +
-                "eventId=" + getEventId() +
-                ", start=" + getStart() +
-                ", end=" + getEnd() +
-                ", repetitionInterval=" + getRepetitionInterval() +
-                ", daysOfWeek=" + getDaysOfWeek() +
-                ", dayOfMonth=" + getDayOfMonth() +
-                ", ordinal=" + getOrdinal() +
-                "month=" + month +
-                '}';
-    }
 }

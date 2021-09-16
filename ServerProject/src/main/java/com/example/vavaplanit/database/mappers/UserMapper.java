@@ -2,8 +2,9 @@ package com.example.vavaplanit.database.mappers;
 
 import com.example.vavaplanit.model.User;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
-/** Class for mapping User object. */
+@Component
 public class UserMapper {
 
     public RowMapper<User> mapUserFomDb() {

@@ -16,11 +16,12 @@ import java.sql.*;
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
-    private final UserMapper userMappers = new UserMapper();
+    private final UserMapper userMapper;
 
     @Autowired
-    public UserRepository(JdbcTemplate jdbcTemplate) {
+    public UserRepository(JdbcTemplate jdbcTemplate, UserMapper userMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.userMapper = userMapper;
     }
 
     /**
@@ -54,7 +55,7 @@ public class UserRepository {
         try {
             String sql = "SELECT * FROM users " +
                     " where username = '" + username + "';";
-            return jdbcTemplate.queryForObject(sql, userMappers.mapUserFomDb());
+            return jdbcTemplate.queryForObject(sql, userMapper.mapUserFomDb());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

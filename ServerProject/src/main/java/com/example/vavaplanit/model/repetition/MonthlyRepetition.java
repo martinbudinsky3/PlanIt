@@ -199,26 +199,12 @@ public class MonthlyRepetition extends WeeklyRepetition {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         MonthlyRepetition that = (MonthlyRepetition) o;
-        return Objects.equals(logger, that.logger) &&
-                Objects.equals(dayOfMonth, that.dayOfMonth) &&
-                Objects.equals(ordinal, that.ordinal);
+        return dayOfMonth.equals(that.dayOfMonth) &&
+                ordinal.equals(that.ordinal);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), logger, dayOfMonth, ordinal);
-    }
-
-    @Override
-    public String toString() {
-        return "MonthlyRepetition{" +
-                "eventId=" + getEventId() +
-                ", start=" + getStart() +
-                ", end=" + getEnd() +
-                ", repetitionInterval=" + getRepetitionInterval() +
-                ", daysOfWeek=" + getDaysOfWeek() +
-                ", dayOfMonth=" + dayOfMonth +
-                ", ordinal=" + ordinal +
-                '}';
+        return Objects.hash(super.hashCode(), dayOfMonth, ordinal);
     }
 }

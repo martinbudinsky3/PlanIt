@@ -26,14 +26,14 @@ public class RepetitionController {
     private UserService userService;
 
 
-    @PutMapping(value = "{repetitionId}/events", params = "date")
+    @PutMapping("{repetitionId}/events")
     public ResponseEntity updateEventInRepetition(Principal principal, @PathVariable("repetitionId") long repetitionId,
                                                   @RequestParam("date") String date, @RequestBody Event event) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
         logger.info("Updating event with id " + repetitionId + "in repetition");
 
-        Repetition repetition = repetitionService.getRepetitionWithEvent(repetitionId);
+        Repetition repetition = repetitionService.getRepetitionById(repetitionId);
         if(repetition != null) {
             eventService.updateEventInRepetition(userId, repetitionId, event, date);
             logger.info("Event at date " + date + " successfully updated in repetition with id " + repetitionId);
@@ -46,11 +46,11 @@ public class RepetitionController {
         }
     }
 
-    // TODO on frontend split functionality
     @PutMapping("{repetitionId}")
     public ResponseEntity updateRepetition(@PathVariable("repetitionId") int repetitionId,
                                            @RequestBody Event event) {
         logger.info("Updating repetition with id " + repetitionId);
+
         Repetition repetition = repetitionService.getRepetitionById(repetitionId);
         if(repetition != null && repetition.getEventId() == event.getId()) {
             eventService.updateRepetition(repetitionId, event, repetition);
@@ -68,7 +68,8 @@ public class RepetitionController {
     public ResponseEntity deleteFromRepetition(@PathVariable("repetitionId") int repetitionId,
                                                @RequestParam("date") String date) {
         logger.info("Deleting event at date " + date + " from repetition with id " + repetitionId);
-        Repetition repetition = repetitionService.getRepetitionWithEvent(repetitionId);
+
+        Repetition repetition = repetitionService.getRepetitionById(repetitionId);
         if(repetition != null) {
             eventService.deleteFromRepetition(repetitionId, date);
             logger.info("Event with id " + repetitionId + " successfully deleted from repetition.");

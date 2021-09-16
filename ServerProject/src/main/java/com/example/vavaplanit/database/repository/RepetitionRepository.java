@@ -3,7 +3,7 @@ package com.example.vavaplanit.database.repository;
 import com.example.vavaplanit.database.mappers.RepetitionMapper;
 import com.example.vavaplanit.model.repetition.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -15,11 +15,12 @@ import java.sql.*;
 @Repository
 public class RepetitionRepository {
     private final JdbcTemplate jdbcTemplate;
-    private final RepetitionMapper repetitionInfoMapper = new RepetitionMapper();
+    private final RepetitionMapper repetitionMapper;
 
     @Autowired
-    public RepetitionRepository(JdbcTemplate jdbcTemplate) {
+    public RepetitionRepository(JdbcTemplate jdbcTemplate, RepetitionMapper repetitionMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.repetitionMapper = repetitionMapper;
     }
 
     public Long add(Repetition repetition) {
@@ -37,23 +38,21 @@ public class RepetitionRepository {
     }
 
     public Repetition getRepetitionByEventId(long eventId) {
-        // TODO join with events table
-        String sql = "SELECT * FROM repetitions WHERE event_id = " + eventId;
+        String sql = "SELECT * FROM repetitions WHERE event_id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
-        } catch (IncorrectResultSizeDataAccessException exception){
+            return jdbcTemplate.queryForObject(sql, new Object[] {eventId}, repetitionMapper.mapRepetition());
+        } catch (EmptyResultDataAccessException exception) {
             return null;
         }
     }
 
-    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Integer exception_id) {
-        String sql = "SELECT r.* FROM planitschema.repetition r LEFT JOIN planitschema.exception e " +
-                "ON r.event_id = e.repetition_id WHERE r.event_id = " + eventId + " OR e.exception_id = " + exception_id + " LIMIT 1;";
+    public Repetition getRepetitionById(long repetitionId) {
+        String sql = "SELECT * FROM repetitions WHERE id = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, repetitionInfoMapper);
-        } catch(IncorrectResultSizeDataAccessException exception) {
+            return jdbcTemplate.queryForObject(sql, new Object[] {repetitionId}, repetitionMapper.mapRepetition());
+        } catch (EmptyResultDataAccessException exception){
             return null;
         }
     }
@@ -115,10 +114,5 @@ public class RepetitionRepository {
 
             return ps;
         };
-    }
-
-    public Repetition getRepetitionWithEvent(long repetitionId) {
-        // TODO make appropriate mapper method
-        return null;
     }
 }

@@ -18,8 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class RepetitionService {
-    Logger logger = LoggerFactory.getLogger(MonthlyRepetition.class);
-
     @Autowired
     private RepetitionRepository repetitionRepository;
     @Autowired
@@ -45,18 +43,8 @@ public class RepetitionService {
         return null;
     }
 
-    public Repetition getRepetitionById(int repetitionId) {
-        return null;
-    }
-
-    public Repetition getRepetitionWithEvent(long repetitionId) {
-        Repetition repetition = this.repetitionRepository.getRepetitionWithEvent(repetitionId);
-
-        return repetition;
-    }
-
-    public Repetition getRepetitionByEventIdOrExceptionId(long eventId, Integer exceptionId) {
-        return this.repetitionRepository.getRepetitionByEventIdOrExceptionId(eventId, exceptionId);
+    public Repetition getRepetitionById(long repetitionId) {
+        return repetitionRepository.getRepetitionById(repetitionId);
     }
 
     public void deleteExceptionsByRepetitionId(long repetitionId) {
@@ -91,6 +79,11 @@ public class RepetitionService {
             return false;
         }
 
+        Exception exception = this.getExceptionByRepetitionIdAndDate(repetition.getId(), date);
+        if(exception != null) {
+            return false;
+        }
+
         return repetition.checkDate(date);
     }
 
@@ -103,6 +96,6 @@ public class RepetitionService {
     }
 
     public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
-        return null;
+        return exceptionRepository.getExceptionByRepetitionIdAndDate(repetitionId, date);
     }
 }

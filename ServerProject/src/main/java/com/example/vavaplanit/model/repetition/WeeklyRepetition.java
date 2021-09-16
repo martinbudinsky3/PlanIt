@@ -17,8 +17,6 @@ import java.util.*;
         @JsonSubTypes.Type(value = MonthlyRepetition.class, name = "MonthlyRepetition")
 })
 public class WeeklyRepetition extends Repetition {
-    Logger logger = LoggerFactory.getLogger(WeeklyRepetition.class);
-
     private final int DAYS_OF_WEEK_NUMBER = 7;
     private final Map<Integer, DayOfWeek> intToDayOfWeekMap = new HashMap<Integer, DayOfWeek>(){
         {
@@ -171,24 +169,12 @@ public class WeeklyRepetition extends Repetition {
         if (!super.equals(o)) return false;
         WeeklyRepetition that = (WeeklyRepetition) o;
         return DAYS_OF_WEEK_NUMBER == that.DAYS_OF_WEEK_NUMBER &&
-                Objects.equals(logger, that.logger) &&
-                Objects.equals(intToDayOfWeekMap, that.intToDayOfWeekMap) &&
-                Objects.equals(daysOfWeek, that.daysOfWeek);
+                intToDayOfWeekMap.equals(that.intToDayOfWeekMap) &&
+                daysOfWeek.equals(that.daysOfWeek);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), logger, DAYS_OF_WEEK_NUMBER, intToDayOfWeekMap, daysOfWeek);
-    }
-
-    @Override
-    public String toString() {
-        return "WeeklyRepetition{" +
-                "eventId=" + getEventId() +
-                ", start=" + getStart() +
-                ", end=" + getEnd() +
-                ", repetitionInterval=" + getRepetitionInterval() +
-                ", daysOfWeek=" + daysOfWeek +
-                '}';
+        return Objects.hash(super.hashCode(), DAYS_OF_WEEK_NUMBER, intToDayOfWeekMap, daysOfWeek);
     }
 }

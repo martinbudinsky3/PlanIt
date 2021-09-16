@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class RepetitionPolicy {
 
-    public boolean check(Authorization authorization, int repetitionId) {
+    public boolean check(Authorization authorization, long repetitionId) {
+        // TODO get event by repetition id, check if author of repetition is current user
         return true;
     }
 }
