@@ -1,4 +1,4 @@
-package com.example.vavaplanit.model.dto.repetition;
+package com.example.vavaplanit.dto.repetition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -9,16 +9,16 @@ import java.util.List;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = MonthlyRepetitionDetailDTO.class, name = "MonthlyRepetitionDetailDTO")
+        @JsonSubTypes.Type(value = MonthlyRepetitionCreateDTO.class, name = "MonthlyRepetitionCreateDTO")
 })
-public class WeeklyRepetitionDetailDTO extends RepetitionDetailDTO {
+public class WeeklyRepetitionCreateDTO extends RepetitionCreateDTO {
     private List<DayOfWeek> daysOfWeek;
 
-    public WeeklyRepetitionDetailDTO() {
+    public WeeklyRepetitionCreateDTO() {
     }
 
-    public WeeklyRepetitionDetailDTO(long id, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
-        super(id, start, end, repetitionInterval);
+    public WeeklyRepetitionCreateDTO(LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
+        super(start, end, repetitionInterval);
         this.daysOfWeek = daysOfWeek;
     }
 

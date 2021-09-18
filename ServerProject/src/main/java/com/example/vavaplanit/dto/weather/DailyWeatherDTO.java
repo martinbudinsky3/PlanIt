@@ -1,11 +1,10 @@
-package com.example.vavaplanit.model.dto.weather;
+package com.example.vavaplanit.dto.weather;
 
 import com.example.vavaplanit.model.weather.Weather;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class DailyWeatherDTO {

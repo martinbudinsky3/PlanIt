@@ -1,5 +1,9 @@
 package com.example.vavaplanit.api;
 
+import com.example.vavaplanit.dto.event.EventCreateDTO;
+import com.example.vavaplanit.dto.event.EventDetailDTO;
+import com.example.vavaplanit.dto.event.EventUpdateDTO;
+import com.example.vavaplanit.dto.mappers.EventDTOmapper;
 import com.example.vavaplanit.service.EventService;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.service.UserService;
@@ -22,17 +26,20 @@ public class EventController {
     private EventService eventService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventDTOmapper eventDTOMapper;
 
     /**
      * Inserting new event
-     * @param event new event
+     * @param eventCreateDTO new event
      * @return id of inserted event */
     @PostMapping
-    public ResponseEntity addEvent(Principal principal, @RequestBody Event event) {
+    public ResponseEntity addEvent(Principal principal, @RequestBody EventCreateDTO eventCreateDTO) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
-        logger.info("Inserting new event {} of user with id {}", event.toString(), userId);
+        logger.info("Inserting new event {} of user with id {}", eventCreateDTO.toString(), userId);
 
+        Event event = eventDTOMapper.eventCreateDTOtoEvent(eventCreateDTO);
         Long id = eventService.add(event, userId);
         if(id != null) {
             logger.info("Event successfully inserted with id " + id);
@@ -54,7 +61,8 @@ public class EventController {
 
         if (event != null){
             logger.info("Event successfully found. Returning event with id " + event.getId());
-            return new ResponseEntity<>(event, HttpStatus.OK);
+            EventDetailDTO eventDetailDTO = eventDTOMapper.eventToEventDetailDTO(event);
+            return new ResponseEntity<>(eventDetailDTO, HttpStatus.OK);
         }
 
         logger.error("Error. Event with id" + eventId + " not found. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
@@ -64,16 +72,17 @@ public class EventController {
     /**
      * Updating event
      * @param eventId ID of event that is going to be updated
-     * @param event Event with updated attributes */
+     * @param eventUpdateDTO Event with updated attributes */
     @PutMapping(value = "{eventId}")
     public ResponseEntity updateEvent(@PathVariable("eventId") int eventId,
-                                      @RequestBody Event event) {
+                                      @RequestBody EventUpdateDTO eventUpdateDTO) {
         logger.info("Updating event with id " + eventId);
+        Event event = eventDTOMapper.eventUpdateDTOtoEvent(eventUpdateDTO);
         Event eventFromDb = eventService.getEvent(eventId);
         if(eventFromDb != null) {
             eventService.update(eventId, event);
             logger.info("Event with id " + eventId + " successfully updated.");
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } else {
             logger.error("Error. Event with id " + eventId + " does not exist.");
             return ResponseEntity.status(HttpStatus.

@@ -1,7 +1,5 @@
-package com.example.vavaplanit.model.dto.repetition;
+package com.example.vavaplanit.dto.repetition;
 
-import com.example.vavaplanit.model.Event;
-import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -9,30 +7,20 @@ import java.time.LocalDate;
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = WeeklyRepetitionDetailDTO.class, name = "WeeklyRepetitionDetailDTO")
+        @JsonSubTypes.Type(value = WeeklyRepetitionCreateDTO.class, name = "WeeklyRepetitionCreateDTO")
 })
-public class RepetitionDetailDTO {
-    private long id;
+public class RepetitionCreateDTO {
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
 
-    public RepetitionDetailDTO() {
+    public RepetitionCreateDTO() {
     }
 
-    public RepetitionDetailDTO(long id, LocalDate start, LocalDate end, int repetitionInterval) {
-        this.id = id;
+    public RepetitionCreateDTO(LocalDate start, LocalDate end, int repetitionInterval) {
         this.start = start;
         this.end = end;
         this.repetitionInterval = repetitionInterval;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public LocalDate getStart() {

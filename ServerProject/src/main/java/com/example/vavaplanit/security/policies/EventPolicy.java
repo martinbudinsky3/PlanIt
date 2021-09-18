@@ -24,9 +24,6 @@ public class EventPolicy {
         User loggedInUser = userService.getUserByUsername(username);
         Event event = eventService.getEvent(eventId);
 
-        logger.debug("Logged in user id: {}",loggedInUser.getId());
-        logger.debug("Event id: {}", event.getAuthorId());
-
-        return loggedInUser.getId() == event.getAuthorId();
+        return loggedInUser != null && event != null && loggedInUser.getId() == event.getAuthorId();
     }
 }

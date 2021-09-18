@@ -1,7 +1,7 @@
-package com.example.vavaplanit.model.dto.mappers;
+package com.example.vavaplanit.dto.mappers;
 
 import com.example.vavaplanit.model.User;
-import com.example.vavaplanit.model.dto.user.UserCreateDTO;
+import com.example.vavaplanit.dto.user.UserCreateDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

@@ -1,4 +1,4 @@
-package com.example.vavaplanit.model.dto.repetition;
+package com.example.vavaplanit.dto.repetition;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

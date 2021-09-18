@@ -1,4 +1,4 @@
-package com.example.vavaplanit.model.dto.user;
+package com.example.vavaplanit.dto.user;
 
 public class UserCreateDTO {
     private String firstName;

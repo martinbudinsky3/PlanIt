@@ -1,8 +1,4 @@
-package com.example.vavaplanit.model.dto.weather;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+package com.example.vavaplanit.dto.weather;
 
 public class WeatherDTO {
     private Integer id;

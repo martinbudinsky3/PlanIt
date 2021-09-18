@@ -1,6 +1,6 @@
-package com.example.vavaplanit.model.dto.mappers;
+package com.example.vavaplanit.dto.mappers;
 
-import com.example.vavaplanit.model.dto.repetition.*;
+import com.example.vavaplanit.dto.repetition.*;
 import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.model.repetition.WeeklyRepetition;

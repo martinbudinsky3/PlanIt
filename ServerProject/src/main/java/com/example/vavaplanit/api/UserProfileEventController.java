@@ -1,6 +1,8 @@
 package com.example.vavaplanit.api;
 
 
+import com.example.vavaplanit.dto.event.EventItemDTO;
+import com.example.vavaplanit.dto.mappers.EventDTOmapper;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.service.EventService;
 import com.example.vavaplanit.service.UserService;
@@ -25,15 +27,19 @@ public class UserProfileEventController {
     private EventService eventService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventDTOmapper eventDTOmapper;
 
     @GetMapping(params = "date")
     public ResponseEntity getEventsByDate(Principal principal, @RequestParam("date") String date) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events of user: " + username + " at date: " + date);
-        List<Event> eventList = eventService.getEventsByDate(userId, date);
-        logger.info("Events from date " + date + " successfully found. Returning " + eventList.size() + " events.");
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
+        List<Event> events = eventService.getEventsByDate(userId, date);
+        logger.info("Events from date " + date + " successfully found. Returning " + events.size() + " events.");
+        List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
+
+        return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
     }
 
     /**
@@ -41,14 +47,16 @@ public class UserProfileEventController {
      * @param year selected year
      * @return list of all events that belong to user and starts dates of these events are in selected year and month. */
     @GetMapping(params = {"year", "month"})
-    public ResponseEntity getEventsByMonthAndUserId(Principal principal, @RequestParam("year") int year,
-                                                    @RequestParam("month") int month) {
+    public ResponseEntity getEventsByMonthAndYear(Principal principal, @RequestParam("year") int year,
+                                                  @RequestParam("month") int month) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events of user: " + username + "in year: " + year + " and month: " + month);
-        List<Event> eventList = eventService.getEventsByMonthAndUserId(userId, year, month);
-        logger.info("Events from year " + year + " and month " + month + " successfully found. Returning " + eventList.size() + " events.");
-        return new ResponseEntity<>(eventList, HttpStatus.OK);
+        List<Event> events = eventService.getEventsByMonthAndUserId(userId, year, month);
+        logger.info("Events from year " + year + " and month " + month + " successfully found. Returning " + events.size() + " events.");
+        List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
+
+        return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
     }
 
     /**
@@ -59,9 +67,9 @@ public class UserProfileEventController {
         long userId = userService.getUserByUsername(username).getId();
         logger.info("Getting events to alert of user " + username);
         List<Event> events = eventService.getEventsToAlert(userId, currentTime);
-
         logger.info("Returning " + events.size() + " events to alert of user " + username);
+        List<EventItemDTO> eventItemDTOList = eventDTOmapper.eventsToEventItemDTOs(events);
 
-        return new ResponseEntity<>(events, HttpStatus.OK);
+        return new ResponseEntity<>(eventItemDTOList, HttpStatus.OK);
     }
 }

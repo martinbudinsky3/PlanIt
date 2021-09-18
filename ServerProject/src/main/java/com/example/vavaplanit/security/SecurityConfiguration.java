@@ -35,7 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/login").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/auth/register").permitAll();
         http.authorizeRequests().antMatchers("/events/{eventId}/**")
                 .access("@eventPolicy.check(authentication, #eventId)");
         http.authorizeRequests().antMatchers("/repetition/{repetitionId}/**")

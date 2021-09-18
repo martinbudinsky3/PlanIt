@@ -1,4 +1,4 @@
-package com.example.vavaplanit.model.dto.event;
+package com.example.vavaplanit.dto.event;
 
 import com.example.vavaplanit.model.EventType;
 import com.example.vavaplanit.model.repetition.Repetition;

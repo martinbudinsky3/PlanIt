@@ -1,8 +1,8 @@
 package com.example.vavaplanit.api;
 
 import com.example.vavaplanit.model.User;
-import com.example.vavaplanit.model.dto.user.UserCreateDTO;
-import com.example.vavaplanit.model.dto.mappers.UserDTOmapper;
+import com.example.vavaplanit.dto.user.UserCreateDTO;
+import com.example.vavaplanit.dto.mappers.UserDTOmapper;
 import com.example.vavaplanit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +29,6 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity register(@RequestBody UserCreateDTO userCreateDTO) {
         logger.info("Registering new user. Username: " + userCreateDTO.getUsername() + ", first name: " + userCreateDTO.getFirstName() + ", last name: " + userCreateDTO.getLastName());
-
         User userFromDB = userService.getUserByUsername(userCreateDTO.getUsername());
         if(userFromDB != null) {
             logger.info("User with username " + userCreateDTO.getUsername() + " already exists.");

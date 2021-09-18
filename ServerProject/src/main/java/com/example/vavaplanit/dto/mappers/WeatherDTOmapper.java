@@ -1,21 +1,18 @@
-package com.example.vavaplanit.model.dto.mappers;
+package com.example.vavaplanit.dto.mappers;
 
-import com.example.vavaplanit.model.dto.weather.DailyWeatherDTO;
-import com.example.vavaplanit.model.dto.weather.WeatherDTO;
+import com.example.vavaplanit.dto.weather.DailyWeatherDTO;
+import com.example.vavaplanit.dto.weather.WeatherDTO;
 import com.example.vavaplanit.model.weather.DailyWeather;
 import com.example.vavaplanit.model.weather.Weather;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-public interface DailyWeatherDTOmapper {
+@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+public interface WeatherDTOmapper {
 
-    @IterableMapping
+    @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
     @Mappings({
             @Mapping(target = "date", source = "dt"),
             @Mapping(target = "minTemperature", source = "temp.min"),
