@@ -106,6 +106,7 @@ public class EventService {
 
     public Event getEvent(int eventId, String dateString) {
         Event event = this.getEvent(eventId);
+        event.setRepetition(this.repetitionService.getRepetitionByEventId(eventId));
 
         if(dateString != null) {
             LocalDate date = LocalDate.parse(dateString);

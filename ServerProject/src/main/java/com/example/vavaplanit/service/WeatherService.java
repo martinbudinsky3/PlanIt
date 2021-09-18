@@ -1,7 +1,7 @@
 package com.example.vavaplanit.service;
 
 import com.example.vavaplanit.model.GeoLocation;
-import com.example.vavaplanit.model.dto.DailyWeatherDTO;
+import com.example.vavaplanit.model.weather.DailyWeather;
 import com.example.vavaplanit.model.weather.WeatherForecast;
 import com.example.vavaplanit.model.dto.mappers.DailyWeatherDTOmapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,10 +15,10 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 // TODO uri's to config file
 @Service
@@ -55,15 +55,8 @@ public class WeatherService {
         return geoCoordinates;
     }
 
-    public byte[] getImage(String icon) {
-        String uri = "http://openweathermap.org/img/wn/{icon}@2x.png";
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("icon", icon);
-
-        return restTemplate.getForObject(uri, byte[].class, params);
-    }
-
-    public List<DailyWeatherDTO> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
+    // TODO map to DTOs in controller layer
+    public List<DailyWeather> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
         final String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
                 "&appid={api-key}&units=metric";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -75,13 +68,15 @@ public class WeatherService {
         WeatherForecast weatherForecast = objectMapper.readValue(weatherJson, new TypeReference<WeatherForecast>() {
         });
 
+
         weatherForecast.getDaily().
                 forEach(dailyWeather -> dailyWeather.getWeather().
-                    forEach(weather -> weather.setIconImage(getImage(weather.getIcon()))));
+                    forEach(weather -> weather.setIconUri(buildIconUri(weather.getIcon()))));
 
-        return weatherForecast.getDaily().
-                stream().
-                map(dailyWeatherDTOmapper::dailyWeatherToDailyWeatherDTO).
-                collect(Collectors.toList());
+        return weatherForecast.getDaily();
+    }
+
+    private String buildIconUri(String iconName) {
+        return MessageFormat.format("http://openweathermap.org/img/wn/{icon}@2x.png", iconName);
     }
 }

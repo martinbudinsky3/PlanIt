@@ -1,6 +1,7 @@
 package com.example.vavaplanit.database.mappers;
 
 import com.example.vavaplanit.model.Event;
+import com.example.vavaplanit.model.EventType;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class EventMapper {
             long authorId = resultSet.getLong("author_id");
             String title = resultSet.getString("title");
             String location = resultSet.getString("location");
-            Event.Type type = Event.Type.fromString(resultSet.getString("type"));
+            EventType type = EventType.fromString(resultSet.getString("type"));
             String description = resultSet.getString("description");
             LocalDate startDate = resultSet.getObject("start_date", LocalDate.class);
             LocalTime startTime = resultSet.getObject("start_time", LocalTime.class);
@@ -44,7 +45,7 @@ public class EventMapper {
         return (resultSet, i) -> {
             int idEvent = resultSet.getInt("id");
             String title = resultSet.getString("title");
-            Event.Type type = Event.Type.fromString(resultSet.getString("type"));
+            EventType type = EventType.fromString(resultSet.getString("type"));
             LocalDate startDate = resultSet.getObject("start_date", LocalDate.class);
             LocalTime startTime = resultSet.getObject("start_time", LocalTime.class);
 

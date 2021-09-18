@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("events")
 public class EventController {
@@ -18,16 +20,20 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private UserService userService;
 
     /**
      * Inserting new event
      * @param event new event
      * @return id of inserted event */
     @PostMapping
-    public ResponseEntity addEvent(@RequestBody Event event) {
-        logger.info("Inserting new event with title: " + event.getTitle());
+    public ResponseEntity addEvent(Principal principal, @RequestBody Event event) {
+        String username = principal.getName();
+        long userId = userService.getUserByUsername(username).getId();
+        logger.info("Inserting new event {} of user with id {}", event.toString(), userId);
 
-        Long id = eventService.add(event, event.getAuthorId());
+        Long id = eventService.add(event, userId);
         if(id != null) {
             logger.info("Event successfully inserted with id " + id);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
@@ -40,7 +46,6 @@ public class EventController {
     /**
      * @param eventId ID of event
      * @return event with entered ID */
-    // TODO find out when date param is used on frontend
     @GetMapping(value = "{eventId}")
     public ResponseEntity getEvent(@PathVariable("eventId") int eventId,
                                    @RequestParam(value = "date", required = false) String date) {

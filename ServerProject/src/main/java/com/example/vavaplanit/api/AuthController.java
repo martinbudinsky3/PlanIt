@@ -1,7 +1,7 @@
 package com.example.vavaplanit.api;
 
 import com.example.vavaplanit.model.User;
-import com.example.vavaplanit.model.dto.UserCreateDTO;
+import com.example.vavaplanit.model.dto.user.UserCreateDTO;
 import com.example.vavaplanit.model.dto.mappers.UserDTOmapper;
 import com.example.vavaplanit.service.UserService;
 import org.slf4j.Logger;

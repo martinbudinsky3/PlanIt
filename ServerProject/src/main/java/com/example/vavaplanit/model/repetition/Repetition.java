@@ -12,11 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = WeeklyRepetition.class, name = "WeeklyRepetition")
-})
+
 public class Repetition {
     private long id;
     private long eventId;

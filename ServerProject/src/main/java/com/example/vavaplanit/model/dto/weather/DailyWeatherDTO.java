@@ -1,4 +1,4 @@
-package com.example.vavaplanit.model.dto;
+package com.example.vavaplanit.model.dto.weather;
 
 import com.example.vavaplanit.model.weather.Weather;
 
@@ -55,22 +55,5 @@ public class DailyWeatherDTO {
     public void setDate(Long date) {
         this.date = LocalDate.ofInstant(Instant.ofEpochSecond(date),
                 TimeZone.getDefault().toZoneId());;
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DailyWeatherDTO that = (DailyWeatherDTO) o;
-        return Double.compare(that.minTemperature, minTemperature) == 0 &&
-                Double.compare(that.maxTemperature, maxTemperature) == 0 &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(weather, that.weather);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, minTemperature, maxTemperature, weather);
     }
 }

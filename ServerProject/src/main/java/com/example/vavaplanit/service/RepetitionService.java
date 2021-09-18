@@ -98,4 +98,8 @@ public class RepetitionService {
     public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
         return exceptionRepository.getExceptionByRepetitionIdAndDate(repetitionId, date);
     }
+
+    public Repetition getRepetitionByEventId(long eventId) {
+        return repetitionRepository.getRepetitionByEventId(eventId);
+    }
 }
