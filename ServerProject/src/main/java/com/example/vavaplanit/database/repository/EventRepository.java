@@ -104,6 +104,16 @@ public class EventRepository {
         return jdbcTemplate.query(sql, eventMapper.mapEventFromDb());
     }
 
+
+    public Event getEventByRepetitionId(long repetitionId) {
+        try {
+            String sql = "SELECT e.* FROM events e JOIN repetitions r ON e.id = r.event_id WHERE r.id = " + repetitionId;
+            return jdbcTemplate.queryForObject(sql, eventMapper.mapEventFromDb());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
+    }
+
     /**
      * Update event
      *

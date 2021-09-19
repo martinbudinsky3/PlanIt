@@ -47,6 +47,17 @@ public class RepetitionRepository {
         }
     }
 
+    public Repetition getRepetitionByEventIdViaException(long eventId) {
+        String sql = "SELECT r.* FROM events ev JOIN exceptions ex ON ev.id = ex.event_id JOIN repetitions r ON ex.repetition_id = r.id" +
+                " WHERE event_id = ?";
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new Object[] {eventId}, repetitionMapper.mapRepetition());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        }
+    }
+
     public Repetition getRepetitionById(long repetitionId) {
         String sql = "SELECT * FROM repetitions WHERE id = ?";
 

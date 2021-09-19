@@ -51,8 +51,7 @@ public class EventService {
         Long eventId = eventRepository.add(event, userId);
 
         if (event.getRepetition() != null) {
-            event.getRepetition().setEventId(eventId);
-            this.repetitionService.addRepetition(event.getRepetition());
+            this.repetitionService.addRepetition(event.getRepetition(), eventId);
         }
 
         return eventId;
@@ -106,7 +105,11 @@ public class EventService {
 
     public Event getEvent(int eventId, String dateString) {
         Event event = this.getEvent(eventId);
-        event.setRepetition(this.repetitionService.getRepetitionByEventId(eventId));
+        Repetition repetition = this.repetitionService.getRepetitionByEventId(eventId);
+        if(repetition == null) {
+            repetition = this.repetitionService.getRepetitionByEventIdViaException(eventId);
+        }
+        event.setRepetition(repetition);
 
         if(dateString != null) {
             LocalDate date = LocalDate.parse(dateString);
@@ -149,7 +152,7 @@ public class EventService {
     }
 
     @Transactional
-    public void updateEventInRepetition(long userId, long repetitionId, Event event, String dateString) {
+    public void updateEventInRepetitionAtDate(long userId, long repetitionId, Event event, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
         Exception exception = repetitionService.getExceptionByEventId(event.getId());
 
@@ -166,31 +169,37 @@ public class EventService {
     }
 
     @Transactional
-    public void updateRepetition(long id, Event event, Repetition repetition) {
-        // if repetition object is updated, delete exceptions from old repetition
-        if(!event.getRepetition().equals(repetition)) {
-            this.repetitionService.deleteExceptionsByRepetitionId(id);
-            this.repetitionService.update(event.getRepetition());
-
-            logger.debug("Old repetition" + repetition.toString());
-            logger.debug("Updated repetition" + event.getRepetition().toString());
-        }
+    public void updateRepetition(long id, Repetition repetition) {
+        this.repetitionService.deleteExceptionsByRepetitionId(id);
+        this.repetitionService.update(repetition);
 
         // set new valid dates to event
-        LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
+        Event event = eventRepository.getEventByRepetitionId(id);
+        LocalDate newStartDate = this.repetitionService.validateStart(repetition);
         setEventsDates(event, newStartDate);
 
         this.eventRepository.update(event.getId(), event);
     }
 
-    @Transactional
-    public Long updateEventAndAddRepetition(Event event) {
-        LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
-        setEventsDates(event, newStartDate);
+    public void updateAllEventsInRepetition(long repetitionId, Event updatedEvent) {
+        Event eventFromDb = eventRepository.getEventByRepetitionId(repetitionId);
 
-        this.eventRepository.update(event.getId(), event);
+        LocalDateTime start = LocalDateTime.of(eventFromDb.getStartDate(), updatedEvent.getStartTime());
+        LocalDateTime end = LocalDateTime.of(eventFromDb.getEndDate(), updatedEvent.getEndTime());
+        LocalDateTime alert = LocalDateTime.of(eventFromDb.getAlertDate(), updatedEvent.getAlertTime());
 
-        return this.repetitionService.addRepetition(event.getRepetition());
+        if(end.isBefore(start)) {
+            end = end.plusDays(1);
+        }
+
+        if(alert.isAfter(start)) {
+            alert = alert.minusDays(1);
+        }
+
+        updatedEvent.setEndDate(end.toLocalDate());
+        updatedEvent.setAlertDate(alert.toLocalDate());
+
+        eventRepository.update(eventFromDb.getId(), updatedEvent);
     }
 
     public void delete(long idEvent) {

@@ -4,8 +4,12 @@ import com.example.vavaplanit.dto.event.EventCreateDTO;
 import com.example.vavaplanit.dto.event.EventDetailDTO;
 import com.example.vavaplanit.dto.event.EventUpdateDTO;
 import com.example.vavaplanit.dto.mappers.EventDTOmapper;
+import com.example.vavaplanit.dto.mappers.RepetitionDTOmapper;
+import com.example.vavaplanit.dto.repetition.RepetitionCreateDTO;
+import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.service.EventService;
 import com.example.vavaplanit.model.Event;
+import com.example.vavaplanit.service.RepetitionService;
 import com.example.vavaplanit.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +27,15 @@ public class EventController {
     private Logger logger = LoggerFactory.getLogger(EventController.class);
 
     @Autowired
+    private RepetitionService repetitionService;
+    @Autowired
     private EventService eventService;
     @Autowired
     private UserService userService;
     @Autowired
     private EventDTOmapper eventDTOMapper;
+    @Autowired
+    private RepetitionDTOmapper repetitionDTOmapper;
 
     /**
      * Inserting new event
@@ -50,6 +58,28 @@ public class EventController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @PostMapping("{eventId}/repetitions")
+    public ResponseEntity addEventRepetition(@PathVariable("eventId") long eventId,
+                                             @RequestBody RepetitionCreateDTO repetitionCreateDTO) {
+        logger.info("Inserting new repetition of event with id {}", eventId);
+
+        Event event = eventService.getEvent(eventId);
+        if(event != null) {
+            Repetition repetition = repetitionDTOmapper.repetitionCreateDTOtoRepetition(repetitionCreateDTO);
+            Long id = repetitionService.addRepetition(repetition, eventId);
+            if(id != null) {
+                logger.info("Event successfully inserted with id " + id);
+                return new ResponseEntity<>(id, HttpStatus.CREATED);
+            }
+
+            logger.error("Error while inserting new repetition of event with id {}", eventId);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        logger.error("Event with id {} not found", eventId);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
     /**
      * @param eventId ID of event
      * @return event with entered ID */
@@ -66,7 +96,7 @@ public class EventController {
         }
 
         logger.error("Error. Event with id" + eventId + " not found. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     /**

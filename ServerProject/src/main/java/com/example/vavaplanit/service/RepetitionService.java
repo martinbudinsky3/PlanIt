@@ -23,6 +23,12 @@ public class RepetitionService {
     @Autowired
     private ExceptionRepository exceptionRepository;
 
+    public Long addRepetition(Repetition repetition, long eventId) {
+        repetition.setEventId(eventId);
+
+        return addRepetition(repetition);
+    }
+
     public Long addRepetition(Repetition repetition) {
         return repetitionRepository.add(repetition);
     }
@@ -101,5 +107,9 @@ public class RepetitionService {
 
     public Repetition getRepetitionByEventId(long eventId) {
         return repetitionRepository.getRepetitionByEventId(eventId);
+    }
+
+    public Repetition getRepetitionByEventIdViaException(long eventId) {
+        return repetitionRepository.getRepetitionByEventIdViaException(eventId);
     }
 }
