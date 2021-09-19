@@ -37,6 +37,11 @@ public class WeeklyRepetition extends Repetition {
         setDaysOfWeek(daysOfWeek);
     }
 
+    public WeeklyRepetition(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek) {
+        super(id, eventId, start, end, repetitionInterval);
+        setDaysOfWeek(daysOfWeek);
+    }
+
     public void validateStart() {
         DayOfWeek startDateDayOfWeek = getStart().getDayOfWeek();
         int index = daysOfWeek.indexOf(startDateDayOfWeek);

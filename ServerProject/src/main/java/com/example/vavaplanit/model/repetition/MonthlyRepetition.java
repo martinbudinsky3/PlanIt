@@ -8,6 +8,7 @@ import org.joda.time.Months;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class MonthlyRepetition extends WeeklyRepetition {
     public MonthlyRepetition(long eventId, LocalDate start, LocalDate end, int repetitionInterval,
                              Integer daysOfWeek, Integer dayOfMonth, Integer ordinal) {
         super(eventId, start, end, repetitionInterval, daysOfWeek);
+        this.dayOfMonth = dayOfMonth;
+        this.ordinal = ordinal;
+    }
+
+    public MonthlyRepetition(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
+                             Integer dayOfMonth, Integer ordinal) {
+        super(id, eventId, start, end, repetitionInterval, daysOfWeek);
         this.dayOfMonth = dayOfMonth;
         this.ordinal = ordinal;
     }

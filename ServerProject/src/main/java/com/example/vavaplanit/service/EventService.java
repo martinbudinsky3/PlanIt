@@ -154,31 +154,8 @@ public class EventService {
     @Transactional
     public void updateEventInRepetitionAtDate(long userId, long repetitionId, Event event, String dateString) {
         LocalDate date = LocalDate.parse(dateString);
-        Exception exception = repetitionService.getExceptionByEventId(event.getId());
-
-        // if updated event isn't already an exception add new exception and event
-        if(exception == null) {
-            Long newEventId = this.eventRepository.add(event, userId);
-            repetitionService.addException(repetitionId, newEventId, date);
-        }
-
-        // if updated event is already an exception simply update it,
-        else {
-            update(event.getId(), event);
-        }
-    }
-
-    @Transactional
-    public void updateRepetition(long id, Repetition repetition) {
-        this.repetitionService.deleteExceptionsByRepetitionId(id);
-        this.repetitionService.update(repetition);
-
-        // set new valid dates to event
-        Event event = eventRepository.getEventByRepetitionId(id);
-        LocalDate newStartDate = this.repetitionService.validateStart(repetition);
-        setEventsDates(event, newStartDate);
-
-        this.eventRepository.update(event.getId(), event);
+        Long newEventId = this.eventRepository.add(event, userId);
+        repetitionService.addException(repetitionId, newEventId, date);
     }
 
     public void updateAllEventsInRepetition(long repetitionId, Event updatedEvent) {
@@ -198,8 +175,22 @@ public class EventService {
 
         updatedEvent.setEndDate(end.toLocalDate());
         updatedEvent.setAlertDate(alert.toLocalDate());
+        updatedEvent.setStartDate(start.toLocalDate());
 
         eventRepository.update(eventFromDb.getId(), updatedEvent);
+    }
+
+    @Transactional
+    public void updateRepetition(long id, Repetition repetition) {
+        this.repetitionService.deleteExceptionsByRepetitionId(id);
+        this.repetitionService.update(id, repetition);
+
+        // set new valid dates to event
+        Event event = eventRepository.getEventByRepetitionId(id);
+        LocalDate newStartDate = this.repetitionService.validateStart(repetition);
+        setEventsDates(event, newStartDate);
+
+        this.eventRepository.update(event.getId(), event);
     }
 
     public void delete(long idEvent) {
@@ -215,11 +206,6 @@ public class EventService {
         // if event isn't exception in repetition add new exception
         if (exception == null) {
             this.repetitionService.addException(repetitionId, date);
-        }
-
-        // if event already is exception, just delete it
-        else if (exception.getEventId() != 0) {
-            delete(exception.getEventId());
         }
     }
 

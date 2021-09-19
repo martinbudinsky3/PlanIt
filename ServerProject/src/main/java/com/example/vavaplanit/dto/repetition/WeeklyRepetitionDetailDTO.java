@@ -17,8 +17,8 @@ public class WeeklyRepetitionDetailDTO extends RepetitionDetailDTO {
     public WeeklyRepetitionDetailDTO() {
     }
 
-    public WeeklyRepetitionDetailDTO(long id, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
-        super(id, start, end, repetitionInterval);
+    public WeeklyRepetitionDetailDTO(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek) {
+        super(id, eventId, start, end, repetitionInterval);
         this.daysOfWeek = daysOfWeek;
     }
 

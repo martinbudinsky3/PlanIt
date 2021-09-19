@@ -3,11 +3,8 @@ package com.example.vavaplanit.service;
 import com.example.vavaplanit.database.repository.ExceptionRepository;
 import com.example.vavaplanit.database.repository.RepetitionRepository;
 import com.example.vavaplanit.model.Exception;
-import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.model.repetition.WeeklyRepetition;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +42,6 @@ public class RepetitionService {
         return exceptionRepository.add(exception);
     }
 
-    public Exception getExceptionByEventId(long eventId) {
-        return null;
-    }
-
     public Repetition getRepetitionById(long repetitionId) {
         return repetitionRepository.getRepetitionById(repetitionId);
     }
@@ -67,7 +60,7 @@ public class RepetitionService {
             return new ArrayList<>();
         }
 
-        List<Exception> exceptions = this.exceptionRepository.getExceptionsDates(repetition.getEventId());
+        List<Exception> exceptions = this.exceptionRepository.getExceptionsDates(repetition.getId());
         List<LocalDate> exceptionsDates = new ArrayList<>();
         exceptions.forEach(exception -> exceptionsDates.add(exception.getDate()));
 
@@ -75,7 +68,8 @@ public class RepetitionService {
                 .collect(Collectors.toList());
     }
 
-    public void update(Repetition repetition) {
+    public void update(long id, Repetition repetition) {
+        repetition.setId(id);
         this.repetitionRepository.update(repetition);
     }
 

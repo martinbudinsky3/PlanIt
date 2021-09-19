@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.time.LocalDate;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = WeeklyRepetitionCreateDTO.class, name = "WeeklyRepetitionCreateDTO")
 })

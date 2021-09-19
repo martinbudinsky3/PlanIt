@@ -1,6 +1,5 @@
 package com.example.vavaplanit.api;
 
-import com.example.vavaplanit.dto.event.EventCreateDTO;
 import com.example.vavaplanit.dto.event.EventUpdateDTO;
 import com.example.vavaplanit.dto.event.RepeatedEventUpdateDTO;
 import com.example.vavaplanit.dto.mappers.EventDTOmapper;
@@ -36,7 +35,7 @@ public class RepetitionController {
     private EventDTOmapper eventDTOmapper;
 
 
-    @PutMapping("{repetitionId}/events")
+    @PutMapping(value = "{repetitionId}/events", params = "date")
     public ResponseEntity updateEventInRepetitionAtDate(Principal principal, @PathVariable("repetitionId") long repetitionId,
                                                         @RequestParam(value = "date") String date,
                                                         @RequestBody EventUpdateDTO eventUpdateDTO) {

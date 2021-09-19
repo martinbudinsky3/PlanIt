@@ -7,7 +7,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = MonthlyRepetitionCreateDTO.class, name = "MonthlyRepetitionCreateDTO")
 })

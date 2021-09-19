@@ -11,6 +11,7 @@ public class RepetitionMapper {
 
     public RowMapper<Repetition> mapRepetition() {
         return (resultSet, i) -> {
+            long id = resultSet.getLong("id");
             long eventId = resultSet.getLong("event_id");
             LocalDate start = resultSet.getObject("start", LocalDate.class);
             LocalDate end = resultSet.getObject("end", LocalDate.class);
@@ -22,19 +23,19 @@ public class RepetitionMapper {
             RepetitionType type = RepetitionType.fromString(resultSet.getString("type"));
 
             if (type == RepetitionType.DAILY) {
-                return new Repetition(eventId, start, end, repeatInterval);
+                return new Repetition(id, eventId, start, end, repeatInterval);
             }
 
             if (type == RepetitionType.WEEKLY) {
-                return new WeeklyRepetition(eventId, start, end, repeatInterval, daysOfWeek);
+                return new WeeklyRepetition(id, eventId, start, end, repeatInterval, daysOfWeek);
             }
 
             if (type == RepetitionType.MONTHLY) {
-                return new MonthlyRepetition(eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal);
+                return new MonthlyRepetition(id, eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal);
             }
 
             if (type == RepetitionType.YEARLY) {
-                return new YearlyRepetition(eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal, month);
+                return new YearlyRepetition(id, eventId, start, end, repeatInterval, daysOfWeek, dayOfMonth, repeatOrdinal, month);
             }
 
             return null;

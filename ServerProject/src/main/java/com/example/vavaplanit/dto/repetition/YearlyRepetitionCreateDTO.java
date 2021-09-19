@@ -6,7 +6,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "type"
+)
 public class YearlyRepetitionCreateDTO extends MonthlyRepetitionCreateDTO{
     private int month;
 

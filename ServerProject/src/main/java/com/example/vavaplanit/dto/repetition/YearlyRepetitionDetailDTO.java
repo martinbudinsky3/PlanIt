@@ -13,8 +13,8 @@ public class YearlyRepetitionDetailDTO extends MonthlyRepetitionDetailDTO {
     public YearlyRepetitionDetailDTO() {
     }
 
-    public YearlyRepetitionDetailDTO(long id, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek, Integer dayOfMonth, Integer ordinal, int month) {
-        super(id, start, end, repetitionInterval, daysOfWeek, dayOfMonth, ordinal);
+    public YearlyRepetitionDetailDTO(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval, List<DayOfWeek> daysOfWeek, Integer dayOfMonth, Integer ordinal, int month) {
+        super(id, eventId, start, end, repetitionInterval, daysOfWeek, dayOfMonth, ordinal);
         this.month = month;
     }
 

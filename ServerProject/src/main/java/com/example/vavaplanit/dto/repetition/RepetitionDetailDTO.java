@@ -11,6 +11,7 @@ import java.time.LocalDate;
 })
 public class RepetitionDetailDTO {
     private long id;
+    private long eventId;
     private LocalDate start;
     private LocalDate end;
     private int repetitionInterval;
@@ -18,8 +19,9 @@ public class RepetitionDetailDTO {
     public RepetitionDetailDTO() {
     }
 
-    public RepetitionDetailDTO(long id, LocalDate start, LocalDate end, int repetitionInterval) {
+    public RepetitionDetailDTO(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval) {
         this.id = id;
+        this.eventId = eventId;
         this.start = start;
         this.end = end;
         this.repetitionInterval = repetitionInterval;
@@ -31,6 +33,14 @@ public class RepetitionDetailDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 
     public LocalDate getStart() {

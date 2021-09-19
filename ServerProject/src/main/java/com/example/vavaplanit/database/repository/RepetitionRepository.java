@@ -24,14 +24,14 @@ public class RepetitionRepository {
     }
 
     public Long add(Repetition repetition) {
-        final String sql = "insert into repetitions (start, end, repeat_interval, days_of_week, " +
+        final String sql = "insert into repetitions (start, \"end\", repeat_interval, days_of_week, " +
                 "day_of_month, repeat_ordinal, month, type, event_id) values (?,?,?,?,?,?,?,?,?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(getPreparedStatementCreator(repetition, sql), keyHolder);
+        jdbcTemplate.update(getPreparedStatementCreator(repetition, sql, true), keyHolder);
 
         if (keyHolder.getKeys() != null) {
-            return (Long) keyHolder.getKeys().get("event_id");
+            return (Long) keyHolder.getKeys().get("id");
         } else {
             return null;
         }
@@ -49,7 +49,7 @@ public class RepetitionRepository {
 
     public Repetition getRepetitionByEventIdViaException(long eventId) {
         String sql = "SELECT r.* FROM events ev JOIN exceptions ex ON ev.id = ex.event_id JOIN repetitions r ON ex.repetition_id = r.id" +
-                " WHERE event_id = ?";
+                " WHERE ex.event_id = ?";
 
         try {
             return jdbcTemplate.queryForObject(sql, new Object[] {eventId}, repetitionMapper.mapRepetition());
@@ -69,10 +69,10 @@ public class RepetitionRepository {
     }
 
     public void update(Repetition repetition) {
-        String sql = "UPDATE repetitions SET start = ?, end = ?, repeat_interval = ?, days_of_week = ?, " +
+        String sql = "UPDATE repetitions SET start = ?, \"end\" = ?, repeat_interval = ?, days_of_week = ?, " +
                 "day_of_month = ?, repeat_ordinal = ?, month = ?, type = ? WHERE id = ?";
 
-        jdbcTemplate.update(getPreparedStatementCreator(repetition, sql));
+        jdbcTemplate.update(getPreparedStatementCreator(repetition, sql, false));
     }
 
     public void deleteExceptionsByRepetitionId(long repetitionId) {
@@ -81,7 +81,7 @@ public class RepetitionRepository {
         jdbcTemplate.update(sql, repetitionId);
     }
 
-    private PreparedStatementCreator getPreparedStatementCreator(Repetition repetition, String sql) {
+    private PreparedStatementCreator getPreparedStatementCreator(Repetition repetition, String sql, boolean create) {
         return connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setDate(1, Date.valueOf(repetition.getStart()));
@@ -121,7 +121,11 @@ public class RepetitionRepository {
                 ps.setString(8, RepetitionType.YEARLY.toString());
             }
 
-            ps.setLong(9, repetition.getEventId());
+            if(create) {
+                ps.setLong(9, repetition.getEventId());
+            } else {
+                ps.setLong(9, repetition.getId());
+            }
 
             return ps;
         };

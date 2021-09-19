@@ -2,6 +2,8 @@ package com.example.vavaplanit.database.repository;
 
 import com.example.vavaplanit.database.mappers.ExceptionMapper;
 import com.example.vavaplanit.model.Exception;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,7 +37,11 @@ public class ExceptionRepository {
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setDate(1, Date.valueOf(exception.getDate()));
                 ps.setLong(2, exception.getRepetitionId());
-                ps.setLong(2, exception.getEventId());
+                if(exception.getEventId() != null) {
+                    ps.setLong(3, exception.getEventId());
+                } else {
+                    ps.setNull(3, Types.BIGINT);
+                }
                 return ps;
             }
         }, keyHolder);
@@ -48,13 +54,13 @@ public class ExceptionRepository {
     }
 
     public List<Exception> getExceptionsDates(long repetitionId) {
-        String sql = "SELECT date FROM exceptions WHERE repetition_id = ?;";
+        String sql = "SELECT \"date\" FROM exceptions WHERE repetition_id = ?;";
 
         return jdbcTemplate.query(sql, new Object[]{repetitionId}, exceptionMapper.mapDate());
     }
 
     public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
-        String sql = "SELECT * FROM exceptions WHERE repetition_id = ? AND date = ?;";
+        String sql = "SELECT * FROM exceptions WHERE repetition_id = ? AND \"date\" = ?;";
 
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{repetitionId, date}, exceptionMapper.mapException());

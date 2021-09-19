@@ -31,7 +31,8 @@ public class Repetition {
         this.repetitionInterval = repetitionInterval;
     }
 
-    public Repetition(Event event, LocalDate start, LocalDate end, int repetitionInterval) {
+    public Repetition(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval) {
+        this.id = id;
         this.eventId = eventId;
         this.start = start;
         this.end = end;

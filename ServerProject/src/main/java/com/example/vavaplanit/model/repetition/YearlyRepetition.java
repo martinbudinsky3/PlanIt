@@ -20,6 +20,12 @@ public class YearlyRepetition extends MonthlyRepetition {
         this.month = month;
     }
 
+    public YearlyRepetition(long id, long eventId, LocalDate start, LocalDate end, int repetitionInterval, Integer daysOfWeek,
+                            Integer dayOfMonth, Integer ordinal, int month) {
+        super(id, eventId, start, end, repetitionInterval, daysOfWeek, dayOfMonth, ordinal);
+        this.month = month;
+    }
+
     public void validateStart() {
         if(getDayOfMonth() != null && getDayOfMonth() != 0) {
             if(getStart().getDayOfMonth() != getDayOfMonth() || getStart().getMonthValue() != month) {

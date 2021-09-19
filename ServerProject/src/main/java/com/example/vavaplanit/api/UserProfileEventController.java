@@ -68,8 +68,8 @@ public class UserProfileEventController {
         logger.info("Getting events to alert of user " + username);
         List<Event> events = eventService.getEventsToAlert(userId, currentTime);
         logger.info("Returning " + events.size() + " events to alert of user " + username);
-        List<EventItemDTO> eventItemDTOList = eventDTOmapper.eventsToEventItemDTOs(events);
+        List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
 
-        return new ResponseEntity<>(eventItemDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
     }
 }
