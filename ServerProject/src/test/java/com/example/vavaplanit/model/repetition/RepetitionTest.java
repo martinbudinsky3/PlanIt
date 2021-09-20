@@ -18,23 +18,6 @@ public class RepetitionTest {
     @Nested
     @DisplayName("Tests for computing dates from day of month in method figureOutDates")
     class FigureOutDatesTests {
-        @Test
-        public void test() {
-            List<LocalDate> dates = new ArrayList<>();
-            dates.add(LocalDate.of(2021, 9, 15));
-            dates.add(LocalDate.of(2021, 9, 16));
-
-            List<LocalDate> exceptionDates = new ArrayList<>();
-            exceptionDates.add(LocalDate.of(2021, 9, 16));
-
-            List<LocalDate> expectedDates = new ArrayList<>();
-            expectedDates.add(LocalDate.of(2021, 9, 15));
-
-            List<LocalDate> actualDates = new ArrayList<>();
-            actualDates = dates.stream().filter(date -> !exceptionDates.contains(date)).collect(Collectors.toList());
-
-            assertEquals(expectedDates, actualDates);
-        }
 
         @Test
         public void dailyRepetitionInOneMonthEverySecondDay() {
