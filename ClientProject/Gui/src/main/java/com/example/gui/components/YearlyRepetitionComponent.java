@@ -1,7 +1,7 @@
 package com.example.gui.components;
 
-import com.example.client.model.repetition.MonthlyRepetition;
-import com.example.client.model.repetition.YearlyRepetition;
+import com.example.model.repetition.MonthlyRepetition;
+import com.example.model.repetition.YearlyRepetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;

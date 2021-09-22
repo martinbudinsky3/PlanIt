@@ -1,4 +1,4 @@
-package com.example.client.model.repetition;
+package com.example.model.repetition;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -6,11 +6,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = MonthlyRepetition.class, name = "MonthlyRepetition")
-})
+
 public class WeeklyRepetition extends Repetition {
     private List<DayOfWeek> daysOfWeek = new ArrayList<DayOfWeek>();
 

@@ -1,6 +1,6 @@
-package com.example.client.clients;
+package com.example.client;
 
-import com.example.client.model.weather.DailyWeather;
+import com.example.model.weather.DailyWeather;
 import com.example.utils.PropertiesReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,8 +39,7 @@ public class WeatherClient {
 
     public List<DailyWeather> getWeather() {
         logger.info("Getting weather forecast");
-        final String GET_WEATHER_ENDPOINT = uriPropertiesReader.getProperty("weather-endpoint");
-        final String uri = BASE_URI + GET_WEATHER_ENDPOINT;
+        final String uri = BASE_URI + "/weather";
 
         List<DailyWeather> weatherForecast = new ArrayList<>();
         try {
@@ -52,8 +51,6 @@ public class WeatherClient {
             objectMapper.registerModule(new JavaTimeModule());
             weatherForecast = objectMapper.readValue(weatherForecastJson, new TypeReference<List<DailyWeather>>() {
             });
-            logger.debug("Today's min temperature: " + weatherForecast.get(0).getMinTemperature() +
-                    ", Today's max temperature:" + weatherForecast.get(0).getMaxTemperature());
         } catch (JsonProcessingException ex) {
             logger.error("Error. Something went wrong with json processing.", ex);
         }

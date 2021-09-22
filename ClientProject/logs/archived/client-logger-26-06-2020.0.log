@@ -1,9 +1,9 @@
-2020-06-26 00:23:07,208 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-06-26 00:23:07,365 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-06-26 00:23:07,469 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:23:07,488 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
-2020-06-26 00:23:07,505 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-06-26 00:23:19,338 ERROR com.example.client.clients.EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 6]. HTTP status: 404
+2020-06-26 00:23:07,208 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-06-26 00:23:07,365 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-06-26 00:23:07,469 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:23:07,488 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
+2020-06-26 00:23:07,505 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:23:19,338 ERROR EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 6]. HTTP status: 404
 org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"timestamp":"2020-06-25T22:23:07.506+0000","status":404,"error":"Not Found","message":"No message available","path":"/events123/1/2020/6"}]
 	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:113)
 	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170)
@@ -13,7 +13,7 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:740)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.EventsClient.getUserEventsByMonth(EventsClient.java:43)
+	at EventsClient.getUserEventsByMonth(EventsClient.java:43)
 	at com.example.gui.controllers.PlanItMainWindowController.showEventsInCalendar(PlanItMainWindowController.java:328)
 	at com.example.gui.controllers.PlanItMainWindowController.initialize(PlanItMainWindowController.java:108)
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548)
@@ -69,8 +69,8 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
-2020-06-26 00:23:25,155 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
-2020-06-26 00:23:26,903 ERROR com.example.client.clients.EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 5]. HTTP status: 404
+2020-06-26 00:23:25,155 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
+2020-06-26 00:23:26,903 ERROR EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 5]. HTTP status: 404
 org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"timestamp":"2020-06-25T22:23:25.161+0000","status":404,"error":"Not Found","message":"No message available","path":"/events123/1/2020/5"}]
 	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:113)
 	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170)
@@ -80,7 +80,7 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:740)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.EventsClient.getUserEventsByMonth(EventsClient.java:43)
+	at EventsClient.getUserEventsByMonth(EventsClient.java:43)
 	at com.example.gui.controllers.PlanItMainWindowController.showEventsInCalendar(PlanItMainWindowController.java:328)
 	at com.example.gui.controllers.PlanItMainWindowController.lambda$initializeMonthsAndYear$8(PlanItMainWindowController.java:258)
 	at com.sun.javafx.binding.ExpressionHelper$SingleChange.fireValueChangedEvent(ExpressionHelper.java:182)
@@ -139,12 +139,12 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
-2020-06-26 00:24:08,604 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-06-26 00:24:08,706 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-06-26 00:24:08,790 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:24:08,810 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
-2020-06-26 00:24:08,822 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-06-26 00:24:11,067 ERROR com.example.client.clients.EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 6]. HTTP status: 404
+2020-06-26 00:24:08,604 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-06-26 00:24:08,706 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-06-26 00:24:08,790 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:24:08,810 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
+2020-06-26 00:24:08,822 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:24:11,067 ERROR EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 6]. HTTP status: 404
 org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"timestamp":"2020-06-25T22:24:08.822+0000","status":404,"error":"Not Found","message":"No message available","path":"/events123/1/2020/6"}]
 	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:113)
 	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170)
@@ -154,7 +154,7 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:740)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.EventsClient.getUserEventsByMonth(EventsClient.java:43)
+	at EventsClient.getUserEventsByMonth(EventsClient.java:43)
 	at com.example.gui.controllers.PlanItMainWindowController.showEventsInCalendar(PlanItMainWindowController.java:328)
 	at com.example.gui.controllers.PlanItMainWindowController.initialize(PlanItMainWindowController.java:108)
 	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548)
@@ -210,8 +210,8 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
-2020-06-26 00:24:13,308 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
-2020-06-26 00:24:14,705 ERROR com.example.client.clients.EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 5]. HTTP status: 404
+2020-06-26 00:24:13,308 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
+2020-06-26 00:24:14,705 ERROR EventsClient [JavaFX Application Thread] Error. Something went wrong while finding user's [1] events in year and month: [2020, 5]. HTTP status: 404
 org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"timestamp":"2020-06-25T22:24:13.313+0000","status":404,"error":"Not Found","message":"No message available","path":"/events123/1/2020/5"}]
 	at org.springframework.web.client.HttpClientErrorException.create(HttpClientErrorException.java:113)
 	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:170)
@@ -221,7 +221,7 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:740)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.EventsClient.getUserEventsByMonth(EventsClient.java:43)
+	at EventsClient.getUserEventsByMonth(EventsClient.java:43)
 	at com.example.gui.controllers.PlanItMainWindowController.showEventsInCalendar(PlanItMainWindowController.java:328)
 	at com.example.gui.controllers.PlanItMainWindowController.lambda$initializeMonthsAndYear$8(PlanItMainWindowController.java:258)
 	at com.sun.javafx.binding.ExpressionHelper$SingleChange.fireValueChangedEvent(ExpressionHelper.java:182)
@@ -280,21 +280,21 @@ org.springframework.web.client.HttpClientErrorException$NotFound: 404 : [{"times
 	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
 	at com.sun.glass.ui.win.WinApplication.lambda$null$4(WinApplication.java:186)
 	at java.lang.Thread.run(Thread.java:748)
-2020-06-26 00:24:58,621 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-06-26 00:24:58,724 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-06-26 00:24:58,825 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:24:58,846 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
-2020-06-26 00:24:58,855 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-06-26 00:24:58,864 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 6]
-2020-06-26 00:25:00,856 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:25:00,863 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-06-26 00:25:02,035 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
-2020-06-26 00:25:02,085 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 40 user's [1] events in year and month: [2020, 5]
-2020-06-26 00:25:59,165 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-06-26 00:25:59,266 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-06-26 00:25:59,349 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:25:59,367 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
-2020-06-26 00:25:59,379 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-06-26 00:25:59,380 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 6]
-2020-06-26 00:26:00,380 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-06-26 00:26:00,386 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:24:58,621 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-06-26 00:24:58,724 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-06-26 00:24:58,825 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:24:58,846 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
+2020-06-26 00:24:58,855 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:24:58,864 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 6]
+2020-06-26 00:25:00,856 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:25:00,863 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:25:02,035 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 5]
+2020-06-26 00:25:02,085 INFO EventsClient [JavaFX Application Thread] Returning 40 user's [1] events in year and month: [2020, 5]
+2020-06-26 00:25:59,165 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-06-26 00:25:59,266 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-06-26 00:25:59,349 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:25:59,367 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 6]
+2020-06-26 00:25:59,379 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-06-26 00:25:59,380 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 6]
+2020-06-26 00:26:00,380 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-06-26 00:26:00,386 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.

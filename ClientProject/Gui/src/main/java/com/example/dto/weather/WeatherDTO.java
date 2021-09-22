@@ -1,12 +1,20 @@
-package com.example.client.model.weather;
+package com.example.dto.weather;
 
-
-public class Weather {
+public class WeatherDTO {
     private Integer id;
     private String main;
     private String description;
-    private String icon;
-    private byte[] iconImage;
+    private String iconUri;
+
+    public WeatherDTO() {
+    }
+
+    public WeatherDTO(Integer id, String main, String description, String iconUri) {
+        this.id = id;
+        this.main = main;
+        this.description = description;
+        this.iconUri = iconUri;
+    }
 
     public Integer getId() {
         return id;
@@ -32,19 +40,11 @@ public class Weather {
         this.description = description;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getIconUri() {
+        return iconUri;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public byte[] getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(byte[] iconImage) {
-        this.iconImage = iconImage;
+    public void setIconUri(String iconUri) {
+        this.iconUri = iconUri;
     }
 }

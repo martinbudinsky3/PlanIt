@@ -1,4 +1,4 @@
-package com.example.client.model.repetition;
+package com.example.model.repetition;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;

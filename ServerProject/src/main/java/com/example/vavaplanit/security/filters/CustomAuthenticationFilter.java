@@ -2,6 +2,7 @@ package com.example.vavaplanit.security.filters;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.example.vavaplanit.model.LoginData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +36,18 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(username, password);
+        Authentication authentication = null;
+        try {
+            LoginData loginData = new ObjectMapper()
+                    .readValue(request.getInputStream(), LoginData.class);
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(loginData.getUsername(), loginData.getPassword());
+            authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        } catch (IOException e) {
+            logger.error("Error while attempting to authenticate", e);
+        }
 
-        return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        return authentication;
     }
 
     @Override
@@ -56,7 +63,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String refreshToken = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 30 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 120 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 

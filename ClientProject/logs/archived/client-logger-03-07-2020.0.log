@@ -1,10 +1,10 @@
-2020-07-03 11:52:52,608 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 11:52:52,608 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
 2020-07-03 11:52:56,356 ERROR com.example.gui.controllers.PlanItLoginController [JavaFX Application Thread] Error while connecting to server
 org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://localhost:8080/users/test/test": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:748)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.UsersClient.getUserByUserNameAndUserPassword(UsersClient.java:49)
+	at UsersClient.getUserByUserNameAndUserPassword(UsersClient.java:49)
 	at com.example.gui.controllers.PlanItLoginController.buttonLoginHandler(PlanItLoginController.java:96)
 	at com.example.gui.controllers.PlanItLoginController.lambda$addHandlers$0(PlanItLoginController.java:73)
 	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
@@ -79,113 +79,113 @@ Caused by: java.net.ConnectException: Connection refused: connect
 	at org.springframework.http.client.AbstractClientHttpRequest.execute(AbstractClientHttpRequest.java:53)
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:739)
 	... 52 common frames omitted
-2020-07-03 11:54:31,122 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 11:54:31,679 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 11:54:31,913 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:54:31,944 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:54:32,026 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:54:32,026 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:54:34,982 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:54:35,007 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:56:05,619 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 11:56:05,906 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 11:56:06,069 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:56:06,101 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:56:06,123 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:56:06,123 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:57:10,531 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 11:57:10,836 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 11:57:10,999 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:57:11,032 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:57:11,052 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:57:11,052 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:57:28,278 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:57:28,288 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:58:00,053 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:58:00,063 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:58:33,251 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 11:58:33,542 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 11:58:33,761 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:58:33,792 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:58:33,811 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:58:33,811 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 11:59:00,813 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 11:59:00,824 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 11:59:07,985 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 11:59:07,998 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:00:00,826 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:00:00,847 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:01:00,849 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:01:00,861 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:02:00,863 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:02:00,872 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:03:00,874 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:03:00,886 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:04:00,886 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:04:00,898 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:05:00,899 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:05:00,909 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:06:00,911 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:06:00,925 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:07:00,926 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:07:00,935 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:08:00,937 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:08:00,948 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:09:00,949 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:09:00,961 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:09:38,770 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 12:09:39,036 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 12:09:39,192 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:09:39,223 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:09:39,238 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:09:39,238 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:09:53,217 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:09:53,226 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:10:00,240 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:10:00,249 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:11:00,249 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:11:00,261 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:11:23,171 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 12:11:23,434 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 12:11:23,604 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:11:23,640 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:11:23,659 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:11:23,659 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:11:35,974 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:11:35,983 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:12:00,661 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:12:00,669 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:13:00,670 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:13:00,681 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:14:00,682 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:14:00,693 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:14:37,961 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 12:14:38,228 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 12:14:38,411 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:14:38,445 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:14:38,464 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:14:38,464 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:15:00,042 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:15:00,051 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:15:00,466 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:15:00,474 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:16:00,474 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:16:00,486 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:17:00,488 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:17:00,502 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:18:00,504 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:18:00,514 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:19:00,516 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:19:00,527 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:20:00,528 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:20:00,542 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:20:25,248 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
-2020-07-03 12:20:25,523 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User testsuccessfully logged in
-2020-07-03 12:20:25,678 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:20:25,709 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:20:25,727 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
-2020-07-03 12:20:25,727 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:20:50,533 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
-2020-07-03 12:20:50,541 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
-2020-07-03 12:21:00,729 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [1] events to alert.
-2020-07-03 12:21:00,739 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:54:31,122 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 11:54:31,679 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 11:54:31,913 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:54:31,944 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:54:32,026 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:54:32,026 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:54:34,982 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:54:35,007 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:56:05,619 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 11:56:05,906 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 11:56:06,069 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:56:06,101 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:56:06,123 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:56:06,123 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:57:10,531 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 11:57:10,836 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 11:57:10,999 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:57:11,032 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:57:11,052 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:57:11,052 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:57:28,278 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:57:28,288 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:58:00,053 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:58:00,063 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:58:33,251 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 11:58:33,542 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 11:58:33,761 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:58:33,792 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:58:33,811 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:58:33,811 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 11:59:00,813 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 11:59:00,824 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 11:59:07,985 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 11:59:07,998 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:00:00,826 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:00:00,847 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:01:00,849 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:01:00,861 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:02:00,863 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:02:00,872 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:03:00,874 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:03:00,886 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:04:00,886 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:04:00,898 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:05:00,899 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:05:00,909 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:06:00,911 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:06:00,925 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:07:00,926 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:07:00,935 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:08:00,937 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:08:00,948 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:09:00,949 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:09:00,961 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:09:38,770 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 12:09:39,036 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 12:09:39,192 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:09:39,223 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:09:39,238 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:09:39,238 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:09:53,217 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:09:53,226 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:10:00,240 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:10:00,249 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:11:00,249 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:11:00,261 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:11:23,171 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 12:11:23,434 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 12:11:23,604 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:11:23,640 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:11:23,659 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:11:23,659 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:11:35,974 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:11:35,983 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:12:00,661 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:12:00,669 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:13:00,670 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:13:00,681 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:14:00,682 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:14:00,693 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:14:37,961 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 12:14:38,228 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 12:14:38,411 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:14:38,445 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:14:38,464 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:14:38,464 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:15:00,042 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:15:00,051 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:15:00,466 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:15:00,474 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:16:00,474 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:16:00,486 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:17:00,488 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:17:00,502 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:18:00,504 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:18:00,514 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:19:00,516 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:19:00,527 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:20:00,528 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:20:00,542 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:20:25,248 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-03 12:20:25,523 INFO UsersClient [JavaFX Application Thread] User testsuccessfully logged in
+2020-07-03 12:20:25,678 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:20:25,709 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:20:25,727 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.
+2020-07-03 12:20:25,727 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:20:50,533 INFO EventsClient [JavaFX Application Thread] Getting all user's [1] events in year and month: [2020, 7]
+2020-07-03 12:20:50,541 INFO EventsClient [JavaFX Application Thread] Returning 0 user's [1] events in year and month: [2020, 7]
+2020-07-03 12:21:00,729 INFO EventsClient [Thread-4] Getting all user's [1] events to alert.
+2020-07-03 12:21:00,739 INFO EventsClient [Thread-4] Returning all user's [1] events to alert.

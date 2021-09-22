@@ -1,6 +1,6 @@
 package com.example.gui;
 
-import com.example.client.clients.UsersClient;
+import com.example.client.UsersClient;
 import com.example.utils.UTF8Control;
 import com.example.utils.WindowsCreator;
 import javafx.application.Application;

@@ -1,6 +1,6 @@
 package com.example.gui.DataItems;
 
-import com.example.client.model.repetition.RepetitionType;
+import com.example.model.repetition.RepetitionType;
 
 import java.util.ResourceBundle;
 

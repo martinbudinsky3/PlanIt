@@ -1,7 +1,7 @@
 package com.example.gui.controllers;
 
-import com.example.client.clients.UsersClient;
-import com.example.client.model.User;
+import com.example.client.UsersClient;
+import com.example.model.User;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
@@ -90,7 +90,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                     resourceBundle.getString("loginAlertContent"));
         } else {
             try {
-                user = usersClient.getUserByUserNameAndUserPassword(textfieldName.getText(), passwordfieldPassword.getText());
+                user = usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 if(ex instanceof JsonProcessingException) {

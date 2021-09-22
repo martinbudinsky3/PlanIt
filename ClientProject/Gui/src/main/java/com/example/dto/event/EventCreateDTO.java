@@ -1,8 +1,7 @@
-package com.example.vavaplanit.dto.event;
+package com.example.dto.event;
 
 import com.example.vavaplanit.dto.repetition.RepetitionCreateDTO;
 import com.example.vavaplanit.model.EventType;
-import com.example.vavaplanit.model.repetition.Repetition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

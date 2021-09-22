@@ -1,4 +1,4 @@
-package com.example.client.model.repetition;
+package com.example.model.repetition;
 
 public enum RepetitionType {
     DAILY, WEEKLY, MONTHLY, YEARLY;

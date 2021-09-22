@@ -1,14 +1,11 @@
-package com.example.client.model;
+package com.example.model;
 
-import com.example.client.model.repetition.Repetition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.model.repetition.Repetition;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /** Class Event with attributes, constructors, getters and setters. */

@@ -1,6 +1,6 @@
 package com.example.gui.DataItems;
 
-import com.example.client.model.Event;
+import com.example.model.Event;
 
 import java.util.ResourceBundle;
 

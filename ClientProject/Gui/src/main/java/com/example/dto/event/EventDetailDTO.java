@@ -1,30 +1,32 @@
-package com.example.vavaplanit.dto.event;
+package com.example.dto.event;
 
-import com.example.vavaplanit.dto.repetition.RepetitionCreateDTO;
+import com.example.vavaplanit.dto.repetition.RepetitionDetailDTO;
 import com.example.vavaplanit.model.EventType;
-import com.example.vavaplanit.model.repetition.Repetition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
-public class EventCreateDTO {
+public class EventDetailDTO {
+    private long id;
     private String title;
     private String location;
     private EventType type;
     private String description;
     private LocalDate startDate;
+    private List<LocalDate> dates;
     private LocalTime startTime;
     private LocalDate endDate;
     private LocalTime endTime;
     private LocalDate alertDate;
     private LocalTime alertTime;
-    private RepetitionCreateDTO repetition;
+    private RepetitionDetailDTO repetition;
 
-    public EventCreateDTO() {
-    }
+    public EventDetailDTO() {};
 
-    public EventCreateDTO(String title, String location, EventType type, String description, LocalDate startDate,
-                          LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime, RepetitionCreateDTO repetition) {
+    public EventDetailDTO(long id, String title, String location, EventType type, String description, LocalDate startDate, LocalTime startTime,
+                          LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime, RepetitionDetailDTO repetition) {
+        this.id = id;
         this.title = title;
         this.location = location;
         this.type = type;
@@ -36,6 +38,14 @@ public class EventCreateDTO {
         this.alertDate = alertDate;
         this.alertTime = alertTime;
         this.repetition = repetition;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -118,28 +128,19 @@ public class EventCreateDTO {
         this.alertTime = alertTime;
     }
 
-    public RepetitionCreateDTO getRepetition() {
+    public RepetitionDetailDTO getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(RepetitionCreateDTO repetition) {
+    public void setRepetition(RepetitionDetailDTO repetition) {
         this.repetition = repetition;
     }
 
-    @Override
-    public String toString() {
-        return "EventCreateDTO{" +
-                ", title='" + title + '\'' +
-                ", location='" + location + '\'' +
-                ", type=" + type +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", startTime=" + startTime +
-                ", endDate=" + endDate +
-                ", endTime=" + endTime +
-                ", alertDate=" + alertDate +
-                ", alertTime=" + alertTime +
-                ", repetition=" + repetition +
-                '}';
+    public List<LocalDate> getDates() {
+        return dates;
+    }
+
+    public void setDates(List<LocalDate> dates) {
+        this.dates = dates;
     }
 }

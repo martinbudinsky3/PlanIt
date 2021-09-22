@@ -28,10 +28,10 @@ public class AuthController {
      * @return id of new user*/
     @PostMapping("register")
     public ResponseEntity register(@RequestBody UserCreateDTO userCreateDTO) {
-        logger.info("Registering new user. Username: " + userCreateDTO.getUsername() + ", first name: " + userCreateDTO.getFirstName() + ", last name: " + userCreateDTO.getLastName());
+        logger.info("Registering new user {}" + userCreateDTO.getUsername());
         User userFromDB = userService.getUserByUsername(userCreateDTO.getUsername());
         if(userFromDB != null) {
-            logger.info("User with username " + userCreateDTO.getUsername() + " already exists.");
+            logger.info("User {} already exists", userCreateDTO.getUsername());
 
             return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
         }
@@ -44,8 +44,7 @@ public class AuthController {
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
-        logger.error("Error registering new user. Username: " + userCreateDTO.getUsername() + "First name: " + userCreateDTO.getFirstName() +
-                ", last name: " + userCreateDTO.getLastName() + ". HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.error("Error registering new user {}", user.getUsername());
 
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }

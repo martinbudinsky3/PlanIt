@@ -1,8 +1,8 @@
 package com.example.gui.controllers;
 
-import com.example.client.clients.EventsClient;
-import com.example.client.model.Event;
-import com.example.client.model.repetition.*;
+import com.example.client.EventsClient;
+import com.example.model.Event;
+import com.example.model.repetition.*;
 import com.example.gui.components.DailyRepetitionComponent;
 import com.example.gui.components.MonthlyRepetitionComponent;
 import com.example.gui.components.WeeklyRepetitionComponent;
@@ -792,7 +792,7 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void updateEventInRepetition(Event event) {
-        eventsClient.updateEventInRepetition(event, idUser, this.event.getIdEvent(), initDate, resourceBundle);
+        eventsClient.updateEventInRepetitionAtDate(event, idUser, this.event.getIdEvent(), initDate, resourceBundle);
 
         updateCalendarDisplay(event.getDate());
 

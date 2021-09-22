@@ -1,8 +1,8 @@
 package com.example.utils;
 
-import com.example.client.clients.EventsClient;
-import com.example.client.model.Event;
-import com.example.client.model.User;
+import com.example.client.EventsClient;
+import com.example.model.Event;
+import com.example.model.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import org.slf4j.Logger;

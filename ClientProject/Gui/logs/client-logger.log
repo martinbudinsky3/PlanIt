@@ -1,240 +1,240 @@
-2020-05-06 19:58:38,306 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 19:58:38,734 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 19:58:38,817 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 19:58:38,840 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 19:58:38,878 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 19:58:38,881 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 19:58:54,611 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 19:58:54,623 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:04:46,505 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:04:46,689 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:04:46,765 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:04:46,783 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:04:46,801 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:04:46,806 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:04:50,679 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:04:50,691 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:05:30,149 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:05:30,331 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:05:30,411 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:05:30,429 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:05:30,440 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:05:30,443 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:05:52,422 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:05:52,501 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:05:52,505 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:05:52,514 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:05:55,314 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:05:55,325 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:00,441 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:06:00,448 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:06:06,357 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:06:06,371 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:06:06,374 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:06,382 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:11,343 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:06:11,356 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:06:11,358 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:11,367 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:15,769 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:06:15,784 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:06:15,786 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:15,795 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:20,226 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:06:20,240 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:06:20,242 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:20,250 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:24,476 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event
-2020-05-06 20:06:24,491 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event successfully inserted
-2020-05-06 20:06:24,493 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:24,501 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:06:31,105 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:06:31,113 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:08:38,438 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:08:38,621 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:08:38,707 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:08:38,725 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:08:38,742 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:08:38,746 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:08:42,847 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:08:42,861 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:08:44,621 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:08:44,631 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:12:05,439 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:12:05,624 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:12:05,704 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:12:05,722 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:12:05,733 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:12:05,738 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:12:08,104 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:12:08,116 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:14:38,672 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:14:38,855 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:14:38,936 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:14:38,950 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:14:38,967 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:14:38,971 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:14:40,564 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:14:40,576 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:15:00,968 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:15:00,976 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:16:23,338 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:16:23,521 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:16:23,596 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:16:23,614 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:16:23,623 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:16:23,629 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:16:25,529 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:16:25,541 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:16:56,666 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:16:56,848 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:16:56,921 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:16:56,938 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:16:56,950 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:16:56,956 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:16:58,392 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:16:58,408 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:21:38,456 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:21:38,641 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:21:38,717 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:21:38,732 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:21:38,748 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:21:38,753 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:21:41,516 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:21:41,528 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:22:00,750 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:22:00,756 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:27:19,009 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:27:19,191 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:27:19,266 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:27:19,289 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:27:19,303 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:27:19,311 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:27:21,087 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:27:21,098 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:28:49,147 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:28:49,334 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:28:49,419 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:28:49,436 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:28:49,453 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:28:49,459 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:28:51,123 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:28:51,135 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:29:00,454 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:29:00,460 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:32:25,913 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:32:26,097 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:32:26,171 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:32:26,190 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:32:26,202 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:32:26,209 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:32:28,118 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:32:28,130 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:33:18,331 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:33:18,512 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:33:18,599 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:33:18,615 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:33:18,626 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:33:18,630 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:33:21,512 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:33:21,522 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:36:24,323 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:36:24,505 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:36:24,579 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:36:24,595 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:36:24,606 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:36:24,614 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:36:25,994 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:36:26,004 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:40:23,188 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:40:23,371 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:40:23,461 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:40:23,479 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:40:23,489 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:40:23,496 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:40:24,933 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:40:24,945 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:43:22,953 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:43:23,137 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:43:23,216 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:43:23,231 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:43:23,243 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:43:23,248 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:43:24,776 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:43:24,787 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:43:43,385 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:43:43,397 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:43:45,452 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:43:45,460 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:45:59,620 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:45:59,803 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:45:59,878 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:45:59,894 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:45:59,904 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:45:59,910 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:46:00,905 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:46:00,912 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:46:02,060 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:46:02,070 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:59:15,444 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 20:59:15,636 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 20:59:15,709 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 20:59:15,725 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:59:15,742 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 20:59:15,746 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 20:59:17,244 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 20:59:17,255 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:00:32,065 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 21:00:32,247 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 21:00:32,326 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 21:00:32,342 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:00:32,358 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 21:00:32,362 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:00:33,978 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:00:33,990 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:02:24,326 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 21:02:24,508 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 21:02:24,589 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 21:02:24,607 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:02:24,617 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 21:02:24,623 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:02:30,556 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:02:30,570 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:02:32,283 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:02:32,305 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:03:53,032 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-06 21:03:53,213 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User successfully logged in
-2020-05-06 21:03:53,291 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 21:03:53,308 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:03:53,317 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-06 21:03:53,321 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:03:55,271 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-06 21:03:55,282 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning events by year and month.
-2020-05-06 21:04:00,317 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-06 21:04:00,323 INFO com.example.client.clients.EventsClient [Thread-4] Returning events to alert.
-2020-05-07 18:34:55,465 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Inserting new User. Username: aFirst name: a, last name: a
-2020-05-07 18:34:55,828 ERROR com.example.client.clients.UsersClient [JavaFX Application Thread] Error inserting new user.Username: aFirst name: a, last name: a. HTTP Status: 500
-2020-05-07 18:58:42,965 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-07 18:58:43,175 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
-2020-05-07 18:58:43,266 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-07 18:58:43,284 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-07 18:58:43,319 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
-2020-05-07 18:58:43,325 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
-2020-05-07 18:58:46,723 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-07 18:58:46,741 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
-2020-05-07 21:02:09,290 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
-2020-05-07 21:02:09,621 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
-2020-05-07 21:02:09,694 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-07 21:02:09,711 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-07 21:02:09,755 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
-2020-05-07 21:02:09,761 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
-2020-05-07 21:02:36,765 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Inserting event new
-2020-05-07 21:02:36,841 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Event new successfully inserted
-2020-05-07 21:02:36,846 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
-2020-05-07 21:02:36,863 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning 12 user's [23] events in year and month: [2020, 5]
-2020-05-07 21:03:00,756 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-07 21:03:00,763 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
-2020-05-07 21:04:00,764 INFO com.example.client.clients.EventsClient [Thread-4] Getting all user's [23] events to alert.
-2020-05-07 21:04:00,772 INFO com.example.client.clients.EventsClient [Thread-4] Returning all user's [23] events to alert.
-2020-05-07 21:04:09,655 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Getting event by user's [23] and event's [30] ID
-2020-05-07 21:04:09,667 INFO com.example.client.clients.EventsClient [JavaFX Application Thread] Returning event by user's [23] and event's [30] ID
+2020-05-06 19:58:38,306 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 19:58:38,734 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 19:58:38,817 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 19:58:38,840 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 19:58:38,878 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 19:58:38,881 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 19:58:54,611 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 19:58:54,623 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:04:46,505 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:04:46,689 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:04:46,765 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:04:46,783 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:04:46,801 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:04:46,806 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:04:50,679 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:04:50,691 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:05:30,149 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:05:30,331 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:05:30,411 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:05:30,429 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:05:30,440 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:05:30,443 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:05:52,422 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:05:52,501 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:05:52,505 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:05:52,514 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:05:55,314 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:05:55,325 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:00,441 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:06:00,448 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:06:06,357 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:06:06,371 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:06:06,374 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:06,382 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:11,343 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:06:11,356 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:06:11,358 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:11,367 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:15,769 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:06:15,784 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:06:15,786 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:15,795 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:20,226 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:06:20,240 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:06:20,242 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:20,250 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:24,476 INFO EventsClient [JavaFX Application Thread] Inserting event
+2020-05-06 20:06:24,491 INFO EventsClient [JavaFX Application Thread] Event successfully inserted
+2020-05-06 20:06:24,493 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:24,501 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:06:31,105 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:06:31,113 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:08:38,438 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:08:38,621 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:08:38,707 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:08:38,725 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:08:38,742 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:08:38,746 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:08:42,847 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:08:42,861 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:08:44,621 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:08:44,631 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:12:05,439 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:12:05,624 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:12:05,704 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:12:05,722 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:12:05,733 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:12:05,738 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:12:08,104 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:12:08,116 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:14:38,672 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:14:38,855 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:14:38,936 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:14:38,950 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:14:38,967 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:14:38,971 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:14:40,564 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:14:40,576 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:15:00,968 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:15:00,976 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:16:23,338 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:16:23,521 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:16:23,596 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:16:23,614 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:16:23,623 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:16:23,629 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:16:25,529 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:16:25,541 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:16:56,666 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:16:56,848 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:16:56,921 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:16:56,938 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:16:56,950 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:16:56,956 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:16:58,392 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:16:58,408 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:21:38,456 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:21:38,641 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:21:38,717 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:21:38,732 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:21:38,748 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:21:38,753 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:21:41,516 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:21:41,528 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:22:00,750 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:22:00,756 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:27:19,009 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:27:19,191 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:27:19,266 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:27:19,289 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:27:19,303 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:27:19,311 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:27:21,087 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:27:21,098 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:28:49,147 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:28:49,334 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:28:49,419 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:28:49,436 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:28:49,453 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:28:49,459 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:28:51,123 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:28:51,135 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:29:00,454 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:29:00,460 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:32:25,913 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:32:26,097 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:32:26,171 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:32:26,190 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:32:26,202 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:32:26,209 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:32:28,118 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:32:28,130 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:33:18,331 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:33:18,512 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:33:18,599 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:33:18,615 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:33:18,626 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:33:18,630 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:33:21,512 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:33:21,522 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:36:24,323 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:36:24,505 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:36:24,579 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:36:24,595 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:36:24,606 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:36:24,614 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:36:25,994 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:36:26,004 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:40:23,188 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:40:23,371 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:40:23,461 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:40:23,479 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:40:23,489 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:40:23,496 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:40:24,933 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:40:24,945 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:43:22,953 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:43:23,137 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:43:23,216 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:43:23,231 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:43:23,243 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:43:23,248 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:43:24,776 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:43:24,787 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:43:43,385 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:43:43,397 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:43:45,452 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:43:45,460 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:45:59,620 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:45:59,803 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:45:59,878 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:45:59,894 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:45:59,904 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:45:59,910 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:46:00,905 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:46:00,912 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:46:02,060 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:46:02,070 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:59:15,444 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 20:59:15,636 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 20:59:15,709 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 20:59:15,725 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:59:15,742 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 20:59:15,746 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 20:59:17,244 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 20:59:17,255 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:00:32,065 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 21:00:32,247 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 21:00:32,326 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 21:00:32,342 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:00:32,358 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 21:00:32,362 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:00:33,978 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:00:33,990 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:02:24,326 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 21:02:24,508 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 21:02:24,589 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 21:02:24,607 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:02:24,617 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 21:02:24,623 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:02:30,556 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:02:30,570 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:02:32,283 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:02:32,305 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:03:53,032 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-06 21:03:53,213 INFO UsersClient [JavaFX Application Thread] User successfully logged in
+2020-05-06 21:03:53,291 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 21:03:53,308 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:03:53,317 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-06 21:03:53,321 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:03:55,271 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-06 21:03:55,282 INFO EventsClient [JavaFX Application Thread] Returning events by year and month.
+2020-05-06 21:04:00,317 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-06 21:04:00,323 INFO EventsClient [Thread-4] Returning events to alert.
+2020-05-07 18:34:55,465 INFO UsersClient [JavaFX Application Thread] Inserting new User. Username: aFirst name: a, last name: a
+2020-05-07 18:34:55,828 ERROR UsersClient [JavaFX Application Thread] Error inserting new user.Username: aFirst name: a, last name: a. HTTP Status: 500
+2020-05-07 18:58:42,965 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-07 18:58:43,175 INFO UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
+2020-05-07 18:58:43,266 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 18:58:43,284 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:43,319 INFO EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 18:58:43,325 INFO EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:46,723 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 18:58:46,741 INFO EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:09,290 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [ivana]
+2020-05-07 21:02:09,621 INFO UsersClient [JavaFX Application Thread] User ivanasuccessfully logged in
+2020-05-07 21:02:09,694 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:02:09,711 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:09,755 INFO EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:02:09,761 INFO EventsClient [JavaFX Application Thread] Returning 11 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:36,765 INFO EventsClient [JavaFX Application Thread] Inserting event new
+2020-05-07 21:02:36,841 INFO EventsClient [JavaFX Application Thread] Event new successfully inserted
+2020-05-07 21:02:36,846 INFO EventsClient [JavaFX Application Thread] Getting all user's [23] events in year and month: [2020, 5]
+2020-05-07 21:02:36,863 INFO EventsClient [JavaFX Application Thread] Returning 12 user's [23] events in year and month: [2020, 5]
+2020-05-07 21:03:00,756 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:03:00,763 INFO EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:04:00,764 INFO EventsClient [Thread-4] Getting all user's [23] events to alert.
+2020-05-07 21:04:00,772 INFO EventsClient [Thread-4] Returning all user's [23] events to alert.
+2020-05-07 21:04:09,655 INFO EventsClient [JavaFX Application Thread] Getting event by user's [23] and event's [30] ID
+2020-05-07 21:04:09,667 INFO EventsClient [JavaFX Application Thread] Returning event by user's [23] and event's [30] ID

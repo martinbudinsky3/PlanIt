@@ -1,13 +1,11 @@
-package com.example.vavaplanit.dto.event;
+package com.example.dto.event;
 
-import com.example.vavaplanit.dto.repetition.RepetitionCreateDTO;
 import com.example.vavaplanit.model.EventType;
-import com.example.vavaplanit.model.repetition.Repetition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class EventCreateDTO {
+public class EventUpdateDTO {
     private String title;
     private String location;
     private EventType type;
@@ -18,13 +16,12 @@ public class EventCreateDTO {
     private LocalTime endTime;
     private LocalDate alertDate;
     private LocalTime alertTime;
-    private RepetitionCreateDTO repetition;
 
-    public EventCreateDTO() {
+    public EventUpdateDTO() {
     }
 
-    public EventCreateDTO(String title, String location, EventType type, String description, LocalDate startDate,
-                          LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime, RepetitionCreateDTO repetition) {
+    public EventUpdateDTO(String title, String location, EventType type, String description, LocalDate startDate,
+                          LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
         this.title = title;
         this.location = location;
         this.type = type;
@@ -35,7 +32,6 @@ public class EventCreateDTO {
         this.endTime = endTime;
         this.alertDate = alertDate;
         this.alertTime = alertTime;
-        this.repetition = repetition;
     }
 
     public String getTitle() {
@@ -116,30 +112,5 @@ public class EventCreateDTO {
 
     public void setAlertTime(LocalTime alertTime) {
         this.alertTime = alertTime;
-    }
-
-    public RepetitionCreateDTO getRepetition() {
-        return repetition;
-    }
-
-    public void setRepetition(RepetitionCreateDTO repetition) {
-        this.repetition = repetition;
-    }
-
-    @Override
-    public String toString() {
-        return "EventCreateDTO{" +
-                ", title='" + title + '\'' +
-                ", location='" + location + '\'' +
-                ", type=" + type +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", startTime=" + startTime +
-                ", endDate=" + endDate +
-                ", endTime=" + endTime +
-                ", alertDate=" + alertDate +
-                ", alertTime=" + alertTime +
-                ", repetition=" + repetition +
-                '}';
     }
 }

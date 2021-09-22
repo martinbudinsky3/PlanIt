@@ -1,5 +1,6 @@
 package com.example.vavaplanit.dto.event;
 
+import com.example.vavaplanit.dto.repetition.RepetitionDetailDTO;
 import com.example.vavaplanit.model.EventType;
 import com.example.vavaplanit.model.repetition.Repetition;
 
@@ -20,20 +21,12 @@ public class EventDetailDTO {
     private LocalTime endTime;
     private LocalDate alertDate;
     private LocalTime alertTime;
-    private Repetition repetition;
+    private RepetitionDetailDTO repetition;
 
     public EventDetailDTO() {};
 
-    public EventDetailDTO(long id, String title, EventType type, LocalDate startDate, LocalTime startTime) {
-        this.id = id;
-        this.title = title;
-        this.type = type;
-        this.startDate = startDate;
-        this.startTime = startTime;
-    }
-
     public EventDetailDTO(long id, String title, String location, EventType type, String description, LocalDate startDate, LocalTime startTime,
-                 LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
+                 LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime, RepetitionDetailDTO repetition) {
         this.id = id;
         this.title = title;
         this.location = location;
@@ -45,6 +38,7 @@ public class EventDetailDTO {
         this.endTime = endTime;
         this.alertDate = alertDate;
         this.alertTime = alertTime;
+        this.repetition = repetition;
     }
 
     public long getId() {
@@ -135,11 +129,11 @@ public class EventDetailDTO {
         this.alertTime = alertTime;
     }
 
-    public Repetition getRepetition() {
+    public RepetitionDetailDTO getRepetition() {
         return repetition;
     }
 
-    public void setRepetition(Repetition repetition) {
+    public void setRepetition(RepetitionDetailDTO repetition) {
         this.repetition = repetition;
     }
 

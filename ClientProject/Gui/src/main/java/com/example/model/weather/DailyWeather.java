@@ -1,8 +1,7 @@
-package com.example.client.model.weather;
+package com.example.model.weather;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class DailyWeather {
     private LocalDate date;

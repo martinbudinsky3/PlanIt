@@ -1,6 +1,6 @@
 package com.example.gui.components;
 
-import com.example.client.model.repetition.Repetition;
+import com.example.model.repetition.Repetition;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;

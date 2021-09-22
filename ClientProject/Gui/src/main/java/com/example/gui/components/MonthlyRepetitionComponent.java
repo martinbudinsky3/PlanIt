@@ -1,8 +1,7 @@
 package com.example.gui.components;
 
-import com.example.client.model.repetition.MonthlyRepetition;
-import com.example.client.model.repetition.Repetition;
-import com.example.client.model.repetition.WeeklyRepetition;
+import com.example.model.repetition.MonthlyRepetition;
+import com.example.model.repetition.Repetition;
 import com.example.utils.Utils;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;

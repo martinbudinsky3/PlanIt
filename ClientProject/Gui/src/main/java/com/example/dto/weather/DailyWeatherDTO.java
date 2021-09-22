@@ -1,6 +1,4 @@
-package com.example.vavaplanit.dto.weather;
-
-import com.example.vavaplanit.model.weather.Weather;
+package com.example.dto.weather;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -16,10 +14,10 @@ public class DailyWeatherDTO {
     public DailyWeatherDTO() {
     }
 
-    public DailyWeatherDTO(Long date, double minTemperature, double maxTemperature, List<WeatherDTO> weather) {
-        setDate(date);
-        setMinTemperature(minTemperature);
-        setMaxTemperature(maxTemperature);
+    public DailyWeatherDTO(LocalDate date, int minTemperature, int maxTemperature, List<WeatherDTO> weather) {
+        this.date = date;
+        this.minTemperature = minTemperature;
+        this.maxTemperature = maxTemperature;
         this.weather = weather;
     }
 
@@ -27,16 +25,16 @@ public class DailyWeatherDTO {
         return minTemperature;
     }
 
-    public void setMinTemperature(double minTemperature) {
-        this.minTemperature = (int) Math.round(minTemperature);
+    public void setMinTemperature(int minTemperature) {
+        this.minTemperature = minTemperature;
     }
 
     public double getMaxTemperature() {
         return maxTemperature;
     }
 
-    public void setMaxTemperature(double maxTemperature) {
-        this.maxTemperature = (int) Math.round(maxTemperature);
+    public void setMaxTemperature(int maxTemperature) {
+        this.maxTemperature = maxTemperature;
     }
 
     public List<WeatherDTO> getWeather() {
@@ -51,8 +49,7 @@ public class DailyWeatherDTO {
         return date;
     }
 
-    public void setDate(Long date) {
-        this.date = LocalDate.ofInstant(Instant.ofEpochSecond(date),
-                TimeZone.getDefault().toZoneId());;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

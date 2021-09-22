@@ -1,11 +1,11 @@
 package com.example.gui.controllers;
 
-import com.example.client.clients.EventsClient;
-import com.example.client.clients.UsersClient;
-import com.example.client.clients.WeatherClient;
-import com.example.client.model.Event;
-import com.example.client.model.User;
-import com.example.client.model.weather.DailyWeather;
+import com.example.client.EventsClient;
+import com.example.client.UsersClient;
+import com.example.client.WeatherClient;
+import com.example.model.Event;
+import com.example.model.User;
+import com.example.model.weather.DailyWeather;
 import com.example.utils.PdfFile;
 import com.example.utils.Utils;
 import com.example.utils.WindowsCreator;
@@ -564,7 +564,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-            List<Event> events = eventsClient.getUserEventsByDate(user.getId(), event.getDate(), resourceBundle);
+            List<Event> events = eventsClient.getEventsByDate(user.getId(), event.getDate(), resourceBundle);
 
             for (Event ev : events) {
                 addEventToCalendar(ev, dayVBox);
@@ -581,7 +581,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Node> nodes = dayVBox.getChildren();
         nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        List<Event> events = eventsClient.getUserEventsByDate(user.getId(), date, resourceBundle);
+        List<Event> events = eventsClient.getEventsByDate(user.getId(), date, resourceBundle);
 
         for (Event ev : events) {
             addEventToCalendar(ev, dayVBox);

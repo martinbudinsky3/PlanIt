@@ -1,10 +1,10 @@
-2020-07-19 21:29:56,022 INFO com.example.client.clients.UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
+2020-07-19 21:29:56,022 INFO UsersClient [JavaFX Application Thread] Logging user by his username and password: [test]
 2020-07-19 21:30:00,992 ERROR com.example.gui.controllers.PlanItLoginController [JavaFX Application Thread] Error while connecting to server
 org.springframework.web.client.ResourceAccessException: I/O error on GET request for "http://localhost:8080/users/test/test": Connection refused: connect; nested exception is java.net.ConnectException: Connection refused: connect
 	at org.springframework.web.client.RestTemplate.doExecute(RestTemplate.java:748)
 	at org.springframework.web.client.RestTemplate.execute(RestTemplate.java:695)
 	at org.springframework.web.client.RestTemplate.getForObject(RestTemplate.java:324)
-	at com.example.client.clients.UsersClient.getUserByUserNameAndUserPassword(UsersClient.java:47)
+	at UsersClient.getUserByUserNameAndUserPassword(UsersClient.java:47)
 	at com.example.gui.controllers.PlanItLoginController.buttonLoginHandler(PlanItLoginController.java:96)
 	at com.example.gui.controllers.PlanItLoginController.lambda$addHandlers$0(PlanItLoginController.java:73)
 	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)

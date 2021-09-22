@@ -1,7 +1,7 @@
 package com.example.gui.controllers;
 
-import com.example.client.clients.UsersClient;
-import com.example.client.model.User;
+import com.example.client.UsersClient;
+import com.example.model.User;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
@@ -96,9 +96,10 @@ public class PlanItRegistrationController implements Initializable {
             User user = new User(firstName, lastName, userName, userPassword);
 
             try {
-                Integer id = usersClient.addUser(user);
+                Integer id = usersClient.register(user);
                 user.setId(id);
-                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
+                windowsCreator.showInfoAlert("Registration successful", "Continue with login");
+//                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 if(ex instanceof JsonProcessingException) {
                     windowsCreator.showErrorAlert(resourceBundle);
