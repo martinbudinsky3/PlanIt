@@ -65,7 +65,7 @@ public class AlertWindowController implements Initializable {
     /** Adding handlers to click on the Button (postponeButton) and to click on the AnchorPane (ap) */
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
-            String title = event.getStarts().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
+            String title = event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
             windowsCreator.createEventDetailWindow(event, title, user, eventsClient, planItMainWindowController,
                     resourceBundle);
             Stage stage = (Stage) ap.getScene().getWindow();
@@ -84,16 +84,16 @@ public class AlertWindowController implements Initializable {
      * This window is shown at the bottom right of the screen when it's time to notify the event. */
     public void showDetail() {
         String title = event.getTitle();
-        LocalDate startsDate = event.getDate();
-        LocalDate endsDate = event.getEndsDate();
+        LocalDate startsDate = event.getStartDate();
+        LocalDate endsDate = event.getEndDate();
         String timeText;
 
         if (startsDate.equals(endsDate)) {
             DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm");
-            timeText = event.getStarts().format(dtfTime) + "-" + event.getEnds().format(dtfTime);
+            timeText = event.getStartTime().format(dtfTime) + "-" + event.getEndTime().format(dtfTime);
         } else {
             DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("dd.MM");
-            timeText = event.getDate().format(dtfDate) + "-" + event.getEndsDate().format(dtfDate);
+            timeText = event.getStartDate().format(dtfDate) + "-" + event.getEndDate().format(dtfDate);
         }
 
         titleLabel.setText(title);
@@ -103,21 +103,21 @@ public class AlertWindowController implements Initializable {
     /** A handler for postpone button with functionality for the user to postpone the alert time. */
     private void postponeButtonHandler() {
         String postponeTime = postponeTimeChoice.getValue();
-        LocalTime previousAlertTime = event.getAlert();
+        LocalTime previousAlertTime = event.getAlertTime();
         LocalTime newAlertTime = null;
         // postpone alert time according to user choice
         if (postponeTime.equals(resourceBundle.getString("5minutes"))) {
-            newAlertTime = event.getAlert().plusMinutes(5);
-            event.setAlert(newAlertTime);
+            newAlertTime = event.getAlertTime().plusMinutes(5);
+            event.setAlertTime(newAlertTime);
         } else if (postponeTime.equals(resourceBundle.getString("30minutes"))) {
-            newAlertTime = event.getAlert().plusMinutes(30);
-            event.setAlert(newAlertTime);
+            newAlertTime = event.getAlertTime().plusMinutes(30);
+            event.setAlertTime(newAlertTime);
         } else if (postponeTime.equals(resourceBundle.getString("1hour"))) {
-            newAlertTime = event.getAlert().plusHours(1);
-            event.setAlert(newAlertTime);
+            newAlertTime = event.getAlertTime().plusHours(1);
+            event.setAlertTime(newAlertTime);
         } else if (postponeTime.equals(resourceBundle.getString("6hours"))) {
-            newAlertTime = event.getAlert().plusHours(6);
-            event.setAlert(newAlertTime);
+            newAlertTime = event.getAlertTime().plusHours(6);
+            event.setAlertTime(newAlertTime);
         }
 
         // if postponed alert time oversteps midnight, set alert date to next day
@@ -126,7 +126,7 @@ public class AlertWindowController implements Initializable {
         }
 
         // updating event - new alert time
-        boolean success = eventsClient.updateEvent(event, user.getId(), event.getIdEvent(), resourceBundle);
+        boolean success = eventsClient.updateEvent(event, user.getId(), event.getId(), resourceBundle);
         if(success){
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();

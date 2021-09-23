@@ -215,7 +215,7 @@ public class EventsClient {
             if (ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                logger.error("Error while updating event." + event.getId() + " HTTP status: "
                         + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
             }
         }
@@ -241,7 +241,7 @@ public class EventsClient {
             if (ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                logger.error("Error while updating event." + event.getId() + " HTTP status: "
                         + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
             }
         }
@@ -266,7 +266,7 @@ public class EventsClient {
             if (ex instanceof ResourceAccessException) {
                 logger.error("Error while connecting to server", ex);
             } else {
-                logger.error("Error while updating event." + event.getIdEvent() + " HTTP status: "
+                logger.error("Error while updating event." + event.getId() + " HTTP status: "
                         + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
             }
         }

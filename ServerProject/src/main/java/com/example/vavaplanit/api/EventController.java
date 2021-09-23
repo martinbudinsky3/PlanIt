@@ -50,12 +50,12 @@ public class EventController {
         Event event = eventDTOMapper.eventCreateDTOtoEvent(eventCreateDTO);
         Long id = eventService.add(event, userId);
         if(id != null) {
-            logger.info("Event successfully inserted with id " + id);
+            logger.info("Event successfully inserted with id {}", id);
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
-        logger.error("Error inserting new event. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        logger.error("Error inserting new event {}", event);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("{eventId}/repetitions")
@@ -68,16 +68,16 @@ public class EventController {
             Repetition repetition = repetitionDTOmapper.repetitionCreateDTOtoRepetition(repetitionCreateDTO);
             Long id = repetitionService.addRepetition(repetition, eventId);
             if(id != null) {
-                logger.info("Event successfully inserted with id " + id);
+                logger.info("Event successfully inserted with id {}", id);
                 return new ResponseEntity<>(id, HttpStatus.CREATED);
             }
 
             logger.error("Error while inserting new repetition of event with id {}", eventId);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         logger.error("Event with id {} not found", eventId);
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -86,17 +86,18 @@ public class EventController {
     @GetMapping(value = "{eventId}")
     public ResponseEntity getEvent(@PathVariable("eventId") int eventId,
                                    @RequestParam(value = "date", required = false) String date) {
-        logger.info("Getting event with id " + eventId);
+        logger.info("Getting event with id {}", eventId);
         Event event = eventService.getEvent(eventId, date);
 
         if (event != null){
-            logger.info("Event successfully found. Returning event with id " + event.getId());
+            logger.info("Event successfully found. Returning event with id {}", event.getId());
             EventDetailDTO eventDetailDTO = eventDTOMapper.eventToEventDetailDTO(event);
             return new ResponseEntity<>(eventDetailDTO, HttpStatus.OK);
         }
 
-        logger.error("Error. Event with id" + eventId + " not found. HTTP Status: " + HttpStatus.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        logger.error("Error. Event with id {} not found", eventId);
+        return new ResponseEntity<>("Event with id " + eventId + " does not exist",
+                HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -106,34 +107,32 @@ public class EventController {
     @PutMapping(value = "{eventId}")
     public ResponseEntity updateEvent(@PathVariable("eventId") int eventId,
                                       @RequestBody EventUpdateDTO eventUpdateDTO) {
-        logger.info("Updating event with id " + eventId);
+        logger.info("Updating event with id {}", eventId);
         Event event = eventDTOMapper.eventUpdateDTOtoEvent(eventUpdateDTO);
         Event eventFromDb = eventService.getEvent(eventId);
         if(eventFromDb != null) {
             eventService.update(eventId, event);
-            logger.info("Event with id " + eventId + " successfully updated.");
+            logger.info("Event with id {} successfully updated", eventId);
             return ResponseEntity.noContent().build();
         } else {
-            logger.error("Error. Event with id " + eventId + " does not exist.");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event with id " + eventId + " does not exist");
+            logger.error("Error. Event with id {} does not exist", eventId);
+            return new ResponseEntity("Event with id " + eventId + " does not exist",
+                    HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("{eventId}")
     public ResponseEntity delete(@PathVariable("eventId") int eventId) {
-        logger.info("Deleting event with id " + eventId);
+        logger.info("Deleting event with id {}", eventId);
         Event event = eventService.getEvent(eventId);
         if(event != null){
             eventService.delete(eventId);
-            logger.info("Event with id " + eventId + " successfully deleted.");
+            logger.info("Event with id {} successfully deleted", eventId);
             return ResponseEntity.ok().build();
         } else {
-            logger.error("Event with id " + eventId + " does not exist ");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Event with id " + eventId + " does not exist");
+            logger.error("Event with id {} does not exist", eventId);
+            return new ResponseEntity("Event with id " + eventId + " does not exist",
+                    HttpStatus.NOT_FOUND);
         }
     }
 }

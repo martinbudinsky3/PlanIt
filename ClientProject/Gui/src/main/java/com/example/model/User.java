@@ -3,13 +3,13 @@ package com.example.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private int id;
+    private long id;
     private String firstName;
     private String lastName;
     private String username;
     private String password;
 
-    public User(int id, String firstName, String lastName, String userName, String password) {
+    public User(long id, String firstName, String lastName, String userName, String password) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,11 +42,11 @@ public class User implements Serializable {
 
     public User(){}
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

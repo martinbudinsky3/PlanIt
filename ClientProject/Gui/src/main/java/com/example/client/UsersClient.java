@@ -19,8 +19,7 @@ import org.springframework.web.client.RestTemplate;
 public class UsersClient {
 
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
-    private final String BASE_USERS_URI = uriPropertiesReader.getProperty("base-uri") +
-            uriPropertiesReader.getProperty("users-endpoint");
+    private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
@@ -37,10 +36,10 @@ public class UsersClient {
     public void login(String username, String password)
             throws JsonProcessingException, ResourceAccessException, HttpStatusCodeException {
         logger.info("Logging in user {}", username);
-        final String uri = BASE_USERS_URI + "/login";
+        final String uri = BASE_URI + "/login";
         LoginData loginData = new LoginData(username, password);
 
-        String userJSon = restTemplate.postForObject(uri, loginData, String.class);
+        String loginResponseJson = restTemplate.postForObject(uri, loginData, String.class);
         // TODO save somewhere tokens from response
         // TODO handle error
     }
@@ -51,16 +50,15 @@ public class UsersClient {
      * @param user User that is going to be registered,
      * @return ID of newly registered user.
      */
-    public Long register(User user)
+    public void register(User user)
             throws JsonProcessingException, HttpStatusCodeException {
         logger.info("Registering user {}" + user.getUsername());
 
-        final String uri = BASE_USERS_URI;
+        final String uri = BASE_URI + "/auth/register";
 
-        String id = restTemplate.postForObject(uri, user, String.class);
-        Long idUser = objectMapper.readValue(id, Long.class);
+        String idString = restTemplate.postForObject(uri, user, String.class);
+        Long id = objectMapper.readValue(idString, Long.class);
         logger.info("User {} successfully registered", user.getUsername());
-
-        return idUser;
+        // TODO maybe do something with id
     }
 }

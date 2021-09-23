@@ -51,9 +51,8 @@ public class RepetitionController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             logger.error("Repetition with id {} does not exist", repetitionId);
-            return ResponseEntity.status(HttpStatus.
-                    NOT_FOUND).
-                    body("Repetition with id: " + repetitionId + " does not exist");
+            return new ResponseEntity("Repetition with id: " + repetitionId + " does not exist",
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -69,9 +68,8 @@ public class RepetitionController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             logger.error("Repetition with id {} does not exist", repetitionId);
-            return ResponseEntity.status(HttpStatus.
-                    NOT_FOUND).
-                    body("Repetition with id: " + repetitionId + " does not exist");
+            return new ResponseEntity("Repetition with id: " + repetitionId + " does not exist",
+                    HttpStatus.NOT_FOUND);
         }
     }
 
@@ -85,28 +83,28 @@ public class RepetitionController {
             Repetition repetition = repetitionDTOmapper.repetitionCreateDTOtoRepetition(repetitionCreateDTO);
             eventService.updateRepetition(repetitionId, repetition);
             logger.info("Repetition with id {} successfully updated", repetitionId);
-            return ResponseEntity.ok().build();
+            return new ResponseEntity(HttpStatus.OK);
         }
 
         logger.info("Repetition with id {} not found", repetitionId);
-        return ResponseEntity.notFound().build();
+        return new ResponseEntity("Repetition with id " + repetitionId + " does not exist",
+                HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("{repetitionId}/events")
     public ResponseEntity deleteFromRepetition(@PathVariable("repetitionId") int repetitionId,
                                                @RequestParam("date") String date) {
-        logger.info("Deleting event at date " + date + " from repetition with id " + repetitionId);
+        logger.info("Deleting event at date {} from repetition with id {}", date, repetitionId);
 
         Repetition repetition = repetitionService.getRepetitionById(repetitionId);
         if(repetition != null) {
             eventService.deleteFromRepetition(repetitionId, date);
-            logger.info("Event with id " + repetitionId + " successfully deleted from repetition.");
-            return ResponseEntity.ok().build();
+            logger.info("Event with id {} successfully deleted from repetition", repetitionId);
+            return new ResponseEntity(HttpStatus.OK);
         } else {
-            logger.error("Repetition with id " + repetitionId + " does not exist ");
-            return ResponseEntity.status(HttpStatus.
-                    PRECONDITION_FAILED).
-                    body("Repetition with id " + repetitionId + " does not exist");
+            logger.error("Repetition with id {} does not exist", repetitionId);
+            return new ResponseEntity("Repetition with id " + repetitionId + " does not exist",
+                    HttpStatus.NOT_FOUND);
         }
     }
 }

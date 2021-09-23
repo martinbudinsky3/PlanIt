@@ -34,9 +34,9 @@ public class UserProfileEventController {
     public ResponseEntity getEventsByDate(Principal principal, @RequestParam("date") String date) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events of user: " + username + " at date: " + date);
+        logger.info("Getting events of user {} at date {}", username, date);
         List<Event> events = eventService.getEventsByDate(userId, date);
-        logger.info("Events from date " + date + " successfully found. Returning " + events.size() + " events.");
+        logger.info("Events from date {} successfully found. Returning {} events", date, events.size());
         List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
 
         return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
@@ -51,9 +51,9 @@ public class UserProfileEventController {
                                                   @RequestParam("month") int month) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events of user: " + username + "in year: " + year + " and month: " + month);
+        logger.info("Getting events of user {} from year {} and month {}", username, year, month);
         List<Event> events = eventService.getEventsByMonthAndUserId(userId, year, month);
-        logger.info("Events from year " + year + " and month " + month + " successfully found. Returning " + events.size() + " events.");
+        logger.info("Returning {} events from year {} and month {} successfully found", events.size(), year, month);
         List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
 
         return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
@@ -65,9 +65,9 @@ public class UserProfileEventController {
     public ResponseEntity getEventsToAlert(Principal principal, @RequestParam("currentTime") String currentTime) {
         String username = principal.getName();
         long userId = userService.getUserByUsername(username).getId();
-        logger.info("Getting events to alert of user " + username);
+        logger.info("Getting events to alert of user {}", username);
         List<Event> events = eventService.getEventsToAlert(userId, currentTime);
-        logger.info("Returning " + events.size() + " events to alert of user " + username);
+        logger.info("Returning {} events to alert of user {}", events.size(), username);
         List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
 
         return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);

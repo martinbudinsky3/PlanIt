@@ -8,121 +8,75 @@ import java.time.LocalTime;
 import java.util.List;
 
 
-/** Class Event with attributes, constructors, getters and setters. */
 public class Event implements Serializable {
-    public enum Type {
-        FREE_TIME, WORK, SCHOOL, OTHERS;
-
-        @Override
-        public String toString() {
-            switch (this) {
-                case FREE_TIME:
-                    return "freeTime";
-
-                case WORK:
-                    return "work";
-
-                case SCHOOL:
-                    return "school";
-
-                case OTHERS:
-                    return "others";
-
-                default:
-                    return "";
-            }
-        }
-
-        public static Type fromString(String stringType) {
-            for(Type t : Type.values()) {
-                if(t.toString().equalsIgnoreCase(stringType)) {
-                    return t;
-                }
-            }
-
-            return null;
-        }
-    }
-
-    private int idEvent;
-    private int idUser;
+    private long id;
     private String title;
     private String location;
-    private Type type;
+    private EventType type;
     private String description;
-    private LocalDate date;
+    private LocalDate startDate;
     private List<LocalDate> dates;
-    private LocalTime starts;
-    private LocalDate endsDate;
-    private LocalTime ends;
+    private LocalTime startTime;
+    private LocalDate endDate;
+    private LocalTime endTime;
     private LocalDate alertDate;
-    private LocalTime alert;
+    private LocalTime alertTime;
     private Repetition repetition;
 
     public Event() {};
 
-    public Event(String title, String location, Type type, String description, LocalDate date, LocalTime starts, LocalDate endsDate,
-                 LocalTime ends, LocalDate alertDate, LocalTime alert, int idUser) {
+    public Event(String title, String location, EventType type, String description, LocalDate startDate, LocalTime startTime, LocalDate endDate,
+                 LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
         this.title = title;
         this.location = location;
         this.type = type;
         this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.alertDate = alertDate;
-        this.alert = alert;
-        this.idUser = idUser;
+        this.alertTime = alertTime;
     }
 
-    public Event(int idEvent, String title, String location, String description, LocalDate date, LocalTime starts,
-                 LocalDate endsDate, LocalTime ends, LocalDate alertDate, LocalTime alert) {
-        this.idEvent = idEvent;
+    public Event(long id, String title, String location, String description, LocalDate startDate, LocalTime startTime,
+                 LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
+        this.id = id;
         this.title = title;
         this.location = location;
         this.description = description;
-        this.date = date;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
+        this.startDate = startDate;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.alertDate = alertDate;
-        this.alert = alert;
+        this.alertTime = alertTime;
     }
 
-    public Event(int idEvent, int idUser, String title, String location, Type type, String description, LocalDate date,
-                 List<LocalDate> dates, LocalTime starts, LocalDate endsDate, LocalTime ends, LocalDate alertDate,
-                 LocalTime alert, Repetition repetition) {
-        this.idEvent = idEvent;
-        this.idUser = idUser;
+    public Event(long id, String title, String location, EventType type, String description, LocalDate startDate,
+                 List<LocalDate> dates, LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate,
+                 LocalTime alertTime, Repetition repetition) {
+        this.id = id;
         this.title = title;
         this.location = location;
         this.type = type;
         this.description = description;
-        this.date = date;
+        this.startDate = startDate;
         this.dates = dates;
-        this.starts = starts;
-        this.endsDate = endsDate;
-        this.ends = ends;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.alertDate = alertDate;
-        this.alert = alert;
+        this.alertTime = alertTime;
         this.repetition = repetition;
     }
 
-    public int getIdEvent() {
-        return idEvent;
+    public long getId() {
+        return id;
     }
 
-    public void setIdEvent(int idEvent) {
-        this.idEvent = idEvent;
-    }
-
-    public int getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -141,11 +95,11 @@ public class Event implements Serializable {
         this.location = location;
     }
 
-    public Type getType() {
+    public EventType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(EventType type) {
         this.type = type;
     }
 
@@ -157,36 +111,36 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
     }
 
-    public LocalTime getStarts() {
-        return starts;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setStarts(LocalTime starts) {
-        this.starts = starts;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public LocalDate getEndsDate() {
-        return endsDate;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEndsDate(LocalDate endsDate) {
-        this.endsDate = endsDate;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 
-    public LocalTime getEnds() {
-        return ends;
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setEnds(LocalTime ends) {
-        this.ends = ends;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
     public LocalDate getAlertDate() {
@@ -197,12 +151,12 @@ public class Event implements Serializable {
         this.alertDate = alertDate;
     }
 
-    public LocalTime getAlert() {
-        return alert;
+    public LocalTime getAlertTime() {
+        return alertTime;
     }
 
-    public void setAlert(LocalTime alert) {
-        this.alert = alert;
+    public void setAlertTime(LocalTime alertTime) {
+        this.alertTime = alertTime;
     }
 
     public List<LocalDate> getDates() {

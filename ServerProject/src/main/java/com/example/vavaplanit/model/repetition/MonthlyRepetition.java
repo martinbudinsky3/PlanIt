@@ -21,7 +21,7 @@ import java.util.Objects;
         @JsonSubTypes.Type(value = YearlyRepetition.class, name = "YearlyRepetition")
 })
 public class MonthlyRepetition extends WeeklyRepetition {
-    Logger logger = LoggerFactory.getLogger(MonthlyRepetition.class);
+    private final Logger logger = LoggerFactory.getLogger(MonthlyRepetition.class);
 
     private Integer dayOfMonth;
     private Integer ordinal;

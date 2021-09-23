@@ -33,19 +33,19 @@ public class AuthController {
         if(userFromDB != null) {
             logger.info("User {} already exists", userCreateDTO.getUsername());
 
-            return new ResponseEntity<>(null, HttpStatus.PRECONDITION_FAILED);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
         User user = userDTOmapper.userCreateDTOToUser(userCreateDTO);
         Long id = userService.add(user);
         if(id != null) {
-            logger.info("User successfully inserted with id " + id);
+            logger.info("User successfully inserted with id {}", id);
 
             return new ResponseEntity<>(id, HttpStatus.CREATED);
         }
 
         logger.error("Error registering new user {}", user.getUsername());
 
-        return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

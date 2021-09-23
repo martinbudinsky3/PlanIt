@@ -28,11 +28,11 @@ public class WeatherController {
 
     @GetMapping(value = "{ip}")
     public ResponseEntity getWeather(@PathVariable String ip) {
-        logger.info("Getting weather forecast for location by public IP " + ip);
+        logger.info("Getting weather forecast for location by public IP {}", ip);
         try {
             GeoLocation geoLocation = weatherService.getLocation(ip);
             if(geoLocation == null) {
-                return new ResponseEntity<>("Unable to get location by IP", HttpStatus.PRECONDITION_FAILED);
+                return new ResponseEntity<>("Unable to get location by IP", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
             List<DailyWeather> weatherList = weatherService.getWeather(geoLocation);
@@ -40,8 +40,8 @@ public class WeatherController {
 
             return new ResponseEntity<>(weatherDTOlist, HttpStatus.OK);
         } catch (JsonProcessingException ex) {
-            logger.error("Error while processing Json", ex);
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error("Error while processing HTTP response", ex);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

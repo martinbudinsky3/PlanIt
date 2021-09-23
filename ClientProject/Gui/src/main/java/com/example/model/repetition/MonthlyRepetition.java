@@ -1,9 +1,5 @@
 package com.example.model.repetition;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;

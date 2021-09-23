@@ -5,8 +5,7 @@ public class Weather {
     private Integer id;
     private String main;
     private String description;
-    private String icon;
-    private byte[] iconImage;
+    private String iconUri;
 
     public Integer getId() {
         return id;
@@ -32,19 +31,11 @@ public class Weather {
         this.description = description;
     }
 
-    public String getIcon() {
-        return icon;
+    public String getIconUri() {
+        return iconUri;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public byte[] getIconImage() {
-        return iconImage;
-    }
-
-    public void setIconImage(byte[] iconImage) {
-        this.iconImage = iconImage;
+    public void setIconUri(String iconUri) {
+        this.iconUri = iconUri;
     }
 }

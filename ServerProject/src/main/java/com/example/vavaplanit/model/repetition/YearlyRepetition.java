@@ -1,6 +1,8 @@
 package com.example.vavaplanit.model.repetition;
 
 import com.example.vavaplanit.model.Exception;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -9,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class YearlyRepetition extends MonthlyRepetition {
+    private final Logger logger = LoggerFactory.getLogger(YearlyRepetition.class);
+
     private int month;
 
     public YearlyRepetition() {

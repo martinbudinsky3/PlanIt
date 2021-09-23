@@ -184,8 +184,8 @@ public class PdfFile {
 
         // TODO handle repeated events
         for(Event event : events) {
-            int j = Utils.countColumnIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
-            int i = Utils.countRowIndexInCalendar(event.getDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
+            int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
 
             PdfPCell cell = table.getRow(i).getCells()[j];
             if (event.getType() == Event.Type.FREE_TIME) {
@@ -196,7 +196,7 @@ public class PdfFile {
                 font.setColor(63, 135, 213);
             }
 
-            cell.addElement(new Paragraph(event.getStarts() + " " + event.getTitle(), font));
+            cell.addElement(new Paragraph(event.getStartTime() + " " + event.getTitle(), font));
         }
     }
 }

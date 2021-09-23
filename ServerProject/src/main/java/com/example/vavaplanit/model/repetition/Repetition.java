@@ -1,9 +1,6 @@
 package com.example.vavaplanit.model.repetition;
 
 import com.example.vavaplanit.model.Event;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 

@@ -96,10 +96,8 @@ public class PlanItRegistrationController implements Initializable {
             User user = new User(firstName, lastName, userName, userPassword);
 
             try {
-                Integer id = usersClient.register(user);
-                user.setId(id);
+                usersClient.register(user);
                 windowsCreator.showInfoAlert("Registration successful", "Continue with login");
-//                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
             } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
                 if(ex instanceof JsonProcessingException) {
                     windowsCreator.showErrorAlert(resourceBundle);
