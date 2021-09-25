@@ -1,12 +1,15 @@
 package com.example.client;
 
+import com.example.exceptions.rest.ConflictException;
 import com.example.model.LoginData;
+import com.example.model.LoginResponse;
 import com.example.model.User;
 import com.example.utils.PropertiesReader;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -34,12 +37,12 @@ public class UsersClient {
      * @return User object to which the data belong.
      */
     public void login(String username, String password)
-            throws JsonProcessingException, ResourceAccessException, HttpStatusCodeException {
+            throws ResourceAccessException, HttpStatusCodeException {
         logger.info("Logging in user {}", username);
         final String uri = BASE_URI + "/login";
         LoginData loginData = new LoginData(username, password);
 
-        String loginResponseJson = restTemplate.postForObject(uri, loginData, String.class);
+        LoginResponse loginResponse = restTemplate.postForObject(uri, loginData, LoginResponse.class);
         // TODO save somewhere tokens from response
         // TODO handle error
     }
@@ -50,15 +53,23 @@ public class UsersClient {
      * @param user User that is going to be registered,
      * @return ID of newly registered user.
      */
-    public void register(User user)
-            throws JsonProcessingException, HttpStatusCodeException {
-        logger.info("Registering user {}" + user.getUsername());
+    public void register(User user) throws Exception {
+        try {
+            logger.info("Registering user {}" + user.getUsername());
 
-        final String uri = BASE_URI + "/auth/register";
+            final String uri = BASE_URI + "/auth/register";
+            Long id  = restTemplate.postForObject(uri, user, Long.class);
 
-        String idString = restTemplate.postForObject(uri, user, String.class);
-        Long id = objectMapper.readValue(idString, Long.class);
-        logger.info("User {} successfully registered", user.getUsername());
-        // TODO maybe do something with id
+            logger.info("User {} successfully registered with id {}", user.getUsername(), id);
+        } catch (Exception e) {
+            logger.error("Unsuccessful registration of user " + user.getUsername(), e);
+            if(e instanceof HttpStatusCodeException) {
+                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.CONFLICT) {
+                    throw new ConflictException();
+                }
+            }
+
+            throw e;
+        }
     }
 }

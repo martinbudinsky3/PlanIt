@@ -4,6 +4,7 @@ import com.example.client.EventsClient;
 import com.example.client.UsersClient;
 import com.example.client.WeatherClient;
 import com.example.model.Event;
+import com.example.model.EventType;
 import com.example.model.User;
 import com.example.model.weather.DailyWeather;
 import com.example.utils.PdfFile;
@@ -194,12 +195,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             try {
                 Platform.runLater(() -> {
 
-                    List<Event> events = eventsClient.getEventsToAlert(user.getId(), resourceBundle);
+                    List<Event> events = eventsClient.getEventsToAlert();
 
-                    // TODO for each
                     // show alert for every event that is returned
-                    for (int i = 0; i < events.size(); i++) {
-                        Event event = events.get(i);
+                    for (Event event : events) {
                         windowsCreator.createAlertWindow(user, event, eventsClient, this, resourceBundle);
                         playAlertSound();
                     }
@@ -263,7 +262,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             VBox dayVBox = (VBox) gridPaneNodes[j][i];
 
             HBox dayHeader = (HBox) dayVBox.getChildren().get(0);
-            Image img = new Image(new ByteArrayInputStream(dailyWeather.getWeather().get(0).getIconImage()));
+            Image img = new Image(dailyWeather.getWeather().get(0).getIconUri());
             ImageView imageView = new ImageView(img);
             imageView.setFitHeight(50);
             imageView.setFitWidth(50);
@@ -463,7 +462,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is possible to click on each event to show the detail.
      */
     public void showEventsInCalendar() {
-        List<Event> events = eventsClient.getUserEventsByMonth(user.getId(), selectedYear, selectedMonth, resourceBundle);
+        List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth, resourceBundle);
 
         for (Event event : events) {
             if(event.getDates() == null || event.getDates().isEmpty()) {
@@ -564,7 +563,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-            List<Event> events = eventsClient.getEventsByDate(user.getId(), event.getStartDate(), resourceBundle);
+            List<Event> events = eventsClient.getEventsByDate(event.getStartDate(), resourceBundle);
 
             for (Event ev : events) {
                 addEventToCalendar(ev, dayVBox);
@@ -581,7 +580,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Node> nodes = dayVBox.getChildren();
         nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        List<Event> events = eventsClient.getEventsByDate(user.getId(), date, resourceBundle);
+        List<Event> events = eventsClient.getEventsByDate(date, resourceBundle);
 
         for (Event ev : events) {
             addEventToCalendar(ev, dayVBox);
@@ -595,11 +594,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         eventLabel.setId(Long.toString(event.getId())); // storing event id in its label id
         eventLabel.setPrefWidth(dayVBox.getPrefWidth());
         eventLabel.getStyleClass().add("event-label");
-        if (event.getType() == Event.Type.FREE_TIME) {
+        if (event.getType() == EventType.FREE_TIME) {
             eventLabel.getStyleClass().add("free-time-label");
-        } else if (event.getType() == Event.Type.WORK) {
+        } else if (event.getType() == EventType.WORK) {
             eventLabel.getStyleClass().add("work-label");
-        } else if (event.getType() == Event.Type.SCHOOL) {
+        } else if (event.getType() == EventType.SCHOOL) {
             eventLabel.getStyleClass().add("school-label");
         }
 
@@ -617,7 +616,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             VBox dayOfMonthBox = (VBox) eventLabel.getParent();
             int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
             // TODO move API call to event detail window controller
-            Event event = eventsClient.getEvent(user.getId(), Integer.parseInt(eventLabel.getId()),
+            Event event = eventsClient.getEvent(Long.parseLong(eventLabel.getId()),
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
                     user, eventsClient, this, resourceBundle);

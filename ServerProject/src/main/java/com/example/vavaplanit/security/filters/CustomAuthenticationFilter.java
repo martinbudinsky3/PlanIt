@@ -3,6 +3,7 @@ package com.example.vavaplanit.security.filters;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.example.vavaplanit.model.LoginData;
+import com.example.vavaplanit.model.LoginResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,10 +70,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         logger.debug("Access token: {}, Refresh token: {}", accessToken, refreshToken);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("access_token", accessToken);
-        tokens.put("refresh_token", refreshToken);
+        LoginResponse loginResponse = new LoginResponse(accessToken, refreshToken);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), tokens);
+        new ObjectMapper().writeValue(response.getOutputStream(), loginResponse);
     }
 }

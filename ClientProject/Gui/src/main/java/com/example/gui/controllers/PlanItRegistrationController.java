@@ -1,24 +1,25 @@
 package com.example.gui.controllers;
 
 import com.example.client.UsersClient;
+import com.example.exceptions.rest.ConflictException;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -97,25 +98,20 @@ public class PlanItRegistrationController implements Initializable {
 
             try {
                 usersClient.register(user);
-                windowsCreator.showInfoAlert("Registration successful", "Continue with login");
-            } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-                if(ex instanceof JsonProcessingException) {
-                    windowsCreator.showErrorAlert(resourceBundle);
-                    logger.error("Error inserting new user.Username: " + user.getUsername() + " First name: " + user.getFirstName() +
-                            ", last name: " + user.getLastName(), ex);
-                } else if(ex instanceof ResourceAccessException) {
-                    windowsCreator.showErrorAlert(resourceBundle);
-                    logger.error("Error while connecting to server", ex);
-                } else {
-                    if(((HttpStatusCodeException)ex).getRawStatusCode() == 412) {
-                        windowsCreator.showInfoAlert(resourceBundle.getString("registrationExistsAlertTitle"),
-                                resourceBundle.getString("registrationExistsAlertContent"));
-                    } else {
-                        windowsCreator.showErrorAlert(resourceBundle);
-                        logger.error("Error inserting new user.Username: " + user.getUsername() + " First name: " + user.getFirstName() +
-                                ", last name: " + user.getLastName() + ". HTTP Status: " + ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
-                    }
+                Optional<ButtonType> result = windowsCreator.showInfoAlert(resourceBundle.getString("successfulRegistrationAlertTitle"),
+                        resourceBundle.getString("successfulRegistrationAlertContent"));
+                if (result.get() == ButtonType.OK) {
+                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
                 }
+
+            } catch (Exception e) {
+                if (e instanceof ConflictException) {
+                    windowsCreator.showInfoAlert(resourceBundle.getString("registrationExistsAlertTitle"),
+                            resourceBundle.getString("registrationExistsAlertContent"));
+                } else {
+                    windowsCreator.showErrorAlert(resourceBundle);
+                }
+
             }
         }
     }

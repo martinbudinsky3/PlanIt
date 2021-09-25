@@ -1,19 +1,19 @@
-package com.example.gui.DataItems;
+package com.example.gui.dataitems;
 
-import com.example.model.Event;
+import com.example.model.repetition.RepetitionType;
 
 import java.util.ResourceBundle;
 
-public class EventTypeItem {
-    private Event.Type type;
+public class RepetitionTypeItem {
+    private RepetitionType type;
     private ResourceBundle resourceBundle;
 
-    public EventTypeItem(Event.Type type, ResourceBundle resourceBundle) {
+    public RepetitionTypeItem(RepetitionType type, ResourceBundle resourceBundle) {
         this.type = type;
         this.resourceBundle = resourceBundle;
     }
 
-    public Event.Type getType() {
+    public RepetitionType getType() {
         return type;
     }
 

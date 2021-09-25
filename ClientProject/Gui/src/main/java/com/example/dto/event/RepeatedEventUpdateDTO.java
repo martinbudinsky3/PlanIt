@@ -1,6 +1,7 @@
 package com.example.dto.event;
 
-import com.example.vavaplanit.model.EventType;
+
+import com.example.model.EventType;
 
 import java.time.LocalTime;
 

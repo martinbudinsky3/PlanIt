@@ -199,10 +199,10 @@ public class EventsClient {
      * @param event   Event object with updated attributes,
      * @param eventId id of that event
      */
-    public boolean updateEvent(Event event, int eventId, ResourceBundle resourceBundle) {
+    public boolean updateEvent(Event event, long eventId, ResourceBundle resourceBundle) {
         logger.info("Updating event with id {}", eventId);
         final String uri = BASE_URI + "/events/{eventId}";
-        Map<String, Integer> params = new HashMap<String, Integer>();
+        Map<String, Long> params = new HashMap<>();
         params.put("eventId", eventId);
 
         boolean success = false;

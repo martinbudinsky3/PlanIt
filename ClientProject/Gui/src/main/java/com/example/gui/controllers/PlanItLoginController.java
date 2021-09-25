@@ -90,13 +90,10 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
                     resourceBundle.getString("loginAlertContent"));
         } else {
             try {
-                user = usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
+                usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
-            } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-                if(ex instanceof JsonProcessingException) {
-                    windowsCreator.showErrorAlert(resourceBundle);
-                    logger.error("Error logging in user " + textfieldName.getText(), ex);
-                } else if(ex instanceof ResourceAccessException) {
+            } catch (ResourceAccessException | HttpStatusCodeException ex) {
+               if(ex instanceof ResourceAccessException) {
                     windowsCreator.showErrorAlert(resourceBundle);
                     logger.error("Error while connecting to server", ex);
                 } else {

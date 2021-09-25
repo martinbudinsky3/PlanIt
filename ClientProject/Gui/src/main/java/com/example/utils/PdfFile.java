@@ -2,6 +2,7 @@ package com.example.utils;
 
 import com.example.client.EventsClient;
 import com.example.model.Event;
+import com.example.model.EventType;
 import com.example.model.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -180,7 +181,7 @@ public class PdfFile {
     }
 
     private void showEventsInCalendar(PdfPTable table, Font font) {
-        List<Event> events = eventsClient.getUserEventsByMonth(user.getId(), selectedYear, selectedMonth, resourceBundle);
+        List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth, resourceBundle);
 
         // TODO handle repeated events
         for(Event event : events) {
@@ -188,11 +189,11 @@ public class PdfFile {
             int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
 
             PdfPCell cell = table.getRow(i).getCells()[j];
-            if (event.getType() == Event.Type.FREE_TIME) {
+            if (event.getType() == EventType.FREE_TIME) {
                 font.setColor(3, 252, 19);
-            } else if (event.getType() == Event.Type.WORK) {
+            } else if (event.getType() == EventType.WORK) {
                 font.setColor(252, 3, 3);
-            } else if (event.getType() == Event.Type.SCHOOL) {
+            } else if (event.getType() == EventType.SCHOOL) {
                 font.setColor(63, 135, 213);
             }
 

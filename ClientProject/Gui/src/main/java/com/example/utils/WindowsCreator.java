@@ -12,6 +12,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 
@@ -226,12 +228,13 @@ public class WindowsCreator {
         }
     }
 
-    public void showInfoAlert(String title, String contentText) {
+    public Optional<ButtonType> showInfoAlert(String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(contentText);
-        alert.showAndWait();
+
+        return alert.showAndWait();
     }
 
     public void showErrorAlert(ResourceBundle resourceBundle) {
