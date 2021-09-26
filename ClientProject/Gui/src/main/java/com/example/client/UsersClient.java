@@ -1,6 +1,7 @@
 package com.example.client;
 
 import com.example.exceptions.rest.ConflictException;
+import com.example.exceptions.rest.UnauthorizedException;
 import com.example.model.LoginData;
 import com.example.model.LoginResponse;
 import com.example.model.User;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -46,14 +48,16 @@ public class UsersClient {
             LoginData loginData = new LoginData(username, password);
 
             LoginResponse loginResponse = restTemplate.postForObject(uri, loginData, LoginResponse.class);
+            logger.info("User {} successfully logged in", username);
             Preferences preferences = Preferences.userRoot();
             preferences.put("accessToken", loginResponse.getAccessToken());
             preferences.put("refreshToken", loginResponse.getRefreshToken());
             // TODO move preferences access somewhere
         } catch (Exception e) {
+            logger.error("Unsuccessful login attempt", e);
             if(e instanceof HttpStatusCodeException) {
-                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.CONFLICT) {
-                    throw new ConflictException();
+                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
                 }
             }
 

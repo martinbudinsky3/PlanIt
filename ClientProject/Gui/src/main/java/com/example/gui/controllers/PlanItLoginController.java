@@ -1,6 +1,7 @@
 package com.example.gui.controllers;
 
 import com.example.client.UsersClient;
+import com.example.exceptions.rest.UnauthorizedException;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -62,7 +63,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
      */
     @Override
     public void reload(ResourceBundle bundle) {
-        windowsCreator.reload(ap, bundle, "fxml/PlanItLogin.fxml",this);
+        windowsCreator.reload(ap, bundle, "fxml/PlanItLogin.fxml", this);
     }
 
     /**
@@ -92,19 +93,12 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             try {
                 usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
                 windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
-            } catch (ResourceAccessException | HttpStatusCodeException ex) {
-               if(ex instanceof ResourceAccessException) {
-                    windowsCreator.showErrorAlert(resourceBundle);
-                    logger.error("Error while connecting to server", ex);
+            } catch (Exception ex) {
+                if (ex instanceof UnauthorizedException) {
+                    windowsCreator.showInfoAlert(resourceBundle.getString("loginWrongAlertTitle"),
+                            resourceBundle.getString("loginAlertContent"));
                 } else {
-                    if(((HttpStatusCodeException)ex).getRawStatusCode() == 412) {
-                        windowsCreator.showInfoAlert(resourceBundle.getString("loginWrongAlertTitle"),
-                                resourceBundle.getString("loginAlertContent"));
-                    } else {
-                        logger.error("Error logging in user " + textfieldName.getText() + ". HTTP Status: " +
-                                ((HttpStatusCodeException)ex).getRawStatusCode(), ex);
-                        windowsCreator.showErrorAlert(resourceBundle);
-                    }
+                    windowsCreator.showErrorAlert(resourceBundle);
                 }
             }
         }

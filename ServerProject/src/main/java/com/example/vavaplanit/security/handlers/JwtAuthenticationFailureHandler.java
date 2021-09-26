@@ -12,17 +12,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JWTauthenticationFailureHandler implements AuthenticationFailureHandler {
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
+public class JwtAuthenticationFailureHandler implements AuthenticationFailureHandler {
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e)
-            throws IOException, ServletException {
+            throws IOException {
 
         httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
         Map<String, Object> data = new HashMap<>();
         data.put("message", e.getMessage());
-        httpServletResponse.getOutputStream()
-                .println(objectMapper.writeValueAsString(data));
+        httpServletResponse.setContentType(APPLICATION_JSON_VALUE);
+        objectMapper.writeValue(httpServletResponse.getOutputStream(), data);
     }
 }
