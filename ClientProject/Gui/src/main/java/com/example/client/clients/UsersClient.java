@@ -1,19 +1,16 @@
-package com.example.client;
+package com.example.client.clients;
 
-import com.example.exceptions.rest.ConflictException;
-import com.example.exceptions.rest.UnauthorizedException;
+import com.example.client.exceptions.ConflictException;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.LoginData;
 import com.example.model.LoginResponse;
 import com.example.model.User;
 import com.example.utils.PropertiesReader;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.prefs.Preferences;

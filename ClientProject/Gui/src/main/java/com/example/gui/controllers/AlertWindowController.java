@@ -1,6 +1,6 @@
 package com.example.gui.controllers;
 
-import com.example.client.EventsClient;
+import com.example.client.clients.EventsClient;
 import com.example.model.Event;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;

@@ -1,8 +1,8 @@
 package com.example.utils;
 
-import com.example.client.EventsClient;
-import com.example.client.UsersClient;
-import com.example.client.WeatherClient;
+import com.example.client.clients.EventsClient;
+import com.example.client.clients.UsersClient;
+import com.example.client.clients.WeatherClient;
 import com.example.model.Event;
 import com.example.model.User;
 import com.example.gui.controllers.*;
@@ -126,20 +126,25 @@ public class WindowsCreator {
      * Button for canceling registration (buttonCancel)
      * Shows "PlanItLogin" window.
      */
-    public void createLoginWindow(ResourceBundle resourceBundle, Stage window, UsersClient usersClient) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-        PlanItLoginController planItLoginController = new PlanItLoginController(usersClient, this);
-        fxmlLoader.setController(planItLoginController);
-        fxmlLoader.setResources(resourceBundle);
-        AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
-        Scene newScene = new Scene(rootPane);
-        newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
-        window.setScene(newScene);
-        window.centerOnScreen();
-        window.setTitle("PlanIt");
-        window.resizableProperty().setValue(false);
-        window.show();
+    public void createLoginWindow(ResourceBundle resourceBundle, Stage window, UsersClient usersClient) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
+            PlanItLoginController planItLoginController = new PlanItLoginController(usersClient, this);
+            fxmlLoader.setController(planItLoginController);
+            fxmlLoader.setResources(resourceBundle);
+            AnchorPane rootPane = fxmlLoader.load();
+            Scene newScene = new Scene(rootPane);
+            newScene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
+            window.setScene(newScene);
+            window.centerOnScreen();
+            window.setTitle("PlanIt");
+            window.resizableProperty().setValue(false);
+            window.show();
+        } catch (IOException e) {
+            showErrorAlert(resourceBundle);
+            logger.error("Error. Can't create login window", e);
+        }
     }
 
     public void reload(AnchorPane ap, ResourceBundle resourceBundle, String fxmlFilePath, LanguageChangeWindow languageChangeWindow) {

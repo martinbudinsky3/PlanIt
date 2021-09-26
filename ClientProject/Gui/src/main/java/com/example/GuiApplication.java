@@ -1,6 +1,6 @@
-package com.example.gui;
+package com.example;
 
-import com.example.client.UsersClient;
+import com.example.client.clients.UsersClient;
 import com.example.utils.UTF8Control;
 import com.example.utils.WindowsCreator;
 import javafx.application.Application;
@@ -24,12 +24,6 @@ public class GuiApplication extends Application {
 		Locale locale = Locale.getDefault();
 		ResourceBundle bundle = ResourceBundle.getBundle("captions", locale, new UTF8Control());
 		WindowsCreator windowsCreator = new WindowsCreator();
-
-		try {
-			windowsCreator.createLoginWindow(bundle, primaryStage, new UsersClient());
-		} catch (IOException ex) {
-			windowsCreator.showErrorAlert(bundle);
-			logger.error("Error while starting application", ex);
-		}
+		windowsCreator.createLoginWindow(bundle, primaryStage, new UsersClient());
 	}
 }

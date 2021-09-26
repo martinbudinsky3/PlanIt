@@ -1,10 +1,9 @@
 package com.example.gui.controllers;
 
-import com.example.client.UsersClient;
-import com.example.exceptions.rest.ConflictException;
+import com.example.client.clients.UsersClient;
+import com.example.client.exceptions.ConflictException;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,9 +12,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -68,12 +64,7 @@ public class PlanItRegistrationController implements Initializable {
             buttonRegisterHandler(e);
         });
         buttonCancel.setOnAction(e -> {
-            try {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
-            } catch (IOException ex) {
-                windowsCreator.showErrorAlert(resourceBundle);
-                logger.error("Error while opening login window", ex);
-            }
+            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
         });
     }
 

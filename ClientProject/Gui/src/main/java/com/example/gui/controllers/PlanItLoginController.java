@@ -1,10 +1,9 @@
 package com.example.gui.controllers;
 
-import com.example.client.UsersClient;
-import com.example.exceptions.rest.UnauthorizedException;
+import com.example.client.clients.UsersClient;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,8 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.ResourceAccessException;
 
 import java.net.URL;
 import java.util.ResourceBundle;

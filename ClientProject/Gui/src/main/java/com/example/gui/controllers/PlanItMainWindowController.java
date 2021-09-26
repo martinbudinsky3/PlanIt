@@ -1,8 +1,9 @@
 package com.example.gui.controllers;
 
-import com.example.client.EventsClient;
-import com.example.client.UsersClient;
-import com.example.client.WeatherClient;
+import com.example.client.clients.EventsClient;
+import com.example.client.clients.UsersClient;
+import com.example.client.clients.WeatherClient;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.model.EventType;
 import com.example.model.User;
@@ -33,7 +34,6 @@ import org.springframework.web.client.ResourceAccessException;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -213,6 +213,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     // TODO this should be in AlertWindowController
+
     /**
      * Sound of notification is played.
      */
@@ -230,7 +231,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void runWeatherTask() {
-        while(threadActive) {
+        while (threadActive) {
             try {
                 Platform.runLater(() -> {
                     addWeatherToCalendar();
@@ -245,7 +246,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     public void addWeatherToCalendar() {
-        if(!checkWeatherForecast()) {
+        if (!checkWeatherForecast()) {
             return;
         }
 
@@ -308,13 +309,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(user, LocalDate.now(), eventsClient,
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
-            try {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
-                threadActive = false;
-            } catch (IOException ex) {
-                windowsCreator.showErrorAlert(resourceBundle);
-                logger.error("Error while logging out", ex);
-            }
+            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            threadActive = false;
         });
         changeLanguageButton.setOnAction(e -> {
             windowsCreator.createLanguageSelectorWindow(this, resourceBundle);
@@ -330,8 +326,17 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private void savePdfButtonHandler() {
         File file = showFileChooser();
         if (file != null) {  // if user hit cancel button nothing happens
-            PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, eventsClient, resourceBundle, file, windowsCreator);
-            pdfFile.pdf();
+            try {
+                List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth);
+                PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, events, resourceBundle, file, windowsCreator);
+                pdfFile.pdf();
+            } catch (Exception e) {
+                if (e instanceof UnauthorizedException) {
+                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                } else {
+                    windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
+                }
+            }
         }
     }
 
@@ -462,25 +467,33 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
      * It is possible to click on each event to show the detail.
      */
     public void showEventsInCalendar() {
-        List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth, resourceBundle);
+        try {
+            List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth);
 
-        for (Event event : events) {
-            if(event.getDates() == null || event.getDates().isEmpty()) {
-                int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
-                int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
+            for (Event event : events) {
+                if (event.getDates() == null || event.getDates().isEmpty()) {
+                    int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
+                    int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
 
-                VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                addEventToCalendar(event, dayVBox);
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    addEventToCalendar(event, dayVBox);
 
-                continue;
+                    continue;
+                }
+
+                for (LocalDate date : event.getDates()) {
+                    int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+                    int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+
+                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
+                    addEventToCalendar(event, dayVBox);
+                }
             }
-
-            for(LocalDate date : event.getDates()) {
-                int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
-                int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
-
-                VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                addEventToCalendar(event, dayVBox);
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
             }
         }
     }
@@ -531,9 +544,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
         List<Node> nodes = dayVBox.getChildren();
 
-        for(int n = 1; n < nodes.size(); n++) {
+        for (int n = 1; n < nodes.size(); n++) {
             Label eventLabel = (Label) nodes.get(n);
-            if(Integer.parseInt(eventLabel.getId()) == idEvent) {
+            if (Integer.parseInt(eventLabel.getId()) == idEvent) {
                 logger.debug("Removing event with id " + idEvent + " from field of date " + date);
                 nodes.remove(eventLabel);
                 break;
@@ -548,11 +561,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         VBox dayVBox = (VBox) gridPaneNodes[j][i];
         List<Node> nodes = dayVBox.getChildren();
 
-        if(oldDate.equals(event.getStartDate()) && oldTime.equals(event.getStartTime())) {
-            for(int n = 1; n < nodes.size(); n++) {
+        if (oldDate.equals(event.getStartDate()) && oldTime.equals(event.getStartTime())) {
+            for (int n = 1; n < nodes.size(); n++) {
                 Label eventLabel = (Label) nodes.get(n);
                 Integer labelId = Integer.parseInt(eventLabel.getId());
-                if(labelId == event.getId()) {  // event label found
+                if (labelId == event.getId()) {  // event label found
                     String eventLabelText = event.getStartTime() + " " + event.getTitle();
                     eventLabel.setText(eventLabelText);
                     break;
@@ -560,14 +573,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             }
         } else {
             deleteEventFromCalendar(event.getId(), oldDate);
-
             nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
-
-            List<Event> events = eventsClient.getEventsByDate(event.getStartDate(), resourceBundle);
-
-            for (Event ev : events) {
-                addEventToCalendar(ev, dayVBox);
-            }
+            populateDayFieldWithEvents(event.getStartDate(), dayVBox);
         }
     }
 
@@ -580,10 +587,21 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         List<Node> nodes = dayVBox.getChildren();
         nodes.subList(1, nodes.size()).clear(); // remove only event labels, not header with day number and weather
 
-        List<Event> events = eventsClient.getEventsByDate(date, resourceBundle);
+        populateDayFieldWithEvents(date, dayVBox);
+    }
 
-        for (Event ev : events) {
-            addEventToCalendar(ev, dayVBox);
+    private void populateDayFieldWithEvents(LocalDate date, VBox dayVBox) {
+        try {
+            List<Event> events = eventsClient.getEventsByDate(date);
+            for (Event ev : events) {
+                addEventToCalendar(ev, dayVBox);
+            }
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
+            }
         }
     }
 

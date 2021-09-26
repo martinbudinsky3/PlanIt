@@ -1,11 +1,13 @@
 package com.example.utils;
 
-import com.example.client.EventsClient;
+import com.example.client.clients.EventsClient;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.model.EventType;
 import com.example.model.User;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,29 +20,33 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
-/** Class in which PDF file is created. */
+/**
+ * Class in which PDF file is created.
+ */
 public class PdfFile {
     private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
     private final WindowsCreator windowsCreator;
-    private final EventsClient eventsClient;
+    private final List<Event> events;
     private final User user;
     private final int selectedYear;
     private final int selectedMonth;
     private final ResourceBundle resourceBundle;
     private final File file;
 
-    public PdfFile(User user, int selectedYear, int selectedMonth, EventsClient eventsClient, ResourceBundle resourceBundle,
+    public PdfFile(User user, int selectedYear, int selectedMonth, List<Event> events, ResourceBundle resourceBundle,
                    File file, WindowsCreator windowsCreator) {
         this.user = user;
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
-        this.eventsClient = eventsClient;
+        this.events = events;
         this.resourceBundle = resourceBundle;
         this.file = file;
         this.windowsCreator = windowsCreator;
     }
 
-    /** Setting name of creating document. */
+    /**
+     * Setting name of creating document.
+     */
     public void pdf() {
         Document document = new Document();
         try {
@@ -55,7 +61,7 @@ public class PdfFile {
             windowsCreator.showInfoAlert(resourceBundle.getString("pdfAlertTitle"),
                     resourceBundle.getString("pdfAlertContent"));
             logger.debug("PDF file was created and saved at: " + file.getAbsolutePath());
-        } catch(DocumentException | FileNotFoundException ex){
+        } catch (DocumentException | FileNotFoundException ex) {
             windowsCreator.showErrorAlert(resourceBundle);
             logger.error("Error while creating PDF file", ex);
         } finally {
@@ -63,16 +69,19 @@ public class PdfFile {
         }
     }
 
-    /** Setting tittle and line with name of the user.
-     * @param document created document*/
+    /**
+     * Setting tittle and line with name of the user.
+     *
+     * @param document created document
+     */
     public void setHeader(Document document) throws DocumentException {
         Paragraph dateParagraph = setDateParagraph();
         Paragraph nameParagraph = setNameParagraph();
 
         //adding paragraphs to document
         document.add(dateParagraph);
-        document.add( Chunk.NEWLINE );
-        document.add( Chunk.NEWLINE );
+        document.add(Chunk.NEWLINE);
+        document.add(Chunk.NEWLINE);
         document.add(nameParagraph);
     }
 
@@ -111,8 +120,11 @@ public class PdfFile {
         return nameParagraph;
     }
 
-    /** Setting table - calendar od events. Setting numbers of days and events into table cells
-     * @param document created document*/
+    /**
+     * Setting table - calendar od events. Setting numbers of days and events into table cells
+     *
+     * @param document created document
+     */
     public void setTable(Document document) throws DocumentException {
         PdfPTable table = new PdfPTable(7);
 
@@ -124,7 +136,7 @@ public class PdfFile {
         initializeCalendar(table, numbersFont);
 
         showEventsInCalendar(table, font);
-        
+
         table.setWidthPercentage(100);
         document.add(table);
     }
@@ -152,7 +164,7 @@ public class PdfFile {
         // find out when does month start and end
         GregorianCalendar gregorianCalendar = new GregorianCalendar(selectedYear, selectedMonth - 1, 1);
         int firstDayOfMonth = gregorianCalendar.get(Calendar.DAY_OF_WEEK) - 1;
-        if(firstDayOfMonth == 0){
+        if (firstDayOfMonth == 0) {
             firstDayOfMonth = 7;
         }
         int daysInMonth = gregorianCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
@@ -181,10 +193,8 @@ public class PdfFile {
     }
 
     private void showEventsInCalendar(PdfPTable table, Font font) {
-        List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth, resourceBundle);
-
         // TODO handle repeated events
-        for(Event event : events) {
+        for (Event event : events) {
             int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
             int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
 

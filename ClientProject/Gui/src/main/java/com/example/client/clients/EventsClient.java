@@ -1,5 +1,6 @@
-package com.example.client;
+package com.example.client.clients;
 
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.utils.PropertiesReader;
 import com.example.utils.WindowsCreator;
@@ -9,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -36,32 +38,29 @@ public class EventsClient {
      * @param date date that represents calendar field.
      * @return List of objects Event.  Method that returns all events for a given date. (Only events belonging to the logged in user)
      */
-    public List<Event> getEventsByDate(LocalDate date, ResourceBundle resourceBundle) {
+    public List<Event> getEventsByDate(LocalDate date) throws Exception {
         logger.info("Getting all events from date {}", date);
 
         final String uri = BASE_URI + "/users/profile/events?date={date}";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("date", date);
 
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events;
         try {
             String eventListJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule()); // TODO move to constructor
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events from date {}", events.size(), date);
-        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            // TODO improve error handling
-            windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
-            if (ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong with json processing while getting " +
-                        "events from date: [" + date + "]", ex);
-            } else if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error. Something went wrong while finding events in year and month: ["
-                        + date + "]. HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error while getting events from date {}", date, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
             }
+
+            throw ex;
         }
 
         return events;
@@ -74,7 +73,7 @@ public class EventsClient {
      * @param year  chosen year
      * @return List of objects Event.  Method that returns all events for a given month. (Only events belonging to the logged in user)
      */
-    public List<Event> getUserEventsByMonth(int year, int month, ResourceBundle resourceBundle) {
+    public List<Event> getUserEventsByMonth(int year, int month) throws Exception {
         logger.info("Getting all events in year {} and month {}", year, month);
 
         final String uri = BASE_URI + "/users/profile/events?year={year}&month={month}";
@@ -82,24 +81,22 @@ public class EventsClient {
         params.put("year", year);
         params.put("month", month);
 
-        List<Event> events = new ArrayList<Event>();
-
+        List<Event> events;
         try {
             String eventListJSon = restTemplate.getForObject(uri, String.class, params);
             objectMapper.registerModule(new JavaTimeModule());
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events in year {} and month {}", events.size(), year, month);
-        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
-            if (ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong with json processing while finding events in year and month: [" + year + ", " + month + "]", ex);
-            } else if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error. Something went wrong while finding events in year and month: ["
-                        + year + ", " + month + "]. HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error  while getting events in year {} and month {}", year, month, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
             }
+
+            throw ex;
         }
 
         return events;

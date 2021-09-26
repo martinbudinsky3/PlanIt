@@ -1,4 +1,4 @@
-package com.example.client;
+package com.example.client.clients;
 
 import com.example.model.weather.DailyWeather;
 import com.example.utils.PropertiesReader;
