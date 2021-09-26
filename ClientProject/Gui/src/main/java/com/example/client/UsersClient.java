@@ -14,6 +14,8 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.prefs.Preferences;
+
 
 /**
  * Class communicating with server. This class is focused on posting and getting requests related to the User object.
@@ -37,14 +39,27 @@ public class UsersClient {
      * @return User object to which the data belong.
      */
     public void login(String username, String password)
-            throws ResourceAccessException, HttpStatusCodeException {
-        logger.info("Logging in user {}", username);
-        final String uri = BASE_URI + "/login";
-        LoginData loginData = new LoginData(username, password);
+            throws Exception {
+        try {
+            logger.info("Logging in user {}", username);
+            final String uri = BASE_URI + "/login";
+            LoginData loginData = new LoginData(username, password);
 
-        LoginResponse loginResponse = restTemplate.postForObject(uri, loginData, LoginResponse.class);
-        // TODO save somewhere tokens from response
-        // TODO handle error
+            LoginResponse loginResponse = restTemplate.postForObject(uri, loginData, LoginResponse.class);
+            Preferences preferences = Preferences.userRoot();
+            preferences.put("accessToken", loginResponse.getAccessToken());
+            preferences.put("refreshToken", loginResponse.getRefreshToken());
+            // TODO move preferences access somewhere
+        } catch (Exception e) {
+            if(e instanceof HttpStatusCodeException) {
+                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.CONFLICT) {
+                    throw new ConflictException();
+                }
+            }
+
+            throw e;
+        }
+
     }
 
     /**
