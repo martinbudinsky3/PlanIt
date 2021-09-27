@@ -1,6 +1,9 @@
 package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
+import com.example.client.exceptions.AccessDeniedException;
+import com.example.client.exceptions.NotFoundException;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.model.EventType;
 import com.example.model.repetition.*;
@@ -247,14 +250,14 @@ public class PlanItAddEventController implements Initializable {
 
         startsField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean valid = validateTime(startsRow, startErrorField, newValue);
-            if(valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
+            if (valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
                 validateDatesAfterStartTimeChange(newValue, oldValue);
             }
         });
 
         endsField.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean valid = validateTime(endsRow, endErrorField, newValue);
-            if(valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
+            if (valid && startsDateField.getValue() != null && endsDateField.getValue() != null) {
                 validateDatesAfterEndTimeChange(newValue, oldValue);
             }
         });
@@ -264,7 +267,7 @@ public class PlanItAddEventController implements Initializable {
         });
 
         startsDateField.valueProperty().addListener(((observable, oldValue, newValue) -> {
-            if(endsDateField.getValue() != null) {
+            if (endsDateField.getValue() != null) {
                 validateDatesAfterStartChange(newValue, oldValue);
             }
         }));
@@ -292,20 +295,20 @@ public class PlanItAddEventController implements Initializable {
 
         try {
             startTime = LocalTime.parse(startsField.getText());
-        } catch(DateTimeException e) {
-            startTime = LocalTime.of(0,0);
+        } catch (DateTimeException e) {
+            startTime = LocalTime.of(0, 0);
         }
 
         try {
             endTime = LocalTime.parse(endsField.getText());
-        } catch(DateTimeException e) {
+        } catch (DateTimeException e) {
             endTime = LocalTime.of(23, 59);
         }
 
         LocalDateTime start = LocalDateTime.of(newValue, startTime);
         LocalDateTime end = LocalDateTime.of(endDate, endTime);
 
-        if(!start.isBefore(end)) {
+        if (!start.isBefore(end)) {
             int dayDiff = getDayDiff(oldValue, newValue);
             endsDateField.setValue(endDate.plusDays(dayDiff));
         }
@@ -318,20 +321,20 @@ public class PlanItAddEventController implements Initializable {
 
         try {
             startTime = LocalTime.parse(startsField.getText());
-        } catch(DateTimeException e) {
-            startTime = LocalTime.of(0,0);
+        } catch (DateTimeException e) {
+            startTime = LocalTime.of(0, 0);
         }
 
         try {
             endTime = LocalTime.parse(endsField.getText());
-        } catch(DateTimeException e) {
+        } catch (DateTimeException e) {
             endTime = LocalTime.of(23, 59);
         }
 
         LocalDateTime start = LocalDateTime.of(startDate, startTime);
         LocalDateTime end = LocalDateTime.of(newValue, endTime);
 
-        if(!start.isBefore(end)) {
+        if (!start.isBefore(end)) {
             int dayDiff = getDayDiff(oldValue, newValue);
             startsDateField.setValue(startDate.plusDays(dayDiff));
         }
@@ -348,8 +351,8 @@ public class PlanItAddEventController implements Initializable {
             endTime = LocalTime.parse(endsField.getText());
             LocalDateTime end = LocalDateTime.of(endsDateField.getValue(), endTime);
 
-            if(!start.isBefore(end)) {
-                if(oldStartTime != null) {
+            if (!start.isBefore(end)) {
+                if (oldStartTime != null) {
                     LocalDateTime oldStart = LocalDateTime.of(startsDateField.getValue(), oldStartTime);
                     int diff = getMinuteDiff(oldStart, start);
                     end = end.plusMinutes(diff);
@@ -361,11 +364,11 @@ public class PlanItAddEventController implements Initializable {
                 endsField.setText(end.toLocalTime().toString());
             }
 
-        } catch(DateTimeException e) {
+        } catch (DateTimeException e) {
             endTime = startTime.plusMinutes(30);
             LocalDateTime end = LocalDateTime.of(endsDateField.getValue(), endTime);
 
-            if(!start.isBefore(end)) {
+            if (!start.isBefore(end)) {
                 end = end.plusDays(1);
             }
 
@@ -385,8 +388,8 @@ public class PlanItAddEventController implements Initializable {
             startTime = LocalTime.parse(startsField.getText());
             LocalDateTime start = LocalDateTime.of(startsDateField.getValue(), startTime);
 
-            if(!start.isBefore(end)) {
-                if(oldEndTime != null) {
+            if (!start.isBefore(end)) {
+                if (oldEndTime != null) {
                     LocalDateTime oldEnd = LocalDateTime.of(startsDateField.getValue(), oldEndTime);
                     int diff = getMinuteDiff(oldEnd, end);
                     start = start.plusMinutes(diff);
@@ -398,11 +401,11 @@ public class PlanItAddEventController implements Initializable {
                 startsField.setText(start.toLocalTime().toString());
             }
 
-        } catch(DateTimeException e) {
+        } catch (DateTimeException e) {
             startTime = endTime.minusMinutes(30);
             LocalDateTime start = LocalDateTime.of(startsDateField.getValue(), startTime);
 
-            if(!start.isBefore(end)) {
+            if (!start.isBefore(end)) {
                 start = start.minusDays(1);
             }
 
@@ -412,9 +415,9 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private LocalTime getOldTime(String oldValue) {
-        try{
+        try {
             return LocalTime.parse(oldValue);
-        } catch(DateTimeException e) {
+        } catch (DateTimeException e) {
             return null;
         }
     }
@@ -690,12 +693,12 @@ public class PlanItAddEventController implements Initializable {
             if (userUseWindowToCreateEvent()) { // window is used for creating new event
                 addEvent(event);
             } else {  // window is used for updating existing event
-                if(userWantsToWorkWithRepetition()) {  // update repetition
+                if (userWantsToWorkWithRepetition()) {  // update repetition
                     event.getRepetition().setEventId(this.event.getRepetition().getEventId());
                     updateRepetition(event);
                 } else {  // update only this event
                     event.setRepetition(this.event.getRepetition());
-                    if(eventIsNotInRepetition(event)) { // event isn't in repetition
+                    if (eventIsNotInRepetition(event)) { // event isn't in repetition
                         updateSingleEvent(event);
                     } else {  // event is in repetition
                         updateEventInRepetition(event);
@@ -760,20 +763,28 @@ public class PlanItAddEventController implements Initializable {
 
     /**
      * Adding new event. (When event does not have ID yet.)
-     * After successful insert modal window is closed and calendar is displayed with just cretaed event
+     * After successful insert modal window is closed and calendar is displayed with just created event
      */
     public void addEvent(Event event) {
-        Long id = eventsClient.addEvent(event, resourceBundle);
+        try {
+            Long id = eventsClient.addEvent(event);
 
-        if (id != null) {
-            if (newDateIsInCalendarDisplay(event.getStartDate()) && event.getRepetition() == null) {
-                planItMainWindowController.createEventInCalendar(event.getStartDate());
-            } else {
-                updateCalendarDisplay(initDate);
+            if (id != null) {
+                if (newDateIsInCalendarDisplay(event.getStartDate()) && event.getRepetition() == null) {
+                    planItMainWindowController.createEventInCalendar(event.getStartDate());
+                } else {
+                    updateCalendarDisplay(initDate);
+                }
+
+                Stage stage = (Stage) ap.getScene().getWindow();
+                stage.close();
             }
-
-            Stage stage = (Stage) ap.getScene().getWindow();
-            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else {
+                // windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
+            }
         }
     }
 
@@ -782,23 +793,43 @@ public class PlanItAddEventController implements Initializable {
      * After successful update modal window is closed and calendar is displayed with just created event
      */
     private void updateRepetition(Event event) {
-        boolean success = eventsClient.updateRepetition(event, this.event.getId(), resourceBundle);
-
-        if (success) {
+        try {
+            eventsClient.updateRepetition(event, this.event.getId());
             updateCalendarDisplay(initDate);
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
+            } else {
+                // windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            }
         }
-
-        Stage stage = (Stage) ap.getScene().getWindow();
-        stage.close();
     }
 
     private void updateEventInRepetition(Event event) {
-        eventsClient.updateEventInRepetitionAtDate(event, this.event.getId(), initDate, resourceBundle);
+        try {
+            eventsClient.updateEventInRepetitionAtDate(event, this.event.getId(), initDate);
 
-        updateCalendarDisplay(event.getStartDate());
+            updateCalendarDisplay(event.getStartDate());
 
-        Stage stage = (Stage) ap.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
+            } else {
+                //windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            }
+        }
     }
 
     /**
@@ -806,23 +837,33 @@ public class PlanItAddEventController implements Initializable {
      * After successful update modal window is closed and calendar is displayed with just created event
      */
     private void updateSingleEvent(Event event) {
-        boolean success = eventsClient.updateEvent(event, this.event.getId(), resourceBundle);
+        try {
+            eventsClient.updateEvent(event, this.event.getId());
 
-        if (!success) {
-            return;
-        }
+            if (!newEventLabelIsEqualWithOld(event)) {
+                if (!newDateIsInCalendarDisplay(event.getStartDate())) {
+                    updateCalendarDisplay(event.getStartDate());
+                } else {
+                    event.setId(this.event.getId());
+                    planItMainWindowController.updateEventInCalendar(event, this.event.getStartDate(), this.event.getStartTime());
+                }
+            }
 
-        if (!newEventLabelIsEqualWithOld(event)) {
-            if (!newDateIsInCalendarDisplay(event.getStartDate())) {
-                updateCalendarDisplay(event.getStartDate());
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // TODO create users client inside login controller
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
             } else {
-                event.setId(this.event.getId());
-                planItMainWindowController.updateEventInCalendar(event, this.event.getStartDate(), this.event.getStartTime());
+                // windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             }
         }
 
-        Stage stage = (Stage) ap.getScene().getWindow();
-        stage.close();
     }
 
     private boolean newEventLabelIsEqualWithOld(Event updatedEvent) {
@@ -871,7 +912,7 @@ public class PlanItAddEventController implements Initializable {
                     success = deleteEvent();
                 }
 
-                if(success) {
+                if (success) {
                     Stage stage = (Stage) ap.getScene().getWindow();
                     stage.close();
                 }
@@ -881,28 +922,53 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    /** delete only this event from repetition */
+    /**
+     * delete only this event from repetition
+     */
     private boolean deleteEventFromRepetition() {
-        boolean success = eventsClient.deleteFromRepetition(this.event.getId(), event.getStartDate(), resourceBundle);
-        if (success) {
-            planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());;
+        try {
+            eventsClient.deleteFromRepetition(this.event.getId(), event.getStartDate());
+            planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());
+            return true;
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
+            } else {
+                // windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+            }
+            return false;
         }
-
-        return success;
     }
 
-    /** deleting event without repetition or all events from repetition if it's repetead event */
+    /**
+     * deleting event without repetition or all events from repetition if it's repetead event
+     */
     private boolean deleteEvent() {
-        boolean success = eventsClient.deleteEvent(this.event.getId(), resourceBundle);
-        if (success) {
+        try {
+            eventsClient.deleteEvent(this.event.getId());
             if (event.getRepetition() == null) {
                 planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());
             } else {
                 updateCalendarDisplay();
             }
+            return true;
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
+            } else {
+                // windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+            }
+            return false;
         }
 
-        return success;
     }
 
     private Alert createDeleteAlertWindow() {

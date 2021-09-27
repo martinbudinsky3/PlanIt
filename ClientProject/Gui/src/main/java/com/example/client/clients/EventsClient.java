@@ -1,5 +1,7 @@
 package com.example.client.clients;
 
+import com.example.client.exceptions.AccessDeniedException;
+import com.example.client.exceptions.NotFoundException;
 import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.utils.PropertiesReader;
@@ -108,20 +110,37 @@ public class EventsClient {
      * @param eventId event's ID.
      * @return chosen Event object.
      */
-    public Event getEvent(long eventId, LocalDate date) throws JsonProcessingException, ResourceAccessException,
-            HttpStatusCodeException {
-        logger.info("Getting event with id {}", eventId);
-        final String uri = BASE_URI + "/events/{eventId}?date={date}";
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("eventId", eventId);
-        params.put("date", date);
+    public Event getEvent(long eventId, LocalDate date) throws Exception {
+        Event event;
+        try {
+            logger.info("Getting event with id {}", eventId);
+            final String uri = BASE_URI + "/events/{eventId}?date={date}";
+            Map<String, Object> params = new HashMap<>();
+            params.put("eventId", eventId);
+            params.put("date", date);
 
-        String eventJSon = restTemplate.getForObject(uri, String.class, params);
-        objectMapper.registerModule(new JavaTimeModule());
-        Event event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
-        });
-        logger.info("Returning event with id {}", eventId);
+            String eventJSon = restTemplate.getForObject(uri, String.class, params);
+            objectMapper.registerModule(new JavaTimeModule());
+            event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
+            });
+            logger.info("Returning event with id {}", eventId);
+        } catch (Exception e) {
+            logger.error("Error while getting events with id {}", eventId);
+            if (e instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
+            }
 
+            throw e;
+        }
+        
         return event;
     }
 
@@ -136,8 +155,6 @@ public class EventsClient {
         Map<String, Object> params = new HashMap<>();
         params.put("currentTime", LocalDateTime.now());
 
-        logger.debug("Current time is:" + LocalDateTime.now());
-
         List<Event> events = new ArrayList<Event>();
         try {
             String eventsJSon = restTemplate.getForObject(uri, String.class, params);
@@ -145,15 +162,8 @@ public class EventsClient {
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events to alert", events.size());
-        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            if (ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong while finding events to alert", ex);
-            } else if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error. Something went wrong while finding events to alert. HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
-            }
+        } catch (Exception ex) {
+            logger.error("Error while getting events to alert", ex);
         }
 
         return events;
@@ -165,7 +175,7 @@ public class EventsClient {
      * @param event object Event that should be inserted in to calendar.
      * @return ID (integer) of the inserted event.
      */
-    public Long addEvent(Event event, ResourceBundle resourceBundle) {
+    public Long addEvent(Event event) throws Exception {
         logger.info("Inserting new event {}", event.getTitle());
         final String uri = BASE_URI + "/events";
 
@@ -173,17 +183,16 @@ public class EventsClient {
         try {
             String id = restTemplate.postForObject(uri, event, String.class);
             eventId = objectMapper.readValue(id, Long.class);
-            logger.info("Event " + event.getTitle() + " successfully inserted");
-        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
-            if (ex instanceof JsonProcessingException) {
-                logger.error("Error while inserting event." + event.getTitle(), ex);
-            } else if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while inserting event." + event.getTitle() + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            logger.info("Event {} successfully inserted", event.getTitle());
+        } catch (Exception ex) {
+            logger.error("Error while inserting new event {}", event.getTitle(), ex);
+            if(ex instanceof HttpStatusCodeException) {
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
             }
+
+            throw ex;
         }
 
         return eventId;
@@ -196,7 +205,7 @@ public class EventsClient {
      * @param event   Event object with updated attributes,
      * @param eventId id of that event
      */
-    public boolean updateEvent(Event event, long eventId, ResourceBundle resourceBundle) {
+    public void updateEvent(Event event, long eventId) throws Exception {
         logger.info("Updating event with id {}", eventId);
         final String uri = BASE_URI + "/events/{eventId}";
         Map<String, Long> params = new HashMap<>();
@@ -205,94 +214,109 @@ public class EventsClient {
         boolean success = false;
         try {
             restTemplate.put(uri, event, params);
-            success = true;
             logger.info("Event with id {} successfully updated", eventId);
-        } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while updating event." + event.getId() + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error while updating event with id {}", eventId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 
-    public boolean updateEventInRepetitionAtDate(Event event, long repetitionId, LocalDate date, ResourceBundle resourceBundle) {
+    public void updateEventInRepetitionAtDate(Event event, long repetitionId, LocalDate date)
+        throws Exception {
         logger.info("Updating event at date {} in repetition with id {}", date, repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}/events";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("repetitionId", repetitionId);
         params.put("date", date);
 
-        boolean success = false;
-
         try {
             restTemplate.put(uri, event, params);
-            success = true;
             logger.info("Event at date {} successfully updated in repetition with id {}", date, repetitionId);
-        } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while updating event." + event.getId() + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error while updating event at date {} in repetition with id {}", date, repetitionId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 
-    public boolean updateAllEventsInRepetition(Event event, long repetitionId, LocalDate date, ResourceBundle resourceBundle) {
+    public void updateAllEventsInRepetition(Event event, long repetitionId)
+        throws Exception {
+
         logger.info("Updating all events in repetition with id {}", repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}/events";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("repetitionId", repetitionId);
 
-        boolean success = false;
-
         try {
             restTemplate.put(uri, event, params);
-            success = true;
             logger.info("Events in repetition with id {} successfully updated in repetition", repetitionId);
-        } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while updating event." + event.getId() + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            //windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            logger.error("Error while updating all events in repetition with id {}", repetitionId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 
-    public boolean updateRepetition(Event event, long repetitionId, ResourceBundle resourceBundle) {
+    public void updateRepetition(Event event, long repetitionId) throws Exception {
         logger.info("Updating repetition with id {}", repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}";
         Map<String, Long> params = new HashMap<>();
         params.put("repetitionId", repetitionId);
 
-        boolean success = false;
         try {
             restTemplate.put(uri, event, params);
-            success = true;
             logger.info("Repetition with id {} successfully updated", repetitionId);
-        } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while updating repetition." + event.getRepetition().getEventId() + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error while updating repetition with id {}", repetitionId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 
     /**
@@ -300,52 +324,58 @@ public class EventsClient {
      *
      * @param eventId ID of event that is going to be deleted.
      */
-    public boolean deleteEvent(long eventId, ResourceBundle resourceBundle) {
+    public void deleteEvent(long eventId) throws Exception {
         logger.info("Deleting event with id {}", eventId);
         final String uri = BASE_URI + "/events/{eventId}";
         Map<String, Long> params = new HashMap<String, Long>();
         params.put("eventId", eventId);
 
-        boolean success = false;
         try {
             restTemplate.delete(uri, params);
-            success = true;
             logger.info("Event with id {} successfully deleted", eventId);
-        } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while deleting event." + eventId + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+        } catch (Exception ex) {
+            logger.error("Error while deleting event with id {}", eventId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 
-    public boolean deleteFromRepetition(long repetitionId, LocalDate date, ResourceBundle resourceBundle) {
+    public void deleteFromRepetition(long repetitionId, LocalDate date) throws Exception {
         logger.info("Deleting event at date {} from repetition with id {}", date, repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}/events?date={date}";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("repetitionId", repetitionId);
         params.put("date", date);
 
-        boolean success = false;
         try {
             restTemplate.delete(uri, params);
-            success = true;
             logger.info("Event at date {} successfully deleted from repetition with id {}", date, repetitionId);
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
-            if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
-            } else {
-                logger.error("Error while deleting event." + repetitionId + " HTTP status: "
-                        + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+            logger.error("Error while deleting event at date {} from repetition with id {}", date, repetitionId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
             }
-        }
 
-        return success;
+            throw ex;
+        }
     }
 }

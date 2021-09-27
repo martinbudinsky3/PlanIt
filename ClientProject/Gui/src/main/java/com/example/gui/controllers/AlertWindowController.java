@@ -1,6 +1,9 @@
 package com.example.gui.controllers;
 
 import com.example.client.clients.EventsClient;
+import com.example.client.exceptions.AccessDeniedException;
+import com.example.client.exceptions.NotFoundException;
+import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.model.User;
 import com.example.utils.WindowsCreator;
@@ -126,10 +129,23 @@ public class AlertWindowController implements Initializable {
         }
 
         // updating event - new alert time
-        boolean success = eventsClient.updateEvent(event, event.getId(), resourceBundle);
-        if(success){
+        try {
+            eventsClient.updateEvent(event, event.getId());
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                // TODO create users client inside login controller
+                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (e instanceof AccessDeniedException) {
+                // TODO
+            } else if (e instanceof NotFoundException) {
+                // TODO
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            }
         }
+
+
     }
 }

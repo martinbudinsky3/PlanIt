@@ -3,6 +3,8 @@ package com.example.gui.controllers;
 import com.example.client.clients.EventsClient;
 import com.example.client.clients.UsersClient;
 import com.example.client.clients.WeatherClient;
+import com.example.client.exceptions.AccessDeniedException;
+import com.example.client.exceptions.NotFoundException;
 import com.example.client.exceptions.UnauthorizedException;
 import com.example.model.Event;
 import com.example.model.EventType;
@@ -638,17 +640,15 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
                     user, eventsClient, this, resourceBundle);
-        } catch (JsonProcessingException | ResourceAccessException | HttpStatusCodeException ex) {
-            windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
-            if (ex instanceof JsonProcessingException) {
-                logger.error("Error. Something went wrong while finding event by user's [" + user.getId() + "] " +
-                        "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID", ex);
-            } else if (ex instanceof ResourceAccessException) {
-                logger.error("Error while connecting to server", ex);
+        } catch (Exception ex) {
+            if (ex instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            } else if (ex instanceof AccessDeniedException) {
+                // TODO
+            } else if (ex instanceof NotFoundException) {
+                // TODO
             } else {
-                logger.error("Error. Something went wrong while finding event by user's [" + user.getId() + "] " +
-                        "and event's [" + Integer.parseInt(eventLabel.getId()) + "] ID." +
-                        " HTTP status: " + ((HttpStatusCodeException) ex).getRawStatusCode(), ex);
+                windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
             }
         }
     }
