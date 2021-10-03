@@ -31,4 +31,11 @@ public class WeeklyRepetitionCreateDTO extends RepetitionCreateDTO {
     public void setDaysOfWeek(List<DayOfWeek> daysOfWeek) {
         this.daysOfWeek = daysOfWeek;
     }
+
+    @Override
+    public String toString() {
+        return "WeeklyRepetitionCreateDTO{" +
+                "daysOfWeek=" + daysOfWeek +
+                '}';
+    }
 }

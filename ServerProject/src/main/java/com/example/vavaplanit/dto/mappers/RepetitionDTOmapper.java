@@ -5,10 +5,10 @@ import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import com.example.vavaplanit.model.repetition.YearlyRepetition;
-import org.mapstruct.Mapper;
+import org.mapstruct.Named;
 
-@Mapper(componentModel = "spring")
 public interface RepetitionDTOmapper {
+    @Named("repetitionCreateDTOtoRepetition")
     default Repetition repetitionCreateDTOtoRepetition(RepetitionCreateDTO repetitionCreateDTO) {
         if(repetitionCreateDTO instanceof YearlyRepetitionCreateDTO) {
             return yearlyRepetitionCreateDTOtoYearlyRepetition((YearlyRepetitionCreateDTO) repetitionCreateDTO);
@@ -30,25 +30,25 @@ public interface RepetitionDTOmapper {
     MonthlyRepetition monthlyRepetitionCreateDTOtoMonthlyRepetition(MonthlyRepetitionCreateDTO monthlyRepetitionCreateDTO);
     YearlyRepetition yearlyRepetitionCreateDTOtoYearlyRepetition(YearlyRepetitionCreateDTO yearlyRepetitionCreateDTO);
 
-
-    default Repetition repetitionDetailDTOtoRepetition(RepetitionDetailDTO repetitionDetailDTO) {
-        if(repetitionDetailDTO instanceof YearlyRepetitionDetailDTO) {
-            return yearlyRepetitionDetailDTOtoYearlyRepetition((YearlyRepetitionDetailDTO) repetitionDetailDTO);
+    @Named("repetitionToRepetitionDetailDTO")
+    default RepetitionDetailDTO repetitiontoRepetitionDetailDTO(Repetition repetition) {
+        if(repetition instanceof YearlyRepetition) {
+            return yearlyRepetitiontoYearlyRepetitionDetailDTO((YearlyRepetition) repetition);
         }
 
-        if(repetitionDetailDTO instanceof MonthlyRepetitionDetailDTO) {
-            return monthlyRepetitionDetailDTOtoMonthlyRepetition((MonthlyRepetitionDetailDTO) repetitionDetailDTO);
+        if(repetition instanceof MonthlyRepetition) {
+            return monthlyRepetitiontoMonthlyRepetitionDetailDTO((MonthlyRepetition) repetition);
         }
 
-        if(repetitionDetailDTO instanceof WeeklyRepetitionDetailDTO) {
-            return weeklyRepetitionDetailDTOtoWeeklyRepetition((WeeklyRepetitionDetailDTO) repetitionDetailDTO);
+        if(repetition instanceof WeeklyRepetition) {
+            return weeklyRepetitiontoWeeklyRepetitionDetailDTO((WeeklyRepetition) repetition);
         }
 
-        return dailyRepetitionDetailDTOtoDailyRepetition(repetitionDetailDTO);
+        return dailyRepetitiontoDailyRepetitionDetailDTO(repetition);
     }
 
-    Repetition dailyRepetitionDetailDTOtoDailyRepetition(RepetitionDetailDTO repetitionDetailDTO);
-    WeeklyRepetition weeklyRepetitionDetailDTOtoWeeklyRepetition(WeeklyRepetitionDetailDTO weeklyRepetitionDetailDTO);
-    MonthlyRepetition monthlyRepetitionDetailDTOtoMonthlyRepetition(MonthlyRepetitionDetailDTO monthlyRepetitionDetailDTO);
-    YearlyRepetition yearlyRepetitionDetailDTOtoYearlyRepetition(YearlyRepetitionDetailDTO yearlyRepetitionDetailDTO);
+    RepetitionDetailDTO dailyRepetitiontoDailyRepetitionDetailDTO(Repetition repetition);
+    WeeklyRepetitionDetailDTO weeklyRepetitiontoWeeklyRepetitionDetailDTO(WeeklyRepetition weeklyRepetition);
+    MonthlyRepetitionDetailDTO monthlyRepetitiontoMonthlyRepetitionDetailDTO(MonthlyRepetition monthlyRepetition);
+    YearlyRepetitionDetailDTO yearlyRepetitiontoYearlyRepetitionDetailDTO(YearlyRepetition yearlyRepetition);
 }

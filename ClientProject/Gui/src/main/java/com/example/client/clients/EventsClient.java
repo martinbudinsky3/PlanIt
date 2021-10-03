@@ -3,16 +3,29 @@ package com.example.client.clients;
 import com.example.client.exceptions.AccessDeniedException;
 import com.example.client.exceptions.NotFoundException;
 import com.example.client.exceptions.UnauthorizedException;
+import com.example.client.utils.Utils;
+import com.example.dto.event.EventCreateDTO;
+import com.example.dto.mappers.EventMapper;
+import com.example.dto.repetition.MonthlyRepetitionCreateDTO;
+import com.example.dto.repetition.RepetitionCreateDTO;
+import com.example.dto.repetition.WeeklyRepetitionCreateDTO;
+import com.example.dto.repetition.YearlyRepetitionCreateDTO;
 import com.example.model.Event;
+import com.example.model.repetition.MonthlyRepetition;
+import com.example.model.repetition.Repetition;
+import com.example.model.repetition.WeeklyRepetition;
+import com.example.model.repetition.YearlyRepetition;
 import com.example.utils.PropertiesReader;
 import com.example.utils.WindowsCreator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
@@ -20,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.prefs.Preferences;
 
 /**
  * Class communicating with server. This class is focused on posting and getting requests related to the Event object.
@@ -29,10 +43,16 @@ public class EventsClient {
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
-    private final WindowsCreator windowsCreator = new WindowsCreator();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private EventMapper eventMapper = new EventMapper();
     private final RestTemplate restTemplate = new RestTemplate();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
+    private final Utils utils = new Utils();
+
+
+    public EventsClient() {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
 
     /**
      * Needed to render one calendar field after creation or update of event.
@@ -49,8 +69,11 @@ public class EventsClient {
 
         List<Event> events;
         try {
-            String eventListJSon = restTemplate.getForObject(uri, String.class, params);
-            objectMapper.registerModule(new JavaTimeModule()); // TODO move to constructor
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
+
+            String eventListJSon = (String) response.getBody();
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events from date {}", events.size(), date);
@@ -85,8 +108,11 @@ public class EventsClient {
 
         List<Event> events;
         try {
-            String eventListJSon = restTemplate.getForObject(uri, String.class, params);
-            objectMapper.registerModule(new JavaTimeModule());
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
+
+            String eventListJSon = (String) response.getBody();
             events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events in year {} and month {}", events.size(), year, month);
@@ -111,16 +137,19 @@ public class EventsClient {
      * @return chosen Event object.
      */
     public Event getEvent(long eventId, LocalDate date) throws Exception {
+        logger.info("Getting event with id {}", eventId);
+        final String uri = BASE_URI + "/events/{eventId}?date={date}";
+        Map<String, Object> params = new HashMap<>();
+        params.put("eventId", eventId);
+        params.put("date", date);
+
         Event event;
         try {
-            logger.info("Getting event with id {}", eventId);
-            final String uri = BASE_URI + "/events/{eventId}?date={date}";
-            Map<String, Object> params = new HashMap<>();
-            params.put("eventId", eventId);
-            params.put("date", date);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
 
-            String eventJSon = restTemplate.getForObject(uri, String.class, params);
-            objectMapper.registerModule(new JavaTimeModule());
+            String eventJSon = (String) response.getBody();
             event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
             });
             logger.info("Returning event with id {}", eventId);
@@ -130,17 +159,17 @@ public class EventsClient {
                 if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) e).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
 
             throw e;
         }
-        
+
         return event;
     }
 
@@ -157,8 +186,11 @@ public class EventsClient {
 
         List<Event> events = new ArrayList<Event>();
         try {
-            String eventsJSon = restTemplate.getForObject(uri, String.class, params);
-            objectMapper.registerModule(new JavaTimeModule());
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
+
+            String eventsJSon = (String) response.getBody();
             events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {
             });
             logger.info("Returning {} events to alert", events.size());
@@ -179,15 +211,22 @@ public class EventsClient {
         logger.info("Inserting new event {}", event.getTitle());
         final String uri = BASE_URI + "/events";
 
-        Long eventId = null;
+        EventCreateDTO eventCreateDTO = eventMapper.eventToEventCreateDTO(event);
+        logger.debug("eventCreateDTO: {}", eventCreateDTO);
+
+        Long eventId;
         try {
-            String id = restTemplate.postForObject(uri, event, String.class);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(eventCreateDTO, headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class);
+
+            String id = (String) response.getBody();
             eventId = objectMapper.readValue(id, Long.class);
-            logger.info("Event {} successfully inserted", event.getTitle());
+            logger.info("Event '{}' successfully inserted", event.getTitle());
         } catch (Exception ex) {
-            logger.error("Error while inserting new event {}", event.getTitle(), ex);
-            if(ex instanceof HttpStatusCodeException) {
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+            logger.error("Error while inserting new event '{}'", event.getTitle(), ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
             }
@@ -211,9 +250,11 @@ public class EventsClient {
         Map<String, Long> params = new HashMap<>();
         params.put("eventId", eventId);
 
-        boolean success = false;
         try {
-            restTemplate.put(uri, event, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(event, headers);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
+
             logger.info("Event with id {} successfully updated", eventId);
         } catch (Exception ex) {
             logger.error("Error while updating event with id {}", eventId, ex);
@@ -221,10 +262,10 @@ public class EventsClient {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
@@ -234,7 +275,7 @@ public class EventsClient {
     }
 
     public void updateEventInRepetitionAtDate(Event event, long repetitionId, LocalDate date)
-        throws Exception {
+            throws Exception {
         logger.info("Updating event at date {} in repetition with id {}", date, repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}/events";
         Map<String, Object> params = new HashMap<String, Object>();
@@ -242,7 +283,10 @@ public class EventsClient {
         params.put("date", date);
 
         try {
-            restTemplate.put(uri, event, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(event, headers);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
+
             logger.info("Event at date {} successfully updated in repetition with id {}", date, repetitionId);
         } catch (Exception ex) {
             logger.error("Error while updating event at date {} in repetition with id {}", date, repetitionId, ex);
@@ -250,10 +294,10 @@ public class EventsClient {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
@@ -263,7 +307,7 @@ public class EventsClient {
     }
 
     public void updateAllEventsInRepetition(Event event, long repetitionId)
-        throws Exception {
+            throws Exception {
 
         logger.info("Updating all events in repetition with id {}", repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}/events";
@@ -271,19 +315,21 @@ public class EventsClient {
         params.put("repetitionId", repetitionId);
 
         try {
-            restTemplate.put(uri, event, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(event, headers);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
+
             logger.info("Events in repetition with id {} successfully updated in repetition", repetitionId);
         } catch (Exception ex) {
-            //windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             logger.error("Error while updating all events in repetition with id {}", repetitionId, ex);
             if (ex instanceof HttpStatusCodeException) {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
@@ -299,7 +345,10 @@ public class EventsClient {
         params.put("repetitionId", repetitionId);
 
         try {
-            restTemplate.put(uri, event, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(event, headers);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
+
             logger.info("Repetition with id {} successfully updated", repetitionId);
         } catch (Exception ex) {
             logger.error("Error while updating repetition with id {}", repetitionId, ex);
@@ -307,10 +356,10 @@ public class EventsClient {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
@@ -331,7 +380,10 @@ public class EventsClient {
         params.put("eventId", eventId);
 
         try {
-            restTemplate.delete(uri, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class, params);
+
             logger.info("Event with id {} successfully deleted", eventId);
         } catch (Exception ex) {
             logger.error("Error while deleting event with id {}", eventId, ex);
@@ -339,10 +391,10 @@ public class EventsClient {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }
@@ -359,7 +411,10 @@ public class EventsClient {
         params.put("date", date);
 
         try {
-            restTemplate.delete(uri, params);
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            restTemplate.exchange(uri, HttpMethod.DELETE, entity, String.class, params);
+
             logger.info("Event at date {} successfully deleted from repetition with id {}", date, repetitionId);
         } catch (ResourceAccessException | HttpStatusCodeException ex) {
             logger.error("Error while deleting event at date {} from repetition with id {}", date, repetitionId, ex);
@@ -367,10 +422,10 @@ public class EventsClient {
                 if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
                     throw new AccessDeniedException();
                 }
-                if(((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
                     throw new NotFoundException();
                 }
             }

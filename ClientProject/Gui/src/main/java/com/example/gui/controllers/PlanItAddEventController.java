@@ -42,7 +42,6 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_HBOX_HEIGTH = 30;
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
 
-    private final long idUser;
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
 
@@ -155,16 +154,14 @@ public class PlanItAddEventController implements Initializable {
     private ResourceBundle resourceBundle;
     private Event event;
 
-    public PlanItAddEventController(long idUser, LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
-        this.idUser = idUser;
+    public PlanItAddEventController(LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.initRepetitionDate = initDate;
         this.initDate = initDate;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(long idUser, Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
-        this.idUser = idUser;
+    public PlanItAddEventController(Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
         this.event = event;
         this.initDate = event.getStartDate();
         this.eventsClient = eventsClient;

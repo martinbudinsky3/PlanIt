@@ -25,9 +25,9 @@ public class UsersClient {
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
     private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
+    private final Preferences preferences = Preferences.userRoot();
 
     /**
      * Method needed for login of user. After entering the username and password, this method returns User with given data
@@ -46,7 +46,6 @@ public class UsersClient {
 
             LoginResponse loginResponse = restTemplate.postForObject(uri, loginData, LoginResponse.class);
             logger.info("User {} successfully logged in", username);
-            Preferences preferences = Preferences.userRoot();
             preferences.put("accessToken", loginResponse.getAccessToken());
             preferences.put("refreshToken", loginResponse.getRefreshToken());
             // TODO move preferences access somewhere

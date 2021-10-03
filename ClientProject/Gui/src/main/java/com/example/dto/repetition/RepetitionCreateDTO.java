@@ -49,4 +49,13 @@ public class RepetitionCreateDTO {
     public void setRepetitionInterval(int repetitionInterval) {
         this.repetitionInterval = repetitionInterval;
     }
+
+    @Override
+    public String toString() {
+        return "RepetitionCreateDTO{" +
+                "start=" + start +
+                ", end=" + end +
+                ", repetitionInterval=" + repetitionInterval +
+                '}';
+    }
 }

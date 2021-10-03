@@ -30,10 +30,9 @@ public class RepetitionController {
     @Autowired
     private UserService userService;
     @Autowired
-    private RepetitionDTOmapper repetitionDTOmapper;
-    @Autowired
     private EventDTOmapper eventDTOmapper;
-
+    @Autowired
+    private RepetitionDTOmapper repetitionDTOmapper;
 
     @PutMapping(value = "{repetitionId}/events", params = "date")
     public ResponseEntity updateEventInRepetitionAtDate(Principal principal, @PathVariable("repetitionId") long repetitionId,

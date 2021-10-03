@@ -1,13 +1,17 @@
 package com.example.client.clients;
 
+import com.example.client.utils.Utils;
 import com.example.model.weather.DailyWeather;
 import com.example.utils.PropertiesReader;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -22,9 +26,14 @@ public class WeatherClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final RestTemplate restTemplate = new RestTemplate();
-    static final Logger logger = LoggerFactory.getLogger(WeatherClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeatherClient.class);
+    private final Utils utils = new Utils();
 
-    private String getPublicIPadress() throws JsonProcessingException {
+    public WeatherClient() {
+        objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    private String getPublicIPadress() throws Exception {
         logger.info("Getting public IP adress of device");
         final String uri = uriPropertiesReader.getProperty("get-public-ip-uri");
 
@@ -39,20 +48,24 @@ public class WeatherClient {
 
     public List<DailyWeather> getWeather() {
         logger.info("Getting weather forecast");
-        final String uri = BASE_URI + "/weather";
+        final String uri = BASE_URI + "/weather/{ip}";
 
         List<DailyWeather> weatherForecast = new ArrayList<>();
         try {
             String publicIP = getPublicIPadress();
             Map<String, String> params = new HashMap<String, String>();
             params.put("ip", publicIP);
-            String weatherForecastJson = restTemplate.getForObject(uri, String.class, params);
 
-            objectMapper.registerModule(new JavaTimeModule());
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
+            String weatherForecastJson = (String) response.getBody();
+            logger.debug("Weather response json: {}", weatherForecastJson);
             weatherForecast = objectMapper.readValue(weatherForecastJson, new TypeReference<List<DailyWeather>>() {
             });
-        } catch (JsonProcessingException ex) {
-            logger.error("Error. Something went wrong with json processing.", ex);
+        } catch (Exception ex) {
+            logger.error("Error while getting weather forecast", ex);
         }
 
         return weatherForecast;

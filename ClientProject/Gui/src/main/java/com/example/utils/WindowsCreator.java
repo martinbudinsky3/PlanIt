@@ -37,12 +37,11 @@ public class WindowsCreator {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getId(),
-                    event, eventsClient, planItMainWindowController);
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(event, eventsClient, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
 
-            AnchorPane anchorPane = anchorPane = (AnchorPane) loader.load();
+            AnchorPane anchorPane = (AnchorPane) loader.load();
             Scene scene = new Scene(anchorPane);
             scene.getStylesheets().add(getClass().getClassLoader().getResource("css/styles.css").toExternalForm());
             Stage window = new Stage();
@@ -69,7 +68,7 @@ public class WindowsCreator {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(user.getId(), initDate,
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(initDate,
                     eventsClient, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);

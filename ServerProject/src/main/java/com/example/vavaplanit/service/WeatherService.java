@@ -77,6 +77,6 @@ public class WeatherService {
     }
 
     private String buildIconUri(String iconName) {
-        return MessageFormat.format("http://openweathermap.org/img/wn/{icon}@2x.png", iconName);
+        return MessageFormat.format("http://openweathermap.org/img/wn/{0}@2x.png", iconName);
     }
 }

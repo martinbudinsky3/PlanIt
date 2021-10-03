@@ -13,12 +13,14 @@ import java.util.List;
 public interface WeatherDTOmapper {
 
     @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+    List<DailyWeatherDTO> dailyWeatherListToDailyWeatherDTOlist(List<DailyWeather> dailyWeatherList);
+
     @Mappings({
             @Mapping(target = "date", source = "dt"),
             @Mapping(target = "minTemperature", source = "temp.min"),
             @Mapping(target = "maxTemperature", source = "temp.max"),
     })
-    List<DailyWeatherDTO> dailyWeatherToDailyWeatherDTO(Collection<DailyWeather> dailyWeatherCollection);
+    DailyWeatherDTO dailyWeatherToDailyWeatherDTO(DailyWeather dailyWeather);
 
     WeatherDTO weatherToWeatherDTO(Weather weather);
 }

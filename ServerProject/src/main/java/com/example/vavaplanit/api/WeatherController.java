@@ -36,7 +36,8 @@ public class WeatherController {
             }
 
             List<DailyWeather> weatherList = weatherService.getWeather(geoLocation);
-            List<DailyWeatherDTO>weatherDTOlist = weatherDTOmapper.dailyWeatherToDailyWeatherDTO(weatherList);
+            logger.debug("Weather list, first day {}", weatherList.get(0).getDt());
+            List<DailyWeatherDTO>weatherDTOlist = weatherDTOmapper.dailyWeatherListToDailyWeatherDTOlist(weatherList);
 
             return new ResponseEntity<>(weatherDTOlist, HttpStatus.OK);
         } catch (JsonProcessingException ex) {

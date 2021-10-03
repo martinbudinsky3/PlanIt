@@ -47,7 +47,9 @@ public class EventController {
         long userId = userService.getUserByUsername(username).getId();
         logger.info("Inserting new event {} of user with id {}", eventCreateDTO.toString(), userId);
 
+        logger.debug("eventCreateDTO: '{}'", eventCreateDTO);
         Event event = eventDTOMapper.eventCreateDTOtoEvent(eventCreateDTO);
+
         Long id = eventService.add(event, userId);
         if(id != null) {
             logger.info("Event successfully inserted with id {}", id);
