@@ -5,50 +5,41 @@ import com.example.model.repetition.MonthlyRepetition;
 import com.example.model.repetition.Repetition;
 import com.example.model.repetition.WeeklyRepetition;
 import com.example.model.repetition.YearlyRepetition;
-import org.mapstruct.Mapper;
+import org.modelmapper.ModelMapper;
 
-@Mapper(componentModel = "spring")
-public interface RepetitionDTOmapper {
-    default RepetitionCreateDTO repetitionToRepetitionCreateDTO(Repetition repetition) {
+public class RepetitionDTOmapper {
+    private ModelMapper modelMapper = new ModelMapper();
+
+    public RepetitionCreateDTO repetitionToRepetitionCreateDTO(Repetition repetition) {
         if(repetition instanceof YearlyRepetition) {
-            return yearlyRepetitionToYearlyRepetitionCreateDTO((YearlyRepetition) repetition);
+            return modelMapper.map(repetition, YearlyRepetitionCreateDTO.class);
         }
 
         if(repetition instanceof MonthlyRepetition) {
-            return monthlyRepetitionToMonthlyRepetitionCreateDTO((MonthlyRepetition) repetition);
+            return modelMapper.map(repetition, MonthlyRepetitionCreateDTO.class);
         }
 
         if(repetition instanceof WeeklyRepetition) {
-            return weeklyRepetitionToWeeklyRepetitionCreateDTO((WeeklyRepetition) repetition);
+            return modelMapper.map(repetition, WeeklyRepetitionCreateDTO.class);
+
         }
 
-        return dailyRepetitionToDailyRepetitionCreateDTO(repetition);
+        return modelMapper.map(repetition, RepetitionCreateDTO.class);
     }
 
-    RepetitionCreateDTO dailyRepetitionToDailyRepetitionCreateDTO(Repetition repetition);
-    WeeklyRepetitionCreateDTO weeklyRepetitionToWeeklyRepetitionCreateDTO(WeeklyRepetition weeklyRepetition);
-    MonthlyRepetitionCreateDTO monthlyRepetitionToMonthlyRepetitionCreateDTO(MonthlyRepetition monthlyRepetition);
-    YearlyRepetitionCreateDTO yearlyRepetitionToYearlyRepetitionCreateDTO(YearlyRepetition yearlyRepetition);
-
-
-    default RepetitionDetailDTO repetitionToRepetitionDetailDTO(Repetition repetition) {
-        if(repetition instanceof YearlyRepetition) {
-            return yearlyRepetitionToYearlyRepetitionDetailDTO((YearlyRepetition) repetition);
+    public Repetition repetitionDetailDTOtoRepetition(RepetitionDetailDTO repetitionDetailDTO) {
+        if(repetitionDetailDTO instanceof YearlyRepetitionDetailDTO) {
+            return modelMapper.map(repetitionDetailDTO, YearlyRepetition.class);
         }
 
-        if(repetition instanceof MonthlyRepetition) {
-            return monthlyRepetitionToMonthlyRepetitionDetailDTO((MonthlyRepetition) repetition);
+        if(repetitionDetailDTO instanceof MonthlyRepetitionDetailDTO) {
+            return modelMapper.map(repetitionDetailDTO, MonthlyRepetition.class);
         }
 
-        if(repetition instanceof WeeklyRepetition) {
-            return weeklyRepetitionToWeeklyRepetitionDetailDTO((WeeklyRepetition) repetition);
+        if(repetitionDetailDTO instanceof WeeklyRepetitionDetailDTO) {
+            return modelMapper.map(repetitionDetailDTO, WeeklyRepetition.class);
         }
 
-        return dailyRepetitionToDailyRepetitionDetailDTO(repetition);
+        return modelMapper.map(repetitionDetailDTO, Repetition.class);
     }
-
-    RepetitionDetailDTO dailyRepetitionToDailyRepetitionDetailDTO(Repetition repetition);
-    WeeklyRepetitionDetailDTO weeklyRepetitionToWeeklyRepetitionDetailDTO(WeeklyRepetition weeklyRepetition);
-    MonthlyRepetitionDetailDTO monthlyRepetitionToMonthlyRepetitionDetailDTO(MonthlyRepetition monthlyRepetition);
-    YearlyRepetitionDetailDTO yearlyRepetitionToYearlyRepetitionDetailDTO(YearlyRepetition yearlyRepetition);
 }

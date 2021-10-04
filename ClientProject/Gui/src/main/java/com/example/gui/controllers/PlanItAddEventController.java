@@ -791,7 +791,7 @@ public class PlanItAddEventController implements Initializable {
      */
     private void updateRepetition(Event event) {
         try {
-            eventsClient.updateRepetition(event, this.event.getId());
+            eventsClient.updateRepetition(event.getRepetition(), this.event.getId());
             updateCalendarDisplay(initDate);
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();

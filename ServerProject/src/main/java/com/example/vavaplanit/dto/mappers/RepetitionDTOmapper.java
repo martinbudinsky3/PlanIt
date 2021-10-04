@@ -5,8 +5,10 @@ import com.example.vavaplanit.model.repetition.MonthlyRepetition;
 import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.model.repetition.WeeklyRepetition;
 import com.example.vavaplanit.model.repetition.YearlyRepetition;
+import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 
+@Mapper(componentModel = "spring")
 public interface RepetitionDTOmapper {
     @Named("repetitionCreateDTOtoRepetition")
     default Repetition repetitionCreateDTOtoRepetition(RepetitionCreateDTO repetitionCreateDTO) {

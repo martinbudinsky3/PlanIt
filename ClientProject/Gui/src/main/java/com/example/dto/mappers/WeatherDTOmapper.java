@@ -1,19 +1,19 @@
 package com.example.dto.mappers;
 
 import com.example.dto.weather.DailyWeatherDTO;
-import com.example.dto.weather.WeatherDTO;
 import com.example.model.weather.DailyWeather;
-import com.example.model.weather.Weather;
-import org.mapstruct.*;
+import org.modelmapper.ModelMapper;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-public interface WeatherDTOmapper {
+public class WeatherDTOmapper {
+    private ModelMapper modelMapper = new ModelMapper();
 
-    @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
-    List<DailyWeather> dailyWeatherDTOToDailyWeather(Collection<DailyWeatherDTO> dailyWeatherDTOcollection);
-
-    Weather weatherDTOtoWeather(WeatherDTO weather);
+    public List<DailyWeather> dailyWeatherDTOToDailyWeather(List<DailyWeatherDTO> dailyWeatherDTOlist) {
+        return dailyWeatherDTOlist
+                .stream()
+                .map(dailyWeatherDTO -> modelMapper.map(dailyWeatherDTO, DailyWeather.class))
+                .collect(Collectors.toList());
+    }
 }

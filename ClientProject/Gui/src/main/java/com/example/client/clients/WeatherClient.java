@@ -1,6 +1,8 @@
 package com.example.client.clients;
 
 import com.example.client.utils.Utils;
+import com.example.dto.mappers.WeatherDTOmapper;
+import com.example.dto.weather.DailyWeatherDTO;
 import com.example.model.weather.DailyWeather;
 import com.example.utils.PropertiesReader;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,6 +27,7 @@ public class WeatherClient {
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final WeatherDTOmapper weatherMapper = new WeatherDTOmapper();
     private final RestTemplate restTemplate = new RestTemplate();
     private static final Logger logger = LoggerFactory.getLogger(WeatherClient.class);
     private final Utils utils = new Utils();
@@ -60,10 +63,12 @@ public class WeatherClient {
             HttpEntity entity = new HttpEntity(headers);
 
             ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
-            String weatherForecastJson = (String) response.getBody();
-            logger.debug("Weather response json: {}", weatherForecastJson);
-            weatherForecast = objectMapper.readValue(weatherForecastJson, new TypeReference<List<DailyWeather>>() {
+            String dailyWeatherDTOlistJson = (String) response.getBody();
+            logger.debug("Weather response json: {}", dailyWeatherDTOlistJson);
+            List<DailyWeatherDTO> dailyWeatherDTOlist = objectMapper.readValue(dailyWeatherDTOlistJson, new TypeReference<List<DailyWeatherDTO>>() {
             });
+            weatherForecast = weatherMapper.dailyWeatherDTOToDailyWeather(dailyWeatherDTOlist);
+            logger.info("Returning weather forecast");
         } catch (Exception ex) {
             logger.error("Error while getting weather forecast", ex);
         }

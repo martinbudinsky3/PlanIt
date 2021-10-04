@@ -2,11 +2,12 @@ package com.example.client.clients;
 
 import com.example.client.exceptions.ConflictException;
 import com.example.client.exceptions.UnauthorizedException;
+import com.example.dto.mappers.UserMapper;
+import com.example.dto.user.UserCreateDTO;
 import com.example.model.LoginData;
 import com.example.model.LoginResponse;
 import com.example.model.User;
 import com.example.utils.PropertiesReader;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,7 @@ public class UsersClient {
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final UserMapper userMapper = new UserMapper();
     private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
     private final Preferences preferences = Preferences.userRoot();
 
@@ -69,12 +71,12 @@ public class UsersClient {
      * @return ID of newly registered user.
      */
     public void register(User user) throws Exception {
+        logger.info("Registering user {}" + user.getUsername());
+        final String uri = BASE_URI + "/auth/register";
+
+        UserCreateDTO userCreateDTO = userMapper.userToUserCreateDTO(user);
         try {
-            logger.info("Registering user {}" + user.getUsername());
-
-            final String uri = BASE_URI + "/auth/register";
-            Long id  = restTemplate.postForObject(uri, user, Long.class);
-
+            Long id  = restTemplate.postForObject(uri, userCreateDTO, Long.class);
             logger.info("User {} successfully registered with id {}", user.getUsername(), id);
         } catch (Exception e) {
             logger.error("Unsuccessful registration of user " + user.getUsername(), e);

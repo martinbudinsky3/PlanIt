@@ -9,7 +9,7 @@ import org.mapstruct.*;
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+@Mapper(componentModel = "spring")
 public interface WeatherDTOmapper {
 
     @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)

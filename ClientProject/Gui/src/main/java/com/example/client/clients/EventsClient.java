@@ -4,25 +4,16 @@ import com.example.client.exceptions.AccessDeniedException;
 import com.example.client.exceptions.NotFoundException;
 import com.example.client.exceptions.UnauthorizedException;
 import com.example.client.utils.Utils;
-import com.example.dto.event.EventCreateDTO;
-import com.example.dto.mappers.EventMapper;
-import com.example.dto.repetition.MonthlyRepetitionCreateDTO;
+import com.example.dto.event.*;
+import com.example.dto.mappers.EventDTOmapper;
+import com.example.dto.mappers.RepetitionDTOmapper;
 import com.example.dto.repetition.RepetitionCreateDTO;
-import com.example.dto.repetition.WeeklyRepetitionCreateDTO;
-import com.example.dto.repetition.YearlyRepetitionCreateDTO;
 import com.example.model.Event;
-import com.example.model.repetition.MonthlyRepetition;
 import com.example.model.repetition.Repetition;
-import com.example.model.repetition.WeeklyRepetition;
-import com.example.model.repetition.YearlyRepetition;
 import com.example.utils.PropertiesReader;
-import com.example.utils.WindowsCreator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
@@ -33,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.prefs.Preferences;
 
 /**
  * Class communicating with server. This class is focused on posting and getting requests related to the Event object.
@@ -44,7 +34,8 @@ public class EventsClient {
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private EventMapper eventMapper = new EventMapper();
+    private EventDTOmapper eventDTOmapper = new EventDTOmapper();
+    private RepetitionDTOmapper repetitionDTOmapper = new RepetitionDTOmapper();
     private final RestTemplate restTemplate = new RestTemplate();
     static final Logger logger = LoggerFactory.getLogger(EventsClient.class);
     private final Utils utils = new Utils();
@@ -112,9 +103,10 @@ public class EventsClient {
             HttpEntity entity = new HttpEntity(headers);
             ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
 
-            String eventListJSon = (String) response.getBody();
-            events = objectMapper.readValue(eventListJSon, new TypeReference<List<Event>>() {
+            String eventItemsJson = (String) response.getBody();
+            List<EventItemDTO> eventItems = objectMapper.readValue(eventItemsJson, new TypeReference<List<EventItemDTO>>() {
             });
+            events = eventDTOmapper.eventItemsDTOsToEvents(eventItems);
             logger.info("Returning {} events in year {} and month {}", events.size(), year, month);
         } catch (Exception ex) {
             logger.error("Error  while getting events in year {} and month {}", year, month, ex);
@@ -149,12 +141,13 @@ public class EventsClient {
             HttpEntity entity = new HttpEntity(headers);
             ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
 
-            String eventJSon = (String) response.getBody();
-            event = objectMapper.readValue(eventJSon, new TypeReference<Event>() {
+            String eventDetailJSon = (String) response.getBody();
+            EventDetailDTO eventDetailDTO = objectMapper.readValue(eventDetailJSon, new TypeReference<EventDetailDTO>() {
             });
+            event = eventDTOmapper.eventDetailDTOToEvent(eventDetailDTO);
             logger.info("Returning event with id {}", eventId);
         } catch (Exception e) {
-            logger.error("Error while getting events with id {}", eventId);
+            logger.error("Error while getting event with id {}", eventId, e);
             if (e instanceof HttpStatusCodeException) {
                 if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.UNAUTHORIZED) {
                     throw new UnauthorizedException();
@@ -190,9 +183,10 @@ public class EventsClient {
             HttpEntity entity = new HttpEntity(headers);
             ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
 
-            String eventsJSon = (String) response.getBody();
-            events = objectMapper.readValue(eventsJSon, new TypeReference<List<Event>>() {
+            String eventItemsJSon = (String) response.getBody();
+            List<EventItemDTO> eventItems = objectMapper.readValue(eventItemsJSon, new TypeReference<List<EventItemDTO>>() {
             });
+            events = eventDTOmapper.eventItemsDTOsToEvents(eventItems);
             logger.info("Returning {} events to alert", events.size());
         } catch (Exception ex) {
             logger.error("Error while getting events to alert", ex);
@@ -211,7 +205,7 @@ public class EventsClient {
         logger.info("Inserting new event {}", event.getTitle());
         final String uri = BASE_URI + "/events";
 
-        EventCreateDTO eventCreateDTO = eventMapper.eventToEventCreateDTO(event);
+        EventCreateDTO eventCreateDTO = eventDTOmapper.eventToEventCreateDTO(event);
         logger.debug("eventCreateDTO: {}", eventCreateDTO);
 
         Long eventId;
@@ -250,9 +244,10 @@ public class EventsClient {
         Map<String, Long> params = new HashMap<>();
         params.put("eventId", eventId);
 
+        EventUpdateDTO eventUpdateDTO = eventDTOmapper.eventToEventUpdateDTO(event);
         try {
             HttpHeaders headers = utils.createAuthenticationHeader();
-            HttpEntity entity = new HttpEntity(event, headers);
+            HttpEntity entity = new HttpEntity(eventUpdateDTO, headers);
             restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
 
             logger.info("Event with id {} successfully updated", eventId);
@@ -282,9 +277,10 @@ public class EventsClient {
         params.put("repetitionId", repetitionId);
         params.put("date", date);
 
+        EventUpdateDTO eventUpdateDTO = eventDTOmapper.eventToEventUpdateDTO(event);
         try {
             HttpHeaders headers = utils.createAuthenticationHeader();
-            HttpEntity entity = new HttpEntity(event, headers);
+            HttpEntity entity = new HttpEntity(eventUpdateDTO, headers);
             restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
 
             logger.info("Event at date {} successfully updated in repetition with id {}", date, repetitionId);
@@ -314,9 +310,10 @@ public class EventsClient {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("repetitionId", repetitionId);
 
+        RepeatedEventUpdateDTO repeatedEventUpdateDTO = eventDTOmapper.eventToRepeatedEventUpdateDTO(event);
         try {
             HttpHeaders headers = utils.createAuthenticationHeader();
-            HttpEntity entity = new HttpEntity(event, headers);
+            HttpEntity entity = new HttpEntity(repeatedEventUpdateDTO, headers);
             restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
 
             logger.info("Events in repetition with id {} successfully updated in repetition", repetitionId);
@@ -338,15 +335,16 @@ public class EventsClient {
         }
     }
 
-    public void updateRepetition(Event event, long repetitionId) throws Exception {
+    public void updateRepetition(Repetition repetition, long repetitionId) throws Exception {
         logger.info("Updating repetition with id {}", repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}";
         Map<String, Long> params = new HashMap<>();
         params.put("repetitionId", repetitionId);
 
+        RepetitionCreateDTO repetitionCreateDTO = repetitionDTOmapper.repetitionToRepetitionCreateDTO(repetition);
         try {
             HttpHeaders headers = utils.createAuthenticationHeader();
-            HttpEntity entity = new HttpEntity(event, headers);
+            HttpEntity entity = new HttpEntity(repetitionCreateDTO, headers);
             restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
 
             logger.info("Repetition with id {} successfully updated", repetitionId);
