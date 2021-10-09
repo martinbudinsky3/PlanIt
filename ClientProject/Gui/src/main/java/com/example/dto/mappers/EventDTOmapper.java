@@ -38,7 +38,7 @@ public class EventDTOmapper {
             Repetition repetition = repetitionMapper.repetitionDetailDTOtoRepetition(eventDetailDTO.getRepetition());
             event.setRepetition(repetition);
         }
-        
+
         return event;
     }
 

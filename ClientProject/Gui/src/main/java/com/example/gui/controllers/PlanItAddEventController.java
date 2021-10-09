@@ -64,6 +64,18 @@ public class PlanItAddEventController implements Initializable {
     private HBox alertRow;
 
     @FXML
+    private HBox eventButtonsWhenRepetitionHidden;
+
+    @FXML
+    private HBox eventButtonsWhenRepetitionShown;
+
+    @FXML
+    private HBox repetitionButtonsWhenRepetitionHidden;
+
+    @FXML
+    private HBox repetitionButtonsWhenRepetitionShown;
+
+    @FXML
     private Button startsDecrement;
 
     @FXML
@@ -80,6 +92,21 @@ public class PlanItAddEventController implements Initializable {
 
     @FXML
     private Button alertsIncrement;
+
+    @FXML
+    private Button saveAllButton;
+
+    @FXML
+    private Button deleteAllButton;
+
+    @FXML
+    private Button hideRepetitionButton;
+
+    @FXML
+    private Button updateRepetitionButton;
+
+    @FXML
+    private Button repetitionButton;
 
     @FXML
     private Button saveButton;
@@ -128,9 +155,6 @@ public class PlanItAddEventController implements Initializable {
 
     @FXML
     private ChoiceBox<RepetitionTypeItem> repetitionTypeSelector;
-
-    @FXML
-    private Button repetitionButton;
 
     private boolean repetitionButtonClicked = false;
 
@@ -791,7 +815,7 @@ public class PlanItAddEventController implements Initializable {
      */
     private void updateRepetition(Event event) {
         try {
-            eventsClient.updateRepetition(event.getRepetition(), this.event.getId());
+            eventsClient.updateRepetition(event.getRepetition(), this.event.getRepetition().getId());
             updateCalendarDisplay(initDate);
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
@@ -810,7 +834,7 @@ public class PlanItAddEventController implements Initializable {
 
     private void updateEventInRepetition(Event event) {
         try {
-            eventsClient.updateEventInRepetitionAtDate(event, this.event.getId(), initDate);
+            eventsClient.updateEventInRepetitionAtDate(event, this.event.getRepetition().getId(), initDate);
 
             updateCalendarDisplay(event.getStartDate());
 

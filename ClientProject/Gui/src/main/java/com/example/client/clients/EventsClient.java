@@ -272,7 +272,7 @@ public class EventsClient {
     public void updateEventInRepetitionAtDate(Event event, long repetitionId, LocalDate date)
             throws Exception {
         logger.info("Updating event at date {} in repetition with id {}", date, repetitionId);
-        final String uri = BASE_URI + "/repetitions/{repetitionId}/events";
+        final String uri = BASE_URI + "/repetitions/{repetitionId}/events?date={date}";
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("repetitionId", repetitionId);
         params.put("date", date);
