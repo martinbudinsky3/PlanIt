@@ -18,8 +18,10 @@ public class EventDTOmapper {
 
     public EventCreateDTO eventToEventCreateDTO(Event event) {
         EventCreateDTO eventCreateDTO = modelMapper.map(event, EventCreateDTO.class);
-        RepetitionCreateDTO repetitionCreateDTO = repetitionMapper.repetitionToRepetitionCreateDTO(event.getRepetition());
-        eventCreateDTO.setRepetition(repetitionCreateDTO);
+        if(event.getRepetition() != null) {
+            RepetitionCreateDTO repetitionCreateDTO = repetitionMapper.repetitionToRepetitionCreateDTO(event.getRepetition());
+            eventCreateDTO.setRepetition(repetitionCreateDTO);
+        }
 
         return eventCreateDTO;
     }

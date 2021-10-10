@@ -13,6 +13,7 @@ import com.example.gui.components.WeeklyRepetitionComponent;
 import com.example.gui.components.YearlyRepetitionComponent;
 import com.example.gui.dataitems.EventTypeItem;
 import com.example.gui.dataitems.RepetitionTypeItem;
+import com.example.utils.WindowsCreator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -44,6 +45,7 @@ public class PlanItAddEventController implements Initializable {
 
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
+    private final WindowsCreator windowsCreator = new WindowsCreator();
 
     @FXML
     private AnchorPane ap;
@@ -103,7 +105,7 @@ public class PlanItAddEventController implements Initializable {
     private Button hideRepetitionButton;
 
     @FXML
-    private Button updateRepetitionButton;
+    private Button saveRepetitionButton;
 
     @FXML
     private Button repetitionButton;
@@ -210,6 +212,7 @@ public class PlanItAddEventController implements Initializable {
 
         if (event == null) { // add event
             setInitValues();
+            saveRepetitionButton.setVisible(false);
         } else { // show detail of already created event
             if (event.getRepetition() != null) {
                 initRepetitionDate = event.getRepetition().getStart();
@@ -505,8 +508,12 @@ public class PlanItAddEventController implements Initializable {
 
         // add handlers to buttons
         repetitionButton.setOnAction(e -> repetitionButtonClickedHandler());
+        hideRepetitionButton.setOnAction(e -> hideRepetitionButtonClickedHandler());
         saveButton.setOnAction(e -> save());
+        saveAllButton.setOnAction(e -> updateAllEventsInRepetition());
         deleteButton.setOnAction(e -> delete());
+        deleteAllButton.setOnAction(e -> delete());
+        saveRepetitionButton.setOnAction(e -> saveRepetition());
     }
 
     private void repetitionButtonClickedHandler() {
@@ -530,23 +537,22 @@ public class PlanItAddEventController implements Initializable {
             repetitionButtonClicked = true;
         }
 
-        if (!repetitionBox.isVisible()) {
-            if (event != null && event.getRepetition() != null && !event.getStartDate().equals(startsDateField.getValue())) {
-                startsDateField.setValue(event.getStartDate());
-            }
-
-//            startsDateField.setDisable(true);
-            if (event != null && event.getRepetition() != null) {
-                saveButton.setText(resourceBundle.getString("saveAllButton"));
-                deleteButton.setText(resourceBundle.getString("deleteAllButton"));
-            }
-        } else {
-//            startsDateField.setDisable(false);
-            saveButton.setText(resourceBundle.getString("saveButton"));
-            deleteButton.setText(resourceBundle.getString("deleteButton"));
+        if (event != null && event.getRepetition() != null) {
+            eventButtonsWhenRepetitionShown.setVisible(true);
+            eventButtonsWhenRepetitionHidden.setVisible(false);
         }
 
-        repetitionBox.setVisible(!repetitionBox.isVisible());
+        repetitionButtonsWhenRepetitionHidden.setVisible(false);
+        repetitionButtonsWhenRepetitionShown.setVisible(true);
+        repetitionBox.setVisible(true);
+    }
+
+    private void hideRepetitionButtonClickedHandler() {
+        eventButtonsWhenRepetitionShown.setVisible(false);
+        eventButtonsWhenRepetitionHidden.setVisible(true);
+        repetitionButtonsWhenRepetitionShown.setVisible(false);
+        repetitionButtonsWhenRepetitionHidden.setVisible(true);
+        repetitionBox.setVisible(false);
     }
 
     private void showRepetitionDetail(Repetition repetition) {
@@ -694,37 +700,101 @@ public class PlanItAddEventController implements Initializable {
     public void save() {
         if (checkInput()) {
             Event event = readEventInput();
-            if (userWantsToWorkWithRepetition()) { // save repetition too
-                Repetition repetition = selectedRepetitionComponent.readInput(); // read specific repetition fields
-
-                if (repetitionInputIsOk(repetition)) {
-                    // read others repetition fields
-                    LocalDate repetitionStart = repetitionStartField.getValue();
-                    LocalDate repetitionEnd = repetitionEndField.getValue();
-
-                    repetition.setStart(repetitionStart);
-                    repetition.setEnd(repetitionEnd);
-
-                    event.setRepetition(repetition);
-                } else { // input error in repetition component
-                    return;
-                }
-            }
 
             if (userUseWindowToCreateEvent()) { // window is used for creating new event
+                if (userWantsToWorkWithRepetition()) { // save repetition too
+                    Repetition repetition = readRepetitionData();
+                    event.setRepetition(repetition);
+                }
                 addEvent(event);
             } else {  // window is used for updating existing event
-                if (userWantsToWorkWithRepetition()) {  // update repetition
-                    event.getRepetition().setEventId(this.event.getRepetition().getEventId());
-                    updateRepetition(event);
-                } else {  // update only this event
-                    event.setRepetition(this.event.getRepetition());
-                    if (eventIsNotInRepetition(event)) { // event isn't in repetition
-                        updateSingleEvent(event);
-                    } else {  // event is in repetition
-                        updateEventInRepetition(event);
-                    }
+                if (this.event.getRepetition() == null) { // event isn't in repetition
+                    updateSingleEvent(event);
+                } else {  // event is in repetition
+                    updateEventInRepetition(event);
                 }
+            }
+        }
+    }
+
+    private Repetition readRepetitionData() {
+        Repetition repetition = selectedRepetitionComponent.readInput(); // read specific repetition fields
+
+        if (repetitionInputIsOk(repetition)) {
+            // read others repetition fields
+            LocalDate repetitionStart = repetitionStartField.getValue();
+            LocalDate repetitionEnd = repetitionEndField.getValue();
+
+            repetition.setStart(repetitionStart);
+            repetition.setEnd(repetitionEnd);
+
+            return repetition;
+        }
+
+        // input error in repetition component
+        return null;
+    }
+
+    private void updateAllEventsInRepetition() {
+        Event event = readEventInput();
+        try {
+            eventsClient.updateAllEventsInRepetition(event, this.event.getRepetition().getId());
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
+            } else if (e instanceof AccessDeniedException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventAccessDeniedErrorMessage"), resourceBundle);
+            } else if (e instanceof NotFoundException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+            }
+        }
+    }
+
+    private void saveRepetition() {
+        Repetition repetition = readRepetitionData();
+        if (event.getRepetition() == null) {
+            addRepetition(repetition);
+        } else {
+            updateRepetition(repetition);
+        }
+    }
+
+    private void addRepetition(Repetition repetition) {
+        try {
+            eventsClient.addRepetition(event.getId(), repetition);
+            updateCalendarDisplay(event.getRepetition().getStart());
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
+            } else if (e instanceof AccessDeniedException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("addRepetitionAccessDeniedErrorMessage"), resourceBundle);
+            } else if (e instanceof NotFoundException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("repetitionNotFoundErrorMessage"), resourceBundle);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("addRepetitionErrorMessage"), resourceBundle);
+            }
+        }
+    }
+
+    private void updateRepetition(Repetition repetition) {
+        try {
+            eventsClient.updateRepetition(repetition, this.event.getRepetition().getId());
+            updateCalendarDisplay(initDate);
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            if (e instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
+            } else if (e instanceof AccessDeniedException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateRepetitionAccessDeniedErrorMessage"), resourceBundle);
+            } else if (e instanceof NotFoundException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("repetitionNotFoundErrorMessage"), resourceBundle);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateRepetitionErrorMessage"), resourceBundle);
             }
         }
     }
@@ -740,11 +810,6 @@ public class PlanItAddEventController implements Initializable {
     private boolean repetitionInputIsOk(Repetition repetition) {
         return repetition != null;
     }
-
-    private boolean eventIsNotInRepetition(Event event) {
-        return event.getRepetition() == null;
-    }
-
 
     private Event readEventInput() {
         String title = titleField.getText();
@@ -802,36 +867,14 @@ public class PlanItAddEventController implements Initializable {
             }
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else {
-                // windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
+                windowsCreator.showErrorAlert(resourceBundle.getString("addEventErrorMessage"), resourceBundle);
             }
         }
     }
 
-    /**
-     * Updating existing event with repetition or adding repetition to existing event, that hasn't got repetition yet.
-     * After successful update modal window is closed and calendar is displayed with just created event
-     */
-    private void updateRepetition(Event event) {
-        try {
-            eventsClient.updateRepetition(event.getRepetition(), this.event.getRepetition().getId());
-            updateCalendarDisplay(initDate);
-            Stage stage = (Stage) ap.getScene().getWindow();
-            stage.close();
-        } catch (Exception e) {
-            if (e instanceof UnauthorizedException) {
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
-            } else if (e instanceof AccessDeniedException) {
-                // TODO
-            } else if (e instanceof NotFoundException) {
-                // TODO
-            } else {
-                // windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
-            }
-        }
-    }
-
+    // TODO when updating exceptional event, app creates new exception -> should only update event
     private void updateEventInRepetition(Event event) {
         try {
             eventsClient.updateEventInRepetitionAtDate(event, this.event.getRepetition().getId(), initDate);
@@ -842,13 +885,13 @@ public class PlanItAddEventController implements Initializable {
             stage.close();
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (e instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("repetitionNotFoundErrorMessage"), resourceBundle);
             } else {
-                //windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             }
         }
     }
@@ -874,14 +917,13 @@ public class PlanItAddEventController implements Initializable {
             stage.close();
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // TODO create users client inside login controller
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (e instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
             } else {
-                // windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             }
         }
 
@@ -948,18 +990,18 @@ public class PlanItAddEventController implements Initializable {
      */
     private boolean deleteEventFromRepetition() {
         try {
-            eventsClient.deleteFromRepetition(this.event.getId(), event.getStartDate());
+            eventsClient.deleteFromRepetition(this.event.getRepetition().getId(), event.getStartDate());
             planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());
             return true;
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (e instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("repetitionNotFoundErrorMessage"), resourceBundle);
             } else {
-                // windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+                windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
             }
             return false;
         }
@@ -968,6 +1010,7 @@ public class PlanItAddEventController implements Initializable {
     /**
      * deleting event without repetition or all events from repetition if it's repetead event
      */
+    // TODO when deleting all events from repetition from exceptional event detail, app delete only that event -> should delete all
     private boolean deleteEvent() {
         try {
             eventsClient.deleteEvent(this.event.getId());
@@ -979,13 +1022,13 @@ public class PlanItAddEventController implements Initializable {
             return true;
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (e instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
             } else {
-                // windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
+                 windowsCreator.showErrorAlert(resourceBundle.getString("deleteEventErrorMessage"), resourceBundle);
             }
             return false;
         }

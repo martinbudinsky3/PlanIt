@@ -25,7 +25,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
 
     private static final Logger logger = LoggerFactory.getLogger(PlanItLoginController.class);
 
-    private final UsersClient usersClient;
+    private final UsersClient usersClient = new UsersClient();
     private final WindowsCreator windowsCreator;
 
     @FXML
@@ -44,8 +44,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     private User user;
     private ResourceBundle resourceBundle;
 
-    public PlanItLoginController(UsersClient usersClient, WindowsCreator windowsCreator) {
-        this.usersClient = usersClient;
+    public PlanItLoginController(WindowsCreator windowsCreator) {
         this.windowsCreator = windowsCreator;
     }
 

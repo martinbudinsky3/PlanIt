@@ -335,6 +335,43 @@ public class EventsClient {
         }
     }
 
+    public Long addRepetition(Long eventId, Repetition repetition) throws Exception {
+        logger.info("Adding new repetition to event with id {}", eventId);
+        final String uri = BASE_URI + "/events/{eventId}/repetitions";
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("eventId", eventId);
+
+        RepetitionCreateDTO repetitionCreateDTO = repetitionDTOmapper.repetitionToRepetitionCreateDTO(repetition);
+
+        Long repetitionId;
+        try {
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(repetitionCreateDTO, headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.POST, entity, String.class, params);
+
+            String id = (String) response.getBody();
+            repetitionId = objectMapper.readValue(id, Long.class);
+            logger.info("Repetition successfully added to event with id {}", eventId);
+        } catch (Exception ex) {
+            logger.error("Error while adding repetition to event with id {}", eventId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
+            }
+
+            throw ex;
+        }
+
+        return repetitionId;
+    }
+
     public void updateRepetition(Repetition repetition, long repetitionId) throws Exception {
         logger.info("Updating repetition with id {}", repetitionId);
         final String uri = BASE_URI + "/repetitions/{repetitionId}";

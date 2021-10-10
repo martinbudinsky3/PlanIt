@@ -311,7 +311,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(user, LocalDate.now(), eventsClient,
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
-            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             threadActive = false;
         });
         changeLanguageButton.setOnAction(e -> {
@@ -334,7 +334,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                 pdfFile.pdf();
             } catch (Exception e) {
                 if (e instanceof UnauthorizedException) {
-                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
                 } else {
                     windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
                 }
@@ -493,7 +493,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             }
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else {
                 windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
             }
@@ -600,7 +600,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             }
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else {
                 windowsCreator.showErrorAlert(resourceBundle.getString("eventsInMonthErrorMessage"), resourceBundle);
             }
@@ -642,11 +642,11 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     user, eventsClient, this, resourceBundle);
         } catch (Exception ex) {
             if (ex instanceof UnauthorizedException) {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (ex instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("getEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (ex instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
             } else {
                 windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
             }

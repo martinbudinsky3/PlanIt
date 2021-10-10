@@ -64,7 +64,7 @@ public class PlanItRegistrationController implements Initializable {
             buttonRegisterHandler(e);
         });
         buttonCancel.setOnAction(e -> {
-            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+            windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
         });
     }
 
@@ -92,7 +92,7 @@ public class PlanItRegistrationController implements Initializable {
                 Optional<ButtonType> result = windowsCreator.showInfoAlert(resourceBundle.getString("successfulRegistrationAlertTitle"),
                         resourceBundle.getString("successfulRegistrationAlertContent"));
                 if (result.get() == ButtonType.OK) {
-                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                    windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
                 }
 
             } catch (Exception e) {

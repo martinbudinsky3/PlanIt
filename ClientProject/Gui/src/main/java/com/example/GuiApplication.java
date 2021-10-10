@@ -24,6 +24,6 @@ public class GuiApplication extends Application {
 		Locale locale = Locale.getDefault();
 		ResourceBundle bundle = ResourceBundle.getBundle("captions", locale, new UTF8Control());
 		WindowsCreator windowsCreator = new WindowsCreator();
-		windowsCreator.createLoginWindow(bundle, primaryStage, new UsersClient());
+		windowsCreator.createLoginWindow(bundle, primaryStage);
 	}
 }

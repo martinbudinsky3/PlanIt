@@ -312,7 +312,7 @@
                         <Font size="14.0" />
                     </font>
                 </Button>
-                <Button fx:id="updateRepetitionButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" styleClass="control-button" text="%editRepetitionButton">
+                <Button fx:id="saveRepetitionButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="200.0" styleClass="control-button" text="%saveRepetitionButton">
                     <font>
                         <Font size="14.0" />
                     </font>

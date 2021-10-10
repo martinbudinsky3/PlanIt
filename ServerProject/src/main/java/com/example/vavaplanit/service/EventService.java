@@ -193,6 +193,7 @@ public class EventService {
         this.eventRepository.update(event.getId(), event);
     }
 
+    // TODO trigger after exception delete is not working
     public void delete(long idEvent) {
         this.eventRepository.delete(idEvent);
     }
