@@ -196,7 +196,7 @@
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="130.0">
                                     <children>
-                                        <Label text="\%startsLabel">
+                                        <Label text="%startsLabel">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -214,7 +214,7 @@
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="130.0">
                                     <children>
-                                        <Label text="\%typeLabel">
+                                        <Label text="%typeLabel">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>
@@ -235,7 +235,7 @@
                             <children>
                                 <HBox prefHeight="100.0" prefWidth="130.0">
                                     <children>
-                                        <Label text="\%endsLabel">
+                                        <Label text="%endsLabel">
                                             <font>
                                                 <Font size="20.0" />
                                             </font>

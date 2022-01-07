@@ -959,9 +959,7 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.addWeatherToCalendar();
     }
 
-    /**
-     * The functionality of the delete button.
-     */
+    // TODO if event is exception send request on /events/{eventsId} endpoint
     private void delete() {
         if (event != null) {
             Alert alert = createDeleteAlertWindow();

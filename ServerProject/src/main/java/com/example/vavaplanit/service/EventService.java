@@ -93,12 +93,7 @@ public class EventService {
 
         return eventsInMonth;
     }
-
-    /**
-     * Getting event by it's ID
-     *
-     * @param eventId ID of the event
-     */
+    
     public Event getEvent(long eventId) {
         return this.eventRepository.getEvent(eventId);
     }
@@ -196,6 +191,8 @@ public class EventService {
     // TODO trigger after exception delete is not working
     public void delete(long idEvent) {
         this.eventRepository.delete(idEvent);
+
+        // TODO exception on event delete set null
     }
 
 
@@ -207,6 +204,8 @@ public class EventService {
         // if event isn't exception in repetition add new exception
         if (exception == null) {
             this.repetitionService.addException(repetitionId, date);
+        } else {
+            // TODO dont handle this situation here, but on /events/{eventId} endpoint
         }
     }
 
