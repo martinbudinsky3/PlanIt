@@ -23,6 +23,7 @@ public class Event {
     private LocalDate alertDate;
     private LocalTime alertTime;
     private Repetition repetition;
+    private boolean exceptionInRepetition = false;
 
     public Event() {};
 
@@ -162,6 +163,14 @@ public class Event {
         this.dates = dates;
     }
 
+    public boolean isExceptionInRepetition() {
+        return exceptionInRepetition;
+    }
+
+    public void setExceptionInRepetition(boolean exceptionInRepetition) {
+        this.exceptionInRepetition = exceptionInRepetition;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,6 +178,7 @@ public class Event {
         Event event = (Event) o;
         return id == event.id &&
                 authorId == event.authorId &&
+                exceptionInRepetition == event.exceptionInRepetition &&
                 Objects.equals(title, event.title) &&
                 Objects.equals(location, event.location) &&
                 type == event.type &&
@@ -185,8 +195,8 @@ public class Event {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, authorId, title, location, type, description, startDate, dates, startTime, endDate,
-                endTime, alertDate, alertTime, repetition);
+        return Objects.hash(id, authorId, title, location, type, description, startDate, dates, startTime, endDate, endTime,
+                alertDate, alertTime, repetition, exceptionInRepetition);
     }
 
     @Override
@@ -206,6 +216,7 @@ public class Event {
                 ", alertDate=" + alertDate +
                 ", alertTime=" + alertTime +
                 ", repetition=" + repetition +
+                ", exceptionInRepetition=" + exceptionInRepetition +
                 '}';
     }
 }

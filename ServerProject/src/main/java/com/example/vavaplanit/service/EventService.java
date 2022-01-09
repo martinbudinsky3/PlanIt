@@ -100,15 +100,22 @@ public class EventService {
 
     public Event getEvent(int eventId, String dateString) {
         Event event = this.getEvent(eventId);
+        if(event == null) {
+            return null;
+        }
+
         Repetition repetition = this.repetitionService.getRepetitionByEventId(eventId);
         if(repetition == null) {
             repetition = this.repetitionService.getRepetitionByEventIdViaException(eventId);
+            if(repetition != null) {
+                event.setExceptionInRepetition(true);
+            }
         }
         event.setRepetition(repetition);
 
-        if(dateString != null) {
+        if(dateString != null && event.getRepetition() != null) {
             LocalDate date = LocalDate.parse(dateString);
-            if (event.getRepetition() != null && this.repetitionService.checkDate(eventId, date)) {
+            if (this.repetitionService.checkDate(eventId, date)) {
                 event = setEventsDates(event, date);
             }
         }

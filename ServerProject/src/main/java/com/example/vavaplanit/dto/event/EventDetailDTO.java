@@ -2,7 +2,6 @@ package com.example.vavaplanit.dto.event;
 
 import com.example.vavaplanit.dto.repetition.RepetitionDetailDTO;
 import com.example.vavaplanit.model.EventType;
-import com.example.vavaplanit.model.repetition.Repetition;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -22,23 +21,27 @@ public class EventDetailDTO {
     private LocalDate alertDate;
     private LocalTime alertTime;
     private RepetitionDetailDTO repetition;
+    private boolean exceptionInRepetition;
 
     public EventDetailDTO() {};
 
-    public EventDetailDTO(long id, String title, String location, EventType type, String description, LocalDate startDate, LocalTime startTime,
-                 LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime, RepetitionDetailDTO repetition) {
+    public EventDetailDTO(long id, String title, String location, EventType type, String description, LocalDate startDate,
+                          List<LocalDate> dates, LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate,
+                          LocalTime alertTime, RepetitionDetailDTO repetition, boolean exceptionInRepetition) {
         this.id = id;
         this.title = title;
         this.location = location;
         this.type = type;
         this.description = description;
         this.startDate = startDate;
+        this.dates = dates;
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
         this.alertDate = alertDate;
         this.alertTime = alertTime;
         this.repetition = repetition;
+        this.exceptionInRepetition = exceptionInRepetition;
     }
 
     public long getId() {
@@ -143,5 +146,13 @@ public class EventDetailDTO {
 
     public void setDates(List<LocalDate> dates) {
         this.dates = dates;
+    }
+
+    public boolean isExceptionInRepetition() {
+        return exceptionInRepetition;
+    }
+
+    public void setExceptionInRepetition(boolean exceptionInRepetition) {
+        this.exceptionInRepetition = exceptionInRepetition;
     }
 }
