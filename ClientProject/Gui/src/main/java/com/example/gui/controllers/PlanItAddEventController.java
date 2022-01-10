@@ -968,7 +968,12 @@ public class PlanItAddEventController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 boolean success;
                 if (event.getRepetition() != null && !repetitionBox.isVisible()) {
-                    success = deleteEventFromRepetition();
+                    if(event.isExceptionInRepetition()) {
+                        success = deleteEvent();
+                    } else {
+                        success = deleteEventFromRepetition();
+                    }
+
                 } else {
                     success = deleteEvent();
                 }

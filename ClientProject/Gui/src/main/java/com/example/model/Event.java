@@ -22,8 +22,10 @@ public class Event implements Serializable {
     private LocalDate alertDate;
     private LocalTime alertTime;
     private Repetition repetition;
+    private boolean exceptionInRepetition;
 
-    public Event() {};
+
+    public Event() {}
 
     public Event(String title, String location, EventType type, String description, LocalDate startDate, LocalTime startTime, LocalDate endDate,
                  LocalTime endTime, LocalDate alertDate, LocalTime alertTime) {
@@ -69,6 +71,25 @@ public class Event implements Serializable {
         this.alertDate = alertDate;
         this.alertTime = alertTime;
         this.repetition = repetition;
+    }
+
+    public Event(long id, String title, String location, EventType type, String description, LocalDate startDate, List<LocalDate> dates,
+                 LocalTime startTime, LocalDate endDate, LocalTime endTime, LocalDate alertDate, LocalTime alertTime,
+                 Repetition repetition, boolean exceptionInRepetition) {
+        this.id = id;
+        this.title = title;
+        this.location = location;
+        this.type = type;
+        this.description = description;
+        this.startDate = startDate;
+        this.dates = dates;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.alertDate = alertDate;
+        this.alertTime = alertTime;
+        this.repetition = repetition;
+        this.exceptionInRepetition = exceptionInRepetition;
     }
 
     public long getId() {
@@ -173,5 +194,13 @@ public class Event implements Serializable {
 
     public void setRepetition(Repetition repetition) {
         this.repetition = repetition;
+    }
+
+    public boolean isExceptionInRepetition() {
+        return exceptionInRepetition;
+    }
+
+    public void setExceptionInRepetition(boolean exceptionInRepetition) {
+        this.exceptionInRepetition = exceptionInRepetition;
     }
 }
