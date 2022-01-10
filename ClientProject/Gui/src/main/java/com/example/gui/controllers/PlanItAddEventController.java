@@ -959,7 +959,6 @@ public class PlanItAddEventController implements Initializable {
         planItMainWindowController.addWeatherToCalendar();
     }
 
-    // TODO if event is exception send request on /events/{eventsId} endpoint
     private void delete() {
         if (event != null) {
             Alert alert = createDeleteAlertWindow();
@@ -1013,10 +1012,10 @@ public class PlanItAddEventController implements Initializable {
     /**
      * deleting event without repetition or all events from repetition if it's repetead event
      */
-    // TODO when deleting all events from repetition from exceptional event detail, app delete only that event -> should delete all
     private boolean deleteEvent() {
         try {
-            eventsClient.deleteEvent(this.event.getId());
+            long eventToDeleteId = event.isExceptionInRepetition() ? event.getRepetition().getEventId() : event.getId();
+            eventsClient.deleteEvent(eventToDeleteId);
             if (event.getRepetition() == null) {
                 planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());
             } else {
@@ -1035,7 +1034,6 @@ public class PlanItAddEventController implements Initializable {
             }
             return false;
         }
-
     }
 
     private Alert createDeleteAlertWindow() {
