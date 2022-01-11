@@ -512,7 +512,7 @@ public class PlanItAddEventController implements Initializable {
         saveButton.setOnAction(e -> save());
         saveAllButton.setOnAction(e -> updateAllEventsInRepetition());
         deleteButton.setOnAction(e -> delete());
-        deleteAllButton.setOnAction(e -> delete());
+        deleteAllButton.setOnAction(e -> deleteAll());
         saveRepetitionButton.setOnAction(e -> saveRepetition());
     }
 
@@ -960,30 +960,56 @@ public class PlanItAddEventController implements Initializable {
     }
 
     private void delete() {
-        if (event != null) {
-            Alert alert = createDeleteAlertWindow();
+        if (event == null) {
+            return;
+        }
 
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() == ButtonType.OK) {
-                boolean success;
-                if (event.getRepetition() != null && !repetitionBox.isVisible()) {
-                    if(event.isExceptionInRepetition()) {
-                        success = deleteEvent();
-                    } else {
-                        success = deleteEventFromRepetition();
-                    }
+        Alert alert = createDeleteAlertWindow();
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            boolean success;
+            if (event.getRepetition() != null) {
+                if(event.isExceptionInRepetition()) {
+                    success = deleteEvent(event.getId());
                 } else {
-                    success = deleteEvent();
+                    success = deleteEventFromRepetition();
                 }
 
-                if (success) {
-                    Stage stage = (Stage) ap.getScene().getWindow();
-                    stage.close();
-                }
             } else {
-                alert.close();
+                success = deleteEvent(event.getId());
             }
+
+            if (success) {
+                Stage stage = (Stage) ap.getScene().getWindow();
+                stage.close();
+            }
+        } else {
+            alert.close();
+        }
+    }
+
+    private void deleteAll() {
+        if (event == null) {
+            return;
+        }
+
+        Alert alert = createDeleteAlertWindow();
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            long eventToDeleteId = event.isExceptionInRepetition() ?
+                    event.getRepetition().getEventId() :
+                    event.getId();
+
+            boolean success = deleteEvent(eventToDeleteId);
+
+            if (success) {
+                Stage stage = (Stage) ap.getScene().getWindow();
+                stage.close();
+            }
+        } else {
+            alert.close();
         }
     }
 
@@ -1012,10 +1038,9 @@ public class PlanItAddEventController implements Initializable {
     /**
      * deleting event without repetition or all events from repetition if it's repetead event
      */
-    private boolean deleteEvent() {
+    private boolean deleteEvent(long eventId) {
         try {
-            long eventToDeleteId = event.isExceptionInRepetition() ? event.getRepetition().getEventId() : event.getId();
-            eventsClient.deleteEvent(eventToDeleteId);
+            eventsClient.deleteEvent(eventId);
             if (event.getRepetition() == null) {
                 planItMainWindowController.deleteEventFromCalendar(event.getId(), event.getStartDate());
             } else {
