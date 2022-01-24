@@ -29,6 +29,8 @@ import javafx.stage.Stage;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Minutes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.*;
@@ -43,6 +45,7 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_HBOX_HEIGTH = 30;
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
 
+    static final Logger logger = LoggerFactory.getLogger(PlanItAddEventController.class);
     private final EventsClient eventsClient;
     private final PlanItMainWindowController planItMainWindowController;
     private final WindowsCreator windowsCreator = new WindowsCreator();
@@ -755,6 +758,7 @@ public class PlanItAddEventController implements Initializable {
     private void saveRepetition() {
         Repetition repetition = readRepetitionData();
         if (event.getRepetition() == null) {
+            event.setRepetition(repetition);
             addRepetition(repetition);
         } else {
             updateRepetition(repetition);
@@ -768,6 +772,7 @@ public class PlanItAddEventController implements Initializable {
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
         } catch (Exception e) {
+            logger.error("Weird error", e);
             if (e instanceof UnauthorizedException) {
                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
