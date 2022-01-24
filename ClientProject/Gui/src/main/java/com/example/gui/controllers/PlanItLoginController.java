@@ -41,7 +41,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     @FXML
     private Button changeLanguageButton;
 
-    private User user;
+    private User user; // TODO remove this field
     private ResourceBundle resourceBundle;
 
     public PlanItLoginController(WindowsCreator windowsCreator) {

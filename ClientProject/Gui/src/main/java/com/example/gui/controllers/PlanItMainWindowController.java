@@ -215,7 +215,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     // TODO this should be in AlertWindowController
-
     /**
      * Sound of notification is played.
      */
@@ -473,17 +472,14 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth);
 
             for (Event event : events) {
+                List<LocalDate> dates;
                 if (event.getDates() == null || event.getDates().isEmpty()) {
-                    int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
-                    int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
-
-                    VBox dayVBox = (VBox) gridPaneNodes[j][i];
-                    addEventToCalendar(event, dayVBox);
-
-                    continue;
+                    dates = new ArrayList<>(Arrays.asList(event.getStartDate()));
+                } else {
+                    dates = event.getDates();
                 }
 
-                for (LocalDate date : event.getDates()) {
+                for (LocalDate date : dates) {
                     int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
                     int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
 

@@ -772,7 +772,6 @@ public class PlanItAddEventController implements Initializable {
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
         } catch (Exception e) {
-            logger.error("Weird error", e);
             if (e instanceof UnauthorizedException) {
                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
@@ -879,7 +878,6 @@ public class PlanItAddEventController implements Initializable {
         }
     }
 
-    // TODO when updating exceptional event, app creates new exception -> should only update event
     private void updateEventInRepetition(Event event) {
         try {
             eventsClient.updateEventInRepetitionAtDate(event, this.event.getRepetition().getId(), initDate);

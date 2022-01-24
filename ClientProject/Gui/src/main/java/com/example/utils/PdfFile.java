@@ -14,10 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 /**
@@ -60,7 +59,7 @@ public class PdfFile {
 
             windowsCreator.showInfoAlert(resourceBundle.getString("pdfAlertTitle"),
                     resourceBundle.getString("pdfAlertContent"));
-            logger.debug("PDF file was created and saved at: " + file.getAbsolutePath());
+            logger.debug("PDF file was created and saved at: {}", file.getAbsolutePath());
         } catch (DocumentException | FileNotFoundException ex) {
             windowsCreator.showErrorAlert(resourceBundle);
             logger.error("Error while creating PDF file", ex);
@@ -76,13 +75,13 @@ public class PdfFile {
      */
     public void setHeader(Document document) throws DocumentException {
         Paragraph dateParagraph = setDateParagraph();
-        Paragraph nameParagraph = setNameParagraph();
+        //Paragraph nameParagraph = setNameParagraph();
 
         //adding paragraphs to document
         document.add(dateParagraph);
         document.add(Chunk.NEWLINE);
         document.add(Chunk.NEWLINE);
-        document.add(nameParagraph);
+        //document.add(nameParagraph);
     }
 
     private Paragraph setDateParagraph() {
@@ -193,21 +192,34 @@ public class PdfFile {
     }
 
     private void showEventsInCalendar(PdfPTable table, Font font) {
-        // TODO handle repeated events
         for (Event event : events) {
-            int j = Utils.countColumnIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
-            int i = Utils.countRowIndexInCalendar(event.getStartDate().getDayOfMonth(), selectedYear, selectedMonth);
-
-            PdfPCell cell = table.getRow(i).getCells()[j];
-            if (event.getType() == EventType.FREE_TIME) {
-                font.setColor(3, 252, 19);
-            } else if (event.getType() == EventType.WORK) {
-                font.setColor(252, 3, 3);
-            } else if (event.getType() == EventType.SCHOOL) {
-                font.setColor(63, 135, 213);
+            List<LocalDate> dates;
+            if (event.getDates() == null || event.getDates().isEmpty()) {
+                dates = new ArrayList<>(Arrays.asList(event.getStartDate()));
+            } else {
+                dates = event.getDates();
             }
 
-            cell.addElement(new Paragraph(event.getStartTime() + " " + event.getTitle(), font));
+            for (LocalDate date : dates) {
+                int j = Utils.countColumnIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+                int i = Utils.countRowIndexInCalendar(date.getDayOfMonth(), selectedYear, selectedMonth);
+                PdfPCell cell = table.getRow(i).getCells()[j];
+
+                addEventToCalendar(event, cell, font);
+            }
         }
+    }
+
+    private void addEventToCalendar(Event event, PdfPCell cell, Font font) {
+        logger.info("Adding event {} to pdf", event.getTitle());
+        if (event.getType() == EventType.FREE_TIME) {
+            font.setColor(3, 252, 19);
+        } else if (event.getType() == EventType.WORK) {
+            font.setColor(252, 3, 3);
+        } else if (event.getType() == EventType.SCHOOL) {
+            font.setColor(63, 135, 213);
+        }
+
+        cell.addElement(new Paragraph(event.getStartTime() + " " + event.getTitle(), font));
     }
 }
