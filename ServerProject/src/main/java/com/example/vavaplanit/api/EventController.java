@@ -82,7 +82,6 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    // TODO return flag if event is exception
     /**
      * @param eventId ID of event
      * @return event with entered ID */

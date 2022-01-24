@@ -708,9 +708,9 @@ public class PlanItAddEventController implements Initializable {
                 }
                 addEvent(event);
             } else {  // window is used for updating existing event
-                if (this.event.getRepetition() == null) { // event isn't in repetition
+                if (this.event.getRepetition() == null || this.event.isExceptionInRepetition()) {
                     updateSingleEvent(event);
-                } else {  // event is in repetition
+                } else {
                     updateEventInRepetition(event);
                 }
             }
