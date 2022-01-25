@@ -53,14 +53,14 @@ public class ExceptionRepository {
         }
     }
 
-    public List<Exception> getExceptionsDates(long repetitionId) {
-        String sql = "SELECT \"date\" FROM exceptions WHERE repetition_id = ?;";
+    public List<Exception> getExceptionsDatesByRepetitionId(long repetitionId) {
+        String sql = "SELECT e.date FROM exceptions e WHERE repetition_id = ?;";
 
         return jdbcTemplate.query(sql, new Object[]{repetitionId}, exceptionMapper.mapDate());
     }
 
     public Exception getExceptionByRepetitionIdAndDate(long repetitionId, LocalDate date) {
-        String sql = "SELECT * FROM exceptions WHERE repetition_id = ? AND \"date\" = ?;";
+        String sql = "SELECT * FROM exceptions e WHERE repetition_id = ? AND e.date = ?;";
 
         try {
             return jdbcTemplate.queryForObject(sql, new Object[]{repetitionId, date}, exceptionMapper.mapException());

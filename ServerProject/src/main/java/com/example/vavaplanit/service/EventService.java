@@ -41,7 +41,7 @@ public class EventService {
     public Long add(Event event, long userId) {
         if (event.getRepetition() != null) {
             LocalDate newStartDate = this.repetitionService.validateStart(event.getRepetition());
-            setEventsDates(event, newStartDate);
+            event = setEventsDates(event, newStartDate);
 
             logger.debug("Adding event: { date: " + event.getStartDate() + ", endDate:" + event.getEndDate() + ", alertDate: "
                     + event.getAlertDate() + "}");
@@ -75,17 +75,17 @@ public class EventService {
      */
     public List<Event> getEventsByMonthAndUserId(long userId, int year, int month) {
         LocalDate minDate = LocalDate.of(year, month, 1);
-        LocalDate maxDate = minDate.plusMonths(1);
+        LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
 
         List<Event> events = this.eventRepository.getEventsByMonthAndUserId(userId, minDate, maxDate);
         List<Event> eventsInMonth = new ArrayList<>();
 
         for (Event event : events) {
             List<LocalDate> dates = this.repetitionService.getEventDates(event.getId(), month, year);
-            if (!dates.isEmpty()) {
-                event.setDates(dates);
+            if(dates == null) { // event has no repetition
                 eventsInMonth.add(event);
-            } else if (!event.getStartDate().isBefore(minDate)) {
+            } else if (!dates.isEmpty()) { // event is repeated and has occurrence in requested month
+                event.setDates(dates);
                 eventsInMonth.add(event);
             }
         }
@@ -125,19 +125,39 @@ public class EventService {
     /**
      * Getting all events of user that have notifications set for current time and date
      *
-     * @param idUser ID of user
+     * @param userId ID of user
      */
-    public List<Event> getEventsToAlert(long idUser, String currentTimeString) {
-        LocalDateTime currentTime = LocalDateTime.parse(currentTimeString);
+    public List<Event> getEventsToAlert(long userId, String currentDateTimeString) {
+        LocalDateTime currentDateTime = LocalDateTime.parse(currentDateTimeString);
+        LocalDate currentDate = currentDateTime.toLocalDate();
+        LocalTime currentTime = currentDateTime.toLocalTime();
+
         DateTimeFormatter dtfTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         DateTimeFormatter dtfDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-        String time = LocalTime.of(currentTime.getHour(), currentTime.getMinute()).format(dtfTime);
-        String date = LocalDate.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth())
-                .format(dtfDate);
+        String currentDateString = currentDate.format(dtfDate);
+        String currentTimeString = currentTime.format(dtfTime);
 
-        List<Event> eventsToAlert = this.eventRepository.getEventsToAlert(idUser, date, time);
+        List<Event> potentialEventsToAlert = this.eventRepository.getEventsToAlert(userId, currentDateString, currentTimeString);
+
         // TODO handle repeated events
+        List<Event> eventsToAlert = new ArrayList<>();
+        for (Event event: potentialEventsToAlert) {
+            if(event.getAlertDate().isEqual(currentDate)) {
+                eventsToAlert.add(event);
+            } else {
+                DateTime alertJodaDate = new DateTime().withDate(event.getAlertDate().getYear(), event.getAlertDate().getMonthValue(),
+                        event.getAlertDate().getDayOfMonth());
+                DateTime startJodaDate = new DateTime().withDate(event.getStartDate().getYear(), event.getStartDate().getMonthValue(),
+                        event.getStartDate().getDayOfMonth());
+                int daysBetweenAlertAndStartDate = Days.daysBetween(startJodaDate, alertJodaDate).getDays();
+
+                if(repetitionService.checkDate(event.getId(), currentDate.plusDays(daysBetweenAlertAndStartDate))) {
+                    event = setEventsDates(event, currentDate);
+                    eventsToAlert.add(event);
+                }
+            }
+        }
 
         return eventsToAlert;
     }
@@ -193,7 +213,7 @@ public class EventService {
         // set new valid dates to event
         Event event = eventRepository.getEventByRepetitionId(id);
         LocalDate newStartDate = this.repetitionService.validateStart(repetition);
-        setEventsDates(event, newStartDate);
+        event = setEventsDates(event, newStartDate);
 
         this.eventRepository.update(event.getId(), event);
     }

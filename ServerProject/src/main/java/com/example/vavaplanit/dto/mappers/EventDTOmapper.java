@@ -15,6 +15,9 @@ public interface EventDTOmapper {
     @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
     List<EventItemDTO> eventsToEventItemDTOs(Collection<Event> event);
 
+    @IterableMapping(nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+    List<EventAlertDTO> eventsToEventAlertDTOs(Collection<Event> event);
+
     @Mapping(source = "repetition", target = "repetition", qualifiedByName = "repetitionToRepetitionDetailDTO")
     EventDetailDTO eventToEventDetailDTO(Event event);
 

@@ -34,6 +34,14 @@ public class EventDTOmapper {
     }
 
 
+    public List<Event> eventAlertDTOsToEvents(List<EventAlertDTO> eventAlertDTOS) {
+        return eventAlertDTOS
+                .stream()
+                .map(eventAlertDTO -> modelMapper.map(eventAlertDTO, Event.class))
+                .collect(Collectors.toList());
+    }
+
+
     public Event eventDetailDTOToEvent(EventDetailDTO eventDetailDTO) {
         Event event = modelMapper.map(eventDetailDTO, Event.class);
         if(eventDetailDTO.getRepetition() != null) {

@@ -1,6 +1,7 @@
 package com.example.vavaplanit.api;
 
 
+import com.example.vavaplanit.dto.event.EventAlertDTO;
 import com.example.vavaplanit.dto.event.EventItemDTO;
 import com.example.vavaplanit.dto.mappers.EventDTOmapper;
 import com.example.vavaplanit.model.Event;
@@ -68,8 +69,9 @@ public class UserProfileEventController {
         logger.info("Getting events to alert of user {}", username);
         List<Event> events = eventService.getEventsToAlert(userId, currentTime);
         logger.info("Returning {} events to alert of user {}", events.size(), username);
-        List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
+//        List<EventItemDTO> eventItemDTOs = eventDTOmapper.eventsToEventItemDTOs(events);
+        List<EventAlertDTO> eventAlertDTOs = eventDTOmapper.eventsToEventAlertDTOs(events);
 
-        return new ResponseEntity<>(eventItemDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(eventAlertDTOs, HttpStatus.OK);
     }
 }

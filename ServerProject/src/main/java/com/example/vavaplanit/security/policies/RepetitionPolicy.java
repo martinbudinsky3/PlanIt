@@ -23,7 +23,7 @@ public class RepetitionPolicy {
         String username = authentication.getPrincipal().toString();
         User loggedInUser = userService.getUserByUsername(username);
         Event event = eventService.getEventByRepetitionId(repetitionId);
-        
+
         return loggedInUser != null && event != null && loggedInUser.getId() == event.getAuthorId();
     }
 }

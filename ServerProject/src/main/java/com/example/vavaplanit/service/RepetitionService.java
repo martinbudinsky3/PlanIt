@@ -53,14 +53,11 @@ public class RepetitionService {
     public List<LocalDate> getEventDates(long eventId, int month, int year) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
 
-        LocalDate minDate = LocalDate.of(year, month, 1);
-        LocalDate maxDate = minDate.plusMonths(1).minusDays(1);
-
-        if(repetition == null || minDate.isAfter(repetition.getEnd()) || maxDate.isBefore(repetition.getStart())) {
-            return new ArrayList<>();
+        if(repetition == null) {
+            return null;
         }
 
-        List<Exception> exceptions = this.exceptionRepository.getExceptionsDates(repetition.getId());
+        List<Exception> exceptions = this.exceptionRepository.getExceptionsDatesByRepetitionId(repetition.getId());
         List<LocalDate> exceptionsDates = new ArrayList<>();
         exceptions.forEach(exception -> exceptionsDates.add(exception.getDate()));
 

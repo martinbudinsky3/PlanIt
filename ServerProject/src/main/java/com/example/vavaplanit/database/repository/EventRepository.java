@@ -70,15 +70,16 @@ public class EventRepository {
         }
     }
 
-    public List<Event> getEventsByDate(long idUser, LocalDate date) {
-        String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + idUser + " " +
+    public List<Event> getEventsByDate(long userId, LocalDate date) {
+        String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + userId + " " +
                 "AND start_date <= '" + date + "' ORDER BY start_time ASC;";
         return jdbcTemplate.query(sql, eventMapper.mapBasicEventInfoFromDb());
     }
 
     public List<Event> getEventsByMonthAndUserId(long userId, LocalDate minDate, LocalDate maxDate) {
-        String sql = "SELECT id, title, type, start_date, start_time FROM events WHERE author_id = " + userId + " AND start_date < '" + maxDate +
-                "' ORDER BY start_time;";
+        String sql = "SELECT e.id, e.title, e.type, e.start_date, e.start_time FROM events e LEFT JOIN repetitions r ON e.id = r.event_id" +
+                " WHERE e.author_id = " + userId + " AND (e.start_date <= '" + maxDate + "' AND e.end_date >= '" + minDate +
+                "' OR r.start <= '" + maxDate + "' AND r.end >= '" + minDate + "') ORDER BY start_time;";
         return jdbcTemplate.query(sql, eventMapper.mapBasicEventInfoFromDb());
     }
 
@@ -92,15 +93,16 @@ public class EventRepository {
     }
 
     /**
-     * Getting all events of user that have notifications set for a given time and date
+     * Getting all events of user that have notifications set for a given time and potentially date
      *
      * @param userId ID of user
      * @param currentDate   selected date
      * @param currentTime   selected time
      */
     public List<Event> getEventsToAlert(long userId, String currentDate, String currentTime) {
-        String sql = "SELECT * FROM events WHERE alert_date = '" + currentDate + "' AND alert_time = '" + currentTime +
-                "' AND author_id = " + userId + ";";
+        String sql = "SELECT e.* FROM events e LEFT JOIN repetitions r ON e.id = r.event_id " +
+                "WHERE e.alert_time = '" + currentTime + "' AND e.author_id = " + userId +
+                " AND (e.alert_date = '" + currentDate + "' OR r.start <= '" + currentDate + "' AND r.end >= '" + currentDate + "');";
         return jdbcTemplate.query(sql, eventMapper.mapEventFromDb());
     }
 

@@ -183,10 +183,10 @@ public class EventsClient {
             HttpEntity entity = new HttpEntity(headers);
             ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class, params);
 
-            String eventItemsJSon = (String) response.getBody();
-            List<EventItemDTO> eventItems = objectMapper.readValue(eventItemsJSon, new TypeReference<List<EventItemDTO>>() {
+            String eventAlertDTOsJSon = (String) response.getBody();
+            List<EventAlertDTO> eventAlertDTOs = objectMapper.readValue(eventAlertDTOsJSon, new TypeReference<List<EventAlertDTO>>() {
             });
-            events = eventDTOmapper.eventItemsDTOsToEvents(eventItems);
+            events = eventDTOmapper.eventAlertDTOsToEvents(eventAlertDTOs);
             logger.info("Returning {} events to alert", events.size());
         } catch (Exception ex) {
             logger.error("Error while getting events to alert", ex);
