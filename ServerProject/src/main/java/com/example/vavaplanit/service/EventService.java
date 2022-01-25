@@ -142,6 +142,10 @@ public class EventService {
         return eventsToAlert;
     }
 
+    public Event getEventByRepetitionId(long repetitionId) {
+        return this.eventRepository.getEventByRepetitionId(repetitionId);
+    }
+
     /**
      * Update event
      *

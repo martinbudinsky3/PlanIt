@@ -38,8 +38,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/login", "/auth/register").permitAll();
         http.authorizeRequests().antMatchers("/events/{eventId}/**")
                 .access("@eventPolicy.check(authentication, #eventId)");
-        http.authorizeRequests().antMatchers("/repetition/{repetitionId}/**")
-                .access("@eventPolicy.check(authentication, #repetitionId)");
+        http.authorizeRequests().antMatchers("/repetitions/{repetitionId}/**")
+                .access("@repetitionPolicy.check(authentication, #repetitionId)");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomUsernamePasswordAuthenticationFilter(authenticationManagerBean(), authenticationFailureHandler()));
         http.addFilterBefore(new CustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
