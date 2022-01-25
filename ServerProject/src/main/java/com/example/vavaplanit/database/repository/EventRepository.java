@@ -129,6 +129,11 @@ public class EventRepository {
                 event.getStartTime(), event.getEndDate(), event.getEndTime(), event.getAlertDate(), event.getAlertTime(), event.getDescription(), id);
     }
 
+    public void postpone(long id, Event event) {
+        String sql = "UPDATE events SET alert_date = ?, alert_time = ? WHERE id = ?";
+        jdbcTemplate.update(sql, event.getAlertDate(), event.getAlertTime(), id);
+    }
+
     /**
      * Delete event by event's id
      *

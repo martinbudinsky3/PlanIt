@@ -140,7 +140,6 @@ public class EventService {
 
         List<Event> potentialEventsToAlert = this.eventRepository.getEventsToAlert(userId, currentDateString, currentTimeString);
 
-        // TODO handle repeated events
         List<Event> eventsToAlert = new ArrayList<>();
         for (Event event: potentialEventsToAlert) {
             if(event.getAlertDate().isEqual(currentDate)) {
@@ -216,6 +215,10 @@ public class EventService {
         event = setEventsDates(event, newStartDate);
 
         this.eventRepository.update(event.getId(), event);
+    }
+
+    public void postponeEvent(long id, Event event) {
+        this.eventRepository.postpone(id, event);
     }
 
     public void delete(long idEvent) {

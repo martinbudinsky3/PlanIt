@@ -27,4 +27,6 @@ public interface EventDTOmapper {
     Event eventUpdateDTOtoEvent(EventUpdateDTO eventUpdateDTO);
 
     Event repeatedEventUpdateDTOtoEvent(RepeatedEventUpdateDTO repeatedEventUpdateDTO);
+
+    Event eventPostponeDTOtoEvent(EventPostponeDTO eventPostponeDTO);
 }

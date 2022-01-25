@@ -2,6 +2,7 @@ package com.example.vavaplanit.api;
 
 import com.example.vavaplanit.dto.event.EventCreateDTO;
 import com.example.vavaplanit.dto.event.EventDetailDTO;
+import com.example.vavaplanit.dto.event.EventPostponeDTO;
 import com.example.vavaplanit.dto.event.EventUpdateDTO;
 import com.example.vavaplanit.dto.mappers.EventDTOmapper;
 import com.example.vavaplanit.dto.mappers.RepetitionDTOmapper;
@@ -115,6 +116,23 @@ public class EventController {
         if(eventFromDb != null) {
             eventService.update(eventId, event);
             logger.info("Event with id {} successfully updated", eventId);
+            return ResponseEntity.noContent().build();
+        } else {
+            logger.error("Error. Event with id {} does not exist", eventId);
+            return new ResponseEntity("Event with id " + eventId + " does not exist",
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping(value = "{eventId}/alert")
+    public ResponseEntity postponeEvent(@PathVariable("eventId") int eventId,
+                                      @RequestBody EventPostponeDTO eventPostponeDTO) {
+        logger.info("Postponing event with id {}", eventId);
+        Event event = eventDTOMapper.eventPostponeDTOtoEvent(eventPostponeDTO);
+        Event eventFromDb = eventService.getEvent(eventId);
+        if(eventFromDb != null) {
+            eventService.postponeEvent(eventId, event);
+            logger.info("Event with id {} successfully postponed", eventId);
             return ResponseEntity.noContent().build();
         } else {
             logger.error("Error. Event with id {} does not exist", eventId);

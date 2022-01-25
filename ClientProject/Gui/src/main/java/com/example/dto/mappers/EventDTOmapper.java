@@ -59,4 +59,8 @@ public class EventDTOmapper {
     public RepeatedEventUpdateDTO eventToRepeatedEventUpdateDTO(Event event) {
         return modelMapper.map(event, RepeatedEventUpdateDTO.class);
     }
+
+    public EventPostponeDTO eventToEventPostponeDTO(Event event) {
+        return modelMapper.map(event, EventPostponeDTO.class);
+    }
 }

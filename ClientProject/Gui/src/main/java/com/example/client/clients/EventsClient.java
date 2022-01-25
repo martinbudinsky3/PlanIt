@@ -269,6 +269,37 @@ public class EventsClient {
         }
     }
 
+    public void postponeEvent(Event event, long eventId) throws Exception {
+        logger.info("Postponing event with id {}", eventId);
+        final String uri = BASE_URI + "/events/{eventId}/alert";
+        Map<String, Long> params = new HashMap<>();
+        params.put("eventId", eventId);
+
+        EventPostponeDTO eventPostponeDTO = eventDTOmapper.eventToEventPostponeDTO(event);
+        try {
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(eventPostponeDTO, headers);
+            restTemplate.exchange(uri, HttpMethod.PUT, entity, String.class, params);
+
+            logger.info("Event with id {} successfully postponed", eventId);
+        } catch (Exception ex) {
+            logger.error("Error while postponing event with id {}", eventId, ex);
+            if (ex instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.FORBIDDEN) {
+                    throw new AccessDeniedException();
+                }
+                if (((HttpStatusCodeException) ex).getStatusCode() == HttpStatus.NOT_FOUND) {
+                    throw new NotFoundException();
+                }
+            }
+
+            throw ex;
+        }
+    }
+
     public void updateEventInRepetitionAtDate(Event event, long repetitionId, LocalDate date)
             throws Exception {
         logger.info("Updating event at date {} in repetition with id {}", date, repetitionId);

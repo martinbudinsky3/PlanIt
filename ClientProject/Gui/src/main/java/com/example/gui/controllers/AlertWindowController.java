@@ -130,7 +130,7 @@ public class AlertWindowController implements Initializable {
 
         // updating event - new alert time
         try {
-            eventsClient.updateEvent(event, event.getId());
+            eventsClient.postponeEvent(event, event.getId());
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
         } catch (Exception e) {
