@@ -607,16 +607,6 @@ public class PlanItAddEventController implements Initializable {
         return null;
     }
 
-    private RepetitionTypeItem getRepetitionTypeItem(EventType type) {
-        for (RepetitionTypeItem repetitionTypeItem : repetitionTypeSelector.getItems()) {
-            if (repetitionTypeItem.getType().equals(type)) {
-                return repetitionTypeItem;
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Method for calculate init starts time and is used by increment buttons as well.
      * Currently it calculates nearest half hour from actual time e.g 14:00, 18:30 etc.
@@ -742,6 +732,9 @@ public class PlanItAddEventController implements Initializable {
         Event event = readEventInput();
         try {
             eventsClient.updateAllEventsInRepetition(event, this.event.getRepetition().getId());
+            updateCalendarDisplay();
+            Stage stage = (Stage) ap.getScene().getWindow();
+            stage.close();
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-// TODO more detailed error handling - with own exceptions thrown from service layer and caught in controllers
 
 @Service
 public class EventService {
@@ -195,11 +194,8 @@ public class EventService {
         this.eventRepository.update(event.getId(), event);
     }
 
-    // TODO trigger after exception delete is not working
     public void delete(long idEvent) {
         this.eventRepository.delete(idEvent);
-
-        // TODO exception on event delete set null
     }
 
 
@@ -211,8 +207,6 @@ public class EventService {
         // if event isn't exception in repetition add new exception
         if (exception == null) {
             this.repetitionService.addException(repetitionId, date);
-        } else {
-            // TODO dont handle this situation here, but on /events/{eventId} endpoint
         }
     }
 

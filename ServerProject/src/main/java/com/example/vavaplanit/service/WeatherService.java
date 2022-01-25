@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO uri's to config file
 @Service
 @PropertySource("classpath:uri.properties")
 public class WeatherService {
@@ -55,7 +54,6 @@ public class WeatherService {
         return geoCoordinates;
     }
 
-    // TODO map to DTOs in controller layer
     public List<DailyWeather> getWeather(GeoLocation geoLocation) throws JsonProcessingException{
         final String uri = "https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly" +
                 "&appid={api-key}&units=metric";
@@ -67,7 +65,6 @@ public class WeatherService {
         String weatherJson = restTemplate.getForObject(uri, String.class, params);
         WeatherForecast weatherForecast = objectMapper.readValue(weatherJson, new TypeReference<WeatherForecast>() {
         });
-
 
         weatherForecast.getDaily().
                 forEach(dailyWeather -> dailyWeather.getWeather().

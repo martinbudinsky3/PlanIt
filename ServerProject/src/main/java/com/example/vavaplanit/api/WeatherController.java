@@ -36,7 +36,6 @@ public class WeatherController {
             }
 
             List<DailyWeather> weatherList = weatherService.getWeather(geoLocation);
-            logger.debug("Weather list, first day {}", weatherList.get(0).getDt());
             List<DailyWeatherDTO>weatherDTOlist = weatherDTOmapper.dailyWeatherListToDailyWeatherDTOlist(weatherList);
 
             return new ResponseEntity<>(weatherDTOlist, HttpStatus.OK);

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EventPolicy {
-    private Logger logger = LoggerFactory.getLogger(EventPolicy.class);
-
     @Autowired
     private UserService userService;
     @Autowired
