@@ -125,13 +125,15 @@ public class EventController {
     }
 
     @PutMapping(value = "{eventId}/alert")
-    public ResponseEntity postponeEvent(@PathVariable("eventId") int eventId,
+    public ResponseEntity postponeEvent(Principal principal, @PathVariable("eventId") int eventId,
                                       @RequestBody EventPostponeDTO eventPostponeDTO) {
         logger.info("Postponing event with id {}", eventId);
+        String username = principal.getName();
+        long userId = userService.getUserByUsername(username).getId();
         Event event = eventDTOMapper.eventPostponeDTOtoEvent(eventPostponeDTO);
         Event eventFromDb = eventService.getEvent(eventId);
         if(eventFromDb != null) {
-            eventService.postponeEvent(eventId, event);
+            eventService.postponeEvent(userId, eventId, event, eventFromDb);
             logger.info("Event with id {} successfully postponed", eventId);
             return ResponseEntity.noContent().build();
         } else {

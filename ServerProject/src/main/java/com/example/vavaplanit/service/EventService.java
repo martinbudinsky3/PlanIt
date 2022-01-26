@@ -217,8 +217,18 @@ public class EventService {
         this.eventRepository.update(event.getId(), event);
     }
 
-    public void postponeEvent(long id, Event event) {
-        this.eventRepository.postpone(id, event);
+    @Transactional
+    public void postponeEvent(long userId, long eventId, Event postponedEvent, Event originalEvent) {
+        Repetition repetition = this.repetitionService.getRepetitionByEventId(eventId);
+        if(repetition == null) {
+            this.eventRepository.postpone(eventId, postponedEvent);
+        } else {
+            Event exceptionalEvent = originalEvent;
+            exceptionalEvent.setAlertDate(postponedEvent.getAlertDate());
+            exceptionalEvent.setAlertTime(postponedEvent.getAlertTime());
+            Long newEventId = this.eventRepository.add(exceptionalEvent, userId);
+            repetitionService.addException(repetition.getId(), newEventId, postponedEvent.getStartDate());
+        }
     }
 
     public void delete(long idEvent) {
