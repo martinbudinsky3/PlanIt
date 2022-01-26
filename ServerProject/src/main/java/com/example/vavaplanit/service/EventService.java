@@ -152,8 +152,9 @@ public class EventService {
                         event.getStartDate().getDayOfMonth());
                 int daysBetweenAlertAndStartDate = Days.daysBetween(startJodaDate, alertJodaDate).getDays();
 
-                if(repetitionService.checkDateByEventId(event.getId(), currentDate.plusDays(daysBetweenAlertAndStartDate))) {
-                    event = setEventsDates(event, currentDate);
+                LocalDate eventStartDate = currentDate.plusDays(daysBetweenAlertAndStartDate);
+                if(repetitionService.checkDateByEventId(event.getId(), eventStartDate)) {
+                    event = setEventsDates(event, eventStartDate);
                     eventsToAlert.add(event);
                 }
             }
@@ -225,6 +226,7 @@ public class EventService {
             this.eventRepository.postpone(eventId, postponedEvent);
         } else {
             Event exceptionalEvent = originalEvent;
+            exceptionalEvent = setEventsDates(exceptionalEvent, postponedEvent.getStartDate());
             exceptionalEvent.setAlertDate(postponedEvent.getAlertDate());
             exceptionalEvent.setAlertTime(postponedEvent.getAlertTime());
             Long newEventId = this.eventRepository.add(exceptionalEvent, userId);
