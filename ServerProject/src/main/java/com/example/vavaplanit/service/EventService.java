@@ -1,6 +1,7 @@
 package com.example.vavaplanit.service;
 
 import com.example.vavaplanit.database.repository.EventRepository;
+import com.example.vavaplanit.exceptions.InvalidRepetitionDateException;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.Exception;
 import com.example.vavaplanit.model.repetition.Repetition;
@@ -60,7 +61,7 @@ public class EventService {
         LocalDate date = LocalDate.parse(dateString);
         List<Event> events = this.eventRepository.getEventsByDate(userId, date);
 
-        return events.stream().filter(event -> this.repetitionService.checkDate(event.getId(), date) ||
+        return events.stream().filter(event -> this.repetitionService.checkDateByEventId(event.getId(), date) ||
                 event.getStartDate().equals(date)).collect(Collectors.toList());
     }
 
@@ -114,7 +115,7 @@ public class EventService {
 
         if(dateString != null && event.getRepetition() != null) {
             LocalDate date = LocalDate.parse(dateString);
-            if (this.repetitionService.checkDate(eventId, date)) {
+            if (this.repetitionService.checkDateByEventId(eventId, date)) {
                 event = setEventsDates(event, date);
             }
         }
@@ -151,7 +152,7 @@ public class EventService {
                         event.getStartDate().getDayOfMonth());
                 int daysBetweenAlertAndStartDate = Days.daysBetween(startJodaDate, alertJodaDate).getDays();
 
-                if(repetitionService.checkDate(event.getId(), currentDate.plusDays(daysBetweenAlertAndStartDate))) {
+                if(repetitionService.checkDateByEventId(event.getId(), currentDate.plusDays(daysBetweenAlertAndStartDate))) {
                     event = setEventsDates(event, currentDate);
                     eventsToAlert.add(event);
                 }
@@ -236,14 +237,12 @@ public class EventService {
     }
 
 
-    public void deleteFromRepetition(long repetitionId, String dateString) {
-        // TODO check if date is valid in repetition
+    public void deleteFromRepetition(long repetitionId, String dateString) throws InvalidRepetitionDateException {
         LocalDate date = LocalDate.parse(dateString);
-        Exception exception = repetitionService.getExceptionByRepetitionIdAndDate(repetitionId, date);
-
-        // if event isn't exception in repetition add new exception
-        if (exception == null) {
+        if(this.repetitionService.checkDateByRepetitionId(repetitionId, date)) {
             this.repetitionService.addException(repetitionId, date);
+        } else {
+            throw new InvalidRepetitionDateException();
         }
     }
 

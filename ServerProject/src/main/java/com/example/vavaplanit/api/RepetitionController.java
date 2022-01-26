@@ -5,6 +5,7 @@ import com.example.vavaplanit.dto.event.RepeatedEventUpdateDTO;
 import com.example.vavaplanit.dto.mappers.EventDTOmapper;
 import com.example.vavaplanit.dto.mappers.RepetitionDTOmapper;
 import com.example.vavaplanit.dto.repetition.RepetitionCreateDTO;
+import com.example.vavaplanit.exceptions.InvalidRepetitionDateException;
 import com.example.vavaplanit.model.Event;
 import com.example.vavaplanit.model.repetition.Repetition;
 import com.example.vavaplanit.service.EventService;
@@ -97,9 +98,15 @@ public class RepetitionController {
 
         Repetition repetition = repetitionService.getRepetitionById(repetitionId);
         if(repetition != null) {
-            eventService.deleteFromRepetition(repetitionId, date);
-            logger.info("Event with id {} successfully deleted from repetition", repetitionId);
-            return new ResponseEntity(HttpStatus.OK);
+            try {
+                eventService.deleteFromRepetition(repetitionId, date);
+                logger.info("Event with id {} successfully deleted from repetition", repetitionId);
+                return new ResponseEntity(HttpStatus.OK);
+            } catch (InvalidRepetitionDateException e) {
+                logger.error("Date {} is not valid for repetition with id {}", date, repetitionId);
+                return new ResponseEntity("Date " + date + " is not valid for repetition with id " + repetitionId,
+                        HttpStatus.NOT_FOUND);
+            }
         } else {
             logger.error("Repetition with id {} does not exist", repetitionId);
             return new ResponseEntity("Repetition with id " + repetitionId + " does not exist",

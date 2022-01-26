@@ -70,13 +70,24 @@ public class RepetitionService {
         this.repetitionRepository.update(repetition);
     }
 
-    public boolean checkDate(long eventId, LocalDate date) {
+    public boolean checkDateByEventId(long eventId, LocalDate date) {
         Repetition repetition = this.repetitionRepository.getRepetitionByEventId(eventId);
         if(repetition == null) {
             return false;
         }
 
         Exception exception = this.getExceptionByRepetitionIdAndDate(repetition.getId(), date);
+        if(exception != null) {
+            return false;
+        }
+
+        return repetition.checkDate(date);
+    }
+
+    public boolean checkDateByRepetitionId(long repetitionId, LocalDate date) {
+        Repetition repetition = this.repetitionRepository.getRepetitionById(repetitionId);
+
+        Exception exception = this.getExceptionByRepetitionIdAndDate(repetitionId, date);
         if(exception != null) {
             return false;
         }
