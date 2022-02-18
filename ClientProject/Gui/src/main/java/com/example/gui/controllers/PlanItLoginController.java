@@ -41,7 +41,6 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     @FXML
     private Button changeLanguageButton;
 
-    private User user; // TODO remove this field
     private ResourceBundle resourceBundle;
 
     public PlanItLoginController(WindowsCreator windowsCreator) {
@@ -88,7 +87,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         } else {
             try {
                 usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
-                windowsCreator.createMainWindow(resourceBundle, usersClient, user, event);
+                windowsCreator.createMainWindow(resourceBundle, usersClient, event);
             } catch (Exception ex) {
                 if (ex instanceof UnauthorizedException) {
                     windowsCreator.showInfoAlert(resourceBundle.getString("loginWrongAlertTitle"),

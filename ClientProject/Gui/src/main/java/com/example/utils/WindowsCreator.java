@@ -32,7 +32,7 @@ public class WindowsCreator {
     /**
      * When user clicks on the label of event in calendar, the detail of the event shows.
      */
-    public void createEventDetailWindow(Event event, String title, User user, EventsClient eventsClient,
+    public void createEventDetailWindow(Event event, String title, EventsClient eventsClient,
                                         PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -62,7 +62,7 @@ public class WindowsCreator {
      *
      * @param initDate current date
      */
-    public void createAddEventWindow(User user, LocalDate initDate, EventsClient eventsClient,
+    public void createAddEventWindow(LocalDate initDate, EventsClient eventsClient,
                                      PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle,
                                      AnchorPane ap) {
         try {
@@ -93,12 +93,12 @@ public class WindowsCreator {
      *
      * @param event the event to which it is notified
      */
-    public void createAlertWindow(User user, Event event, EventsClient eventsClient,
+    public void createAlertWindow(Event event, EventsClient eventsClient,
                                   PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
-            AlertWindowController alertWindowController = new AlertWindowController(user, event, eventsClient,
+            AlertWindowController alertWindowController = new AlertWindowController(event, eventsClient,
                     planItMainWindowController, this);
             loader.setController(alertWindowController);
             loader.setResources(resourceBundle);
@@ -162,12 +162,12 @@ public class WindowsCreator {
         }
     }
 
-    public void createMainWindow(ResourceBundle resourceBundle, UsersClient usersClient, User user, ActionEvent event) {
+    public void createMainWindow(ResourceBundle resourceBundle, UsersClient usersClient, ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
             PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
-                    usersClient, new WeatherClient(), user, this);
+                    usersClient, new WeatherClient(), this);
             fxmlLoader.setController(planItMainWindowController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();

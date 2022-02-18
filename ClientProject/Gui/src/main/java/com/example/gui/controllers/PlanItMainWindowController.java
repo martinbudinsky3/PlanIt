@@ -59,7 +59,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private final EventsClient eventsClient;
     private final UsersClient usersClient;
     private final WeatherClient weatherClient;
-    private final User user;
 
     @FXML
     private AnchorPane ap;
@@ -91,11 +90,10 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private String months[];
     private ResourceBundle resourceBundle;
 
-    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, WeatherClient weatherClient, User user, WindowsCreator windowsCreator) {
+    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, WeatherClient weatherClient, WindowsCreator windowsCreator) {
         this.eventsClient = eventsClient;
         this.usersClient = usersClient;
         this.weatherClient = weatherClient;
-        this.user = user;
         this.windowsCreator = windowsCreator;
     }
 
@@ -201,7 +199,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     // show alert for every event that is returned
                     for (Event event : events) {
-                        windowsCreator.createAlertWindow(user, event, eventsClient, this, resourceBundle);
+                        windowsCreator.createAlertWindow(event, eventsClient, this, resourceBundle);
                         playAlertSound();
                     }
                 });
@@ -307,7 +305,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addHandlerToDayVBoxes();
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
-        addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(user, LocalDate.now(), eventsClient,
+        addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(LocalDate.now(), eventsClient,
                 this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
             windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
@@ -329,7 +327,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         if (file != null) {  // if user hit cancel button nothing happens
             try {
                 List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth);
-                PdfFile pdfFile = new PdfFile(user, selectedYear, selectedMonth, events, resourceBundle, file, windowsCreator);
+                PdfFile pdfFile = new PdfFile(selectedYear, selectedMonth, events, resourceBundle, file, windowsCreator);
                 pdfFile.pdf();
             } catch (Exception e) {
                 if (e instanceof UnauthorizedException) {
@@ -407,7 +405,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                         Label dayLabel = (Label) dayHeader.getChildren().get(0);
                         int day = Integer.parseInt(dayLabel.getText());  // get day from dayLabel
                         LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
-                        windowsCreator.createAddEventWindow(user, initDate, eventsClient, this,
+                        windowsCreator.createAddEventWindow(initDate, eventsClient, this,
                                 resourceBundle, ap); // opens add event window
                         e.consume();
                     }
@@ -635,7 +633,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             Event event = eventsClient.getEvent(Long.parseLong(eventLabel.getId()),
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
             windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
-                    user, eventsClient, this, resourceBundle);
+                    eventsClient, this, resourceBundle);
         } catch (Exception ex) {
             if (ex instanceof UnauthorizedException) {
                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());

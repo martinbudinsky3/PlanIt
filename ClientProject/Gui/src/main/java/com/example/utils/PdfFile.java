@@ -32,15 +32,16 @@ public class PdfFile {
     private final ResourceBundle resourceBundle;
     private final File file;
 
-    public PdfFile(User user, int selectedYear, int selectedMonth, List<Event> events, ResourceBundle resourceBundle,
+    public PdfFile(int selectedYear, int selectedMonth, List<Event> events, ResourceBundle resourceBundle,
                    File file, WindowsCreator windowsCreator) {
-        this.user = user;
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
         this.events = events;
         this.resourceBundle = resourceBundle;
         this.file = file;
         this.windowsCreator = windowsCreator;
+
+        this.user = new User(); // TODO fetch user info
     }
 
     /**

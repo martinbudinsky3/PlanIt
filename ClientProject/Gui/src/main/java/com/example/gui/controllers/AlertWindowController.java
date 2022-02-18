@@ -37,15 +37,13 @@ public class AlertWindowController implements Initializable {
     private Label timeLabel;
 
     private ResourceBundle resourceBundle;
-    private User user;
     private Event event;
     private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
 
     /** Constructor */
-    public AlertWindowController(User user, Event event, EventsClient eventsClient,
+    public AlertWindowController(Event event, EventsClient eventsClient,
                                  PlanItMainWindowController planItMainWindowController, WindowsCreator windowsCreator) {
-        this.user = user;
         this.event = event;
         this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
@@ -69,7 +67,7 @@ public class AlertWindowController implements Initializable {
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
             String title = event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
-            windowsCreator.createEventDetailWindow(event, title, user, eventsClient, planItMainWindowController,
+            windowsCreator.createEventDetailWindow(event, title, eventsClient, planItMainWindowController,
                     resourceBundle);
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();
