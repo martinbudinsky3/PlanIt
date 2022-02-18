@@ -129,12 +129,11 @@ public class AlertWindowController implements Initializable {
             stage.close();
         } catch (Exception e) {
             if (e instanceof UnauthorizedException) {
-                // TODO create users client inside login controller
-                // windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow(), usersClient);
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             } else if (e instanceof AccessDeniedException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("updateEventAccessDeniedErrorMessage"), resourceBundle);
             } else if (e instanceof NotFoundException) {
-                // TODO
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
             } else {
                 windowsCreator.showErrorAlert(resourceBundle.getString("updateEventErrorMessage"), resourceBundle);
             }
