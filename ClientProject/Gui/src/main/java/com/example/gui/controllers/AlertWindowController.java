@@ -14,7 +14,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,6 +39,7 @@ public class AlertWindowController implements Initializable {
     @FXML
     private Label timeLabel;
 
+    private static final Logger logger = LoggerFactory.getLogger(AlertWindowController.class);
     private ResourceBundle resourceBundle;
     private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
     private final EventsClient eventsClient = EventsClient.getInstance();
@@ -57,6 +63,24 @@ public class AlertWindowController implements Initializable {
         postponeTimeChoice.getItems().add(resourceBundle.getString("1hour"));
         postponeTimeChoice.getItems().add(resourceBundle.getString("6hours"));
         postponeTimeChoice.setValue(resourceBundle.getString("5minutes"));
+
+        playAlertSound();
+    }
+
+    /**
+     * Sound of notification is played.
+     */
+    private void playAlertSound() {
+        URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/Windows Notify Calendar.wav");
+        try {
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (Exception ex) {
+            windowsCreator.showErrorAlert(resourceBundle);
+            logger.error("Error while playing alert sound", ex);
+        }
     }
 
     /** Adding handlers to click on the Button (postponeButton) and to click on the AnchorPane (ap) */

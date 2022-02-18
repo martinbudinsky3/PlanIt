@@ -192,7 +192,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                     // show alert for every event that is returned
                     for (Event event : events) {
                         windowsCreator.createAlertWindow(event, this, resourceBundle);
-                        playAlertSound();
                     }
                 });
 
@@ -204,22 +203,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         }
     }
 
-    // TODO this should be in AlertWindowController
-    /**
-     * Sound of notification is played.
-     */
-    public void playAlertSound() {
-        URL file = PlanItMainWindowController.class.getClassLoader().getResource("sounds/Windows Notify Calendar.wav");
-        try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (Exception ex) {
-            windowsCreator.showErrorAlert(resourceBundle);
-            logger.error("Error while playing alert sound", ex);
-        }
-    }
 
     public void runWeatherTask() {
         while (threadActive) {
