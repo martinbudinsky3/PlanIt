@@ -24,8 +24,8 @@ import java.util.ResourceBundle;
 public class PlanItRegistrationController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(PlanItRegistrationController.class);
 
-    private final UsersClient usersClient;
-    private final WindowsCreator windowsCreator;
+    private final UsersClient usersClient = UsersClient.getInstance();
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
 
     @FXML
     private AnchorPane ap;
@@ -44,11 +44,6 @@ public class PlanItRegistrationController implements Initializable {
 
     private User user;
     private ResourceBundle resourceBundle;
-
-    public PlanItRegistrationController(UsersClient usersClient, WindowsCreator windowsCreator) {
-        this.usersClient = usersClient;
-        this.windowsCreator = windowsCreator;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

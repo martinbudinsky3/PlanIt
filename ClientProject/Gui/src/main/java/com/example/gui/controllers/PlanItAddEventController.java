@@ -46,9 +46,9 @@ public class PlanItAddEventController implements Initializable {
     private final Integer ERROR_FIRST_HBOX_WIDTH = 215;
 
     static final Logger logger = LoggerFactory.getLogger(PlanItAddEventController.class);
-    private final EventsClient eventsClient;
+    private final EventsClient eventsClient = EventsClient.getInstance();
     private final PlanItMainWindowController planItMainWindowController;
-    private final WindowsCreator windowsCreator = new WindowsCreator();
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
 
     @FXML
     private AnchorPane ap;
@@ -183,17 +183,15 @@ public class PlanItAddEventController implements Initializable {
     private ResourceBundle resourceBundle;
     private Event event;
 
-    public PlanItAddEventController(LocalDate initDate, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(LocalDate initDate, PlanItMainWindowController planItMainWindowController) {
         this.initRepetitionDate = initDate;
         this.initDate = initDate;
-        this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(Event event, EventsClient eventsClient, PlanItMainWindowController planItMainWindowController) {
+    public PlanItAddEventController(Event event, PlanItMainWindowController planItMainWindowController) {
         this.event = event;
         this.initDate = event.getStartDate();
-        this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
     }
 

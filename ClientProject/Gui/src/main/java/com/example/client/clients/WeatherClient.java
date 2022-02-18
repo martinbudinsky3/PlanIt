@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class WeatherClient {
+    private static WeatherClient instance;
 
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
@@ -32,8 +33,16 @@ public class WeatherClient {
     private static final Logger logger = LoggerFactory.getLogger(WeatherClient.class);
     private final Utils utils = new Utils();
 
-    public WeatherClient() {
+    private WeatherClient() {
         objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    public static WeatherClient getInstance() {
+        if(instance == null) {
+            instance = new WeatherClient();
+        }
+
+        return instance;
     }
 
     private String getPublicIPadress() throws Exception {

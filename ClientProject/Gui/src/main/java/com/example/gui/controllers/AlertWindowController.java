@@ -23,8 +23,6 @@ import java.util.ResourceBundle;
 
 /** Controller for "AlertWindow.fxml" */
 public class AlertWindowController implements Initializable {
-    private final WindowsCreator windowsCreator;
-
     @FXML
     private AnchorPane ap;
     @FXML
@@ -37,17 +35,15 @@ public class AlertWindowController implements Initializable {
     private Label timeLabel;
 
     private ResourceBundle resourceBundle;
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
+    private final EventsClient eventsClient = EventsClient.getInstance();
     private Event event;
-    private EventsClient eventsClient;
     private PlanItMainWindowController planItMainWindowController;
 
     /** Constructor */
-    public AlertWindowController(Event event, EventsClient eventsClient,
-                                 PlanItMainWindowController planItMainWindowController, WindowsCreator windowsCreator) {
+    public AlertWindowController(Event event, PlanItMainWindowController planItMainWindowController) {
         this.event = event;
-        this.eventsClient = eventsClient;
         this.planItMainWindowController = planItMainWindowController;
-        this.windowsCreator = windowsCreator;
     }
 
     @Override
@@ -67,7 +63,7 @@ public class AlertWindowController implements Initializable {
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
             String title = event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
-            windowsCreator.createEventDetailWindow(event, title, eventsClient, planItMainWindowController,
+            windowsCreator.createEventDetailWindow(event, title, planItMainWindowController,
                     resourceBundle);
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();

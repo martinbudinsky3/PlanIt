@@ -29,6 +29,7 @@ import java.util.*;
  * Class communicating with server. This class is focused on posting and getting requests related to the Event object.
  */
 public class EventsClient {
+    private static EventsClient instance;
 
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
@@ -41,8 +42,16 @@ public class EventsClient {
     private final Utils utils = new Utils();
 
 
-    public EventsClient() {
+    private EventsClient() {
         objectMapper.registerModule(new JavaTimeModule());
+    }
+
+    public static EventsClient getInstance() {
+        if(instance == null) {
+            instance = new EventsClient();
+        }
+
+        return instance;
     }
 
     /**

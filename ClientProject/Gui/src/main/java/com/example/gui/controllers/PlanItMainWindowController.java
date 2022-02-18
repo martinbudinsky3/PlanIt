@@ -55,10 +55,9 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private static final int FORECASTED_DAYS = 7;
 
     private static final Logger logger = LoggerFactory.getLogger(PlanItMainWindowController.class);
-    private final WindowsCreator windowsCreator;
-    private final EventsClient eventsClient;
-    private final UsersClient usersClient;
-    private final WeatherClient weatherClient;
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
+    private final EventsClient eventsClient = EventsClient.getInstance();
+    private final WeatherClient weatherClient = WeatherClient.getInstance();
 
     @FXML
     private AnchorPane ap;
@@ -89,13 +88,6 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private Node[][] gridPaneNodes;
     private String months[];
     private ResourceBundle resourceBundle;
-
-    public PlanItMainWindowController(EventsClient eventsClient, UsersClient usersClient, WeatherClient weatherClient, WindowsCreator windowsCreator) {
-        this.eventsClient = eventsClient;
-        this.usersClient = usersClient;
-        this.weatherClient = weatherClient;
-        this.windowsCreator = windowsCreator;
-    }
 
     public AnchorPane getAnchorPane() {
         return ap;
@@ -199,7 +191,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
 
                     // show alert for every event that is returned
                     for (Event event : events) {
-                        windowsCreator.createAlertWindow(event, eventsClient, this, resourceBundle);
+                        windowsCreator.createAlertWindow(event, this, resourceBundle);
                         playAlertSound();
                     }
                 });
@@ -305,8 +297,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         addHandlerToDayVBoxes();
         yearBack.setOnAction(e -> yearBackHandler());
         yearForward.setOnAction(e -> yearForwardHandler());
-        addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(LocalDate.now(), eventsClient,
-                this, resourceBundle, ap));
+        addEventButton.setOnAction(e -> windowsCreator.createAddEventWindow(LocalDate.now(), this, resourceBundle, ap));
         logoutButton.setOnAction(e -> {
             windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
             threadActive = false;
@@ -405,7 +396,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
                         Label dayLabel = (Label) dayHeader.getChildren().get(0);
                         int day = Integer.parseInt(dayLabel.getText());  // get day from dayLabel
                         LocalDate initDate = LocalDate.of(selectedYear, selectedMonth, day);
-                        windowsCreator.createAddEventWindow(initDate, eventsClient, this,
+                        windowsCreator.createAddEventWindow(initDate,this,
                                 resourceBundle, ap); // opens add event window
                         e.consume();
                     }
@@ -632,8 +623,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
             // TODO move API call to event detail window controller
             Event event = eventsClient.getEvent(Long.parseLong(eventLabel.getId()),
                     LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
-            windowsCreator.createEventDetailWindow(event, eventLabel.getText(),
-                    eventsClient, this, resourceBundle);
+            windowsCreator.createEventDetailWindow(event, eventLabel.getText(), this, resourceBundle);
         } catch (Exception ex) {
             if (ex instanceof UnauthorizedException) {
                 windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());

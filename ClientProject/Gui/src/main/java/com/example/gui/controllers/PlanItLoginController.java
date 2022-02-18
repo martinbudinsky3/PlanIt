@@ -25,8 +25,8 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
 
     private static final Logger logger = LoggerFactory.getLogger(PlanItLoginController.class);
 
-    private final UsersClient usersClient = new UsersClient();
-    private final WindowsCreator windowsCreator;
+    private final UsersClient usersClient = UsersClient.getInstance();
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
 
     @FXML
     private AnchorPane ap;
@@ -42,10 +42,6 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
     private Button changeLanguageButton;
 
     private ResourceBundle resourceBundle;
-
-    public PlanItLoginController(WindowsCreator windowsCreator) {
-        this.windowsCreator = windowsCreator;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -69,7 +65,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
             buttonLoginHandler(e);
         });
         buttonRegister.setOnAction(e -> {
-            windowsCreator.createRegistrationWindow(usersClient, resourceBundle, e);
+            windowsCreator.createRegistrationWindow(resourceBundle, e);
         });
         changeLanguageButton.setOnAction(e -> {
             windowsCreator.createLanguageSelectorWindow(this, resourceBundle);
@@ -87,7 +83,7 @@ public class PlanItLoginController implements Initializable, LanguageChangeWindo
         } else {
             try {
                 usersClient.login(textfieldName.getText(), passwordfieldPassword.getText());
-                windowsCreator.createMainWindow(resourceBundle, usersClient, event);
+                windowsCreator.createMainWindow(resourceBundle, event);
             } catch (Exception ex) {
                 if (ex instanceof UnauthorizedException) {
                     windowsCreator.showInfoAlert(resourceBundle.getString("loginWrongAlertTitle"),

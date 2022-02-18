@@ -27,17 +27,29 @@ import java.util.ResourceBundle;
 
 
 public class WindowsCreator {
+    private static WindowsCreator instance;
+
     private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
+
+    private WindowsCreator() { }
+
+    public static WindowsCreator getInstance() {
+        if(instance == null) {
+            instance = new WindowsCreator();
+        }
+
+        return instance;
+    }
 
     /**
      * When user clicks on the label of event in calendar, the detail of the event shows.
      */
-    public void createEventDetailWindow(Event event, String title, EventsClient eventsClient,
-                                        PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
+    public void createEventDetailWindow(Event event, String title, PlanItMainWindowController planItMainWindowController,
+                                        ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(event, eventsClient, planItMainWindowController);
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(event, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
 
@@ -62,14 +74,12 @@ public class WindowsCreator {
      *
      * @param initDate current date
      */
-    public void createAddEventWindow(LocalDate initDate, EventsClient eventsClient,
-                                     PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle,
-                                     AnchorPane ap) {
+    public void createAddEventWindow(LocalDate initDate, PlanItMainWindowController planItMainWindowController,
+                                     ResourceBundle resourceBundle, AnchorPane ap) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(initDate,
-                    eventsClient, planItMainWindowController);
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(initDate, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
 
@@ -93,13 +103,12 @@ public class WindowsCreator {
      *
      * @param event the event to which it is notified
      */
-    public void createAlertWindow(Event event, EventsClient eventsClient,
-                                  PlanItMainWindowController planItMainWindowController, ResourceBundle resourceBundle) {
+    public void createAlertWindow(Event event, PlanItMainWindowController planItMainWindowController,
+                                  ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/AlertWindow.fxml"));
-            AlertWindowController alertWindowController = new AlertWindowController(event, eventsClient,
-                    planItMainWindowController, this);
+            AlertWindowController alertWindowController = new AlertWindowController(event, planItMainWindowController);
             loader.setController(alertWindowController);
             loader.setResources(resourceBundle);
 
@@ -129,7 +138,7 @@ public class WindowsCreator {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItLogin.fxml"));
-            PlanItLoginController planItLoginController = new PlanItLoginController(this);
+            PlanItLoginController planItLoginController = new PlanItLoginController();
             fxmlLoader.setController(planItLoginController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = fxmlLoader.load();
@@ -162,12 +171,11 @@ public class WindowsCreator {
         }
     }
 
-    public void createMainWindow(ResourceBundle resourceBundle, UsersClient usersClient, ActionEvent event) {
+    public void createMainWindow(ResourceBundle resourceBundle, ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItMainWindow.fxml"));
-            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController(new EventsClient(),
-                    usersClient, new WeatherClient(), this);
+            PlanItMainWindowController planItMainWindowController = new PlanItMainWindowController();
             fxmlLoader.setController(planItMainWindowController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();
@@ -188,11 +196,11 @@ public class WindowsCreator {
      * Registration button.
      * Opens the "PlanItRegistration window."
      */
-    public void createRegistrationWindow(UsersClient usersClient, ResourceBundle resourceBundle, ActionEvent event) {
+    public void createRegistrationWindow(ResourceBundle resourceBundle, ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader();
             fxmlLoader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItRegistration.fxml"));
-            PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController(usersClient, this);
+            PlanItRegistrationController planItRegistrationController = new PlanItRegistrationController();
             fxmlLoader.setController(planItRegistrationController);
             fxmlLoader.setResources(resourceBundle);
             AnchorPane rootPane = (AnchorPane) fxmlLoader.load();

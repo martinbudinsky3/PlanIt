@@ -8,6 +8,7 @@ import com.example.model.LoginData;
 import com.example.model.LoginResponse;
 import com.example.model.User;
 import com.example.utils.PropertiesReader;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.prefs.Preferences;
  */
 
 public class UsersClient {
+    private static UsersClient instance;
 
     private final PropertiesReader uriPropertiesReader = new PropertiesReader("uri.properties");
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
@@ -30,6 +32,16 @@ public class UsersClient {
     private final UserMapper userMapper = new UserMapper();
     private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
     private final Preferences preferences = Preferences.userRoot();
+
+    private UsersClient() { }
+
+    public static UsersClient getInstance() {
+        if(instance == null) {
+            instance = new UsersClient();
+        }
+
+        return instance;
+    }
 
     /**
      * Method needed for login of user. After entering the username and password, this method returns User with given data
