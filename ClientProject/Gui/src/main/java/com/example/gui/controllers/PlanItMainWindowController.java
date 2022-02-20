@@ -58,6 +58,7 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
     private final EventsClient eventsClient = EventsClient.getInstance();
     private final WeatherClient weatherClient = WeatherClient.getInstance();
+    private final UsersClient usersClient = UsersClient.getInstance();
 
     @FXML
     private AnchorPane ap;
@@ -301,7 +302,8 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
         if (file != null) {  // if user hit cancel button nothing happens
             try {
                 List<Event> events = eventsClient.getUserEventsByMonth(selectedYear, selectedMonth);
-                PdfFile pdfFile = new PdfFile(selectedYear, selectedMonth, events, resourceBundle, file, windowsCreator);
+                User user = usersClient.getUserInfo();
+                PdfFile pdfFile = new PdfFile(selectedYear, selectedMonth, events, user, resourceBundle, file);
                 pdfFile.pdf();
             } catch (Exception e) {
                 if (e instanceof UnauthorizedException) {

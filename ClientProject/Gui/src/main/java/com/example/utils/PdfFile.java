@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  */
 public class PdfFile {
     private static final Logger logger = LoggerFactory.getLogger(WindowsCreator.class);
-    private final WindowsCreator windowsCreator;
+    private final WindowsCreator windowsCreator = WindowsCreator.getInstance();
     private final List<Event> events;
     private final User user;
     private final int selectedYear;
@@ -32,16 +32,14 @@ public class PdfFile {
     private final ResourceBundle resourceBundle;
     private final File file;
 
-    public PdfFile(int selectedYear, int selectedMonth, List<Event> events, ResourceBundle resourceBundle,
-                   File file, WindowsCreator windowsCreator) {
+    public PdfFile(int selectedYear, int selectedMonth, List<Event> events, User user, ResourceBundle resourceBundle,
+                   File file) {
         this.selectedYear = selectedYear;
         this.selectedMonth = selectedMonth;
         this.events = events;
+        this.user = user;
         this.resourceBundle = resourceBundle;
         this.file = file;
-        this.windowsCreator = windowsCreator;
-
-        this.user = new User(); // TODO fetch user info
     }
 
     /**
@@ -76,13 +74,13 @@ public class PdfFile {
      */
     public void setHeader(Document document) throws DocumentException {
         Paragraph dateParagraph = setDateParagraph();
-        //Paragraph nameParagraph = setNameParagraph();
+        Paragraph nameParagraph = setNameParagraph();
 
         //adding paragraphs to document
         document.add(dateParagraph);
         document.add(Chunk.NEWLINE);
         document.add(Chunk.NEWLINE);
-        //document.add(nameParagraph);
+        document.add(nameParagraph);
     }
 
     private Paragraph setDateParagraph() {

@@ -2,16 +2,19 @@ package com.example.client.clients;
 
 import com.example.client.exceptions.ConflictException;
 import com.example.client.exceptions.UnauthorizedException;
-import com.example.dto.mappers.UserMapper;
+import com.example.client.utils.Utils;
+import com.example.dto.mappers.UserDTOMapper;
 import com.example.dto.user.UserCreateDTO;
+import com.example.dto.user.UserDataDTO;
 import com.example.model.LoginData;
 import com.example.model.LoginResponse;
 import com.example.model.User;
 import com.example.utils.PropertiesReader;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,9 +32,11 @@ public class UsersClient {
     private final String BASE_URI = uriPropertiesReader.getProperty("base-uri");
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final UserMapper userMapper = new UserMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final UserDTOMapper userDTOmapper = new UserDTOMapper();
     private static final Logger logger = LoggerFactory.getLogger(UsersClient.class);
     private final Preferences preferences = Preferences.userRoot();
+    private final Utils utils = new Utils();
 
     private UsersClient() { }
 
@@ -85,7 +90,7 @@ public class UsersClient {
         logger.info("Registering user {}" + user.getUsername());
         final String uri = BASE_URI + "/auth/register";
 
-        UserCreateDTO userCreateDTO = userMapper.userToUserCreateDTO(user);
+        UserCreateDTO userCreateDTO = userDTOmapper.userToUserCreateDTO(user);
         try {
             Long id  = restTemplate.postForObject(uri, userCreateDTO, Long.class);
             logger.info("User {} successfully registered with id {}", user.getUsername(), id);
@@ -99,5 +104,34 @@ public class UsersClient {
 
             throw e;
         }
+    }
+
+    public User getUserInfo() throws Exception {
+        logger.info("Getting user data");
+        final String uri = BASE_URI + "/user";
+
+        User user;
+        try {
+            HttpHeaders headers = utils.createAuthenticationHeader();
+            HttpEntity entity = new HttpEntity(headers);
+            ResponseEntity response = restTemplate.exchange(uri, HttpMethod.GET, entity, String.class);
+
+            String userDataJSon = (String) response.getBody();
+            UserDataDTO userDataDTO = objectMapper.readValue(userDataJSon, new TypeReference<UserDataDTO>() {
+            });
+            user = userDTOmapper.userDataDTOtoUser(userDataDTO);
+            logger.info("Returning user data");
+        } catch (Exception e) {
+            logger.error("Error while getting user data", e);
+            if (e instanceof HttpStatusCodeException) {
+                if (((HttpStatusCodeException) e).getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                    throw new UnauthorizedException();
+                }
+            }
+
+            throw e;
+        }
+
+        return user;
     }
 }
