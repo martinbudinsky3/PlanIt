@@ -600,23 +600,12 @@ public class PlanItMainWindowController implements Initializable, LanguageChange
     }
 
     private void eventLabelClickedHandler(Label eventLabel) {
-        try {
-            VBox dayOfMonthBox = (VBox) eventLabel.getParent();
-            int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
-            // TODO move API call to event detail window controller
-            Event event = eventsClient.getEvent(Long.parseLong(eventLabel.getId()),
-                    LocalDate.of(selectedYear, selectedMonth, dayOfMonth));
-            windowsCreator.createEventDetailWindow(event, eventLabel.getText(), this, resourceBundle);
-        } catch (Exception ex) {
-            if (ex instanceof UnauthorizedException) {
-                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
-            } else if (ex instanceof AccessDeniedException) {
-                windowsCreator.showErrorAlert(resourceBundle.getString("getEventAccessDeniedErrorMessage"), resourceBundle);
-            } else if (ex instanceof NotFoundException) {
-                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
-            } else {
-                windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
-            }
-        }
+        VBox dayOfMonthBox = (VBox) eventLabel.getParent();
+        int dayOfMonth = Integer.parseInt(dayOfMonthBox.getId());
+        windowsCreator.createEventDetailWindow(
+                Long.parseLong(eventLabel.getId()),
+                LocalDate.of(selectedYear, selectedMonth, dayOfMonth),
+                eventLabel.getText(), this, resourceBundle
+        );
     }
 }

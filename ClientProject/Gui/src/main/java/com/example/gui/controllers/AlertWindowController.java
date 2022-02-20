@@ -87,7 +87,7 @@ public class AlertWindowController implements Initializable {
     public void addHandlers() {
         ap.setOnMouseClicked(e -> {
             String title = event.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + " " + event.getTitle();
-            windowsCreator.createEventDetailWindow(event, title, planItMainWindowController,
+            windowsCreator.createEventDetailWindow(event.getId(), event.getStartDate(), title, planItMainWindowController,
                     resourceBundle);
             Stage stage = (Stage) ap.getScene().getWindow();
             stage.close();

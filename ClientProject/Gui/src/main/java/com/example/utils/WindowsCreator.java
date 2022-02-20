@@ -44,12 +44,12 @@ public class WindowsCreator {
     /**
      * When user clicks on the label of event in calendar, the detail of the event shows.
      */
-    public void createEventDetailWindow(Event event, String title, PlanItMainWindowController planItMainWindowController,
+    public void createEventDetailWindow(Long eventId, LocalDate initDate, String title, PlanItMainWindowController planItMainWindowController,
                                         ResourceBundle resourceBundle) {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getClassLoader().getResource("fxml/PlanItAddEvent.fxml"));
-            PlanItAddEventController planItAddEventController = new PlanItAddEventController(event, planItMainWindowController);
+            PlanItAddEventController planItAddEventController = new PlanItAddEventController(eventId, initDate, planItMainWindowController);
             loader.setController(planItAddEventController);
             loader.setResources(resourceBundle);
 

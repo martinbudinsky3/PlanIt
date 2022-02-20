@@ -189,10 +189,29 @@ public class PlanItAddEventController implements Initializable {
         this.planItMainWindowController = planItMainWindowController;
     }
 
-    public PlanItAddEventController(Event event, PlanItMainWindowController planItMainWindowController) {
-        this.event = event;
-        this.initDate = event.getStartDate();
+    public PlanItAddEventController(Long eventId, LocalDate initDate, PlanItMainWindowController planItMainWindowController) {
+        this.event = getEvent(eventId, initDate);
+        this.initDate = initDate;
         this.planItMainWindowController = planItMainWindowController;
+    }
+
+    private Event getEvent(Long eventId, LocalDate date) {
+        Event event = null;
+        try {
+            event = eventsClient.getEvent(eventId, date);
+        } catch (Exception ex) {
+            if (ex instanceof UnauthorizedException) {
+                windowsCreator.createLoginWindow(resourceBundle, (Stage) ap.getScene().getWindow());
+            } else if (ex instanceof AccessDeniedException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("getEventAccessDeniedErrorMessage"), resourceBundle);
+            } else if (ex instanceof NotFoundException) {
+                windowsCreator.showErrorAlert(resourceBundle.getString("eventNotFoundErrorMessage"), resourceBundle);
+            } else {
+                windowsCreator.showErrorAlert(resourceBundle.getString("getEventErrorMessage"), resourceBundle);
+            }
+        }
+
+        return event;
     }
 
     /**

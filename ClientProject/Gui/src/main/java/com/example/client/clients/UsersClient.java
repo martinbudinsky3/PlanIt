@@ -62,7 +62,6 @@ public class UsersClient {
             logger.info("User {} successfully logged in", username);
             preferences.put("accessToken", loginResponse.getAccessToken());
             preferences.put("refreshToken", loginResponse.getRefreshToken());
-            // TODO move preferences access somewhere
         } catch (Exception e) {
             logger.error("Unsuccessful login attempt", e);
             if(e instanceof HttpStatusCodeException) {
