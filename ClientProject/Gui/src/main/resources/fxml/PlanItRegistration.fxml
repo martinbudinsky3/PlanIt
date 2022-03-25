@@ -11,22 +11,22 @@
             <Font size="36.0" />
          </font>
       </Label>
-      <Label layoutX="96.0" layoutY="171.0" text="%firstnameLabel">
+      <Label layoutX="69.0" layoutY="173.0" text="%firstnameLabel">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="96.0" layoutY="215.0" text="%lastnameLabel">
+      <Label layoutX="69.0" layoutY="217.0" text="%lastnameLabel">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="94.0" layoutY="258.0" text="%usernameLabel">
+      <Label layoutX="67.0" layoutY="260.0" text="%usernameLabel">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label layoutX="95.0" layoutY="299.0" text="%passwordLabel">
+      <Label layoutX="68.0" layoutY="301.0" text="%passwordLabel">
          <font>
             <Font size="18.0" />
          </font>
